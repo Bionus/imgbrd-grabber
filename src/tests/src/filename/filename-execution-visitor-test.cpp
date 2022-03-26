@@ -7,81 +7,62 @@
 #include "catch.h"
 
 
+static QString executeFilename(const QString &filename, const QMap<QString, Token> &tokens)
+{
+	FilenameParser parser(filename);
+	auto ast = parser.parseRoot();
+
+	REQUIRE(parser.error() == QString());
+	REQUIRE(ast != nullptr);
+
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	FilenameExecutionVisitor executionVisitor(tokens, &settings);
+	return executionVisitor.run(*ast);
+}
+
 TEST_CASE("FilenameExecutionVisitor")
 {
 	SECTION("Empty")
 	{
-		QMap<QString, Token> tokens {
+		const QMap<QString, Token> tokens {
 			{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
 			{ "ext", Token("jpg") }
 		};
 
-		FilenameParser parser("");
-		auto ast = parser.parseRoot();
-
-		REQUIRE(parser.error() == QString());
-		REQUIRE(ast != nullptr);
-
-		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-		FilenameExecutionVisitor executionVisitor(tokens, &settings);
-		QString result = executionVisitor.run(*ast);
+		const QString result = executeFilename("", tokens);
 
 		REQUIRE(result == QString());
 	}
 
 	SECTION("Basic")
 	{
-		QMap<QString, Token> tokens {
+		const QMap<QString, Token> tokens {
 			{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
 			{ "ext", Token("jpg") }
 		};
 
-		FilenameParser parser("image.jpg");
-		auto ast = parser.parseRoot();
-
-		REQUIRE(parser.error() == QString());
-		REQUIRE(ast != nullptr);
-
-		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-		FilenameExecutionVisitor executionVisitor(tokens, &settings);
-		QString result = executionVisitor.run(*ast);
+		const QString result = executeFilename("image.jpg", tokens);
 
 		REQUIRE(result == QString("image.jpg"));
 	}
 
 	SECTION("Token")
 	{
-		QMap<QString, Token> tokens {
+		const QMap<QString, Token> tokens {
 			{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
 			{ "ext", Token("jpg") }
 		};
 
-		FilenameParser parser("out/%md5%.%ext%");
-		auto ast = parser.parseRoot();
-
-		REQUIRE(parser.error() == QString());
-		REQUIRE(ast != nullptr);
-
-		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-		FilenameExecutionVisitor executionVisitor(tokens, &settings);
-		QString result = executionVisitor.run(*ast);
+		const QString result = executeFilename("out/%md5%.%ext%", tokens);
 
 		REQUIRE(result == QString("out/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
 	}
 
 	SECTION("Token list count")
 	{
-		QMap<QString, Token> tokens {{ "list", Token(QStringList() << "a" << "b" << "c") }};
+		const QMap<QString, Token> tokens {{ "list", Token(QStringList() << "a" << "b" << "c") }};
 
-		FilenameParser parser("%list:count%");
-		auto ast = parser.parseRoot();
-
-		REQUIRE(parser.error() == QString());
-		REQUIRE(ast != nullptr);
-
-		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-		FilenameExecutionVisitor executionVisitor(tokens, &settings);
-		QString result = executionVisitor.run(*ast);
+		const QString result = executeFilename("%list:count%", tokens);
 
 		REQUIRE(result == QString("3"));
 	}
@@ -90,46 +71,50 @@ TEST_CASE("FilenameExecutionVisitor")
 	{
 		SECTION("The token exists")
 		{
-			QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
-			QMap<QString, Token> tokens {
+			const QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
+			const QMap<QString, Token> tokens {
 				{ "gallery", Token(QVariant::fromValue(gallery)) },
 				{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
 				{ "ext", Token("jpg") }
 			};
 
-			FilenameParser parser("<galleries/%gallery.name%/>%md5%.%ext%");
-			auto ast = parser.parseRoot();
-
-			REQUIRE(parser.error() == QString());
-			REQUIRE(ast != nullptr);
-
-			QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-			FilenameExecutionVisitor executionVisitor(tokens, &settings);
-			QString result = executionVisitor.run(*ast);
+			const QString result = executeFilename("<galleries/%gallery.name%/>%md5%.%ext%", tokens);
 
 			REQUIRE(result == QString("galleries/some gallery/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
 		}
 
 		SECTION("Missing token")
 		{
-			QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
-			QMap<QString, Token> tokens {
+			const QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
+			const QMap<QString, Token> tokens {
 				{ "gallery", Token(QVariant::fromValue(gallery)) },
 				{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
 				{ "ext", Token("jpg") }
 			};
 
-			FilenameParser parser("<galleries/%gallery.id%/>%md5%.%ext%");
-			auto ast = parser.parseRoot();
-
-			REQUIRE(parser.error() == QString());
-			REQUIRE(ast != nullptr);
-
-			QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-			FilenameExecutionVisitor executionVisitor(tokens, &settings);
-			QString result = executionVisitor.run(*ast);
+			const QString result = executeFilename("<galleries/%gallery.id%/>%md5%.%ext%", tokens);
 
 			REQUIRE(result == QString("1bc29b36f623ba82aaf6724fd3b16718.jpg"));
 		}
+	}
+
+	SECTION("Missing parent")
+	{
+		const QMap<QString, Token> tokens {
+			{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
+			{ "ext", Token("jpg") }
+		};
+
+		const QString result = executeFilename("%gallery.id%/%md5%.%ext%", tokens);
+
+		REQUIRE(result == QString("/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
+	}
+
+	SECTION("Score length")
+	{
+		REQUIRE(executeFilename("%score:length=5%", {{ "score", Token("123") }}) == QString("00123"));
+		REQUIRE(executeFilename("%score:length=5%", {{ "score", Token("12.3") }}) == QString("00012.3"));
+		REQUIRE(executeFilename("%score:length=5%", {{ "score", Token("0.123") }}) == QString("00000.123"));
+		REQUIRE(executeFilename("%score:length=5%", {{ "score", Token(".123") }}) == QString("00000.123"));
 	}
 }

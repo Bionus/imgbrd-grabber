@@ -7,6 +7,7 @@
 
 
 class Page;
+class QJSEngine;
 class QMutex;
 class Site;
 class Tag;
@@ -16,7 +17,7 @@ class JavascriptApi : public Api
 	Q_OBJECT
 
 	public:
-		explicit JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
+		explicit JavascriptApi(QJSEngine *engine, const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
 
 		// Normal search
 		PageUrl pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const override;
@@ -68,6 +69,7 @@ class JavascriptApi : public Api
 		ParsedPage parsePageInternal(const QString &type, Page *parentPage, const QString &source, int statusCode, int first) const;
 
 	private:
+		QJSEngine *m_engine;
 		const QJSValue &m_source;
 		QString m_key;
 		mutable QMutex *m_engineMutex;

@@ -44,6 +44,8 @@ void JsonPrinter::print(const QList<QSharedPointer<Image>> &images) const
 
 void JsonPrinter::print(const Tag &tag, Site *site) const
 {
+	Q_UNUSED(site);
+
 	QJsonObject jsonTag;
 	tag.write(jsonTag);
 	printObject(jsonTag);
@@ -51,6 +53,8 @@ void JsonPrinter::print(const Tag &tag, Site *site) const
 
 void JsonPrinter::print(const QList<Tag> &tags, Site *site) const
 {
+	Q_UNUSED(site);
+
 	QJsonArray jsonArray;
 	for (const Tag &tag : tags) {
 		QJsonObject jsonObj;
@@ -118,7 +122,7 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 		} else if (type == Type::Bool) {
 			jsObject.insert(key, qvalue.value<bool>());
 		} else if (type == Type::DateTime) {
-			jsObject.insert(key, static_cast<int>(qvalue.value<QDateTime>().toTime_t()));
+			jsObject.insert(key, static_cast<int>(qvalue.value<QDateTime>().toSecsSinceEpoch()));
 		} else {
 			log(QStringLiteral("using generic QVariant::toString for key: %1").arg(key), Logger::Warning);
 			jsObject.insert(key, qvalue.toString());

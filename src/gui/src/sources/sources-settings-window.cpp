@@ -101,7 +101,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "oauth2_password", tr("OAuth 2 (password)") },
 		{ "oauth2_password_json", tr("OAuth 2 (JSON password)") },
 		{ "oauth2_client_credentials", tr("OAuth 2 (client credentials)") },
-		{ "oauth2_header_basic", tr("OAuth 2 (header basic)") },
+		{ "oauth2_client_credentials_header", tr("OAuth 2 (client credentials header)") },
 		{ "oauth2_refresh_token", tr("OAuth 2 (refresh token)") },
 		{ "oauth2_pkce", tr("OAuth 2 (PKCE)") }
 	};
@@ -364,7 +364,7 @@ void SourcesSettingsWindow::saveSettings()
 
 		QNetworkCookie cookie;
 		cookie.setName(key->text().toLatin1());
-		cookie.setValue(value != nullptr ? value->text().toLatin1() : "");
+		cookie.setValue(value != nullptr ? value->text().toLatin1() : QByteArray());
 		cookies.append(cookie.toRawForm());
 	}
 	m_site->setSetting("cookies", cookies, QStringList());

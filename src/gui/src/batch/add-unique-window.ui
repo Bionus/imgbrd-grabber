@@ -129,8 +129,13 @@
        </item>
        <item>
         <widget class="QLabel" name="labelLineId">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
          <property name="text">
-          <string>&lt;i&gt;One ID per line.&lt;/i&gt;</string>
+          <string>One ID per line.</string>
          </property>
         </widget>
        </item>
@@ -184,8 +189,13 @@
        </item>
        <item>
         <widget class="QLabel" name="labelLineMd5">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
          <property name="text">
-          <string>&lt;i&gt;One MD5 per line.&lt;/i&gt;</string>
+          <string>One MD5 per line.</string>
          </property>
         </widget>
        </item>

@@ -4,7 +4,7 @@
 #include "tag-type-with-id.h"
 
 
-TagDatabase::TagDatabase(QString typeFile)
+TagDatabase::TagDatabase(ReadWritePath typeFile)
 	: m_tagTypeDatabase(std::move(typeFile))
 {}
 

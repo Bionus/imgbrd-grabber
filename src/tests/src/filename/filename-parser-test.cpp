@@ -17,6 +17,8 @@ TEST_CASE("FilenameParser")
 	SECTION("ParseEmpty")
 	{
 		FilenameParser parser("");
+		REQUIRE(parser.str() == QString());
+
 		auto filename = parser.parseRoot();
 		REQUIRE(parser.error() == QString());
 
@@ -26,6 +28,8 @@ TEST_CASE("FilenameParser")
 	SECTION("ParseText")
 	{
 		FilenameParser parser("image.png");
+		REQUIRE(parser.str() == QString("image.png"));
+
 		auto filename = parser.parseRoot();
 		REQUIRE(parser.error() == QString());
 
@@ -39,6 +43,8 @@ TEST_CASE("FilenameParser")
 	SECTION("ParseVariable")
 	{
 		FilenameParser parser("%md5%");
+		REQUIRE(parser.str() == QString("%md5%"));
+
 		auto filename = parser.parseRoot();
 		REQUIRE(parser.error() == QString());
 

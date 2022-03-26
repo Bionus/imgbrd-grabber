@@ -16,4 +16,3 @@ node_modules
 # Disabled sites
 Sankaku
 Tumblr
-Reddit

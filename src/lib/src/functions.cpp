@@ -223,11 +223,11 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	return suffixes;
 }
 
-QList<QPair<QString, QString>> getMetadata(QSettings *settings, const QString &key)
+QList<QPair<QString, QString>> getMetadata(QSettings *settings, const QString &arrayKey)
 {
 	QList<QPair<QString, QString>> ret;
 
-	const int size = settings->beginReadArray(key);
+	const int size = settings->beginReadArray(arrayKey);
 	for (int i = 0; i < size; ++i) {
 		settings->setArrayIndex(i);
 		const QString key = settings->value("key").toString();
@@ -393,30 +393,30 @@ QString savePath(const QString &file, bool exists, bool writable)
 {
 	const QString &check = exists ? file : QStringLiteral("settings.ini");
 
+	// Test mode
 	if (isTestModeEnabled()) {
 		if (QDir(QDir::currentPath() + "/tests/resources/").exists()) {
 			return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file);
 		}
 	}
 
+	// Install directory
 	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
 	}
+	#if defined(Q_OS_ANDROID)
+		if (validSavePath("assets:/" + check, writable)) {
+			return QDir::toNativeSeparators("assets:/" + file);
+		}
+	#endif
+
+	// Various possible configuration directories
 	if (validSavePath(QDir::currentPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(QDir::currentPath() + "/" + file);
 	}
 	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable)) {
 		return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file);
 	}
-	#if defined(Q_OS_ANDROID)
-		const QString &appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-		if (validSavePath(appData + "/" + check, writable)) {
-			return QDir::toNativeSeparators(appData + "/" + file);
-		}
-		if (validSavePath("assets:/" + check, writable)) {
-			return QDir::toNativeSeparators("assets:/" + file);
-		}
-	#endif
 	#ifdef __linux__
 		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable)) {
 			return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
@@ -429,6 +429,7 @@ QString savePath(const QString &file, bool exists, bool writable)
 		}
 	#endif
 
+	// Fallback to standard config location if no other exists
 	QString dir;
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 		#if defined(Q_OS_ANDROID)
@@ -500,7 +501,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 			return false;
 		}
 
-		const LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
+		const LONGLONG ll = Int32x32To64(datetime.toSecsSinceEpoch(), 10000000) + 116444736000000000;
 		FILETIME pcreationtime;
 		pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
 		pcreationtime.dwHighDateTime = ll >> 32;
@@ -513,8 +514,8 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		CloseHandle(hfile);
 	#else
 		struct utimbuf timebuffer;
-		timebuffer.modtime = datetime.toTime_t();
-		timebuffer.actime = QDateTime::currentDateTimeUtc().toTime_t();
+		timebuffer.modtime = datetime.toSecsSinceEpoch();
+		timebuffer.actime = QDateTime::currentDateTimeUtc().toSecsSinceEpoch();
 		if ((utime(path.toStdString().c_str(), &timebuffer)) < 0) {
 			log(QStringLiteral("Unable to change the file creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;

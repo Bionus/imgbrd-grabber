@@ -1,7 +1,7 @@
 #include "filename/conditional-filename.h"
 #include <QSettings>
 #include <utility>
-#include "filename/filename-cache.h"
+#include "filename/ast/filename-node-condition.h"
 #include "filename/filename-condition-visitor.h"
 #include "filename/filename-parser.h"
 #include "logger.h"
@@ -21,6 +21,7 @@ ConditionalFilename::ConditionalFilename(QString condition, const QString &filen
 		m_ast = ast;
 	}
 }
+
 
 bool ConditionalFilename::matches(const QMap<QString, Token> &tokens, QSettings *settings) const
 {

@@ -6,7 +6,7 @@
 #include "network/network-reply.h"
 
 
-SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
+SourceUpdater::SourceUpdater(QString source, ReadWritePath directory, QString baseUrl)
 	: m_source(std::move(source)), m_directory(std::move(directory)), m_baseUrl(std::move(baseUrl))
 {
 	if (!m_baseUrl.endsWith("/")) {

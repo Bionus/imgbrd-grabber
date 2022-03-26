@@ -1,5 +1,6 @@
 #include "sources/site-window.h"
 #include <QFile>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpression>
 #include <ui_site-window.h>
@@ -9,6 +10,8 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
+#include "models/source-registry.h"
+#include "source-importer.h"
 
 
 SiteWindow::SiteWindow(Profile *profile, QWidget *parent)
@@ -23,7 +26,7 @@ SiteWindow::SiteWindow(Profile *profile, QWidget *parent)
 
 	m_sources = profile->getSources().values();
 	for (Source *source : qAsConst(m_sources)) {
-		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
+		ui->comboBox->addItem(QIcon(source->getPath().readPath("icon.png")), source->getName());
 	}
 }
 
@@ -51,11 +54,38 @@ void SiteWindow::accept()
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (ui->checkBox->isChecked()) {
+		const QString &domain = getDomain(m_url);
+
+		// Check in installed sources if there is a perfect match
+		for (Source *source : m_sources) {
+			if (source->getSupportedSites().contains(domain)) {
+				finish(source);
+				return;
+			}
+		}
+
+		// Check in the source registries if there is a perfect match
+		for (const auto &sourceRegistry : m_profile->getSourceRegistries()) {
+			const auto &sources = sourceRegistry->sources();
+			for (const QString &src : sources.keys()) {
+				const auto &source = sources[src];
+				if (source.supportedSites.contains(domain)) {
+					const int reply = QMessageBox::question(this, windowTitle(), tr("A source supporting '%1' has been found in the registry '%2': '%3'. Install it?").arg(domain, sourceRegistry->name(), source.name), QMessageBox::Yes | QMessageBox::No);
+					if (reply == QMessageBox::Yes) {
+						auto *sourceImporter = new SourceImporter(m_profile, this);
+						connect(sourceImporter, &SourceImporter::finished, this, &SiteWindow::sourceImported);
+						sourceImporter->load(sourceRegistry->url() + source.slug + ".zip");
+						return;
+					}
+				}
+			}
+		}
+
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(m_sources.count());
 		ui->progressBar->show();
 
-		SourceGuesser sourceGuesser(m_url, m_sources);
+		SourceGuesser sourceGuesser(m_url, m_sources, this);
 		connect(&sourceGuesser, &SourceGuesser::progress, ui->progressBar, &QProgressBar::setValue);
 		connect(&sourceGuesser, &SourceGuesser::finished, this, &SiteWindow::finish);
 		sourceGuesser.start();
@@ -71,6 +101,35 @@ void SiteWindow::accept()
 		}
 	}
 	finish(src);
+}
+
+QString SiteWindow::getDomain(QString url, bool *ssl)
+{
+	if (url.startsWith("http://")) {
+		url = url.mid(7);
+		if (ssl != nullptr) {
+			*ssl = false;
+		}
+	} else if (url.startsWith("https://")) {
+		url = url.mid(8);
+		if (ssl != nullptr) {
+			*ssl = true;
+		}
+	}
+	if (url.endsWith('/')) {
+		url = url.left(url.length() - 1);
+	}
+	return url;
+}
+
+void SiteWindow::sourceImported(SourceImporter::ImportResult result, const QList<Source*> &sources)
+{
+	if (result != SourceImporter::Success || sources.isEmpty()) {
+		error(this, tr("Error importing source."));
+		return;
+	}
+
+	finish(sources.first());
 }
 
 void SiteWindow::finish(Source *src)
@@ -90,17 +149,9 @@ void SiteWindow::finish(Source *src)
 
 	// Remove unnecessary prefix
 	bool ssl = false;
-	if (m_url.startsWith("http://")) {
-		m_url = m_url.mid(7);
-	} else if (m_url.startsWith("https://")) {
-		m_url = m_url.mid(8);
-		ssl = true;
-	}
-	if (m_url.endsWith('/')) {
-		m_url = m_url.left(m_url.length() - 1);
-	}
+	const QString url = getDomain(m_url, &ssl);
 
-	Site *site = new Site(m_url, src);
+	Site *site = new Site(url, src);
 	m_profile->addSite(site);
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site

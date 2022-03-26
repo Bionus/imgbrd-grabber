@@ -32,25 +32,18 @@ if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 endif()
 
 # Qt libraries
-find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5MultimediaWidgets REQUIRED)
-find_package(Qt5Sql REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Xml REQUIRED)
+find_package(Qt5 COMPONENTS Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml REQUIRED)
 set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::MultimediaWidgets Qt5::Network Qt5::Sql Qt5::Widgets Qt5::Xml)
 
 # Windows specials
 if(WIN32)
-	find_package(Qt5WinExtras REQUIRED)
+	find_package(Qt5 COMPONENTS WinExtras REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::WinExtras)
 endif()
 
 # Android specials
 if(ANDROID)
-	find_package(Qt5AndroidExtras REQUIRED)
+	find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
 endif()
 

@@ -95,7 +95,7 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 
 		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::toggleFullScreen);
-		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C), this);
+		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ViewerWindow::copyImageDataToClipboard);
 	m_settings->endGroup();
 
@@ -723,7 +723,7 @@ void ViewerWindow::replyFinishedDetails()
 }
 void ViewerWindow::colore()
 {
-	QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Viewer/showTagCount", false).toBool(), false, m_settings->value("Viewer/tagOrder", "type").toString());
+	const QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Viewer/showTagCount", false).toBool(), false, m_settings->value("Viewer/tagOrder", "type").toString());
 	const QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden()) {
@@ -1435,7 +1435,7 @@ void ViewerWindow::wheelEvent(QWheelEvent *e)
 		}
 
 		// Ignore events if we already got one less than 500ms ago
-		if (!m_lastWheelEvent.isNull() && m_lastWheelEvent.elapsed() <= 500) {
+		if (m_lastWheelEvent.isValid() && m_lastWheelEvent.elapsed() <= 500) {
 			e->ignore();
 		}
 		m_lastWheelEvent.start();

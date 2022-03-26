@@ -230,7 +230,7 @@ void Image::init()
 	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
 
 	// Setup extension rotator
-	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated") || hasTag("video");
 	const QStringList extensions = animated
 		? QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }
 		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
@@ -487,6 +487,9 @@ void Image::parseDetails()
 	if (ret.createdAt.isValid()) {
 		m_data["date"] = ret.createdAt;
 	}
+	if (!ret.sources.isEmpty()) {
+		m_sources = ret.sources;
+	}
 
 	// Image url
 	if (!ret.imageUrl.isEmpty()) {
@@ -546,71 +549,80 @@ int Image::value() const
 	return 1200 * 900;
 }
 
-Image::SaveResult Image::save(const QString &path, Size size, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSav)
+Image::SaveResult Image::preSave(const QString &path, Size size)
 {
-	SaveResult res = SaveResult::Saved;
+	bool force = false;
 
+	// Check if file already exists on disk
 	QFile f(path);
-	if (!f.exists() || force) {
-		const QPair<QString, QString> md5action = size != Size::Thumbnail
-			? m_profile->md5Action(md5(), path)
-			: QPair<QString, QString>("save", "");
-		const QString &whatToDo = md5action.first;
-		const QString &md5Duplicate = md5action.second;
+	if (f.exists() && !force) {
+		return SaveResult::AlreadyExistsDisk;
+	}
 
-		// Only create the destination directory if we're going to put a file there
-		if (force || whatToDo != "ignore") {
-			const QString p = path.section(QDir::separator(), 0, -2);
-			QDir pathToFile(p), dir;
-			if (!pathToFile.exists() && !dir.mkpath(p)) {
-				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
-				return SaveResult::Error;
-			}
-		}
+	// Check MD5 database
+	const QPair<QString, QString> md5action = size != Size::Thumbnail
+		? m_profile->md5Action(md5(), path)
+		: QPair<QString, QString>("save", "");
+	const QString &whatToDo = md5action.first;
+	const QString &md5Duplicate = md5action.second;
 
-		if (whatToDo == "save" || force) {
-			const QString savePath = m_sizes[size]->save(path);
-			if (!savePath.isEmpty()) {
-				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));
-			} else {
-				return SaveResult::NotLoaded;
-			}
-		} else if (whatToDo == "copy") {
-			log(QStringLiteral("Copy from `%1` to `%2`").arg(md5Duplicate, path));
-			QFile(md5Duplicate).copy(path);
-
-			res = SaveResult::Copied;
-		} else if (whatToDo == "move") {
-			log(QStringLiteral("Moving from `%1` to `%2`").arg(md5Duplicate, path));
-			QFile::rename(md5Duplicate, path);
-			m_profile->removeMd5(md5(), md5Duplicate);
-
-			res = SaveResult::Moved;
-		} else if (whatToDo == "link" || whatToDo == "hardlink") {
-			log(QStringLiteral("Creating %1 for `%2` in `%3`").arg(whatToDo, md5Duplicate, path));
-			createLink(md5Duplicate, path, whatToDo);
-			res = SaveResult::Linked;
-			#ifdef Q_OS_WIN
-				if (whatToDo == "link") {
-					res = SaveResult::Shortcut;
-				}
-			#endif
-		} else if (!QFile::exists(md5Duplicate)) {
+	// Early return if this file shouldn't be saved (already exists in MD5 list and ignored)
+	if (whatToDo == "ignore" && !force) {
+		if (!QFile::exists(md5Duplicate)) {
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in non-existing file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsDeletedMd5;
 		} else {
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsMd5;
 		}
-
-		if (postSav) {
-			postSave(path, size, res, addMd5, startCommands, count, basic);
-		}
-	} else {
-		res = SaveResult::AlreadyExistsDisk;
 	}
 
-	return res;
+	// Create the destination directory since we're going to put a file there
+	const QString p = path.section(QDir::separator(), 0, -2);
+	QDir pathToFile(p), dir;
+	if (!pathToFile.exists() && !dir.mkpath(p)) {
+		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
+		return SaveResult::Error;
+	}
+
+	// Basic save action
+	if (whatToDo == "save" || force) {
+		const QString savePath = m_sizes[size]->save(path);
+		if (savePath.isEmpty()) {
+			return SaveResult::NotLoaded;
+		}
+		log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));
+		return SaveResult::Saved;
+	}
+
+	// Copy already existing file to the new path
+	if (whatToDo == "copy") {
+		log(QStringLiteral("Copy from `%1` to `%2`").arg(md5Duplicate, path));
+		QFile(md5Duplicate).copy(path);
+		return SaveResult::Copied;
+	}
+
+	// Move already existing file to the new path
+	if (whatToDo == "move") {
+		log(QStringLiteral("Moving from `%1` to `%2`").arg(md5Duplicate, path));
+		QFile::rename(md5Duplicate, path);
+		m_profile->removeMd5(md5(), md5Duplicate);
+		return SaveResult::Moved;
+	}
+
+	// Create a shortcut/link to the existing file
+	if (whatToDo == "link" || whatToDo == "hardlink") {
+		log(QStringLiteral("Creating %1 for `%2` in `%3`").arg(whatToDo, md5Duplicate, path));
+		createLink(md5Duplicate, path, whatToDo);
+		#ifdef Q_OS_WIN
+			if (whatToDo == "link") {
+				return SaveResult::Shortcut;
+			}
+		#endif
+		return SaveResult::Linked;
+	}
+
+	return SaveResult::Error;
 }
 QString &pathTokens(QString &filename, const QString &path)
 {
@@ -721,19 +733,6 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 	}
 
 	setSavePath(path, size);
-}
-QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, Size size)
-{
-	QMap<QString, Image::SaveResult> res;
-	for (const QString &path : paths) {
-		res.insert(path, save(path, size, force, false, addMd5, startCommands, count));
-	}
-	return res;
-}
-QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count, Size size)
-{
-	const QStringList paths = this->paths(filename, path, count);
-	return save(paths, addMd5, startCommands, count, false, size);
 }
 
 
@@ -890,7 +889,7 @@ QString Image::tooltip() const
 		.arg(author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(author))
 		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate)));
+		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(QLocale().toString(createdAt.toLocalTime(), QLocale::ShortFormat)));
 }
 
 QString Image::counter() const
@@ -923,7 +922,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Score"), token<QString>("score")),
 		QStrP(tr("Author"), !author.isEmpty() ? author : unknown),
 		QStrP(),
-		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate) : unknown),
+		QStrP(tr("Date"), createdAt.isValid() ? QLocale().toString(createdAt.toLocalTime(), QLocale::ShortFormat) : unknown),
 		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
 		QStrP(tr("Filesize"), m_sizes[Image::Size::Full]->fileSize != 0 ? formatFilesize(m_sizes[Image::Size::Full]->fileSize) : unknown),
 		QStrP(),
@@ -1149,11 +1148,6 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 
 	return tokens;
-}
-
-Image::SaveResult Image::preSave(const QString &path, Size size)
-{
-	return save(path, size, false, false, false, false, 1, false);
 }
 
 void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count, bool basic)

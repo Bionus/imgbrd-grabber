@@ -37,7 +37,7 @@ class ImageDownloader : public QObject
 		int needExactTags(QSettings *settings) const;
 		Image::Size currentSize() const;
 		QList<ImageSaveResult> makeResult(const QStringList &paths, Image::SaveResult result) const;
-		QList<ImageSaveResult> postSaving(Image::SaveResult saveResult = Image::SaveResult::Saved);
+		QList<ImageSaveResult> afterTemporarySave(Image::SaveResult saveResult);
 
 	signals:
 		void downloadProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);

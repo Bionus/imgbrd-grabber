@@ -29,7 +29,7 @@ TEST_CASE("MetaFilter")
 		tokens.insert("token_1", Token(1));
 		tokens.insert("token_2", Token(2));
 
-		QString expected = "unknown type \"not_found\" (available types: \"token_1\", \"token_2\")";
+		const QString expected = R"(unknown type "not_found" (available types: "token_1", "token_2"))";
 
 		REQUIRE(MetaFilter("not_found", "val").match(tokens) == expected);
 		REQUIRE(MetaFilter("not_found", "val", true).match(tokens) == expected);
@@ -78,7 +78,7 @@ TEST_CASE("MetaFilter")
 	SECTION("MatchDate")
 	{
 		QMap<QString, Token> tokens;
-		tokens.insert("date", Token(QDateTime(QDate(2016, 8, 18))));
+		tokens.insert("date", Token(QDate(2016, 8, 18).startOfDay()));
 
 		REQUIRE(MetaFilter("date", ">08/16/2016").match(tokens) == QString());
 		REQUIRE(MetaFilter("date", ">=2016-08-16").match(tokens) == QString());
@@ -159,8 +159,8 @@ TEST_CASE("MetaFilter")
 		QMap<QString, Token> tokens;
 		REQUIRE(MetaFilter("age", "1year..1day").match(tokens) == QString("An image needs a date to be filtered by age"));
 
-		tokens.insert("date", Token(QDateTime(QDate(2016, 8, 18))));
-		tokens.insert("TESTS_now", Token(QDateTime(QDate(2016, 10, 16))));
+		tokens.insert("date", Token(QDate(2016, 8, 18).startOfDay()));
+		tokens.insert("TESTS_now", Token(QDate(2016, 10, 16).startOfDay()));
 
 		// Basic
 		REQUIRE(MetaFilter("age", ">=2seconds").match(tokens) == QString());

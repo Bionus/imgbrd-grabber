@@ -17,8 +17,8 @@ TEST_CASE("ExtensionRotatorTest")
 	{
 		ExtensionRotator rotator("png", QStringList() << "jpg" << "png" << "gif");
 
-		REQUIRE(rotator.next() == QString("gif"));
 		REQUIRE(rotator.next() == QString("jpg"));
+		REQUIRE(rotator.next() == QString("gif"));
 		REQUIRE(rotator.next() == QString());
 	}
 

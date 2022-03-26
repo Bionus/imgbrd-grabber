@@ -5,9 +5,11 @@
 #include <utility>
 #include "logger.h"
 #include "tags/tag.h"
+#include "utils/file-utils.h"
+#include "utils/read-write-path.h"
 
 
-TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
+TagDatabaseInMemory::TagDatabaseInMemory(const ReadWritePath &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
@@ -61,6 +63,14 @@ bool TagDatabaseInMemory::load()
 
 bool TagDatabaseInMemory::save()
 {
+	if (m_database.isEmpty()) {
+		return TagDatabase::save();
+	}
+
+	if (!ensureFileParent(m_tagFile)) {
+		return false;
+	}
+
 	QFile file(m_tagFile);
 	if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
 		return false;
@@ -108,6 +118,7 @@ QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags)
 
 QMap<QString, int> TagDatabaseInMemory::getTagIds(const QStringList &tags) const
 {
+	Q_UNUSED(tags);
 	log("Tag IDs are not supported with in-memory tag databases.");
 	return QMap<QString, int>();
 }

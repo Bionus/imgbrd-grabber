@@ -3,10 +3,13 @@
 #include <QSignalSpy>
 #include "models/md5-database/md5-database-text.h"
 #include "catch.h"
+#include "raii-helpers.h"
 
 
 TEST_CASE("Md5DatabaseText")
 {
+	FileDeleter databaseDeleter("tests/resources/md5s.txt", true);
+
 	QFile f("tests/resources/md5s.txt");
 	f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate);
 	f.write(QString("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_1x1.png\r\n").toUtf8());

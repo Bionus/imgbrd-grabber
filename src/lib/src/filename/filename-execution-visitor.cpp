@@ -156,6 +156,8 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	} else if (val.type() == QVariant::StringList) {
 		res = variableToString(name, val.toStringList(), options);
 		clean = true;
+	} else if (name == "score") {
+		res = variableToString(name, val.toString(), options);
 	} else {
 		res = val.toString();
 	}
@@ -179,6 +181,20 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	}
 
 	m_result += res;
+}
+
+// Special case for floats stored as strings (to avoid precision issues)
+QString FilenameExecutionVisitor::variableToString(const QString &name, QString val, const QMap<QString, QString> &options)
+{
+	Q_UNUSED(name);
+
+	if (options.contains("length")) {
+		const int dotIndex = val.indexOf('.');
+		const int length = options["length"].toInt() + (dotIndex >= 0 ? val.length() - dotIndex : 0);
+		return val.rightJustified(length, '0');
+	}
+
+	return val;
 }
 
 QString FilenameExecutionVisitor::variableToString(const QString &name, QDateTime val, const QMap<QString, QString> &options)

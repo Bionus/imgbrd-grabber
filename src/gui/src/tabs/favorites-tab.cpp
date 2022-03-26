@@ -146,10 +146,10 @@ void FavoritesTab::updateFavorites()
 	const int dim = imageSize + borderSize * 2;
 
 	for (Favorite &fav : m_favorites) {
-		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate));
-		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
+		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), QLocale().toString(fav.getLastViewed(), QLocale::ShortFormat));
+		auto *w = new QWidget(ui->scrollAreaWidgetContents);
 		auto *l = new QVBoxLayout;
-		l->setMargin(0);
+		l->setContentsMargins(0, 0, 0, 0);
 		w->setLayout(l);
 
 		int maxNewImages = 0;
@@ -188,7 +188,7 @@ void FavoritesTab::updateFavorites()
 			}
 		}
 		if (display.contains("d")) {
-			label += "<br/>(" + QString::number(fav.getNote()) + " % - " + fav.getLastViewed().date().toString(Qt::DefaultLocaleShortDate) + ")";
+			label += "<br/>(" + QString::number(fav.getNote()) + " % - " + QLocale().toString(fav.getLastViewed().date(), QLocale::ShortFormat) + ")";
 		}
 
 		QAffiche *caption = new QAffiche(fav.getName(), 0, QColor(), this);
@@ -232,7 +232,7 @@ void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>>
 {
 	Q_UNUSED(noResultsMessage)
 
-	SearchTab::addResultsPage(page, imgs, merged, filteredImages, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
+	SearchTab::addResultsPage(page, imgs, merged, filteredImages, tr("No result since the %1").arg(QLocale().toString(m_loadFavorite, QLocale::ShortFormat)));
 	ui->splitter->setSizes({ (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1), 1 });
 }
 
@@ -240,7 +240,7 @@ void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QShared
 {
 	Q_UNUSED(noResultsMessage)
 
-	SearchTab::setPageLabelText(txt, page, imgs, filteredImages, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
+	SearchTab::setPageLabelText(txt, page, imgs, filteredImages, tr("No result since the %1").arg(QLocale().toString(m_loadFavorite, QLocale::ShortFormat)));
 }
 
 void FavoritesTab::setTags(const QString &tags, bool preload)

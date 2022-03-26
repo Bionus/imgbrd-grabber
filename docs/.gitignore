@@ -1,4 +1,6 @@
 _site
 .sass-cache
 .bundle
-vendor/
+./vendor/
+./doxygen/html/
+./doxygen/xml/

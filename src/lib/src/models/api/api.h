@@ -54,6 +54,7 @@ struct ParsedDetails
 	QList<Tag> tags;
 	QString imageUrl;
 	QDateTime createdAt;
+	QStringList sources;
 	QSharedPointer<Image> image;
 };
 

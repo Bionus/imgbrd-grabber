@@ -5,6 +5,7 @@
 #include <QQueue>
 #include <QSet>
 #include <QSettings>
+#include <QSoundEffect>
 #include <QTableWidget>
 #include <QWidget>
 #include "models/image.h"
@@ -29,6 +30,7 @@ struct ImageSaveResult;
 class PackLoader;
 class Page;
 class Profile;
+class QElapsedTimer;
 class QTimer;
 class MainWindow;
 
@@ -118,8 +120,8 @@ class DownloadsTab : public QWidget
 		int m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllResumed, m_getAllLimit;
 		bool m_getAll;
 		BatchWindow *m_progressDialog;
-		QMap<QUrl, QTime> m_downloadTime;
-		QMap<QUrl, QTime> m_downloadTimeLast;
+		QMap<QUrl, QElapsedTimer> m_downloadTime;
+		QMap<QUrl, QElapsedTimer> m_downloadTimeLast;
 		QList<DownloadQueryImage> m_batchs;
 		QMap<int, DownloadQueryGroup> m_batchPending;
 		QSet<int> m_batchDownloading;
@@ -136,6 +138,7 @@ class DownloadsTab : public QWidget
 		QTimer *m_saveLinkList;
 		DownloadGroupTableModel *m_groupBatchsModel;
 		DownloadImageTableModel *m_batchsModel;
+		QSoundEffect m_finishedSoundEffect;
 };
 
 #endif // DOWNLOADS_TAB_H

@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QTemporaryFile>
 #include "tags/tag.h"
@@ -18,7 +19,7 @@ TEST_CASE("TagDatabaseInMemory")
 	{
 		database.setTags(QList<Tag>());
 
-		QTime timer;
+		QElapsedTimer timer;
 		timer.start();
 		QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3");
 		int elapsed = timer.elapsed();
@@ -34,7 +35,7 @@ TEST_CASE("TagDatabaseInMemory")
 	{
 		database.setTags(QList<Tag>() << Tag("tag1", TagType("general")) << Tag("tag2", TagType("artist")) << Tag("tag3", TagType("copyright")) << Tag("tag4", TagType("character")));
 
-		QTime timer;
+		QElapsedTimer timer;
 		timer.start();
 		QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3");
 		int elapsed = timer.elapsed();
@@ -54,7 +55,7 @@ TEST_CASE("TagDatabaseInMemory")
 	{
 		database.setTags(QList<Tag>() << Tag("tag1", TagType("general")) << Tag("tag2", TagType("artist")) << Tag("tag3", TagType("copyright")) << Tag("tag4", TagType("character")));
 
-		QTime timer;
+		QElapsedTimer timer;
 		timer.start();
 		QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3" << "tag5" << "missing_tag");
 		int elapsed = timer.elapsed();
@@ -137,7 +138,7 @@ TEST_CASE("TagDatabaseInMemory")
 	}
 
 
-	SECTION("Save empty")
+	SECTION("Don't save empty")
 	{
 		QString filename = "test_tmp_tags_file.txt";
 
@@ -147,11 +148,7 @@ TEST_CASE("TagDatabaseInMemory")
 		database.setTags(QList<Tag>());
 		REQUIRE(database.save());
 
-		QFile f(filename);
-		REQUIRE(f.open(QFile::ReadOnly | QFile::Text));
-		QString content = f.readAll();
-		REQUIRE(content.isEmpty());
-		REQUIRE(f.remove());
+		REQUIRE(!QFile::exists(filename));
 	}
 
 	SECTION("Save data")

@@ -8,12 +8,13 @@
 #include "tags/tag-database.h"
 
 
+class ReadWritePath;
 class TagType;
 
 class TagDatabaseSqlite : public TagDatabase
 {
 	public:
-		TagDatabaseSqlite(const QString &typeFile, QString tagFile);
+		TagDatabaseSqlite(const ReadWritePath &typeFile, QString tagFile);
 		~TagDatabaseSqlite() override;
 		bool open() override;
 		bool close() override;
@@ -23,6 +24,9 @@ class TagDatabaseSqlite : public TagDatabase
 		QMap<QString, TagType> getTagTypes(const QStringList &tags) const override;
 		QMap<QString, int> getTagIds(const QStringList &tags) const override;
 		int count() const override;
+
+	protected:
+		bool init();
 
 	private:
 		QString m_tagFile;

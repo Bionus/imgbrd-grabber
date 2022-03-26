@@ -12,6 +12,7 @@
   children:
     - link: /docs/commands/
     - link: /docs/commands/szurubooru.html
+    - link: /docs/commands/danbooru.html
     - link: /docs/commands/my-imouto.html
     - link: /docs/commands/gelbooru.html
     - link: /docs/commands/shimmie.html
@@ -19,7 +20,9 @@
   children:
     - link: /docs/sites/
     - link: /docs/sites/source.html
+    - link: /docs/sites/source-example.html
     - link: /docs/sites/javascript-helper.html
+    - link: /docs/sites/source-registry.html
 - name: Plugins
   children:
     - link: /docs/plugins/translation.html

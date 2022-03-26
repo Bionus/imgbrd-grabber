@@ -7,6 +7,7 @@
 
 class Profile;
 class QNetworkReply;
+class Source;
 
 class SourceImporter : public QObject
 {
@@ -17,19 +18,21 @@ class SourceImporter : public QObject
 		{
 			NetworkError,
 			ZipError,
+			SourceError,
 			Success,
 		};
 
 		explicit SourceImporter(Profile *profile, QObject *parent = nullptr);
 
 	public slots:
-		void load(const QUrl & url) const;
+		void load(const QUrl &url) const;
 
 	protected slots:
 		void finishedLoading(QNetworkReply *reply);
+		Source *importSource(const QString &path);
 
 	signals:
-		void finished(ImportResult result);
+		void finished(ImportResult result, QList<Source*> sources);
 
 	private:
 		Profile *m_profile;

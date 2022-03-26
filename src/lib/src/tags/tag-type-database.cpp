@@ -8,7 +8,7 @@
 #include "tag-type-with-id.h"
 
 
-TagTypeDatabase::TagTypeDatabase(QString file)
+TagTypeDatabase::TagTypeDatabase(ReadWritePath file)
 	: m_file(std::move(file))
 {}
 
@@ -18,7 +18,7 @@ bool TagTypeDatabase::load()
 		return true;
 	}
 
-	QFile f(m_file);
+	QFile f(m_file.readPath());
 	if (!f.open(QFile::ReadOnly | QFile::Text)) {
 		return false;
 	}
@@ -52,7 +52,7 @@ bool TagTypeDatabase::save()
 
 bool TagTypeDatabase::flush()
 {
-	QFile f(m_file);
+	QFile f(m_file.writePath("", true));
 	if (!f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		return false;
 	}

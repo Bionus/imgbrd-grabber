@@ -11,6 +11,7 @@ TokenFilter::TokenFilter(QString token, bool invert)
 
 QString TokenFilter::toString(bool escape) const
 {
+	Q_UNUSED(escape);
 	return QString(m_invert ? "-" : "") % "%" % m_token % "%";
 }
 

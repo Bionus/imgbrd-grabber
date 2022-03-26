@@ -181,8 +181,13 @@
        </item>
        <item row="3" column="0" colspan="2">
         <widget class="QLabel" name="labelDownloadOverrideHelp">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
          <property name="text">
-          <string>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</string>
+          <string>Leave empty to use default settings.</string>
          </property>
         </widget>
        </item>

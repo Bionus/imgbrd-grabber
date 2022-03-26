@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QFutureWatcher>
+#include <QInputDialog>
 #include <QNetworkProxy>
 #include <QRegularExpression>
 #include <QSignalMapper>
@@ -25,12 +26,14 @@
 #include "logger.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/source-registry.h"
 #include "reverse-search/reverse-search-loader.h"
 #include "search-syntax-highlighter.h"
 #include "settings/condition-window.h"
 #include "settings/custom-window.h"
 #include "settings/filename-window.h"
 #include "settings/log-window.h"
+#include "settings/source-registry-window.h"
 #include "settings/token-settings-widget.h"
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
@@ -70,6 +73,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it) {
 		ui->comboLanguages->addItem(it.value(), it.key());
 	}
+
+	connect(m_profile, &Profile::sourceRegistriesChanged, this, &OptionsWindow::reloadSourceRegistries);
+	reloadSourceRegistries();
 
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
@@ -264,7 +270,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
+		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(6);
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
@@ -369,7 +375,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyViewerOpenFav->setKeySequence(getKeySequence(settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O));
 		ui->keyViewerToggleSlideshow->setKeySequence(getKeySequence(settings, "keyToggleSlideshow", Qt::Key_Space));
 		ui->keyViewerToggleFullscreen->setKeySequence(getKeySequence(settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11));
-		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C));
+		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	settings->endGroup();
 
 	settings->beginGroup("Coloring");
@@ -545,6 +551,56 @@ void OptionsWindow::on_buttonMetadataExiftoolAdd_clicked()
 	auto *leValue = new QLineEdit(this);
 	ui->layoutMetadataExiftool->addRow(leKey, leValue);
 	m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+}
+
+
+void OptionsWindow::reloadSourceRegistries()
+{
+	clearLayout(ui->layoutSourcesRegistries);
+
+	int i = 0;
+	for (SourceRegistry *sourceRegistry : m_profile->getSourceRegistries()) {
+		auto *label = new QLabel(sourceRegistry->name());
+		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+		auto *buttonView = new QPushButton(tr("View"));
+		connect(buttonView, &QPushButton::clicked, [=]() {
+			(new SourceRegistryWindow(sourceRegistry, this))->show();
+		});
+
+		auto *buttonDelete = new QPushButton(tr("Remove"));
+		connect(buttonDelete, &QPushButton::clicked, [=]() {
+			m_profile->removeSourceRegistry(sourceRegistry);
+		});
+
+		ui->layoutSourcesRegistries->addWidget(label, i, 0);
+		ui->layoutSourcesRegistries->addWidget(buttonView, i, 1);
+		ui->layoutSourcesRegistries->addWidget(buttonDelete, i, 2);
+
+		i++;
+	}
+}
+
+void OptionsWindow::addSourceRegistry()
+{
+	bool ok;
+	const QString url = QInputDialog::getText(this, tr("Add source registry"), tr("URL"), QLineEdit::Normal, QString(), &ok);
+	if (!ok || url.isEmpty()) {
+		return;
+	}
+
+	auto *sourceRegistry = new SourceRegistry(url);
+	auto receiver = new QObject(this);
+	connect(sourceRegistry, &SourceRegistry::loaded, receiver, [=](bool ok) {
+		receiver->deleteLater();
+		if (ok) {
+			m_profile->addSourceRegistry(sourceRegistry);
+		} else {
+			error(this, "Error loading source registry.");
+			sourceRegistry->deleteLater();
+		}
+	});
+	sourceRegistry->load();
 }
 
 
@@ -952,6 +1008,17 @@ void OptionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 
+	// Theme settings
+	const QString theme = ui->comboTheme->currentText();
+	const bool themeChanged = theme != settings->value("theme", "Default").toString();
+	const bool scaleFontSizeChanged = ui->checkScaleFontSize->isChecked() != settings->value("Interface/scaleFontSize", true).toBool();
+	if (themeChanged || scaleFontSizeChanged) {
+		if (m_themeLoader->setTheme(theme)) {
+			settings->setValue("theme", theme);
+		}
+		settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
+	}
+
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("add", ui->lineAdd->text());
 	settings->setValue("globalPostFilter", ui->lineGlobalPostFilter->text());
@@ -1043,7 +1110,6 @@ void OptionsWindow::save()
 	const QStringList infiniteScroll { "disabled", "button", "scroll" };
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
 	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
-	settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
@@ -1169,12 +1235,6 @@ void OptionsWindow::save()
 		settings->endGroup();
 	}
 	settings->endGroup();
-
-	// Themes
-	const QString theme = ui->comboTheme->currentText();
-	if (m_themeLoader->setTheme(theme)) {
-		settings->setValue("theme", theme);
-	}
 
 	settings->setValue("Viewer/singleWindow", ui->checkViewerSingleWindow->isChecked());
 	const QStringList positions { "top", "left", "auto" };
@@ -1341,7 +1401,7 @@ void OptionsWindow::save()
 
 	const QString lang = ui->comboLanguages->currentData().toString();
 	const bool useSystemLocale = ui->checkUseSystemLocale->isChecked();
-	if (settings->value("language", "English").toString() != lang || settings->value("useSystemLocale", true).toString() != useSystemLocale) {
+	if (settings->value("language", "English").toString() != lang || settings->value("useSystemLocale", true).toBool() != useSystemLocale) {
 		settings->setValue("language", lang);
 		settings->setValue("useSystemLocale", useSystemLocale);
 		emit languageChanged(lang, useSystemLocale);

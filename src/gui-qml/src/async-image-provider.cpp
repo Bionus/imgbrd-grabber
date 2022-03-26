@@ -14,6 +14,8 @@ AsyncImageProvider::AsyncImageProvider(Profile *profile)
 
 QQuickImageResponse *AsyncImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
 {
+	Q_UNUSED(requestedSize);
+
 	const QStringList parts = id.split("¤", Qt::SkipEmptyParts);
 	const QString siteKey = parts[0];
 	const QString url = parts[1];

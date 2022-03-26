@@ -12,48 +12,41 @@ If your site is not based on Danbooru, Gelbooru, Shimmie, or another already-inc
 **⚠️ Note that all examples below are using TypeScript⚠️**
 
 
+_ℹ️ Note that all types described in here are documented in depth in [types.d.ts](https://github.com/Bionus/imgbrd-grabber/blob/develop/src/sites/types.d.ts). Make sure to check it out if you're confused about the usage of a given type._
+
+This page is more about providing actual examples and explaining the flow of creating a source in a more "natural" way, rather than being an exhaustive documentation on types.
+
+To have a tutorial following the step-by-step creation of a real source as an example, see [Source example](source-example.html).
+
+
 # Structure
 
 Sources can be found in your settings folder. On Windows, by default, it is `C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber\sites`.
 
-A source is defined by:
+A source is defined by a folder containing three files:
 * `icon.png`: a PNG icon, usually the favicon of the source (recommended size: 16x16, it will be resized if larger)
-* `model.js`: the JS script that decides which URLs to load and how to parse the results into images, usually compiled from a `model.ts` TypeScript file
-* `sites.txt`: the list of the sites based on this source, separated by a new line. This file can be ignored and will be created when adding a new site using this source in Grabber
+* `model.js`: the JS script that decides which URLs to load and how to parse the results into images (usually compiled from a `model.ts` TypeScript file)
+* `supported.txt`: the list of supported  sites based on this source, separated by a new line
+* `sites.txt`: the list of default sites to add when installing this source, separated by a new line. This file can be ignored and will be created when adding a new site using this source in Grabber
+
 
 # Utils
 
-The JS environment is not fully fledged. Therefore, there is an helper to do a few things that are not easily possible otherwise: [JavaScript model helper](javascript-helper.html).
+The JS environment used by Grabber is not fully fledged. Therefore, there is an helper to help do a few things that are not easily possible otherwise: [JavaScript model helper](javascript-helper.html).
 
-Also, you can use the `console` commands as in JavaScript to generate logs in Grabber's console. Supported methods:
+Also, note that you can use the `console` commands as in JavaScript to generate logs in Grabber's console. Supported methods:
 * `console.debug` (debug level, not shown by default)
 * `console.info` (info level)
 * `console.log` (info level)
 * `console.warn` (warning level)
 * `console.error` (error level)
 
+
 # Basics
 
 A basic source file simply exports a `source` object, defined by the `ISource` type. It must have a name and at least one API. All other fields are optional.
 
-**Full example**
-```typescript
-export const source: ISource = {
-    name: "New source", // The name of the source
-    modifiers: [], // Allowed "modifiers" on this source
-    forcedTokens: [], // Filename tokens that should trigger a full details load
-    tagFormat,
-    searchFormat,
-    auth: {
-        auth_id: auth, // The auth ID can be used to reference this auth method
-    }
-    apis: {
-        api_id: api, // The API ID can be used to reference this API
-    },
-};
-```
-
-**Minimal example**
+**Example**
 ```typescript
 export const source: ISource = {
     name: "New source",
@@ -65,45 +58,36 @@ export const source: ISource = {
 
 # API
 
-A source can have one or more APIs. It must have a name, an `auth` array (which can be empty), and the `search` API.
+A source can have one or more APIs, defined by the `IApi` type. It must have a name, an `auth` array (which can be empty), and the `search` endpoint description.
 
+Most sources have only one API. Examples are API types are "JSON", "XML", "RSS", or even "HTML". HTML is harder to parse and prone to breaking, but it's sometimes the only option for sources that don't provide a public API.
+
+**Example**
 ```typescript
-{
+const api = {
     name: "JSON", // The name of the API
     auth: [], // The ID of the auth required to use this API, multiple values means OR
-    maxLimit: 200, // The maximum "images per page" the user can set with this API
 
     search: {
         url: search_url_function,
         parse: parse_url_function,
-    },
-
-    tags: {
-        url: tags_url_function,
-        parse: tags_parse_function,
     },
 }
 ```
 
 ## Search "url" function
 
-**Parameters:**
-* query (`{ search: string, page: number }`)
-* opts (`{ limit: number, auth: {} }`)
-* previous (`{ page: number, minId: number, maxId: number }`)
 
-**Returns:** (either)
-* `string`: an URL
-* `{ url: string, headers?: { [key: string]: string }`: an URL and headers
-* `{ error?: string }`: an error
+The goal of this function is to return the URL that lists the images for a given search on that source.
 
-### Description
-Builds a search API url from a search query.
+The main parameter, `query`, contains a `search` string containing the user's input, as well as a `page` number containing the page number the user wants to see.
 
-### Example
+From this, the function must return a string representing the URL to load. Note that you shouldn't include the base URL / domain in that link. It's recommended to use a absolute path instead.
+
+**Example**
 ```javascript
-function(query, opts, previous) {
-    return "/posts.json?limit=" + opts.limit + "&page=" + query.page + "&tags=" + query.search;
+function(query) {
+    return "/posts.json?page=" + query.page + "&tags=" + encodeURIComponent(query.search);
 }
 ```
 

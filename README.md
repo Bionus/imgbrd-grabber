@@ -43,7 +43,7 @@ Install by issuing the command, substituting the package you want to install: `p
 * Able to show results from multiple imageboards at the same time in a single tab
 * Remove duplicate results from multiple-imageboard searches
 * Auto-completion of tags in the search field
-* Blacklisting of tags to mark or hide images you don’t want to see
+* Blacklisting of tags to mark or hide images you don't want to see
 * Proxy support
 * Post-filtering (when the imageboard search is limited)
 * Auto-download images as you search according to a whitelist
@@ -68,8 +68,8 @@ Install by issuing the command, substituting the package you want to install: `p
 
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
-* Theme support using CSS. See Themes for details.
-* Lots of options to customize the program’s behaviour
+* Theme support using CSS. See [Themes](https://bionus.github.io/imgbrd-grabber/docs/plugins/theme.html) for details.
+* Lots of options to customize the program's behaviour
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -79,11 +79,11 @@ Install by issuing the command, substituting the package you want to install: `p
 
 [<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename.png)
 
-* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using JavaScript code. See Filename for details.
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using JavaScript code. See [Filename](https://bionus.github.io/imgbrd-grabber/docs/filename.html) for details.
 * Favorite tags to keep track of new images
 * "View it later" tags to save a search for later
-* Support saving images directly to a local booru, such as Shimmie, Gelbooru or MyImouto.
-* Can add entries to a database for each image or tag while downloading. See Commands for details.
+* Support saving images directly to a local booru, such as [Szurubooru](https://bionus.github.io/imgbrd-grabber/docs/commands/szurubooru.html), [MyImouto](https://bionus.github.io/imgbrd-grabber/docs/commands/my-imouto.html), [Gelbooru](https://bionus.github.io/imgbrd-grabber/docs/commands/gelbooru.html), or [Shimmie](https://bionus.github.io/imgbrd-grabber/docs/commands/shimmie.html).
+* Can add entries to a database for each image or tag while downloading. See [Commands](https://bionus.github.io/imgbrd-grabber/docs/commands/) for details.
 * Conditional filenames triggered by a tag
 * Rename already downloaded images
 

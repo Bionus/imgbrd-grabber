@@ -12,7 +12,7 @@
 #include "filename/ast/filename-node-variable.h"
 
 
-QString FilenamePrintVisitor::run(const FilenameNodeRoot &node)
+QString FilenamePrintVisitor::run(const FilenameNode &node)
 {
 	m_result.clear();
 

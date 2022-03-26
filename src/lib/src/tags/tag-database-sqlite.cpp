@@ -10,9 +10,10 @@
 #include <utility>
 #include "logger.h"
 #include "tags/tag.h"
+#include "utils/file-utils.h"
 
 
-TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, QString tagFile)
+TagDatabaseSqlite::TagDatabaseSqlite(const ReadWritePath &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
@@ -25,18 +26,28 @@ TagDatabaseSqlite::~TagDatabaseSqlite()
 
 bool TagDatabaseSqlite::open()
 {
+	if (!TagDatabase::open()) {
+		return false;
+	}
+
+	if (!QFile::exists(m_tagFile)) {
+		return true;
+	}
+
+	return init();
+}
+
+bool TagDatabaseSqlite::init()
+{
 	// Don't re-open databases
 	if (m_database.isOpen()) {
 		return true;
 	}
 
 	// Create the parent directory if it doesn't exist
-	const QString parentDir = QFileInfo(m_tagFile).absolutePath();
-	if (!QDir().exists(parentDir)) {
-		if (!QDir().mkpath(parentDir)) {
-			log(QStringLiteral("Error creating tag database parent directory"), Logger::Error);
-			return false;
-		}
+	if (!ensureFileParent(m_tagFile)) {
+		log(QStringLiteral("Error creating tag database parent directory"), Logger::Error);
+		return false;
 	}
 
 	// Load and connect to the database
@@ -55,12 +66,14 @@ bool TagDatabaseSqlite::open()
 		return false;
 	}
 
-	return TagDatabase::open();
+	return true;
 }
 
 bool TagDatabaseSqlite::close()
 {
-	m_database.close();
+	if (m_database.isOpen()) {
+		m_database.close();
+	}
 
 	return TagDatabase::close();
 }
@@ -77,6 +90,11 @@ bool TagDatabaseSqlite::save()
 
 void TagDatabaseSqlite::setTags(const QList<Tag> &tags, bool createTagTypes)
 {
+	// Ensure the database is initialized
+	if (!init() || !m_database.isOpen()) {
+		return;
+	}
+
 	QSqlQuery clearQuery(m_database);
 	clearQuery.prepare(QStringLiteral("DELETE FROM tags"));
 	if (!clearQuery.exec()) {
@@ -111,6 +129,10 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags, bool createTagTypes)
 QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) const
 {
 	QMap<QString, TagType> ret;
+
+	if (!m_database.isOpen()) {
+		return ret;
+	}
 
 	// Escape values
 	QStringList formatted;
@@ -160,6 +182,10 @@ QMap<QString, int> TagDatabaseSqlite::getTagIds(const QStringList &tags) const
 {
 	QMap<QString, int> ret;
 
+	if (!m_database.isOpen()) {
+		return ret;
+	}
+
 	// Escape values
 	QStringList formatted;
 	QSqlDriver *driver = m_database.driver();
@@ -202,7 +228,10 @@ QMap<QString, int> TagDatabaseSqlite::getTagIds(const QStringList &tags) const
 
 int TagDatabaseSqlite::count() const
 {
-	if (m_count != -1) {
+	if (!QFile::exists(m_tagFile)) {
+		return 0;
+	}
+	if (m_count != -1 || !m_database.isOpen()) {
 		return m_count;
 	}
 

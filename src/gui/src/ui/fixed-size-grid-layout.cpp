@@ -86,7 +86,7 @@ int FixedSizeGridLayout::verticalSpacing() const
 
 Qt::Orientations FixedSizeGridLayout::expandingDirections() const
 {
-	return nullptr;
+	return Qt::Horizontal | Qt::Vertical;
 }
 
 bool FixedSizeGridLayout::hasHeightForWidth() const
@@ -106,7 +106,8 @@ QSize FixedSizeGridLayout::minimumSize() const
 		size = size.expandedTo(item->minimumSize());
 	}
 
-	size += QSize(2 * margin(), 2 * margin());
+	const auto margins = contentsMargins();
+	size += QSize(margins.left() + margins.right(), margins.top() + margins.bottom());
 	return size;
 }
 

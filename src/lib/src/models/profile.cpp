@@ -21,8 +21,10 @@
 #include "models/monitor-manager.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "models/source-registry.h"
 #include "models/url-downloader/url-downloader-manager.h"
 #include "utils/file-utils.h"
+#include "utils/read-write-path.h"
 
 
 Profile::Profile()
@@ -40,9 +42,17 @@ Profile::Profile(QString path)
 	renameSettingsGroup(m_settings, "Zoom", "Viewer");
 
 	// Load sources
-	QStringList dirs = QDir(m_path + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (const QString &dir : dirs) {
-		auto *source = new Source(this, m_path + "/sites/" + dir);
+	const QString defaultPath = savePath("sites/", true, false);
+	const QString customPath = m_path + "/sites/";
+	QStringList sites = QDir(customPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	if (!defaultPath.startsWith(m_path)) {
+		sites += QDir(defaultPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+		sites.removeDuplicates();
+	}
+	for (const QString &dir : sites) {
+		const QString readDir = defaultPath + dir;
+		const QString writeDir = customPath + dir;
+		auto *source = new Source(this, ReadWritePath(readDir, writeDir));
 		if (source->getApis().isEmpty()) {
 			source->deleteLater();
 			continue;
@@ -117,7 +127,7 @@ Profile::Profile(QString path)
 		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
 
 	// Load auto-complete
-	QFile fileAutoComplete(m_path + "/words.txt");
+	QFile fileAutoComplete(savePath("words.txt", true, false));
 	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
@@ -178,6 +188,24 @@ Profile::Profile(QString path)
 	m_autoComplete.append(specialCompletes);
 	m_autoComplete.removeDuplicates();
 	m_autoComplete.sort();
+
+	// Load source registries
+	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
+	for (const QString &url : sourceRegistries) {
+		auto *sourceRegistry = new SourceRegistry(url);
+		auto receiver = new QObject(this);
+		connect(sourceRegistry, &SourceRegistry::loaded, receiver, [=](bool ok) {
+			receiver->deleteLater();
+			if (ok) {
+				m_sourceRegistries.append(sourceRegistry);
+				emit sourceRegistriesChanged();
+			} else {
+				log(QStringLiteral("Error loading source registry `%1`").arg(url), Logger::Warning);
+				sourceRegistry->deleteLater();
+			}
+		});
+		sourceRegistry->load();
+	}
 }
 
 Profile::~Profile()
@@ -193,6 +221,7 @@ Profile::~Profile()
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
 	delete m_urlDownloaderManager;
+	qDeleteAll(m_sourceRegistries);
 
 	if (m_exiftool != nullptr) {
 		m_exiftool->stop();
@@ -430,22 +459,7 @@ void Profile::addSource(Source *source)
 void Profile::addSite(Site *site)
 {
 	m_sites.insert(site->url(), site);
-
-	// Update the source's sites.txt file
-	Source *src = site->getSource();
-	QFile f(src->getPath() + "/sites.txt");
-	f.open(QIODevice::ReadOnly);
-	QString sites = f.readAll();
-	f.close();
-	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
-	stes.append(site->url());
-	stes.removeDuplicates();
-	stes.sort();
-	f.open(QIODevice::WriteOnly);
-	f.write(stes.join("\r\n").toLatin1());
-	f.close();
-
+	site->getSource()->addSite(site);
 	emit sitesChanged();
 }
 
@@ -479,6 +493,37 @@ void Profile::removeBlacklistedTag(const QString &tag)
 
 	syncBlacklist();
 	emit blacklistChanged();
+}
+
+
+const QList<SourceRegistry*> &Profile::getSourceRegistries() const
+{
+	return m_sourceRegistries;
+}
+
+void Profile::addSourceRegistry(SourceRegistry *sourceRegistry)
+{
+	m_sourceRegistries.append(sourceRegistry);
+	syncSourceRegistries();
+	emit sourceRegistriesChanged();
+}
+
+void Profile::removeSourceRegistry(SourceRegistry *sourceRegistry)
+{
+	if (m_sourceRegistries.removeAll(sourceRegistry) > 0) {
+		syncSourceRegistries();
+		emit sourceRegistriesChanged();
+	}
+}
+
+void Profile::syncSourceRegistries()
+{
+	QStringList sourceRegistries;
+	sourceRegistries.reserve(m_sourceRegistries.size());
+	for (SourceRegistry *sourceRegistry : m_sourceRegistries) {
+		sourceRegistries.append(sourceRegistry->jsonUrl());
+	}
+	m_settings->setValue("sourceRegistries", sourceRegistries);
 }
 
 

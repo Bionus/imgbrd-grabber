@@ -1,6 +1,7 @@
 #include "batch/batch-window.h"
 #include <QClipboard>
 #include <QCloseEvent>
+#include <QElapsedTimer>
 #include <QSettings>
 #include <QStringList>
 #include <QTime>
@@ -30,9 +31,10 @@ BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
 	ui->checkRemove->setChecked(m_settings->value("Batch/remove", false).toBool());
 	ui->checkScrollToDownload->setChecked(m_settings->value("Batch/scrollToDownload", true).toBool());
 
-	m_time = new QTime;
+	m_time = new QElapsedTimer;
 	m_time->start();
-	m_start = new QTime;
+	m_start = new QElapsedTimer;
+	m_start->invalidate();
 
 	#ifdef Q_OS_WIN
 		m_taskBarButton = new QWinTaskbarButton(parent);
@@ -242,7 +244,7 @@ int BatchWindow::batch(const QUrl &url)
 }
 void BatchWindow::loadingImage(const QUrl &url)
 {
-	if (m_start->isNull()) {
+	if (!m_start->isValid()) {
 		m_start->start();
 	}
 	m_speeds.insert(url, ExponentialMovingAverage(SPEED_SMOOTHING_IMAGE));

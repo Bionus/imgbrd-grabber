@@ -1,8 +1,9 @@
 #include "persistent-cookie-jar.h"
+#include <utility>
 #include <QFile>
 #include <QMutexLocker>
 #include <QNetworkCookie>
-#include <utility>
+#include "utils/file-utils.h"
 
 
 PersistentCookieJar::PersistentCookieJar(QString filename, QObject *parent)
@@ -63,10 +64,8 @@ void PersistentCookieJar::save()
 		}
 	}
 
-	QFile f(m_filename);
-	if (f.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
-		f.write(data);
-		f.close();
+	if (!data.isEmpty()) {
+		writeFile(m_filename, data);
 	}
 }
 

@@ -175,8 +175,13 @@
        </item>
        <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="labelMonitoringIntervalHelp">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
          <property name="text">
-          <string>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</string>
+          <string>Set the interval to 0 to disable monitoring.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -206,8 +211,13 @@
        </item>
        <item row="6" column="0" colspan="2">
         <widget class="QLabel" name="labelOverrideHelp">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
          <property name="text">
-          <string>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</string>
+          <string>Leave empty to use default settings.</string>
          </property>
         </widget>
        </item>

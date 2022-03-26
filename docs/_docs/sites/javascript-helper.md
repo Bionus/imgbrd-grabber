@@ -106,3 +106,75 @@ Parses the string passed and return the parsed XML tree.
     }
 }
 ```
+
+## parseHTML
+
+**Parameters:**
+* html (string)
+* fragment (bool) = false
+
+**Returns:** object (JavascriptHtmlDocument)
+
+### Description
+Parses the string passed and return a parsed HTML node object.
+
+Set `fragment` to true if the HTML to parse is not a whole HTML document but only a part of it.
+
+### Example
+```ts
+const parsed = Grabber.parseHTML(src);
+const images = parsed.find("#images-list img");
+const inner = images.map((img) => img.innerHTML());
+```
+
+## JavascriptHtmlDocument::find
+
+**Parameters:**
+* css (string)
+
+**Returns:** object[] (JavascriptHtmlDocument[])
+
+### Description
+Returns a list of nodes matching the passed CSS selectors.
+
+## JavascriptHtmlDocument::tag
+
+**Returns:** string
+
+### Description
+Returns the tag name of the node.
+
+## JavascriptHtmlDocument::outerHTML
+
+**Returns:** string
+
+### Description
+Returns the serialized HTML of the element and its descendants.
+
+## JavascriptHtmlDocument::innerHTML
+
+**Returns:** string
+
+### Description
+Returns the serialized HTML of the element's descendants.
+
+## JavascriptHtmlDocument::innerText
+
+**Returns:** string
+
+### Description
+Returns the rendered text content of an element.
+
+## JavascriptHtmlDocument::path
+
+**Returns:** string[]
+
+### Description
+Returns the list of the tags of the parent nodes.
+
+## JavascriptHtmlDocument::pathIds
+
+**Returns:** string[]
+
+### Description
+Returns the list of the IDs of the parent nodes.

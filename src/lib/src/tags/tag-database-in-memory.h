@@ -8,13 +8,14 @@
 
 
 class QStringList;
+class ReadWritePath;
 class Tag;
 class TagType;
 
 class TagDatabaseInMemory : public TagDatabase
 {
 	public:
-		TagDatabaseInMemory(const QString &typeFile, QString tagFile);
+		TagDatabaseInMemory(const ReadWritePath &typeFile, QString tagFile);
 		~TagDatabaseInMemory() override = default;
 		bool load() override;
 		bool save() override;

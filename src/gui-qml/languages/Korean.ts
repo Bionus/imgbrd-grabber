@@ -284,7 +284,7 @@
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
       <translation>블랙리스트 할 태그를 한 줄에 하나씩 입력하세요.
-동시에 여러 개의 태그를 블랙리스트로 등록하려면 ' AND' (예: 'female'AND'male') 같이 작성하세요</translation>
+동시에 여러 개의 태그를 블랙리스트로 등록하려면 AND (예: 'female'AND'male') 같이 작성하세요</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation>이미지 확장자가 ".jpeg"이면 ".jpg " 확장자로 바뀔 것입니다</translation>
+      <translation>이미지 확장자가 ".jpeg"이면 ".jpg " 확장자로 바뀔 것입니다.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -1014,7 +1014,7 @@
       <translation>종료 하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
       <translation>다시 표시하지 않기</translation>
     </message>

@@ -230,13 +230,13 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		// If we don't need any loading, we can return already
 		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
-			QList<ImageSaveResult> result {{ m_temporaryPath, m_size, res }};
+			QList<ImageSaveResult> preResult {{ m_temporaryPath, m_size, res }};
 
 			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Shortcut || res == Image::SaveResult::Linked) {
-				result = postSaving(res);
+				preResult = afterTemporarySave(res);
 			}
 
-			emit saved(m_image, result);
+			emit saved(m_image, preResult);
 			return;
 		}
 	}
@@ -323,11 +323,11 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 
 		const bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
 		const bool shouldFallback = m_size == Image::Size::Full && sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
-		QString newext = extensionRotator != nullptr ? extensionRotator->next() : QString();
+		const QString newExt = extensionRotator != nullptr ? extensionRotator->next() : QString();
 
-		if (m_rotate && !newext.isEmpty()) {
-			m_url = setExtension(m_image->url(m_size), newext);
-			log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
+		if (m_rotate && !newExt.isEmpty()) {
+			m_url = setExtension(m_image->url(m_size), newExt);
+			log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newExt, m_url.toString()));
 			m_image->setUrl(m_url);
 			loadImage();
 		} else if (shouldFallback && !m_tryingSample) {
@@ -357,17 +357,17 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 void ImageDownloader::success()
 {
 	// Handle network redirects
-	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty()) {
-		m_url = redir;
+	const QUrl redirect = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirect.isEmpty()) {
+		m_url = redirect;
 		loadImage();
 		return;
 	}
 
-	emit saved(m_image, postSaving());
+	emit saved(m_image, afterTemporarySave(Image::SaveResult::Saved));
 }
 
-QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
+QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult saveResult)
 {
 	QSettings *settings = m_profile->getSettings();
 

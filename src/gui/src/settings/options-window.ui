@@ -63,6 +63,11 @@
        <property name="text">
         <string>Sources</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Registries</string>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
@@ -321,8 +326,13 @@
         </item>
         <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_51">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</string>
+           <string>Images containing a whitelisted tag will be downloaded automatically according to the option above.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -351,8 +361,13 @@
         </item>
         <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_65">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</string>
+           <string>These tags and post-filters will be automatically added to every search.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -619,6 +634,45 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="pageSourcesRegistries">
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <item>
+         <widget class="QLabel" name="labelSourcesRegistriesHelp">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>New sources and sites can be supported by adding third-party source registries.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="layoutSourcesRegistries"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonAddSourceRegistry">
+          <property name="text">
+           <string>Add a new source registry</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageSave">
        <layout class="QFormLayout" name="formLayout_17">
         <property name="fieldGrowthPolicy">
@@ -802,8 +856,13 @@
         </item>
         <item row="12" column="0" colspan="2">
          <widget class="QLabel" name="label_21">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</string>
+           <string>File's identity is based on the MD5 algorithm.</string>
           </property>
          </widget>
         </item>
@@ -853,8 +912,13 @@
         </item>
         <item row="16" column="0" colspan="2">
          <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;Leave empty to use the default temporary directory.&lt;/i&gt;</string>
+           <string>Leave empty to use the default temporary directory.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1023,8 +1087,13 @@
         </item>
         <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_55">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.&lt;/i&gt;</string>
+           <string>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1100,8 +1169,8 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
-                <height>40</height>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
              </spacer>
@@ -1116,8 +1185,13 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QLabel" name="label_81">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</string>
+           <string>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1287,8 +1361,13 @@
            </item>
            <item row="2" column="0" colspan="2">
             <widget class="QLabel" name="labelResizeHelp">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+              </font>
+             </property>
              <property name="text">
-              <string>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</string>
+              <string>Images bigger than the max width and/or height will be resized to fit.</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -1413,8 +1492,13 @@
         </item>
         <item row="4" column="0" colspan="2">
          <widget class="QLabel" name="label_40">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</string>
+           <string>The favorites list will be hidden as soon as this image number has been reached.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1497,8 +1581,13 @@
         </item>
         <item row="7" column="0" colspan="2">
          <widget class="QLabel" name="label_43">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</string>
+           <string>Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1659,8 +1748,13 @@
         </item>
         <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="labelGetUnloadedPages">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
+           <string>If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1676,8 +1770,13 @@
         </item>
         <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="labelInvertToggle">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</string>
+           <string>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -4735,8 +4834,13 @@
         </item>
         <item>
          <widget class="QLabel" name="labelBlacklistHelp">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</string>
+           <string>One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -4752,8 +4856,13 @@
         </item>
         <item>
          <widget class="QLabel" name="labelHideBlacklisted">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</string>
+           <string>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -4783,8 +4892,13 @@
         </item>
         <item>
          <widget class="QLabel" name="label_16">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.&lt;/i&gt;</string>
+           <string>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -4803,8 +4917,13 @@
         </item>
         <item>
          <widget class="QLabel" name="labelIgnoredTagsInfos">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;i&gt;One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.&lt;/i&gt;</string>
+           <string>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -5557,12 +5676,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>818</x>
-     <y>420</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>452</x>
-     <y>427</y>
+     <x>336</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAddSourceRegistry</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsWindow</receiver>
+   <slot>addSourceRegistry()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>719</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>738</x>
+     <y>70</y>
     </hint>
    </hints>
   </connection>
@@ -5571,5 +5706,6 @@
   <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>addLogFile()</slot>
   <slot>addWebService()</slot>
+  <slot>addSourceRegistry()</slot>
  </slots>
 </ui>

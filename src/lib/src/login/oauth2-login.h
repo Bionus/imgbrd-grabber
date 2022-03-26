@@ -2,8 +2,12 @@
 #define OAUTH2_LOGIN_H
 
 #include <QDateTime>
+#include <QList>
+#include <QMap>
 #include <QString>
 #include "login/login.h"
+
+using QStrP = QPair<QString, QString>;
 
 
 class MixedSettings;
@@ -34,6 +38,11 @@ class OAuth2Login : public Login
 	protected:
 		void refresh(bool login = false);
 		bool readResponse(NetworkReply *reply);
+		void loginClientCredentials();
+		void loginPassword();
+		void loginPasswordJson();
+		void loginAuthorizationCode();
+		void postRequest(QList<QStrP> body, QMap<QString, QByteArray> headers = {});
 
 	private:
 		OAuth2Auth *m_auth;

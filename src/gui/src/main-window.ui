@@ -119,7 +119,14 @@
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionPruneSources"/>
+   </widget>
    <addaction name="menuFichier"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuOutils"/>
    <addaction name="menuView"/>
    <addaction name="menu_propos"/>
@@ -475,6 +482,11 @@
     <string>Donate with Patreon</string>
    </property>
   </action>
+  <action name="actionPruneSources">
+   <property name="text">
+    <string>Prune sources</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -811,6 +823,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPruneSources</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pruneSources()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -861,5 +889,6 @@
   <slot>utilMd5DatabaseConverter()</slot>
   <slot>aboutDonatePaypal()</slot>
   <slot>aboutDonatePatreon()</slot>
+  <slot>pruneSources()</slot>
  </slots>
 </ui>

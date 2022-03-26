@@ -19,6 +19,7 @@ class MonitorManager;
 class QSettings;
 class Site;
 class Source;
+class SourceRegistry;
 class UrlDownloaderManager;
 
 class Profile : public QObject
@@ -78,6 +79,12 @@ class Profile : public QObject
 		void addBlacklistedTag(const QString &tag);
 		void removeBlacklistedTag(const QString &tag);
 
+		// Source registries
+		const QList<SourceRegistry*> &getSourceRegistries() const;
+		void addSourceRegistry(SourceRegistry *sourceRegistry);
+		void removeSourceRegistry(SourceRegistry *sourceRegistry);
+		void syncSourceRegistries();
+
 		// Getters
 		QString getPath() const;
 		QSettings *getSettings() const;
@@ -105,6 +112,7 @@ class Profile : public QObject
 		void sitesChanged();
 		void siteDeleted(Site *site);
 		void blacklistChanged();
+		void sourceRegistriesChanged();
 
 	private:
 		QString m_path;
@@ -125,6 +133,7 @@ class Profile : public QObject
 		MonitorManager *m_monitorManager;
 		DownloadQueryManager *m_downloadQueryManager;
 		UrlDownloaderManager *m_urlDownloaderManager;
+		QList<SourceRegistry*> m_sourceRegistries;
 };
 
 #endif // PROFILE_H

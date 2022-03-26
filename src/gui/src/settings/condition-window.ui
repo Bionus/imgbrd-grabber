@@ -10,21 +10,26 @@
     <x>0</x>
     <y>0</y>
     <width>387</width>
-    <height>176</height>
+    <height>212</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add a custom token</string>
+   <string>Add a conditional filename</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="labelConditionInfo">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;i&gt;You can either use a token or tags as a condition.&lt;/i&gt;</string>
+      <string>You can either use a token or tags as a condition.</string>
      </property>
     </widget>
    </item>
@@ -67,8 +72,13 @@
    </item>
    <item row="5" column="0" colspan="2">
     <widget class="QLabel" name="labelFolderEmpty">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</string>
+      <string>Leave empty to use the default folder.</string>
      </property>
     </widget>
    </item>
@@ -77,8 +87,13 @@
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QLabel" name="labelFilenameEmpty">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;i&gt;Leave empty to use the default filename.&lt;/i&gt;</string>
+      <string>Leave empty to use the default filename.</string>
      </property>
     </widget>
    </item>
@@ -90,9 +105,9 @@
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

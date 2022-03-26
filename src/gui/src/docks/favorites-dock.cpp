@@ -103,7 +103,7 @@ void FavoritesDock::refresh()
 	for (const Favorite &fav : qAsConst(m_favorites)) {
 		QAffiche *lab = new QAffiche(QString(fav.getName()), 0, QColor(), this);
 		lab->setText(fav.getName());
-		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate)));
+		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), QLocale().toString(fav.getLastViewed(), QLocale::ShortFormat)));
 		lab->setCursor(Qt::PointingHandCursor);
 
 		if (i++ % 2 == 1) {

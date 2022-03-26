@@ -17,7 +17,7 @@ class ExtensionRotator : public QObject
 		QString next();
 
 	private:
-		QString m_initialExtension;
+		int m_initialExtensionIndex;
 		QStringList m_extensions;
 		int m_next = 0;
 };

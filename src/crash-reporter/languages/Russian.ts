@@ -31,7 +31,7 @@
     <message>
       <location filename="../crash-reporter-window.ui" line="95"/>
       <source>Log</source>
-      <translation>Лог</translation>
+      <translation>Журнал</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="102"/>

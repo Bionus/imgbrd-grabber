@@ -13,6 +13,7 @@ coverage:
 
   ignore:
     - "build/**/*"
+    - "src/crash-reporter/tests/**/*"
     - "src/e2e/**/*"
     - "src/gui/tests/**/*"
     - "src/gui-qml/**/*"

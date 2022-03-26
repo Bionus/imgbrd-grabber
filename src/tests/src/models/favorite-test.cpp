@@ -238,9 +238,9 @@ TEST_CASE("Favorite")
 	{
 		QList<Favorite> favorites =
 		{
-			Favorite("f1", 2, QDateTime(QDate(2018, 1, 3))),
-			Favorite("f2", 3, QDateTime(QDate(2018, 1, 1))),
-			Favorite("f3", 1, QDateTime(QDate(2018, 1, 2)))
+			Favorite("f1", 2, QDate(2018, 1, 3).startOfDay()),
+			Favorite("f2", 3, QDate(2018, 1, 1).startOfDay()),
+			Favorite("f3", 1, QDate(2018, 1, 2).startOfDay())
 		};
 
 		std::sort(favorites.begin(), favorites.end(), Favorite::sortByNote);
@@ -254,9 +254,9 @@ TEST_CASE("Favorite")
 	{
 		QList<Favorite> favorites =
 		{
-			Favorite("f1", 2, QDateTime(QDate(2018, 1, 3))),
-			Favorite("f2", 3, QDateTime(QDate(2018, 1, 1))),
-			Favorite("f3", 1, QDateTime(QDate(2018, 1, 2)))
+			Favorite("f1", 2, QDate(2018, 1, 3).startOfDay()),
+			Favorite("f2", 3, QDate(2018, 1, 1).startOfDay()),
+			Favorite("f3", 1, QDate(2018, 1, 2).startOfDay())
 		};
 
 		std::sort(favorites.begin(), favorites.end(), Favorite::sortByName);
@@ -270,9 +270,9 @@ TEST_CASE("Favorite")
 	{
 		QList<Favorite> favorites =
 		{
-			Favorite("f1", 2, QDateTime(QDate(2018, 1, 3))),
-			Favorite("f2", 3, QDateTime(QDate(2018, 1, 1))),
-			Favorite("f3", 1, QDateTime(QDate(2018, 1, 2)))
+			Favorite("f1", 2, QDate(2018, 1, 3).startOfDay()),
+			Favorite("f2", 3, QDate(2018, 1, 1).startOfDay()),
+			Favorite("f3", 1, QDate(2018, 1, 2).startOfDay())
 		};
 
 		std::sort(favorites.begin(), favorites.end(), Favorite::sortByLastViewed);

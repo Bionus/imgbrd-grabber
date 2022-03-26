@@ -77,4 +77,4 @@ If you want to ensure your pull request is merged in a timely manner, it is bett
 
 ## Translations
 
-Check the [Translation](https://github.com/Bionus/imgbrd-grabber/wiki/Translation) Wiki page for information on how to add or update a translation.
+Check the [Translation](https://bionus.github.io/imgbrd-grabber/docs/plugins/translation.html) documentation page for information on how to add or update a translation.

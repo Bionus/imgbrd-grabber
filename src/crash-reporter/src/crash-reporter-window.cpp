@@ -32,7 +32,7 @@ QString savePath(const QString &file, bool exists = false)
 				return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
 			}
 		#endif
-		return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + file);
+		return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/" + file);
 	#endif
 }
 
@@ -85,7 +85,7 @@ void CrashReporterWindow::sendCrashReport()
 void CrashReporterWindow::finished()
 {
 	if (m_restart && QFile::exists("Grabber.exe")) {
-		QProcess::startDetached("\"Grabber.exe\"");
+		QProcess::startDetached("Grabber.exe", {});
 	}
 
 	close();

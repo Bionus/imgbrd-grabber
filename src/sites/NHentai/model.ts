@@ -1,6 +1,7 @@
 const extensionMap: any = {
     j: "jpg",
     p: "png",
+    g: "gif",
 };
 
 function makeGallery(gallery: any): IImage {
@@ -13,7 +14,8 @@ function makeImage(image: any): IImage {
     image["file_url"] = image["preview_url"]
         .replace("https://t.", "https://i.")
         .replace(/t.jpg$/, ".jpg")
-        .replace(/t.png$/, ".png");
+        .replace(/t.png$/, ".png")
+        .replace(/t.gif$/, ".gif");
     return image;
 }
 
@@ -36,6 +38,13 @@ function makeTag(tag: any): ITag {
     };
 }
 
+const meta: Record<string, MetaField> = {
+    sort: {
+        type: "options",
+        default: "date",
+        options: ["popular", "popular-week", "popular-today", "date"],
+    }
+};
 export const source: ISource = {
     name: "NHentai",
     modifiers: ["parodies:", "tag:"],
@@ -43,6 +52,7 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
+    meta,
     apis: {
         json: {
             name: "JSON",
@@ -50,10 +60,14 @@ export const source: ISource = {
             forcedLimit: 25,
             search: {
                 url: (query: ISearchQuery): string => {
-                    if (query.search.length > 0) {
-                        return "/api/galleries/search?page=" + query.page + "&sort=date&query=" + encodeURIComponent(query.search);
+                    const search = Grabber.parseSearchQuery(query.search, meta);
+                    if (search.query.length > 0) {
+                        return "/api/galleries/search?page=" + query.page + "&sort=" + search.sort + "&query=" + encodeURIComponent(search.query);
                     }
-                    return "/api/galleries/all?page=" + query.page + "&sort=date";
+                    if (search.sort !== "date") {
+                        console.warn("Sorting is not supported without search.");
+                    }
+                    return "/api/galleries/all?page=" + query.page;
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -117,8 +131,12 @@ export const source: ISource = {
             forcedLimit: 25,
             search: {
                 url: (query: ISearchQuery): string => {
-                    if (query.search.length > 0) {
-                        return "/search/?page=" + query.page + "&q=" + encodeURIComponent(query.search);
+                    const search = Grabber.parseSearchQuery(query.search, meta);
+                    if (search.query.length > 0) {
+                        return "/search/?page=" + query.page + "&sort=" + search.sort + "&q=" + encodeURIComponent(search.query);
+                    }
+                    if (search.sort !== "date") {
+                        console.warn("Sorting is not supported without search.");
                     }
                     return "/?page=" + query.page;
                 },

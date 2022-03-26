@@ -20,13 +20,16 @@ TEST_CASE("Auth")
 	SECTION("HTTP auth")
 	{
 		QList<AuthField*> fields;
-		HttpAuth auth("post", "https://www.google.com", fields, "cookie");
+		HttpAuth auth("post", "https://www.google.com", fields, "cookie", "/index.php", "/login", QStringList { "csrf" });
 
 		REQUIRE(auth.type() == QString("post"));
 		REQUIRE(auth.name() == QString("post"));
 		REQUIRE(auth.url() == QString("https://www.google.com"));
 		REQUIRE(auth.fields() == fields);
 		REQUIRE(auth.cookie() == QString("cookie"));
+		REQUIRE(auth.redirectUrl() == QString("/index.php"));
+		REQUIRE(auth.csrfUrl() == QString("/login"));
+		REQUIRE(auth.csrfFields() == QStringList("csrf"));
 	}
 
 	SECTION("OAuth2 auth")

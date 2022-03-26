@@ -1,29 +1,22 @@
-name: Build
+name: Sources
 
 on:
   push:
     branches: [master, develop]
     paths:
-      - '.github/workflows/sources-metadata.yml'
+      - '.github/workflows/sources.yml'
       - 'scripts/generate-sources-metadata.js'
+      - 'scripts/package-sources.sh'
       - 'src/sites/**/model.ts'
 
 jobs:
-  metadata:
-    name: Sources metadata
-    runs-on: ubuntu-18.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        branch: [master, develop]
+  sources:
+    name: Sources
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
-          fetch-depth: 0
 
       - name: Install sites dependencies
         working-directory: src/sites
@@ -34,28 +27,30 @@ jobs:
         run: npm run build
 
       - name: Generate sources metadata
-        run: node scripts/generate-sources-metadata.js | tee metadata-${{ matrix.branch }}.json
+        run: node scripts/generate-sources-metadata.js ${{ github.ref_name }} | tee metadata.json
 
-      - name: Upload artifact
+      - name: Package sources
+        run: ./scripts/package-sources.sh
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.branch }}
-          path: metadata-${{ matrix.branch }}.json
+          name: sources
+          path: |
+            metadata.json
+            sources_packages/*.zip
           if-no-files-found: error
 
   upload:
     name: Upload to GitHub releases
     runs-on: ubuntu-latest
-    needs: metadata
+    needs: sources
 
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
-
-      - name: Rename artifacts
-        run: |
-          mv master/metadata-master.json metadata.json
-          mv develop/metadata-develop.json .
+        with:
+          name: sources
 
       - name: Get date for body
         id: date
@@ -65,12 +60,12 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: sources-metadata
-          name: Sources metadata
+          tag: sources-${{ github.ref_name }}
+          name: Sources (${{ github.ref_name }})
           allowUpdates: true
           draft: false
           prerelease: true
-          artifacts: metadata.json,metadata-develop.json
+          artifacts: metadata.json,sources_packages/*.zip
           body: |
             Automatically uploaded by Github actions.
 
@@ -80,6 +75,4 @@ jobs:
       - uses: geekyeggo/delete-artifact@v1
         with:
           failOnError: false
-          name: |
-            master
-            develop
+          name: sources

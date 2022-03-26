@@ -1,6 +1,7 @@
 #ifndef VIEWER_WINDOW_H
 #define VIEWER_WINDOW_H
 
+#include <QElapsedTimer>
 #include <QPointer>
 #include <QPushButton>
 #include <QStackedWidget>
@@ -139,13 +140,13 @@ class ViewerWindow : public QWidget
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
-		QTime m_imageTime;
+		QElapsedTimer m_imageTime;
 		QString m_link;
 		bool m_finished;
 		int m_size;
 		QString m_source;
 		QString m_imagePath;
-		QTime m_lastWheelEvent;
+		QElapsedTimer m_lastWheelEvent;
 		QString m_saveAsPending;
 
 		QWidget *m_fullScreen = nullptr;

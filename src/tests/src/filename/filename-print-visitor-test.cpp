@@ -1,4 +1,5 @@
 #include <QString>
+#include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/filename-parser.h"
 #include "filename/filename-print-visitor.h"
@@ -101,5 +102,17 @@ TEST_CASE("FilenamePrintVisitor")
 		delete ast;
 
 		REQUIRE(result == QString("Root(JavaScript(md5 + '.' + ext))"));
+	}
+
+	SECTION("JavaScript conditional")
+	{
+		FilenameParser parser("javascript:artist || copyright");
+		auto *ast = parser.parseCondition();
+
+		FilenamePrintVisitor printVisitor;
+		QString result = printVisitor.run(*ast);
+		delete ast;
+
+		REQUIRE(result == QString("ConditionJavaScript(artist || copyright)"));
 	}
 }

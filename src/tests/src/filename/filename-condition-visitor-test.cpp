@@ -53,6 +53,27 @@ TEST_CASE("FilenameConditionVisitor")
 		REQUIRE(!FilenameConditionVisitor(tokensWithoutToken, &settings).run(condition));
 	}
 
+	SECTION("Nested token")
+	{
+		NToken condition("my_parent.my_token");
+
+		QMap<QString, Token> tokensWithToken = {
+			{ "my_token", Token("not_empty") },
+		};
+		QMap<QString, Token> nestedWithToken = {
+			{ "my_parent", Token(QVariant::fromValue(tokensWithToken)) },
+		};
+		QMap<QString, Token> nestedWithInvalidType = {
+			{ "my_parent", Token("test") },
+		};
+		QMap<QString, Token> nestedWithoutToken;
+
+		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+		REQUIRE(FilenameConditionVisitor(nestedWithToken, &settings).run(condition));
+		REQUIRE(!FilenameConditionVisitor(nestedWithInvalidType, &settings).run(condition));
+		REQUIRE(!FilenameConditionVisitor(nestedWithoutToken, &settings).run(condition));
+	}
+
 	SECTION("OperatorOr")
 	{
 		QMap<QString, Token> tokens = {

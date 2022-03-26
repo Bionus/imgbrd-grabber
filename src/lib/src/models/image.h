@@ -33,6 +33,10 @@ class Image : public QObject, public Downloadable
 			CloudflareError,
 			NetworkError
 		};
+		Q_ENUM(LoadTagsResult)
+
+		Q_ENUM(SaveResult)
+		Q_ENUM(Size)
 
 		Image();
 		explicit Image(Profile *profile);
@@ -43,9 +47,6 @@ class Image : public QObject, public Downloadable
 		// Serialization
 		void write(QJsonObject &json) const;
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
-
-		// TODO(Bionus): remove these two methods
-		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, Size size = Size::Full);
 
 		int value() const;
 		QString md5() const;
@@ -122,11 +123,7 @@ class Image : public QObject, public Downloadable
 	protected:
 		void init();
 		QString md5forced() const;
-
-		// Saving
-		SaveResult save(const QString &path, Size size, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
 		void postSaving(const QString &path, Size size, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
-		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, Size size = Size::Full);
 
 	public slots:
 		void loadDetails(bool rateLimit = false);

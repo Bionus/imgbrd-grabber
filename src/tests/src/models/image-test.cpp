@@ -210,87 +210,93 @@ TEST_CASE("Image")
 		REQUIRE(img->url().fileName() == QString("__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 	}
 
-	SECTION("Save")
+	SECTION("preSave")
 	{
-		// Delete already existing
-		QFile file("tests/resources/tmp/7331.jpg");
-		if (file.exists()) {
-			file.remove();
-		}
-
-		img->setSavePath("tests/resources/image_1x1.png");
-		QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
-
-		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::SaveResult::Saved);
-		REQUIRE(file.exists());
-		file.remove();
-	}
-	#ifdef Q_OS_WIN
-		SECTION("SaveError")
+		SECTION("File already saved somewhere else")
 		{
-			QString path = "Z:/../tests/resources/tmp/";
+			const QString savePath = QDir::toNativeSeparators("tests/resources/tmp/7331.jpg");
+
+			// Delete already existing
+			QFile file(savePath);
+			if (file.exists()) {
+				file.remove();
+			}
 
 			img->setSavePath("tests/resources/image_1x1.png");
-			QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), path);
+			Image::SaveResult res = img->preSave(savePath, Image::Size::Full);
 
-			REQUIRE(res.count() == 1);
-			REQUIRE(res.first() == Image::SaveResult::Error);
-		}
-	#endif
-	SECTION("SaveAlreadyExists")
-	{
-		// Create file if not exists
-		QFile file("tests/resources/tmp/7331.jpg");
-		REQUIRE(file.open(QFile::Truncate | QFile::WriteOnly));
-
-		img->setSavePath("tests/resources/image_1x1.png");
-		QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
-
-		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::SaveResult::AlreadyExistsDisk);
-	}
-	SECTION("SaveDuplicate")
-	{
-		// Delete already existing
-		QFile file("tests/resources/tmp/7331.jpg");
-		if (file.exists()) {
+			REQUIRE(res == Image::SaveResult::Saved);
+			REQUIRE(file.exists());
 			file.remove();
 		}
 
-		img->setSavePath("tests/resources/image_1x1.png");
-		QMap<QString, Image::SaveResult> res;
+		#ifdef Q_OS_WIN
+			SECTION("Error writing file to disk (Windows-only)")
+			{
+				const QString savePath = QDir::toNativeSeparators("Z:/../tests/resources/tmp/7331.jpg");
 
-		QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/source.png");
-		profile->addMd5(img->md5(), "tests/resources/tmp/source.png");
+				img->setSavePath("tests/resources/image_1x1.png");
+				Image::SaveResult res = img->preSave(savePath, Image::Size::Full);
 
-		settings->setValue("Save/md5Duplicates", "ignore");
-		settings->setValue("Save/md5DuplicatesSameDir", "ignore");
-		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
-		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::SaveResult::AlreadyExistsMd5);
-		REQUIRE(!file.exists());
+				REQUIRE(res == Image::SaveResult::Error);
+			}
+		#endif
 
-		settings->setValue("Save/md5Duplicates", "copy");
-		settings->setValue("Save/md5DuplicatesSameDir", "copy");
-		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
-		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::SaveResult::Copied);
-		REQUIRE(file.exists());
-		REQUIRE(QFile("tests/resources/tmp/source.png").exists());
-		file.remove();
+		SECTION("Destination file already exists on disk")
+		{
+			const QString savePath = QDir::toNativeSeparators("tests/resources/tmp/7331.jpg");
 
-		settings->setValue("Save/md5Duplicates", "move");
-		settings->setValue("Save/md5DuplicatesSameDir", "move");
-		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
-		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::SaveResult::Moved);
-		REQUIRE(file.exists());
-		REQUIRE(!QFile("tests/resources/tmp/source.png").exists());
-		file.remove();
+			// Create file if not exists
+			QFile file(savePath);
+			REQUIRE(file.open(QFile::Truncate | QFile::WriteOnly));
+
+			img->setSavePath("tests/resources/image_1x1.png");
+			Image::SaveResult res = img->preSave(savePath, Image::Size::Full);
+
+			REQUIRE(res == Image::SaveResult::AlreadyExistsDisk);
+		}
+
+		SECTION("MD5 duplicate actions (ignore, copy, move)")
+		{
+			const QString savePath = QDir::toNativeSeparators("tests/resources/tmp/7331.jpg");
+
+			// Delete already existing
+			QFile file(savePath);
+			if (file.exists()) {
+				file.remove();
+			}
+
+			img->setSavePath("tests/resources/image_1x1.png");
+			Image::SaveResult res;
+
+			QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/source.png");
+			profile->addMd5(img->md5(), "tests/resources/tmp/source.png");
+
+			settings->setValue("Save/md5Duplicates", "ignore");
+			settings->setValue("Save/md5DuplicatesSameDir", "ignore");
+			res = img->preSave(savePath, Image::Size::Full);
+			REQUIRE(res == Image::SaveResult::AlreadyExistsMd5);
+			REQUIRE(!file.exists());
+
+			settings->setValue("Save/md5Duplicates", "copy");
+			settings->setValue("Save/md5DuplicatesSameDir", "copy");
+			res = img->preSave(savePath, Image::Size::Full);
+			REQUIRE(res == Image::SaveResult::Copied);
+			REQUIRE(file.exists());
+			REQUIRE(QFile("tests/resources/tmp/source.png").exists());
+			file.remove();
+
+			settings->setValue("Save/md5Duplicates", "move");
+			settings->setValue("Save/md5DuplicatesSameDir", "move");
+			res = img->preSave(savePath, Image::Size::Full);
+			REQUIRE(res == Image::SaveResult::Moved);
+			REQUIRE(file.exists());
+			REQUIRE(!QFile("tests/resources/tmp/source.png").exists());
+			file.remove();
+		}
 	}
 
-	SECTION("SaveLog")
+	/*SECTION("SaveLog")
 	{
 		// Delete already existing
 		QFile file("tests/resources/tmp/7331.jpg");
@@ -324,7 +330,7 @@ TEST_CASE("Image")
 		settings->remove("LogFiles/0/locationType");
 		settings->remove("LogFiles/0/uniquePath");
 		settings->remove("LogFiles/0/content");
-	}
+	}*/
 
 	SECTION("SetUrl")
 	{

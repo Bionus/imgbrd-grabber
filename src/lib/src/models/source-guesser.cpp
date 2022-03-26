@@ -10,8 +10,8 @@
 #include "network/network-reply.h"
 
 
-SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
-	: m_url(std::move(url)), m_sources(std::move(sources))
+SourceGuesser::SourceGuesser(QString url, QList<Source*> sources, QObject *parent)
+	: QObject(parent), m_url(std::move(url)), m_sources(std::move(sources))
 {
 	m_manager = new NetworkManager(this);
 }

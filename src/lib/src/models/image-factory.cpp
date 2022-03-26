@@ -26,8 +26,8 @@ QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> det
 {
 	static QList<QPair<QString, vTransformToken>> transforms
 	{
-		{ "parentid", ImageFactory::parseInt("parent_id") },
-		{ "authorid", ImageFactory::parseInt("creator_id") },
+		{ "parent_id", ImageFactory::parseInt("parentid") },
+		{ "creator_id", ImageFactory::parseInt("authorid") },
 		{ "author", ImageFactory::parseString("author") },
 		{ "status", ImageFactory::parseString("status") },
 		{ "score", ImageFactory::parseString("score") },

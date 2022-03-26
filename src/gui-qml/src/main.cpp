@@ -71,20 +71,12 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<QList<QmlAuthSettingField*>>("QList<QmlAuthSettingField*>");
 
 	// Copy settings files to writable directory
-	const QStringList toCopy { "sites/", "themes/", "webservices/" };
+	const QStringList toCopy { "themes/", "webservices/" };
 	for (const QString &tgt : toCopy) {
 		const QString from = savePath(tgt, true, false);
 		const QString to = savePath(tgt, true, true);
 		if (!QDir(to).exists() && QDir(from).exists()) {
 			copyRecursively(from, to);
-		}
-	}
-	const QStringList filesToCopy { "words.txt" };
-	for (const QString &tgt : filesToCopy) {
-		const QString from = savePath(tgt, true, false);
-		const QString to = savePath(tgt, true, true);
-		if (!QFile::exists(to) && QFile::exists(from)) {
-			QFile::copy(from, to);
 		}
 	}
 

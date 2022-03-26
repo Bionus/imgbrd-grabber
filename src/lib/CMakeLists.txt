@@ -1,19 +1,18 @@
 project(lib)
 
-find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Gui REQUIRED) # For some classes such as QPixmap
-find_package(Qt5Network REQUIRED)
-find_package(Qt5NetworkAuth REQUIRED)
-find_package(Qt5Qml REQUIRED)
-find_package(Qt5Sql REQUIRED)
-find_package(Qt5Xml REQUIRED)
+find_package(Qt5 COMPONENTS Concurrent Gui Network NetworkAuth Qml Sql Xml REQUIRED) # Qt5::Gui required for some classes such as QPixmap
 set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Network Qt5::NetworkAuth Qt5::Qml Qt5::Sql Qt5::Xml)
 
 # Android specials
 if(ANDROID)
-	find_package(Qt5AndroidExtras REQUIRED)
+	find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
 endif()
+
+# Lexbor
+add_subdirectory(vendor/lexbor)
+set(LIBS ${LIBS} lexbor_static)
+include_directories("vendor/lexbor/source/")
 
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
 include_directories("src/")

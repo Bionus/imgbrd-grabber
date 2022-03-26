@@ -347,7 +347,7 @@ TEST_CASE("Functions")
 		REQUIRE(setFileCreationDate(path, date));
 
 		QDateTime created = fileCreationDate(path);
-		REQUIRE(created.toTime_t() == date.toTime_t());
+		REQUIRE(created.toSecsSinceEpoch() == date.toSecsSinceEpoch());
 	}
 	SECTION("SetFileCreationDateUtf8")
 	{
@@ -357,7 +357,7 @@ TEST_CASE("Functions")
 		REQUIRE(setFileCreationDate(path, date));
 
 		QDateTime created = fileCreationDate(path);
-		REQUIRE(created.toTime_t() == date.toTime_t());
+		REQUIRE(created.toSecsSinceEpoch() == date.toSecsSinceEpoch());
 	}
 
 	SECTION("GetExternalLogFilesSuffixes")

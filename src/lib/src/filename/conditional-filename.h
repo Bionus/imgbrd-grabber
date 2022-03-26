@@ -19,6 +19,8 @@ class ConditionalFilename
 		QString condition;
 		Filename filename;
 		QString path;
+
+	private:
 		FilenameNodeCondition *m_ast = nullptr;
 };
 
