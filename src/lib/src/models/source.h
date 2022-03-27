@@ -35,7 +35,6 @@ class Source : public QObject
 		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
 		const QMap<QString, Auth*> &getAuths() const;
-		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;
 		const QStringList &getAdditionalTokens() const;
 
@@ -56,7 +55,6 @@ class Source : public QObject
 		QList<Api*> m_apis;
 		QMap<QString, Auth*> m_auths;
 		QStringList m_additionalTokens;
-		Profile *m_profile;
 		SourceUpdater m_updater;
 		TagNameFormat m_tagNameFormat;
 		QJSValue m_jsSource;

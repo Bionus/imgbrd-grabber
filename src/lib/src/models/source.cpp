@@ -53,7 +53,7 @@ QMutex *Source::jsEngineMutex()
 }
 
 Source::Source(Profile *profile, const ReadWritePath &dir)
-	: m_dir(dir), m_diskName(QFileInfo(dir.readPath()).fileName()), m_profile(profile), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
+	: m_dir(dir), m_diskName(QFileInfo(dir.readPath()).fileName()), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
 	// Tag format mapper
 	static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
@@ -180,7 +180,7 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 				continue;
 			}
 
-			auto site = new Site(line, this);
+			auto site = new Site(line, this, profile);
 			m_sites.append(site);
 		}
 	}
@@ -253,7 +253,6 @@ ReadWritePath Source::getPath() const { return m_dir; }
 const QList<Site*> &Source::getSites() const { return m_sites; }
 const QStringList &Source::getSupportedSites() const { return m_supportedSites; }
 const QList<Api*> &Source::getApis() const { return m_apis; }
-Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
 const QStringList &Source::getAdditionalTokens() const { return m_additionalTokens; }
 const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }

@@ -10,8 +10,8 @@
 #include "models/source.h"
 
 
-LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)
-	: m_site(site), m_options(std::move(options)), m_finished(false), m_offset(0)
+LoaderQuery::LoaderQuery(Profile *profile, Site *site, QMap<QString, QVariant> options)
+	: m_profile(profile), m_site(site), m_options(std::move(options)), m_finished(false), m_offset(0)
 {}
 
 bool LoaderQuery::start()
@@ -34,7 +34,6 @@ LoaderData LoaderQuery::next()
 	}
 
 	// Options
-	Profile *profile = m_site->getSource()->getProfile();
 	const QStringList tags = m_options["tags"].toStringList();
 	const int page = m_options["page"].toInt();
 	const int perPage = m_options["perPage"].toInt();
@@ -46,7 +45,7 @@ LoaderData LoaderQuery::next()
 
 	// Load results
 	QEventLoop loop;
-	Page request(profile, m_site, { m_site }, tags, page + m_offset, perPage, postFiltering, true, nullptr);
+	Page request(m_profile, m_site, { m_site }, tags, page + m_offset, perPage, postFiltering, true, nullptr);
 	QObject::connect(&request, &Page::finishedLoading, &loop, &QEventLoop::quit);
 	QObject::connect(&request, &Page::failedLoading, &loop, &QEventLoop::quit);
 	request.load(false);
@@ -56,7 +55,7 @@ LoaderData LoaderQuery::next()
 	const QList<QSharedPointer<Image>> &images = request.images();
 	for (const QSharedPointer<Image> &img : images) {
 		// Skip blacklisted images
-		if (!getBlacklisted && !blacklist.match(img->tokens(profile)).empty()) {
+		if (!getBlacklisted && !blacklist.match(img->tokens(m_profile)).empty()) {
 			ret.ignored.append(img);
 			continue;
 		}

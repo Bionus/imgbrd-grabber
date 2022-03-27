@@ -60,7 +60,7 @@ QSharedPointer<Image> Api::parseImage(Site *site, Page *parentPage, QMap<QString
 	}
 
 	// Generate image
-	auto img = ImageFactory::build(site, d, std::move(data), site->getSource()->getProfile(), parentPage);
+	auto img = ImageFactory::build(site, d, std::move(data), site->getProfile(), parentPage);
 	img->moveToThread(this->thread());
 
 	return img;

@@ -136,7 +136,7 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 	}
 
 	// Add site
-	Site *site = new Site(host, source);
+	Site *site = new Site(host, source, m_profile);
 	m_profile->addSite(site);
 
 	// Set HTTP setting

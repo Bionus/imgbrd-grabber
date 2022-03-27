@@ -43,15 +43,15 @@
 
 
 
-Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+Site::Site(QString url, Source *source, Profile *profile)
+	: m_profile(profile), m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new NetworkManager(this);
 
 	// Cache
 	auto *diskCache = new QNetworkDiskCache(m_manager);
-	diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
+	diskCache->setCacheDirectory(m_profile->getPath() + "/cache/");
 	diskCache->setMaximumCacheSize(50 * 1024 * 1024);
 	m_manager->setCache(diskCache);
 
@@ -77,7 +77,7 @@ void Site::loadConfig()
 	}
 
 	// Get default source order
-	QSettings *pSettings = m_source->getProfile()->getSettings();
+	QSettings *pSettings = m_profile->getSettings();
 	QStringList defaults {
 		pSettings->value("source_1").toString(),
 		pSettings->value("source_2").toString(),
