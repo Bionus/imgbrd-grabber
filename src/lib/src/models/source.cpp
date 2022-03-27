@@ -83,6 +83,12 @@ Source::~Source()
 }
 
 
+bool Source::isValid() const
+{
+	return m_sourceEngine != nullptr && m_sourceEngine->isValid();
+}
+
+
 bool Source::addSite(const QString &site)
 {
 	m_sites.append(site);
@@ -109,6 +115,7 @@ const QString &Source::getName() const { return m_sourceEngine->getName(); }
 ReadWritePath Source::getPath() const { return m_dir; }
 const QStringList &Source::getSites() const { return m_sites; }
 const QStringList &Source::getSupportedSites() const { return m_supportedSites; }
+SourceEngine *Source::getEngine() const { return m_sourceEngine; }
 const QList<Api*> &Source::getApis() const { return m_sourceEngine->getApis(); }
 Api *Source::getApi(const QString &name) const { return m_sourceEngine->getApi(name); }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }

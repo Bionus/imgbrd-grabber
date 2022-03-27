@@ -286,7 +286,7 @@ TEST_CASE("Favorite")
 	{
 		Profile profile("tests/resources/");
 		Source source("tests/resources/sites/Danbooru (2.0)");
-		Site site("danbooru.donmai.us", &source);
+		Site site("danbooru.donmai.us", &source, &profile);
 
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 		Monitor monitor(QList<Site*> { &site }, 60, date, false, "", "");

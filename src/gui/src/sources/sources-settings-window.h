@@ -36,7 +36,7 @@ class SourcesSettingsWindow : public QDialog
 		void loginTested(Site *site, Site::LoginResult result);
 
 	signals:
-		void siteDeleted(const QString &);
+		void siteDeleted(Site *site);
 
 	protected:
 		void saveSettings();

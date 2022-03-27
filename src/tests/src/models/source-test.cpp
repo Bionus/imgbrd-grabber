@@ -22,7 +22,7 @@ TEST_CASE("Source")
 		QFile::remove("tests/resources/sites/tmp/model.js");
 
 		Source source("tests/resources/sites/tmp");
-		REQUIRE(source.getApis().isEmpty());
+		REQUIRE(!source.isValid());
 	}
 
 	SECTION("InvalidJavascript")
@@ -35,7 +35,7 @@ TEST_CASE("Source")
 		f.close();
 
 		Source source("tests/resources/sites/tmp");
-		REQUIRE(source.getApis().isEmpty());
+		REQUIRE(!source.isValid());
 	}
 
 	SECTION("MissingSites")
@@ -48,6 +48,7 @@ TEST_CASE("Source")
 		f.close();
 
 		Source source("tests/resources/sites/tmp");
+		REQUIRE(source.isValid());
 		REQUIRE(!source.getApis().isEmpty());
 		REQUIRE(source.getSites().count() == 1);
 	}
@@ -58,6 +59,7 @@ TEST_CASE("Source")
 		QFile::remove("tests/resources/sites/tmp/sites.txt");
 
 		Source source("tests/resources/sites/tmp");
+		REQUIRE(source.isValid());
 		REQUIRE(!source.getApis().isEmpty());
 		REQUIRE(source.getSites().isEmpty());
 	}

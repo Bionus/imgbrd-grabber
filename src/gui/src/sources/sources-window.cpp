@@ -7,6 +7,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "models/source-engine.h"
 #include "network/network-manager.h"
 #include "network/network-reply.h"
 #include "sources/site-window.h"
@@ -115,21 +116,23 @@ void SourcesWindow::openSite(const QString &site) const
 
 void SourcesWindow::settingsSite(const QString &site)
 {
-	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites.value(site), this);
+	auto *ssw = new SourcesSettingsWindow(m_profile, m_sites.value(site), this);
 	connect(ssw, &SourcesSettingsWindow::siteDeleted, this, &SourcesWindow::deleteSite);
 	ssw->show();
 }
 
 /**
  * Delete a site from the sources list.
- * @param	site	The url of the site to delete.
+ * @param	site	The site to delete.
  */
-void SourcesWindow::deleteSite(const QString &site)
+void SourcesWindow::deleteSite(Site *site)
 {
+	m_profile->removeSite(site);
+
 	int index = -1;
 	for (int i = 0; i < m_rows.count(); ++i) {
 		const auto &row = m_rows[i];
-		if (row.site->url() != site) {
+		if (row.site->url() != site->url()) {
 			continue;
 		}
 
@@ -155,7 +158,7 @@ void SourcesWindow::deleteSite(const QString &site)
 
 	if (index != -1) {
 		m_rows.removeAt(index);
-		m_siteRows.remove(site);
+		m_siteRows.remove(site->url());
 	}
 }
 
@@ -218,16 +221,16 @@ void SourcesWindow::addCheckboxes()
 		if (t != "hide") {
 			if (t == "icon" || t == "both") {
 				QAffiche *image = new QAffiche(it.key(), 0, QColor(), this);
-				image->setPixmap(QPixmap(site->getSource()->getPath().readPath("icon.png")).scaled(QSize(16, 16)));
+				//image->setPixmap(QPixmap(site->getSourceEngine()->getPath().readPath("icon.png")).scaled(QSize(16, 16))); // FIXME SOURCE
 				image->setCursor(Qt::PointingHandCursor);
-				image->setToolTip(site->getSource()->getName());
+				image->setToolTip(site->getSourceEngine()->getName());
 				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
 				row.labels.append(image);
 				n++;
 			}
 			if (t == "text" || t == "both") {
-				QLabel *type = new QLabel(site->getSource()->getName(), this);
+				QLabel *type = new QLabel(site->getSourceEngine()->getName(), this);
 				ui->gridLayout->addWidget(type, i, n);
 				row.labels.append(type);
 				n++;
@@ -276,11 +279,12 @@ void SourcesWindow::checkAll(int check)
 
 void SourcesWindow::checkForUpdates()
 {
-	for (auto it = m_sources.constBegin(); it != m_sources.constEnd(); ++it) {
+	// FIXME SOURCE
+	/*for (auto it = m_sources.constBegin(); it != m_sources.constEnd(); ++it) {
 		const SourceUpdater &updater = it.value()->getUpdater();
 		connect(&updater, &SourceUpdater::finished, this, &SourcesWindow::checkForUpdatesReceived);
 		updater.checkForUpdates();
-	}
+	}*/
 }
 void SourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNew)
 {

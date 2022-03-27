@@ -28,6 +28,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/source.h"
+#include "models/source-engine.h"
 #include "network/network-manager.h"
 #include "network/persistent-cookie-jar.h"
 #include "tags/tag.h"
@@ -44,7 +45,11 @@
 
 
 Site::Site(QString url, Source *source, Profile *profile)
-	: m_profile(profile), m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+	: Site(url, source->getEngine(), source->getPath().readWritePath(url), profile)
+{}
+
+Site::Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile)
+	: m_profile(profile), m_dir(dir), m_type(engine->getName()), m_url(std::move(url)), m_sourceEngine(engine), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new NetworkManager(this);
@@ -60,19 +65,17 @@ Site::Site(QString url, Source *source, Profile *profile)
 
 void Site::loadConfig()
 {
-	const ReadWritePath siteDir = m_source->getPath().readWritePath(m_url);
-
 	if (m_settings != nullptr) {
 		m_settings->deleteLater();
 	}
-	auto *settingsCustom = new QSettings(siteDir.writePath("settings.ini"), QSettings::IniFormat);
-	auto *settingsDefaults = new QSettings(siteDir.readPath("defaults.ini"), QSettings::IniFormat);
+	auto *settingsCustom = new QSettings(m_dir.writePath("settings.ini"), QSettings::IniFormat);
+	auto *settingsDefaults = new QSettings(m_dir.readPath("defaults.ini"), QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*> { settingsCustom, settingsDefaults });
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Cookies
 	if (m_cookieJar == nullptr) {
-		m_cookieJar = new PersistentCookieJar(siteDir.writePath("cookies.txt"), m_manager);
+		m_cookieJar = new PersistentCookieJar(m_dir.writePath("cookies.txt"), m_manager);
 		m_manager->setCookieJar(m_cookieJar);
 	}
 
@@ -110,7 +113,7 @@ void Site::loadConfig()
 	// Apis
 	m_apis.clear();
 	for (const QString &src : qAsConst(sources)) {
-		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
+		Api *api = m_sourceEngine->getApi(src == "Regex" ? "Html" : src);
 		if (api != nullptr && !m_apis.contains(api)) {
 			m_apis.append(api);
 		}
@@ -120,7 +123,7 @@ void Site::loadConfig()
 	m_auth = nullptr;
 	const QString defType = m_settings->value("login/type", "url").toString();
 	if (defType != "disabled") {
-		const auto &auths = m_source->getAuths();
+		const auto &auths = m_sourceEngine->getAuths();
 		if (auths.contains(defType)) {
 			m_auth = auths[defType];
 		} else if (!auths.isEmpty()) {
@@ -168,7 +171,7 @@ void Site::loadConfig()
 
 	// Tag database
 	delete m_tagDatabase;
-	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
+	m_tagDatabase = TagDatabaseFactory::Create(m_dir);
 	m_tagDatabase->loadTypes();
 	m_tagDatabase->open();
 
@@ -351,7 +354,7 @@ const QString &Site::name() const { return m_name; }
 const QString &Site::url() const { return m_url; }
 const QString &Site::type() const { return m_type; }
 
-Source *Site::getSource() const { return m_source; }
+SourceEngine *Site::getSourceEngine() const { return m_sourceEngine; }
 const QList<Api *> &Site::getApis() const { return m_apis; }
 QList<Api *> Site::getLoggedInApis() const
 {
@@ -463,13 +466,4 @@ bool Site::isLoggedIn(bool unknown, bool pending) const
 	}
 
 	return m_loggedIn == LoginStatus::LoggedIn;
-}
-
-bool Site::remove()
-{
-	const bool ret = m_source->removeSite(m_url);
-	if (ret) {
-		emit removed();
-	}
-	return ret;
 }

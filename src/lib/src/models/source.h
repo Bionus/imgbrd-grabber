@@ -44,11 +44,19 @@ class Source : public QObject
 		explicit Source(const ReadWritePath &dir);
 		~Source() override;
 
+		/**
+		 * A source is considered valid if the engine could be loaded and the engine itself is also valid.
+		 * @see SourceEngine::isValid
+		 * @return Whether this source is valid.
+		 */
+		bool isValid() const;
+
 		// Getters
 		const QString &getName() const;
 		ReadWritePath getPath() const;
 		const QStringList &getSites() const;
 		const QStringList &getSupportedSites() const;
+		SourceEngine *getEngine() const;
 		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
 		const QMap<QString, Auth*> &getAuths() const;
@@ -63,7 +71,7 @@ class Source : public QObject
 	private:
 		ReadWritePath m_dir;
 		QString m_diskName;
-		SourceEngine *m_sourceEngine;
+		SourceEngine *m_sourceEngine = nullptr;
 		QStringList m_sites;
 		QStringList m_supportedSites;
 		SourceUpdater m_updater;

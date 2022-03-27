@@ -41,7 +41,7 @@ class SourcesWindow : public QDialog
 		void checkAll(int check = 2);
 		void addSite();
 		void settingsSite(const QString &site);
-		void deleteSite(const QString &site);
+		void deleteSite(Site *site);
 		void openSite(const QString &site) const;
 		void checkUpdate();
 		void checkClicked();

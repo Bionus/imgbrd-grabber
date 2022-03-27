@@ -47,7 +47,7 @@ TEST_CASE("PackLoader")
 		setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
 		Source source("tests/resources/sites/Danbooru (2.0)");
-		Site site("danbooru.donmai.us", &source);
+		Site site("danbooru.donmai.us", &source, profile);
 
 		// Login first
 		QSignalSpy spy(&site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
@@ -83,7 +83,7 @@ TEST_CASE("PackLoader")
 		setupSite("Gelbooru (0.2)", "gelbooru.com");
 
 		Source source("tests/resources/sites/Gelbooru (0.2)");
-		Site site("gelbooru.com", &source);
+		Site site("gelbooru.com", &source, profile);
 
 		// Login first
 		QSignalSpy spy(&site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
@@ -119,7 +119,7 @@ TEST_CASE("PackLoader")
 		setupSite("E-Hentai", "e-hentai.org");
 
 		Source source("tests/resources/sites/E-Hentai");
-		Site site("e-hentai.org", &source);
+		Site site("e-hentai.org", &source, profile);
 
 		// Login first
 		QSignalSpy spy(&site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
