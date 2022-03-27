@@ -18,17 +18,34 @@ class Profile;
 class QJSEngine;
 class QMutex;
 class Site;
+class SourceEngine;
 
+/**
+ * Represents a Grabber source, an engine and the associated settings.
+ *
+ * @see https://bionus.github.io/imgbrd-grabber/docs/sites/source.html
+ */
 class Source : public QObject
 {
 	Q_OBJECT
 
 	public:
+		/**
+		 * Create a source for a given directory.
+		 *
+		 * It must at least contain a `model.js` file. Additional files are `sites.txt`, which contain the list of
+		 * active sites using that source, `supported.txt`, containing a semi-exhaustive list of sites that this source
+		 * supports, and `icon.png`, an icon for this source.
+		 *
+ 		 * @see https://bionus.github.io/imgbrd-grabber/docs/sites/source.html
+		 *
+		 * @param dir The directory to load the source from.
+		 */
 		explicit Source(const ReadWritePath &dir);
 		~Source() override;
 
 		// Getters
-		QString getName() const;
+		const QString &getName() const;
 		ReadWritePath getPath() const;
 		const QStringList &getSites() const;
 		const QStringList &getSupportedSites() const;
@@ -41,23 +58,15 @@ class Source : public QObject
 		// Site management
 		bool addSite(const QString &site);
 		bool removeSite(const QString &site);
-
-	protected:
-		QJSEngine *jsEngine();
-		QMutex *jsEngineMutex();
+		bool syncSites();
 
 	private:
 		ReadWritePath m_dir;
 		QString m_diskName;
-		QString m_name;
+		SourceEngine *m_sourceEngine;
 		QStringList m_sites;
 		QStringList m_supportedSites;
-		QList<Api*> m_apis;
-		QMap<QString, Auth*> m_auths;
-		QStringList m_additionalTokens;
 		SourceUpdater m_updater;
-		TagNameFormat m_tagNameFormat;
-		QJSValue m_jsSource;
 };
 
 #endif // SOURCE_H

@@ -15,6 +15,7 @@
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
+#include "javascript-source-engine.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
@@ -29,27 +30,6 @@ QString getUpdaterBaseUrl()
 	#else
 		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/src/sites");
 	#endif
-}
-
-QJSEngine *Source::jsEngine()
-{
-	static QJSEngine *engine = nullptr;
-
-	if (engine == nullptr) {
-		engine = buildJsEngine(m_dir.readPath("../helper.js"));
-	}
-
-	return engine;
-}
-QMutex *Source::jsEngineMutex()
-{
-	static QMutex *mutex = nullptr;
-
-	if (mutex == nullptr) {
-		mutex = new QMutex();
-	}
-
-	return mutex;
 }
 
 QStringList readFileLines(const QString &path)
@@ -71,126 +51,24 @@ QStringList readFileLines(const QString &path)
 Source::Source(const ReadWritePath &dir)
 	: m_dir(dir), m_diskName(QFileInfo(dir.readPath()).fileName()), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
-	// Tag format mapper
-	static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
-	{
-		{ "lower", TagNameFormat::Lower },
-		{ "upper_first", TagNameFormat::UpperFirst },
-		{ "upper", TagNameFormat::Upper },
-		{ "caps", TagNameFormat::Caps },
-	};
-
-	// Javascript models
-	QFile js(m_dir.readPath("model.js"));
-	if (js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
-
-		const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
-
-		auto *engine = jsEngine();
-		m_jsSource = engine->evaluate(src, js.fileName());
-		if (m_jsSource.isError()) {
-			log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error);
+	// Javascript engine
+	const QString modelPath = m_dir.readPath("model.js");
+	if (QFile::exists(modelPath)) {
+		log(QStringLiteral("Using Javascript engine for '%1'").arg(m_diskName), Logger::Debug);
+		auto *javascriptSource = new JavaScriptSourceEngine(modelPath, m_dir.readPath("../helper.js"), this);
+		if (javascriptSource->isValid()) {
+			m_sourceEngine = javascriptSource;
 		} else {
-			m_name = m_jsSource.property("name").toString();
-			m_additionalTokens = jsToStringList(m_jsSource.property("tokens"));
-
-			// Get the list of APIs for this Source
-			const QJSValue apis = m_jsSource.property("apis");
-			QJSValueIterator it(apis);
-			while (it.hasNext()) {
-				it.next();
-				m_apis.append(new JavascriptApi(engine, m_jsSource, jsEngineMutex(), it.name()));
-			}
-			if (m_apis.isEmpty()) {
-				log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name));
-			}
-
-			// Read tag naming format
-			const QJSValue &tagFormat = m_jsSource.property("tagFormat");
-			if (!tagFormat.isUndefined()) {
-				const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
-				m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
-			}
-
-			// Read auth information
-			const QJSValue auths = m_jsSource.property("auth");
-			QJSValueIterator authIt(auths);
-			while (authIt.hasNext()) {
-				authIt.next();
-
-				const QString &id = authIt.name();
-				const QJSValue &auth = authIt.value();
-
-				const QString type = auth.property("type").toString();
-				Auth *ret = nullptr;
-
-				const QJSValue check = auth.property("check");
-				const QString checkType = check.isObject() ? check.property("type").toString() : QString();
-
-				if (type == "oauth2") {
-					ret = new OAuth2Auth(type, auth);
-				} else if (type == "oauth1") {
-					ret = new OAuth1Auth(type, auth);
-				} else if (type == "http_basic") {
-					const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
-					const QString passwordType = auth.property("passwordType").toString();
-					ret = new HttpBasicAuth(type, maxPage, passwordType);
-				} else {
-					QList<AuthField*> fields;
-					const QJSValue &jsFields = auth.property("fields");
-					const quint32 length = jsFields.property("length").toUInt();
-					for (quint32 i = 0; i < length; ++i) {
-						const QJSValue &field = jsFields.property(i);
-
-						const QString fid = !field.property("id").isUndefined() ? field.property("id").toString() : QString();
-						const QString key = !field.property("key").isUndefined() ? field.property("key").toString() : QString();
-						const QString type = field.property("type").toString();
-
-						if (type == "hash") {
-							const QString algoStr = field.property("hash").toString();
-							const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
-							fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
-						} else if (type == "const") {
-							const QString value = field.property("value").toString();
-							fields.append(new AuthConstField(key, value));
-						} else {
-							const QString def = !field.property("def").isUndefined() ? field.property("def").toString() : QString();
-							fields.append(new AuthField(fid, key, type == "password" ? AuthField::Password : AuthField::Text, def));
-						}
-					}
-
-					if (type == "get" || type == "post") {
-						const QString url = auth.property("url").toString();
-						const QString cookie = checkType == "cookie" ? check.property("key").toString() : QString();
-						const QString redirectUrl = checkType == "redirect" ? check.property("url").toString() : QString();
-
-						const QJSValue &csrf = auth.property("csrf");
-						const QString csrfUrl = csrf.isObject() ? csrf.property("url").toString() : QString();
-						const QStringList csrfFields = csrf.isObject() ? jsToStringList(csrf.property("fields")) : QStringList();
-
-						ret = new HttpAuth(type, url, fields, cookie, redirectUrl, csrfUrl, csrfFields);
-					} else {
-						const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
-						ret = new UrlAuth(type, fields, maxPage);
-					}
-				}
-
-				if (ret != nullptr) {
-					m_auths.insert(id, ret);
-				}
-			}
+			javascriptSource->deleteLater();
 		}
-
-		js.close();
 	} else {
-		log(QStringLiteral("Javascript model not found for '%1' in '%2'").arg(m_diskName, js.fileName()), Logger::Warning);
+		log(QStringLiteral("Javascript 'model.js' file not found for '%1' in `%2`").arg(m_diskName, modelPath), Logger::Warning);
 	}
 
 	// Get the list of all sites pertaining to this source
 	m_sites = readFileLines(m_dir.readPath("sites.txt"));
 	if (m_sites.isEmpty()) {
-		log(QStringLiteral("No site for source %1").arg(m_name), Logger::Debug);
+		log(QStringLiteral("No site for source '%1'").arg(m_diskName), Logger::Debug);
 	}
 
 	// Get the list of all supported sites for this source
@@ -199,65 +77,40 @@ Source::Source(const ReadWritePath &dir)
 
 Source::~Source()
 {
-	qDeleteAll(m_apis);
-	qDeleteAll(m_auths);
+	if (m_sourceEngine != nullptr) {
+		m_sourceEngine->deleteLater();
+	}
 }
 
 
 bool Source::addSite(const QString &site)
 {
-	// Read current sites
-	QFile read(m_dir.readPath("sites.txt"));
-	if (!read.open(QIODevice::ReadOnly)) {
-		return false;
-	}
-	QString rawSites = read.readAll();
-	read.close();
+	m_sites.append(site);
+	m_sites.removeDuplicates();
+	m_sites.sort();
 
-	// Add site to data
-	QStringList sites = rawSites.replace("\r", "").split("\n", Qt::SkipEmptyParts);
-	sites.append(site);
-	sites.removeDuplicates();
-	sites.sort();
-
-	// Save new sites
-	return writeFile(m_dir.writePath("sites.txt"), sites.join("\r\n").toLatin1());
+	return syncSites();
 }
 
 bool Source::removeSite(const QString &site)
 {
-	// Read current sites
-	QFile read(m_dir.readPath("sites.txt"));
-	if (!read.open(QIODevice::ReadOnly)) {
-		return false;
-	}
-	QString rawSites = read.readAll();
-	read.close();
+	m_sites.removeAll(site);
 
-	// Remove the site from the list
-	QStringList sites = rawSites.replace("\r", "").split("\n", Qt::SkipEmptyParts);
-	sites.removeAll(site);
+	return syncSites();
+}
 
-	// Save new sites
-	return writeFile(m_dir.writePath("sites.txt"), sites.join("\r\n").toLatin1());
+bool Source::syncSites()
+{
+	return writeFile(m_dir.writePath("sites.txt"), m_sites.join("\r\n").toLatin1());
 }
 
 
-QString Source::getName() const { return m_name; }
+const QString &Source::getName() const { return m_sourceEngine->getName(); }
 ReadWritePath Source::getPath() const { return m_dir; }
 const QStringList &Source::getSites() const { return m_sites; }
 const QStringList &Source::getSupportedSites() const { return m_supportedSites; }
-const QList<Api*> &Source::getApis() const { return m_apis; }
+const QList<Api*> &Source::getApis() const { return m_sourceEngine->getApis(); }
+Api *Source::getApi(const QString &name) const { return m_sourceEngine->getApi(name); }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
-const QStringList &Source::getAdditionalTokens() const { return m_additionalTokens; }
-const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }
-
-Api *Source::getApi(const QString &name) const
-{
-	for (Api *api : this->getApis()) {
-		if (api->getName() == name) {
-			return api;
-		}
-	}
-	return nullptr;
-}
+const QStringList &Source::getAdditionalTokens() const { return m_sourceEngine->getAdditionalTokens(); }
+const QMap<QString, Auth*> &Source::getAuths() const { return m_sourceEngine->getAuths(); }
