@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	// Handler for custom URL protocols, redirecting to the main program through HTTP calls
 	if (argc == 3 && QString(argv[1]) == "--url-protocol") {
@@ -121,7 +122,7 @@ int main(int argc, char *argv[])
 	// Ensure SSL libraries are loaded
 	QSslSocket::supportsSsl();
 
-	Profile *profile = new Profile(savePath());
+	auto *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
 	QSettings *settings = profile->getSettings();
 

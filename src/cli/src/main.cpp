@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <QMap>
+#include <QSettings>
 #include <QString>
 #include <QStringList>
 #include "functions.h"
@@ -14,8 +15,9 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+	QSettings::setDefaultFormat(QSettings::IniFormat);
 
-	Profile *profile = new Profile(savePath());
+	auto *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
 
 	QMap<QString, QString> params;
