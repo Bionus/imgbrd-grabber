@@ -14,11 +14,15 @@ exemptAssignees: true # Ignore issues with an assignee
 
 markComment: >
   This issue has been automatically marked as stale because it has not had
-  recent activity. It will be closed if no further activity occurs.
+  recent activity.
+
+  It will be closed if no further activity occurs.
+
 
   If this issue is about a bug that still happens in the
   [latest version](https://github.com/Bionus/imgbrd-grabber/releases/latest),
   or a suggestion that is still relevant, feel free to comment on it and the
   maintainers will have another look, they might have missed it!
+
 
   Thank you!
