@@ -979,7 +979,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       =
+EXCLUDE_PATTERNS       = */vendor/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -2332,7 +2332,12 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               =
+TAGFILES               = /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtcore/qtcore.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtgui/qtgui.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtnetwork/qtnetwork.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtsql/qtsql.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtwidgets/qtwidgets.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtxml/qtxml.tags=https://doc.qt.io/qt-5.15/
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create a
 # tag file that is based on the input files it reads. See section "Linking to
