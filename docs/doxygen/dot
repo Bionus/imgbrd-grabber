@@ -2,7 +2,7 @@
 
 # https://stackoverflow.com/questions/27569555/hide-common-base-class-from-doxygen-class-diagram.
 
-LABELS_TO_FILTER="QObject"
+LABELS_TO_FILTER="Q[^<>,\"]* Q[^<>,\"]< *Q[^<>,\"]*> Q[^<>\"]< *Q[^<>,\"]*, *Q[^<>,\"]*>"
 
 ARGS=$@
 
@@ -19,12 +19,15 @@ do
 
             for LABEL_TO_FILTER in ${LABELS_TO_FILTER}
             do
-                NODE_NAME=$(grep "label=\"${LABEL_TO_FILTER}\"" ${DOT_FILE} | awk '{print $1}')
+                NODE_NAMES=$(grep "label=\"${LABEL_TO_FILTER}\"" ${DOT_FILE} | awk '{print $1}')
 
-                if [[ ! -z "${NODE_NAME}" ]]
+                if [[ ! -z "${NODE_NAMES}" ]]
                 then
-                    echo "${NODE_NAME} is labelled ${LABEL_TO_FILTER}, filtering..."
-                    sed -i "/${NODE_NAME}/d" ${DOT_FILE}
+                    for NODE_NAME in ${NODE_NAMES}
+                    do
+                        echo "${NODE_NAME} is a Qt class, filtering..."
+                        sed -i "/${NODE_NAME}/d" ${DOT_FILE}
+                    done
                 fi
             done
 
