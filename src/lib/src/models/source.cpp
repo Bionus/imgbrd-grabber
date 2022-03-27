@@ -52,6 +52,22 @@ QMutex *Source::jsEngineMutex()
 	return mutex;
 }
 
+QStringList readFileLines(const QString &path)
+{
+	QStringList ret;
+	QFile f(path);
+	if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		while (!f.atEnd()) {
+			const QString line = f.readLine().trimmed();
+			if (line.isEmpty()) {
+				continue;
+			}
+			ret.append(line);
+		}
+	}
+	return ret;
+}
+
 Source::Source(const ReadWritePath &dir)
 	: m_dir(dir), m_diskName(QFileInfo(dir.readPath()).fileName()), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
@@ -172,31 +188,13 @@ Source::Source(const ReadWritePath &dir)
 	}
 
 	// Get the list of all sites pertaining to this source
-	QFile f(m_dir.readPath("sites.txt"));
-	if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		while (!f.atEnd()) {
-			QString line = f.readLine().trimmed();
-			if (line.isEmpty()) {
-				continue;
-			}
-			m_sites.append(line);
-		}
-	}
+	m_sites = readFileLines(m_dir.readPath("sites.txt"));
 	if (m_sites.isEmpty()) {
 		log(QStringLiteral("No site for source %1").arg(m_name), Logger::Debug);
 	}
 
 	// Get the list of all supported sites for this source
-	QFile supportedFile(m_dir.readPath("supported.txt"));
-	if (supportedFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		while (!supportedFile.atEnd()) {
-			const QString line = supportedFile.readLine().trimmed();
-			if (line.isEmpty()) {
-				continue;
-			}
-			m_supportedSites.append(line);
-		}
-	}
+	m_supportedSites = readFileLines(m_dir.readPath("supported.txt"));
 }
 
 Source::~Source()
