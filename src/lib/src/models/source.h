@@ -24,13 +24,13 @@ class Source : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Source(Profile *profile, const ReadWritePath &dir);
+		explicit Source(const ReadWritePath &dir);
 		~Source() override;
 
 		// Getters
 		QString getName() const;
 		ReadWritePath getPath() const;
-		const QList<Site*> &getSites() const;
+		const QStringList &getSites() const;
 		const QStringList &getSupportedSites() const;
 		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
@@ -39,8 +39,8 @@ class Source : public QObject
 		const QStringList &getAdditionalTokens() const;
 
 		// Site management
-		bool addSite(Site *site);
-		bool removeSite(Site *site);
+		bool addSite(const QString &site);
+		bool removeSite(const QString &site);
 
 	protected:
 		QJSEngine *jsEngine();
@@ -50,7 +50,7 @@ class Source : public QObject
 		ReadWritePath m_dir;
 		QString m_diskName;
 		QString m_name;
-		QList<Site*> m_sites;
+		QStringList m_sites;
 		QStringList m_supportedSites;
 		QList<Api*> m_apis;
 		QMap<QString, Auth*> m_auths;

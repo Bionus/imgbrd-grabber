@@ -285,7 +285,7 @@ TEST_CASE("Favorite")
 	SECTION("Serialization")
 	{
 		Profile profile("tests/resources/");
-		Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
+		Source source("tests/resources/sites/Danbooru (2.0)");
 		Site site("danbooru.donmai.us", &source);
 
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");

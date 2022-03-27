@@ -289,12 +289,12 @@ void SourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNe
 	}
 
 	Source *source = m_sources[sourceName];
-	for (Site *site : source->getSites()) {
-		if (!m_siteRows.contains(site->url())) {
+	for (const QString &site : source->getSites()) {
+		if (!m_siteRows.contains(site)) {
 			continue;
 		}
 
-		int pos = m_siteRows.value(site->url());
+		int pos = m_siteRows.value(site);
 		m_rows[pos].labels[0]->setPixmap(QPixmap(":/images/icons/update.png"));
 		m_rows[pos].labels[0]->setToolTip(tr("An update for this source is available."));
 	}

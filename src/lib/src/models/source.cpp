@@ -52,7 +52,7 @@ QMutex *Source::jsEngineMutex()
 	return mutex;
 }
 
-Source::Source(Profile *profile, const ReadWritePath &dir)
+Source::Source(const ReadWritePath &dir)
 	: m_dir(dir), m_diskName(QFileInfo(dir.readPath()).fileName()), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
 	// Tag format mapper
@@ -179,9 +179,7 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 			if (line.isEmpty()) {
 				continue;
 			}
-
-			auto site = new Site(line, this, profile);
-			m_sites.append(site);
+			m_sites.append(line);
 		}
 	}
 	if (m_sites.isEmpty()) {
@@ -204,12 +202,11 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 Source::~Source()
 {
 	qDeleteAll(m_apis);
-	qDeleteAll(m_sites);
 	qDeleteAll(m_auths);
 }
 
 
-bool Source::addSite(Site *site)
+bool Source::addSite(const QString &site)
 {
 	// Read current sites
 	QFile read(m_dir.readPath("sites.txt"));
@@ -221,7 +218,7 @@ bool Source::addSite(Site *site)
 
 	// Add site to data
 	QStringList sites = rawSites.replace("\r", "").split("\n", Qt::SkipEmptyParts);
-	sites.append(site->url());
+	sites.append(site);
 	sites.removeDuplicates();
 	sites.sort();
 
@@ -229,7 +226,7 @@ bool Source::addSite(Site *site)
 	return writeFile(m_dir.writePath("sites.txt"), sites.join("\r\n").toLatin1());
 }
 
-bool Source::removeSite(Site *site)
+bool Source::removeSite(const QString &site)
 {
 	// Read current sites
 	QFile read(m_dir.readPath("sites.txt"));
@@ -241,7 +238,7 @@ bool Source::removeSite(Site *site)
 
 	// Remove the site from the list
 	QStringList sites = rawSites.replace("\r", "").split("\n", Qt::SkipEmptyParts);
-	sites.removeAll(site->url());
+	sites.removeAll(site);
 
 	// Save new sites
 	return writeFile(m_dir.writePath("sites.txt"), sites.join("\r\n").toLatin1());
@@ -250,7 +247,7 @@ bool Source::removeSite(Site *site)
 
 QString Source::getName() const { return m_name; }
 ReadWritePath Source::getPath() const { return m_dir; }
-const QList<Site*> &Source::getSites() const { return m_sites; }
+const QStringList &Source::getSites() const { return m_sites; }
 const QStringList &Source::getSupportedSites() const { return m_supportedSites; }
 const QList<Api*> &Source::getApis() const { return m_apis; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }

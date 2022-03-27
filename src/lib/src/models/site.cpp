@@ -467,7 +467,7 @@ bool Site::isLoggedIn(bool unknown, bool pending) const
 
 bool Site::remove()
 {
-	const bool ret = m_source->removeSite(this);
+	const bool ret = m_source->removeSite(m_url);
 	if (ret) {
 		emit removed();
 	}

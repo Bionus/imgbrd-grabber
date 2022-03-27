@@ -97,7 +97,7 @@ Source *SourceImporter::importSource(const QString &path)
 
 	// Ensure the Source has at least one API
 	{
-		Source tmpSource(m_profile, ReadWritePath(d.filePath()));
+		Source tmpSource(ReadWritePath(d.filePath()));
 		if (tmpSource.getApis().isEmpty()) {
 			log(QStringLiteral("Invalid source file in '%1'").arg(d.fileName()), Logger::Error);
 			return nullptr;
@@ -107,7 +107,7 @@ Source *SourceImporter::importSource(const QString &path)
 	// Add the source to the profile, overwriting existing ones
 	const QString dest = m_profile->getPath() + "/sites/" + d.fileName();
 	copyRecursively(d.filePath(), dest, true);
-	auto *source = new Source(m_profile, ReadWritePath(dest));
+	auto *source = new Source(ReadWritePath(dest));
 	m_profile->addSource(source);
 
 	return source;

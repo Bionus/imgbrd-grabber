@@ -15,14 +15,13 @@ TEST_CASE("Source")
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
 
 	SECTION("MissingJavascript")
 	{
 		setupSource("Danbooru (2.0)", "tests/resources/sites/tmp/");
 		QFile::remove("tests/resources/sites/tmp/model.js");
 
-		Source source(profile, "tests/resources/sites/tmp");
+		Source source("tests/resources/sites/tmp");
 		REQUIRE(source.getApis().isEmpty());
 	}
 
@@ -35,7 +34,7 @@ TEST_CASE("Source")
 		f.write(QString("test").toUtf8());
 		f.close();
 
-		Source source(profile, "tests/resources/sites/tmp");
+		Source source("tests/resources/sites/tmp");
 		REQUIRE(source.getApis().isEmpty());
 	}
 
@@ -48,7 +47,7 @@ TEST_CASE("Source")
 		f.write(QString("\n\n\r\ndanbooru.donmai.us\n").toUtf8());
 		f.close();
 
-		Source source(profile, "tests/resources/sites/tmp");
+		Source source("tests/resources/sites/tmp");
 		REQUIRE(!source.getApis().isEmpty());
 		REQUIRE(source.getSites().count() == 1);
 	}
@@ -58,7 +57,7 @@ TEST_CASE("Source")
 		setupSource("Danbooru (2.0)", "tests/resources/sites/tmp/");
 		QFile::remove("tests/resources/sites/tmp/sites.txt");
 
-		Source source(profile, "tests/resources/sites/tmp");
+		Source source("tests/resources/sites/tmp");
 		REQUIRE(!source.getApis().isEmpty());
 		REQUIRE(source.getSites().isEmpty());
 	}
