@@ -13,6 +13,7 @@
 #include <QStackedWidget>
 #include <QWidget>
 #include "models/image.h"
+#include "models/page-information.h"
 #include "models/search-query/search-query.h"
 
 
@@ -150,9 +151,7 @@ class SearchTab : public QWidget
 		Profile *m_profile;
 		DownloadQueue *m_downloadQueue;
 		QString m_screenName;
-		int m_lastPage;
-		qulonglong m_lastPageMaxId, m_lastPageMinId;
-		QString m_lastPageMinDate, m_lastPageMaxDate;
+		PageInformation m_lastPageInformation;
 		const QMap<QString, Site*> &m_sites;
 		QMap<Image*, ImagePreview*> m_boutons;
 		QList<QUrl> m_selectedImages;

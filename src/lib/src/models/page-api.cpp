@@ -15,8 +15,8 @@
 #include "tags/tag.h"
 
 
-PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page, int limit, PostFilter postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, QString lastPageMinDate, QString lastPageMaxDate)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_query(std::move(query)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_lastPageMinDate(std::move(lastPageMinDate)), m_lastPageMaxDate(std::move(lastPageMaxDate)), m_smart(smart), m_reply(nullptr)
+PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page, int limit, PostFilter postFiltering, bool smart, QObject *parent, int pool, PageInformation lastPageInformation)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_query(std::move(query)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPageInformation(std::move(lastPageInformation)), m_smart(smart), m_reply(nullptr)
 {
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;
@@ -31,22 +31,27 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, Searc
 	updateUrls();
 }
 
-void PageApi::setLastPage(Page *page)
+PageInformation PageApi::pageInformation() const
 {
-	if (!page->isValid()) {
-		return;
-	}
+	PageInformation ret;
+	ret.page = m_page;
+	ret.minId = minId();
+	ret.maxId = maxId();
+	ret.minDate = minDate();
+	ret.maxDate = maxDate();
+	ret.previousPage = m_urlPrevPage;
+	ret.nextPage = m_urlNextPage;
+	return ret;
+}
 
-	m_lastPage = page->page();
-	m_lastPageMaxId = page->maxId();
-	m_lastPageMinId = page->minId();
-	m_lastPageMaxDate = page->maxDate();
-	m_lastPageMinDate = page->minDate();
+void PageApi::setLastPage(const PageInformation& info)
+{
+	m_lastPageInformation = info;
 
-	if (!page->nextPage().isEmpty() && page->page() == m_page - 1) {
-		m_url = page->nextPage();
-	} else if (!page->prevPage().isEmpty() && page->page() == m_page + 1) {
-		m_url = page->prevPage();
+	if (!info.nextPage.isEmpty() && info.page == m_page - 1) {
+		m_url = info.nextPage;
+	} else if (!info.previousPage.isEmpty() && info.page == m_page + 1) {
+		m_url = info.previousPage;
 	}
 
 	updateUrls();
@@ -69,13 +74,7 @@ void PageApi::updateUrls()
 		if (!m_query.gallery.isNull()) {
 			ret = m_api->galleryUrl(m_query.gallery, m_page, m_imagesPerPage, m_site);
 		} else {
-			LastPageInformation lastPage;
-			lastPage.page = m_lastPage;
-			lastPage.minId = m_lastPageMinId;
-			lastPage.minDate = m_lastPageMinDate;
-			lastPage.maxId = m_lastPageMaxId;
-			lastPage.maxDate = m_lastPageMaxDate;
-			ret = m_api->pageUrl(m_query.tags.join(' '), m_page, m_imagesPerPage, lastPage, m_site);
+			ret = m_api->pageUrl(m_query.tags.join(' '), m_page, m_imagesPerPage, m_lastPageInformation, m_site);
 		}
 
 		if (!ret.error.isEmpty()) {

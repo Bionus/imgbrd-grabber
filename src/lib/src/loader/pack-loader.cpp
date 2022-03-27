@@ -123,7 +123,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 		// Add next page to the pending queue
 		if (page->hasNext()) {
 			Page *next = new Page(m_profile, m_site, { m_site }, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
-			next->setLastPage(page);
+			next->setLastPage(page->pageInformation());
 			if (gallery) {
 				m_pendingGalleries.enqueue(next);
 			} else {
