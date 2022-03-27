@@ -5,23 +5,39 @@
 #include "models/favorite.h"
 #include "models/profile.h"
 #include "utils/zip.h"
+#include "reverse-search/reverse-search-engine.h"
+#include "reverse-search/reverse-search-loader.h"
 
 
 bool saveBackup(Profile *profile, const QString &filePath)
 {
+	QHash<QString, QString> files;
+
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl" };
-	QHash<QString, QString> zipFiles;
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json" };
 	for (const QString &file : backupFiles) {
-		zipFiles.insert(profile->getPath() + "/" + file, file);
+		files.insert(profile->getPath() + "/" + file, file);
 	}
 
 	// Favorite thumbnails
 	for (const Favorite &fav : profile->getFavorites()) {
 		const QString relPath = "thumbs/" + fav.getName(true) + ".png";
 		const QString favPath = savePath(relPath);
-		if (QFile::exists(favPath)) {
-			zipFiles.insert(favPath, relPath);
+		files.insert(favPath, relPath);
+	}
+
+	// Web services icons
+	ReverseSearchLoader loader(profile->getSettings());
+	for (const auto &rse : loader.getAllReverseSearchEngines()) {
+		const QString file = "webservices/" + QString::number(rse.id()) + ".ico";
+		files.insert(profile->getPath() + "/" + file, file);
+	}
+
+	// Filter non-existing files
+	QHash<QString, QString> zipFiles;
+	for (auto it = files.constBegin(); it != files.constEnd(); ++it) {
+		if (QFile::exists(it.key())) {
+			zipFiles.insert(it.key(), it.value());
 		}
 	}
 
