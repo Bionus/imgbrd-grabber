@@ -38,6 +38,7 @@ debug/
 cache/
 release/
 release.jks
+coverage/
 
 
 # NPM
