@@ -10,7 +10,6 @@ exemptLabels:
 
 exemptProjects: true # Ignore issues in a project
 exemptMilestones: true # Ignore issues in a milestone
-exemptAssignees: true # Ignore issues with an assignee
 
 markComment: >
   This issue has been automatically marked as stale because it has not had
