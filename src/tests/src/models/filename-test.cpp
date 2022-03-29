@@ -348,6 +348,12 @@ TEST_CASE("Filename")
 			"image - <%artist% some text><text %nothing%> %md5%.%ext%",
 			"image - artist1 some text 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
+	SECTION("Expand token with options")
+	{
+		assertPath(profile, img,
+			"image - <%artist:maxlength=4% some text><text %nothing:maxlength=4%> %md5%.%ext%",
+			"image - arti some text 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	}
 	SECTION("ExpandTokenInvert")
 	{
 		assertPath(profile, img,

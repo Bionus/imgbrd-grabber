@@ -205,7 +205,7 @@ TEST_CASE("FilenameParser")
 
 		auto cond = dynamic_cast<FilenameNodeConditionToken*>(invertCond->node);
 		REQUIRE(cond != nullptr);
-		REQUIRE(cond->token == QString("token"));
+		REQUIRE(cond->name == QString("token"));
 
 		auto ifTrue = dynamic_cast<FilenameNodeRoot*>(conditional->ifTrue);
 		REQUIRE(ifTrue != nullptr);
@@ -216,11 +216,45 @@ TEST_CASE("FilenameParser")
 
 		auto ifTrue1 = dynamic_cast<FilenameNodeConditionToken*>(ifTrue1Invert->node);
 		REQUIRE(ifTrue1 != nullptr);
-		REQUIRE(ifTrue1->token == QString("token"));
+		REQUIRE(ifTrue1->name == QString("token"));
 
 		auto ifTrue2 = dynamic_cast<FilenameNodeText*>(ifTrue->exprs[1]);
 		REQUIRE(ifTrue2 != nullptr);
 		REQUIRE(ifTrue2->text == QString(" out-"));
+
+		auto txt = dynamic_cast<FilenameNodeText*>(filename->exprs[1]);
+		REQUIRE(txt != nullptr);
+		REQUIRE(txt->text == QString("image.png"));
+	}
+
+	SECTION("Parse legacy conditional with options")
+	{
+		FilenameParser parser("<%md5:flag,opt=val%>image.png");
+		auto filename = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
+
+		REQUIRE(filename->exprs.count() == 2);
+
+		auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[0]);
+		REQUIRE(conditional != nullptr);
+		REQUIRE(conditional->ifTrue != nullptr);
+		REQUIRE(conditional->ifFalse == nullptr);
+
+		auto cond = dynamic_cast<FilenameNodeConditionToken*>(conditional->condition);
+		REQUIRE(cond != nullptr);
+		REQUIRE(cond->name == QString("md5"));
+		REQUIRE(cond->opts.count() == 2);
+		REQUIRE(cond->opts.keys() == QList<QString>() << "flag" << "opt");
+		REQUIRE(cond->opts["flag"] == QString());
+		REQUIRE(cond->opts["opt"] == QString("val"));
+
+		auto ifTrue = dynamic_cast<FilenameNodeConditionToken*>(conditional->ifTrue);
+		REQUIRE(ifTrue != nullptr);
+		REQUIRE(ifTrue->name == QString("md5"));
+		REQUIRE(ifTrue->opts.count() == 2);
+		REQUIRE(ifTrue->opts.keys() == QList<QString>() << "flag" << "opt");
+		REQUIRE(ifTrue->opts["flag"] == QString());
+		REQUIRE(ifTrue->opts["opt"] == QString("val"));
 
 		auto txt = dynamic_cast<FilenameNodeText*>(filename->exprs[1]);
 		REQUIRE(txt != nullptr);
@@ -360,7 +394,7 @@ TEST_CASE("FilenameParser")
 
 		auto tokenCond = dynamic_cast<FilenameNodeConditionToken*>(cond);
 		REQUIRE(tokenCond != nullptr);
-		REQUIRE(tokenCond->token == QString("my_token"));
+		REQUIRE(tokenCond->name == QString("my_token"));
 	}
 
 	SECTION("ParseConditionInvert")
@@ -374,7 +408,7 @@ TEST_CASE("FilenameParser")
 
 		auto tokenCond = dynamic_cast<FilenameNodeConditionToken*>(invertCond->node);
 		REQUIRE(tokenCond != nullptr);
-		REQUIRE(tokenCond->token == QString("my_token"));
+		REQUIRE(tokenCond->name == QString("my_token"));
 	}
 
 	SECTION("ParseConditionOperator")
@@ -393,7 +427,7 @@ TEST_CASE("FilenameParser")
 
 		auto right = dynamic_cast<FilenameNodeConditionToken*>(opCond->right);
 		REQUIRE(right != nullptr);
-		REQUIRE(right->token == QString("my_token"));
+		REQUIRE(right->name == QString("my_token"));
 	}
 
 	SECTION("ParseConditionMixedOperators")
@@ -445,7 +479,7 @@ TEST_CASE("FilenameParser")
 
 		auto right = dynamic_cast<FilenameNodeConditionToken*>(opCond->right);
 		REQUIRE(right != nullptr);
-		REQUIRE(right->token == QString("my_token"));
+		REQUIRE(right->name == QString("my_token"));
 	}
 
 	SECTION("ParseConditionTagParenthesis")
@@ -498,6 +532,6 @@ TEST_CASE("FilenameParser")
 
 		auto right = dynamic_cast<FilenameNodeConditionToken*>(opCond->right);
 		REQUIRE(right != nullptr);
-		REQUIRE(right->token == QString("my_token"));
+		REQUIRE(right->name == QString("my_token"));
 	}
 }

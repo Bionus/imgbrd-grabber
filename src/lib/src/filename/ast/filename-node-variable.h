@@ -11,7 +11,7 @@ struct FilenameNodeVariable : public FilenameNode
 	QString name;
 	QMap<QString, QString> opts;
 
-	explicit FilenameNodeVariable(QString name, QMap<QString, QString> opts);
+	explicit FilenameNodeVariable(QString name, QMap<QString, QString> opts = {});
 	void accept(FilenameVisitor &v) const override;
 };
 

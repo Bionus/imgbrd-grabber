@@ -437,11 +437,8 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 
 FilenameNodeConditionToken *FilenameParser::parseConditionToken()
 {
-	m_index++; // %
-
-	QString token = readUntil({ '%' });
-
-	m_index++; // %
-
-	return new FilenameNodeConditionToken(token);
+	auto *variable = parseVariable();
+	auto *condition = new FilenameNodeConditionToken(variable->name, variable->opts);
+	delete variable;
+	return condition;
 }

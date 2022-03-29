@@ -85,7 +85,7 @@ void FilenamePrintVisitor::visit(const FilenameNodeConditionTag &node)
 void FilenamePrintVisitor::visit(const FilenameNodeConditionToken &node)
 {
 	m_result += "ConditionToken('";
-	m_result += node.token;
+	m_result += node.name;
 	m_result += "')";
 }
 

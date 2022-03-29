@@ -74,7 +74,7 @@ void FilenameExecutionVisitor::visit(const FilenameNodeConditionTag &node)
 
 void FilenameExecutionVisitor::visit(const FilenameNodeConditionToken &node)
 {
-	visitVariable(node.token);
+	visitVariable(node.name, node.opts);
 }
 
 void FilenameExecutionVisitor::visit(const FilenameNodeJavaScript &node)
