@@ -408,6 +408,11 @@ TEST_CASE("Filename")
 			assertPath(profile, img, "<\"tag1\" | \"not_found\"?yes/>%md5%.%ext%", "yes/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 			assertPath(profile, img, "<\"not_found\" | \"not_found_2\"?yes/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		}
+
+		SECTION("Multiple expressions")
+		{
+			assertPath(profile, img, "<\"tag1\"?%id% and %rating%/>%md5%.%ext%", "7331 and safe/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+		}
 	}
 
 	SECTION("Forced MD5 calculation")
@@ -498,6 +503,8 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathOptionNumSingle")
 	{
+		QFile::remove("tests/resources/tmp/7331 (1).jpg");
+
 		assertPath(profile, img,
 			"%id% (%num%).%ext%",
 			"7331 (1).jpg",
@@ -505,6 +512,8 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathOptionNumSingleLength")
 	{
+		QFile::remove("tests/resources/tmp/7331 (001).jpg");
+
 		assertPath(profile, img,
 			"%id% (%num:length=3%).%ext%",
 			"7331 (001).jpg",

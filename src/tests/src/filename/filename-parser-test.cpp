@@ -145,6 +145,64 @@ TEST_CASE("FilenameParser")
 		REQUIRE(txt2->text == QString("/image.png"));
 	}
 
+	SECTION("Parse conditional with multiple expressions")
+	{
+		FilenameParser parser("out/<\"tag\"?%artist% and %copyright%:%artist% and %character%>/image.png");
+		auto filename = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
+
+		REQUIRE(filename->exprs.count() == 3);
+
+		auto txt1 = dynamic_cast<FilenameNodeText*>(filename->exprs[0]);
+		REQUIRE(txt1 != nullptr);
+		REQUIRE(txt1->text == QString("out/"));
+
+		auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[1]);
+		REQUIRE(conditional != nullptr);
+		REQUIRE(conditional->ifTrue != nullptr);
+		REQUIRE(conditional->ifFalse != nullptr);
+
+		auto cond = dynamic_cast<FilenameNodeConditionTag*>(conditional->condition);
+		REQUIRE(cond != nullptr);
+		REQUIRE(cond->tag.text() == QString("tag"));
+
+		auto ifTrue = dynamic_cast<FilenameNodeRoot*>(conditional->ifTrue);
+		REQUIRE(ifTrue != nullptr);
+		REQUIRE(ifTrue->exprs.count() == 3);
+
+		auto ifTrue1 = dynamic_cast<FilenameNodeVariable*>(ifTrue->exprs[0]);
+		REQUIRE(ifTrue1 != nullptr);
+		REQUIRE(ifTrue1->name == QString("artist"));
+
+		auto ifTrue2 = dynamic_cast<FilenameNodeText*>(ifTrue->exprs[1]);
+		REQUIRE(ifTrue2 != nullptr);
+		REQUIRE(ifTrue2->text == QString(" and "));
+
+		auto ifTrue3 = dynamic_cast<FilenameNodeVariable*>(ifTrue->exprs[2]);
+		REQUIRE(ifTrue3 != nullptr);
+		REQUIRE(ifTrue3->name == QString("copyright"));
+
+		auto ifFalse = dynamic_cast<FilenameNodeRoot*>(conditional->ifFalse);
+		REQUIRE(ifFalse != nullptr);
+		REQUIRE(ifFalse->exprs.count() == 3);
+
+		auto ifFalse1 = dynamic_cast<FilenameNodeVariable*>(ifFalse->exprs[0]);
+		REQUIRE(ifFalse1 != nullptr);
+		REQUIRE(ifFalse1->name == QString("artist"));
+
+		auto ifFalse2 = dynamic_cast<FilenameNodeText*>(ifFalse->exprs[1]);
+		REQUIRE(ifFalse2 != nullptr);
+		REQUIRE(ifFalse2->text == QString(" and "));
+
+		auto ifFalse3 = dynamic_cast<FilenameNodeVariable*>(ifFalse->exprs[2]);
+		REQUIRE(ifFalse3 != nullptr);
+		REQUIRE(ifFalse3->name == QString("character"));
+
+		auto txt2 = dynamic_cast<FilenameNodeText*>(filename->exprs[2]);
+		REQUIRE(txt2 != nullptr);
+		REQUIRE(txt2->text == QString("/image.png"));
+	}
+
 	SECTION("ParseConditionalLegacy")
 	{
 		FilenameParser parser("out/<some \"tag\" is present/>image.png");

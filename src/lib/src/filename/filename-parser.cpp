@@ -144,6 +144,19 @@ FilenameNodeRoot *FilenameParser::parseRootNode()
 	return new FilenameNodeRoot(exprs);
 }
 
+FilenameNode *FilenameParser::parseExprs(const QList<QChar> &chars)
+{
+	QList<FilenameNode*> exprs;
+
+	while (!finished() && !chars.contains(peek())) {
+		exprs.append(parseExpr(chars));
+	}
+
+	return exprs.count() == 1
+		? exprs.first()
+		: new FilenameNodeRoot(exprs);
+}
+
 FilenameNode *FilenameParser::parseExpr(const QList<QChar> &addChars)
 {
 	if (m_str.mid(m_index, 11) == "javascript:") {
@@ -268,10 +281,10 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		}
 		m_index++; // ?
 
-		ifTrue = parseExpr({ ':', '>' });
+		ifTrue = parseExprs({ ':', '>' });
 		if (peek() == ':') {
 			m_index++; // :
-			ifFalse = parseExpr({ '>' });
+			ifFalse = parseExprs({ '>' });
 		}
 
 		if (finished() || peek() != '>') {
