@@ -60,6 +60,7 @@ Site::Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile 
 	diskCache->setMaximumCacheSize(50 * 1024 * 1024);
 	m_manager->setCache(diskCache);
 
+	connect(engine, &SourceEngine::changed, this, &Site::loadConfig);
 	loadConfig();
 }
 

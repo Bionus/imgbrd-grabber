@@ -2,6 +2,7 @@
 #define JAVASCRIPT_SOURCE_ENGINE_H
 
 #include "source-engine.h"
+#include <QFileSystemWatcher>
 #include <QJSValue>
 #include <QList>
 #include <QMap>
@@ -31,7 +32,7 @@ class JavaScriptSourceEngine : public SourceEngine
 		 * @param path The JavaScript file to load.
 		 * @param helperFile The JavaScript "helper.js" file necessary for JS sources to run.
 		 */
-		explicit JavaScriptSourceEngine(const QString &path, const QString &helperFile, QObject *parent = nullptr);
+		explicit JavaScriptSourceEngine(QString path, QString helperFile, QObject *parent = nullptr);
 		~JavaScriptSourceEngine() override;
 
 		/**
@@ -47,8 +48,12 @@ class JavaScriptSourceEngine : public SourceEngine
 		const QStringList &getAdditionalTokens() const override;
 
 	private:
+		void load();
 		QJSEngine *jsEngine();
 		QMutex *jsEngineMutex();
+
+	private slots:
+		void reload();
 
 	private:
 		// Input
@@ -62,6 +67,8 @@ class JavaScriptSourceEngine : public SourceEngine
 		QMap<QString, Auth*> m_auths;
 		QStringList m_additionalTokens;
 		TagNameFormat m_tagNameFormat; // Unused
+
+		QFileSystemWatcher m_watcher;
 };
 
 #endif // JAVASCRIPT_SOURCE_ENGINE_H

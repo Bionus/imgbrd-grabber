@@ -16,8 +16,16 @@
 #include "logger.h"
 
 
-JavaScriptSourceEngine::JavaScriptSourceEngine(const QString &path, const QString &helperFile, QObject *parent)
-	: SourceEngine(parent), m_path(path), m_helperFile(helperFile)
+JavaScriptSourceEngine::JavaScriptSourceEngine(QString path, QString helperFile, QObject *parent)
+	: SourceEngine(parent), m_path(std::move(path)), m_helperFile(std::move(helperFile))
+{
+	load();
+
+	m_watcher.addPath(m_path);
+	connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &JavaScriptSourceEngine::reload);
+}
+
+void JavaScriptSourceEngine::load()
 {
 	// Tag format mapper
 	static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
@@ -29,9 +37,9 @@ JavaScriptSourceEngine::JavaScriptSourceEngine(const QString &path, const QStrin
 	};
 
 	// Javascript models
-	QFile js(path);
+	QFile js(m_path);
 	if (!js.exists() || !js.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		log(QStringLiteral("Could not load JavaScript model file `%1`").arg(path), Logger::Error);
+		log(QStringLiteral("Could not load JavaScript model file `%1`").arg(m_path), Logger::Error);
 		return;
 	}
 
@@ -131,6 +139,27 @@ JavaScriptSourceEngine::JavaScriptSourceEngine(const QString &path, const QStrin
 
 		m_auths.insert(id, ret);
 	}
+}
+
+void JavaScriptSourceEngine::reload()
+{
+	// Ignore "deletion" signal when editors delete the file before overwriting it
+	if (!QFile::exists(m_path)) {
+		return;
+	}
+
+	log(QStringLiteral("Reloading JS source file `%1`...").arg(m_path));
+
+	// Clear previous information
+	/*qDeleteAll(m_apis);
+	qDeleteAll(m_auths);*/
+	m_name.clear();
+	m_apis.clear();
+	m_auths.clear();
+	m_additionalTokens.clear();
+
+	load();
+	emit changed();
 }
 
 JavaScriptSourceEngine::~JavaScriptSourceEngine()

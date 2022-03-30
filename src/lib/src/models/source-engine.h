@@ -35,6 +35,9 @@ class SourceEngine : public QObject
 		virtual const QList<Api*> &getApis() const = 0;
 		virtual const QMap<QString, Auth*> &getAuths() const = 0;
 		virtual const QStringList &getAdditionalTokens() const = 0;
+
+	signals:
+		void changed();
 };
 
 #endif // SOURCE_ENGINE_H
