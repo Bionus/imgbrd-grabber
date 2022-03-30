@@ -1,6 +1,7 @@
 #include "image-context-menu.h"
 #include <QDesktopServices>
 #include <QSignalMapper>
+#include "functions.h"
 #include "main-window.h"
 #include "models/image.h"
 #include "reverse-search/reverse-search-engine.h"
@@ -15,7 +16,7 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 	m_reverseSearchEngines = loader.getAllReverseSearchEngines();
 
 	// Open image in browser
-	addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()));
+	addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()), getKeySequence(m_settings, "Viewer/Shortcuts/keyOpenInBrowser"));
 
 	// Reverse search actions
 	QMenu *reverseSearchMenu = addMenu(QIcon(":/images/icons/globe.png"), tr("Web services"));

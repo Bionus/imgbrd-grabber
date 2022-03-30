@@ -97,6 +97,9 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::toggleFullScreen);
 		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ViewerWindow::copyImageDataToClipboard);
+
+		auto *openInBrowser = new QShortcut(getKeySequence(m_settings, "keyOpenInBrowser"), this);
+			connect(openInBrowser, &QShortcut::activated, [this]() { QDesktopServices::openUrl(m_image->pageUrl()); });
 	m_settings->endGroup();
 
 	configureButtons();

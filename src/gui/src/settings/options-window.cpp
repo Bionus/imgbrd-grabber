@@ -376,6 +376,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyViewerToggleSlideshow->setKeySequence(getKeySequence(settings, "keyToggleSlideshow", Qt::Key_Space));
 		ui->keyViewerToggleFullscreen->setKeySequence(getKeySequence(settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11));
 		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+		ui->keyViewerOpenInBrowser->setKeySequence(getKeySequence(settings, "keyOpenInBrowser"));
 	settings->endGroup();
 
 	settings->beginGroup("Coloring");
@@ -1297,6 +1298,7 @@ void OptionsWindow::save()
 		settings->setValue("keyToggleSlideshow", ui->keyViewerToggleSlideshow->keySequence().toString());
 		settings->setValue("keyToggleFullscreen", ui->keyViewerToggleFullscreen->keySequence().toString());
 		settings->setValue("keyDataToClipboard", ui->keyViewerDataToClipboard->keySequence().toString());
+		settings->setValue("keyOpenInBrowser", ui->keyViewerOpenInBrowser->keySequence().toString());
 	settings->endGroup();
 
 	settings->beginGroup("Coloring");
