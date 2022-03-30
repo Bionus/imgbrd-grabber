@@ -4511,7 +4511,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="162"/>
       <source>Ignore (page 1)</source>
-      <translation>Игнорировать(1 страница)</translation>
+      <translation>Игнорировать (страница 1)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
