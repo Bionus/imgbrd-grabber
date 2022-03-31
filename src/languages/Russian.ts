@@ -1382,7 +1382,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Web services</source>
-      <translation>Веб-сервисы</translation>
+      <translation>Веб-службы</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="32"/>
@@ -2139,7 +2139,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="179"/>
       <source>Web services</source>
-      <translation>Веб-сервисы</translation>
+      <translation>Веб-службы</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="184"/>
@@ -4759,7 +4759,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="115"/>
       <source>Consumer key</source>
-      <translation>Ключ потребителя</translation>
+      <translation>Ключ клиента</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="116"/>
