@@ -1354,6 +1354,12 @@ void SearchTab::loadPage()
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);
 
+		// Skip invalid pages
+		if (!page->isValid()) {
+			failedLoading(page);
+			continue;
+		}
+
 		// Keep pointer to the new page
 		if (m_lastPages.contains(page->website())) {
 			page->setLastPage(m_lastPages[page->website()]->pageInformation());
@@ -1374,12 +1380,6 @@ void SearchTab::loadPage()
 		}
 
 		m_stop = false;
-
-		// Skip invalid pages
-		if (!page->isValid()) {
-			failedLoading(page);
-			continue;
-		}
 
 		// Load tags if necessary
 		if (m_settings->value("useregexfortags", true).toBool()) {
