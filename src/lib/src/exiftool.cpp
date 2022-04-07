@@ -68,8 +68,8 @@ bool Exiftool::execute(const QString &file, const QString &command, int msecs)
 		return false;
 	}
 
-	QString toWrite = (command.isEmpty() ? "" : command + "\n") + file + "\n-execute\n";
-	m_process.write(toWrite.toLocal8Bit());
+	const QString toWrite = (command.isEmpty() ? "" : command + "\n") + file + "\n-execute\n";
+	m_process.write(toWrite.toUtf8());
 
 	m_process.setReadChannel(QProcess::StandardOutput);
 
