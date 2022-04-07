@@ -482,7 +482,7 @@ void ViewerWindow::copyImageDataToClipboard()
 }
 void ViewerWindow::copyImageLinkToClipboard()
 {
-	QApplication::clipboard()->setText(m_image->fileUrl().toString());
+	QApplication::clipboard()->setText(m_image->fileUrl().toEncoded());
 }
 
 void ViewerWindow::showDetails()
