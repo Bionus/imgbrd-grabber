@@ -77,7 +77,7 @@ addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
         const from = map[to].split(".");
         let val: any = data;
         for (const part of from) {
-            val = part in val && val[part] !== null ? val[part] : undefined;
+            val = val && part in val && val[part] !== null ? val[part] : undefined;
         }
         result[to] = val !== data ? val : undefined;
     }
