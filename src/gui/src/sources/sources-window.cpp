@@ -220,10 +220,11 @@ void SourcesWindow::addCheckboxes()
 		int n = 1;
 		if (t != "hide") {
 			if (t == "icon" || t == "both") {
+				Source *source = m_profile->getSources().value(site->type());
 				QAffiche *image = new QAffiche(it.key(), 0, QColor(), this);
-				//image->setPixmap(QPixmap(site->getSourceEngine()->getPath().readPath("icon.png")).scaled(QSize(16, 16))); // FIXME SOURCE
+				image->setPixmap(QPixmap(source->getPath().readPath("icon.png")).scaled(QSize(16, 16)));
 				image->setCursor(Qt::PointingHandCursor);
-				image->setToolTip(site->getSourceEngine()->getName());
+				image->setToolTip(source->getName());
 				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
 				row.labels.append(image);
