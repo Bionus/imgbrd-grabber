@@ -25,19 +25,21 @@ function buildGalleryImage(raw: any, base: IImage): IImage {
         "id": "id",
         "width": "width",
         "height": "height",
+        "sample_url": "image_url",
         "file_url": "image_url",
         "name": "title",
     };
 
     const asset = Grabber.mapFields(raw, map);
     if (raw.asset_type === "video_clip") {
-        asset.sample_url = asset.file_url;
         delete asset.file_url;
+    } else {
+        asset.file_url = asset.sample_url.replace("/large/", "/4k/");
     }
 
     const img = { ...base, ...asset };
-    if (!img.preview_url && img.file_url) {
-        img.preview_url = img.file_url.replace("/large/", "/smaller_square/");
+    if (!img.preview_url && img.sample_url) {
+        img.preview_url = img.sample_url.replace("/large/", "/smaller_square/");
     }
 
     return img;
