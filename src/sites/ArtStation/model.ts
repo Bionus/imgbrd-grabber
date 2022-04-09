@@ -2,9 +2,7 @@ function buildImage(raw: any): IImage {
     const map = {
         "id": "id",
         "md5": "hash_id",
-        "preview_url": "smaller_square_cover_url",
         "name": "title",
-        "authorid": "user.id",
         "author": "user.username",
         "tags": "tags",
         "createdAt": "created_at",
@@ -12,6 +10,8 @@ function buildImage(raw: any): IImage {
 
     const img = Grabber.mapFields(raw, map);
     img.rating = raw.hide_as_adult ? "explicit" : "safe";
+    img.preview_url = raw.smaller_square_cover_url || raw.cover?.thumb_url;
+    img.authorid = raw.user_id || raw.user?.id;
 
     if (raw.icons?.multiple_images) {
         img.type = "gallery";
@@ -39,15 +39,21 @@ function buildGalleryImage(raw: any, base: IImage): IImage {
     if (!img.preview_url && img.file_url) {
         img.preview_url = img.file_url.replace("/large/", "/smaller_square/");
     }
-    console.log(JSON.stringify(img));
 
     return img;
 }
+
+const meta: Record<string, MetaField> = {
+    user: {
+        type: "input",
+    },
+};
 
 export const source: ISource = {
     name: "Slushe",
     modifiers: [],
     forcedTokens: [],
+    meta,
     apis: {
         json: {
             name: "JSON",
@@ -55,7 +61,8 @@ export const source: ISource = {
             maxLimit: 1000,
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): IError | string => {
-                    if (query.search) {
+                    const search = Grabber.parseSearchQuery(query.search, meta);
+                    if (search.query) {
                         /*const url = "/api/v2/search/projects.json";
                         const data = {
                             filters: [{
@@ -70,6 +77,9 @@ export const source: ISource = {
                         };*/
                         return { error: "Search not supported" };
                     }
+                    if (search.user) {
+                        return "/users/" + search.user + "/projects.json?page=" + query.page + "&per_page=" + opts.limit;
+                    }
                     return "/api/v2/community/explore/projects/latest.json?page=" + query.page + "&per_page=" + opts.limit;
                 },
                 parse: (src: string): IParsedSearch | IError => {
@@ -78,8 +88,11 @@ export const source: ISource = {
                         return { error: data.data || "Error" };
                     }
 
-                    const images: IImage[] = data.data.map(buildImage);
-                    return { images };
+                    console.log(JSON.stringify(data.data));
+                    return {
+                        images: data.data.map(buildImage),
+                        imageCount: data.total_count,
+                    };
                 },
             },
             gallery: {
