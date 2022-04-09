@@ -90,7 +90,6 @@ export const source: ISource = {
                         return { error: data.data || "Error" };
                     }
 
-                    console.log(JSON.stringify(data.data));
                     return {
                         images: data.data.map(buildImage),
                         imageCount: data.total_count,
