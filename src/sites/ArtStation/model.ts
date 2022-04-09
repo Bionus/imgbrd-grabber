@@ -31,7 +31,7 @@ function buildGalleryImage(raw: any, base: IImage): IImage {
     };
 
     const asset = Grabber.mapFields(raw, map);
-    if (raw.asset_type === "video_clip") {
+    if (raw.asset_type === "video" || raw.asset_type === "video_clip") {
         delete asset.file_url;
     } else {
         asset.file_url = asset.sample_url.replace("/large/", "/4k/");
