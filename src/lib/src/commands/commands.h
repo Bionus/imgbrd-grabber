@@ -35,6 +35,7 @@ class Commands
 	private:
 		Profile *m_profile;
 
+		bool m_dryRun;
 		QString m_commandTagBefore;
 		QString m_commandImage;
 		QString m_commandTagAfter;

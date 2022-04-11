@@ -13,7 +13,7 @@ class SqlWorker : public QThread
 	Q_OBJECT
 
 	public:
-		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = nullptr);
+		SqlWorker(QString driver, QString host, QString user, QString password, QString database, bool dryRun = false, QObject *parent = nullptr);
 		bool connect();
 		static QString escape(const QVariant &val);
 
@@ -26,6 +26,7 @@ class SqlWorker : public QThread
 		QString m_user;
 		QString m_password;
 		QString m_database;
+		bool m_dryRun;
 
 		QSqlDatabase m_db;
 		bool m_enabled;

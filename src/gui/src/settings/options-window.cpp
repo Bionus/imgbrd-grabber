@@ -435,6 +435,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->lineCommandsTagBefore->setText(settings->value("tag_before").toString());
 		ui->lineCommandsImage->setText(settings->value("image").toString());
 		ui->lineCommandsTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
+		ui->checkCommandsDryRun->setChecked(settings->value("dry_run", false).toBool());
 		settings->beginGroup("SQL");
 			ui->comboCommandsSqlDriver->addItems(QSqlDatabase::drivers());
 			ui->comboCommandsSqlDriver->setCurrentIndex(QSqlDatabase::drivers().indexOf(settings->value("driver", "QMYSQL").toString()));
@@ -447,6 +448,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineCommandsSqlImage->setText(settings->value("image").toString());
 			ui->lineCommandsSqlTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
 			ui->lineCommandsSqlAfter->setText(settings->value("after").toString());
+			ui->checkSqlCommandsDryRun->setChecked(settings->value("dry_run", false).toBool());
 		settings->endGroup();
 	settings->endGroup();
 
@@ -485,14 +487,14 @@ void OptionsWindow::on_buttonTempPathOverride_clicked()
 
 void OptionsWindow::on_buttonFilenamePlus_clicked()
 {
-	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
+	auto *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	setupDialogShortcuts(fw, m_profile->getSettings());
 	fw->show();
 }
 void OptionsWindow::on_buttonFavoritesPlus_clicked()
 {
-	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
+	auto *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFavorites, &QLineEdit::setText);
 	setupDialogShortcuts(fw, m_profile->getSettings());
 	fw->show();
@@ -1359,9 +1361,10 @@ void OptionsWindow::save()
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
-		settings->setValue("tag_before", ui->lineCommandsTagAfter->text());
+		settings->setValue("tag_before", ui->lineCommandsTagBefore->text());
 		settings->setValue("image", ui->lineCommandsImage->text());
-		settings->setValue("tag_after", ui->lineCommandsTagBefore->text());
+		settings->setValue("tag_after", ui->lineCommandsTagAfter->text());
+		settings->setValue("dry_run", ui->checkCommandsDryRun->isChecked());
 		settings->beginGroup("SQL");
 			settings->setValue("driver", ui->comboCommandsSqlDriver->currentText());
 			settings->setValue("host", ui->lineCommandsSqlHost->text());
@@ -1373,6 +1376,7 @@ void OptionsWindow::save()
 			settings->setValue("image", ui->lineCommandsSqlImage->text());
 			settings->setValue("tag_after", ui->lineCommandsSqlTagAfter->text());
 			settings->setValue("after", ui->lineCommandsSqlAfter->text());
+			settings->setValue("dry_run", ui->checkSqlCommandsDryRun->isChecked());
 		settings->endGroup();
 	settings->endGroup();
 
