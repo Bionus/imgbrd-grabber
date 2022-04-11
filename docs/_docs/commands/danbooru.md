@@ -61,7 +61,7 @@ npm root -g
 
 Open Grabber, then go to "Options > Commands", and set the "Image" field to:
 ```
-node danbooru.js "YOUR_USERNAME" "YOUR_API_KEY" "%all:includenamespace,unsafe,underscores%" "%rating%" "%source:unsafe%" "%path%"
+node danbooru.js "YOUR_USERNAME" "YOUR_API_KEY" "%all:includenamespace,unsafe,underscores%" "%rating%" "%source:unsafe%" "%path:nobackslash%"
 ```
 
 Make sure to replace `YOUR_USERNAME` by your Danbooru username, and `YOUR_API_KEY` by the API key created earlier.
