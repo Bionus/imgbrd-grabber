@@ -41,7 +41,7 @@ Download the [danbooru.js](danbooru.js) file into Grabber's installation folder.
 
 ## Install NodeJS global packages
 
-This script uses the NodeJS "axios" and "form-data" plugins, so you can install them with:
+This script uses the NodeJS [axios](https://www.npmjs.com/package/axios) and [form-data](https://www.npmjs.com/package/form-data) packages, so you can install them with:
 ```
 npm install -g axios form-data
 ```
@@ -65,3 +65,12 @@ node danbooru.js "YOUR_USERNAME" "YOUR_API_KEY" "%all:includenamespace,unsafe,un
 ```
 
 Make sure to replace `YOUR_USERNAME` by your Danbooru username, and `YOUR_API_KEY` by the API key created earlier.
+
+### Open new images in browser
+
+If you want to open newly added images in your browser, you need to edit the `danbooru.js` file, and change `OPEN_BROWSER` from `false` to `true`.
+
+You'll also need to install the NodeJS [open](https://www.npmjs.com/package/open) package, that you can install with:
+```
+npm install -g open
+```
