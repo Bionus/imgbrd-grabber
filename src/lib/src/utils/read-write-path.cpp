@@ -22,11 +22,13 @@ QString ReadWritePath::readPath() const
 {
 	return m_readPath;
 }
-QString ReadWritePath::readPath(const QString &path) const
+QString ReadWritePath::readPath(const QString &path, bool force) const
 {
-	QString writePath = this->writePath(path);
-	if (QFile::exists(writePath)) {
-		return writePath;
+	if (!force) {
+		QString writePath = this->writePath(path);
+		if (QFile::exists(writePath)) {
+			return writePath;
+		}
 	}
 	return QDir::cleanPath(m_readPath + QDir::separator() + path);
 }
@@ -50,7 +52,7 @@ QString ReadWritePath::writePath(const QString &path, bool createParent) const
 ReadWritePath ReadWritePath::readWritePath(const QString &path) const
 {
 	return {
-		readPath(path),
+		readPath(path, true),
 		writePath(path),
 	};
 }
