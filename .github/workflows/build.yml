@@ -508,6 +508,7 @@ jobs:
           if-no-files-found: error
 
       - name: Generate package
+        shell: bash
         run: ./scripts/package-windows.sh ${{ matrix.suffix }}
 
       - name: Upload package
