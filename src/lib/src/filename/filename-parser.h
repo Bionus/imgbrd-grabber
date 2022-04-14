@@ -52,6 +52,7 @@ class FilenameParser
 	private:
 		QString m_str;
 		int m_index;
+		int m_conditionParenthesisDepth;
 		QString m_error;
 };
 

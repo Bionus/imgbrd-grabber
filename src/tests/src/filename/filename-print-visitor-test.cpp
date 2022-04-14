@@ -12,6 +12,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser("");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -24,6 +25,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser("out/%md5:opt%.%ext%");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -36,6 +38,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser("<\"tag\"&!%token%?true:false>");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -48,6 +51,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser(R"(<a&b|c&d|e&f?true:false>)");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -60,6 +64,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser(R"(<(a&b)|(c&d)|(e&f)?true:false>)");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -72,6 +77,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser(R"(<a&(b|c)&(d|e)&f?true:false>)");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -84,6 +90,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser("<legacy conditional \"tag\" -%token%>");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -96,6 +103,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser("javascript:md5 + '.' + ext");
 		auto *ast = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);
@@ -108,6 +116,7 @@ TEST_CASE("FilenamePrintVisitor")
 	{
 		FilenameParser parser("javascript:artist || copyright");
 		auto *ast = parser.parseCondition();
+		REQUIRE(parser.error() == QString());
 
 		FilenamePrintVisitor printVisitor;
 		QString result = printVisitor.run(*ast);

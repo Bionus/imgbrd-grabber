@@ -21,7 +21,7 @@
 
 
 FilenameParser::FilenameParser(QString str)
-	: m_str(std::move(str)), m_index(0)
+	: m_str(std::move(str)), m_index(0), m_conditionParenthesisDepth(0)
 {}
 
 const QString &FilenameParser::error() const
@@ -372,6 +372,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 	// Parenthesis
 	if (c == '(') {
 		m_index++; // (
+		m_conditionParenthesisDepth++;
 
 		auto *ret = parseConditionNode();
 		if (finished() || peek() != ')') {
@@ -380,6 +381,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 		}
 
 		m_index++; // )
+		m_conditionParenthesisDepth--;
 		return ret;
 	}
 
@@ -439,7 +441,9 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 
 	QString tag = quotes
 		? readUntil({ '"' })
-		: readUntil({ ' ', '&', '|', '?' }, true);
+		: m_conditionParenthesisDepth == 0
+			? readUntil({ ' ', '&', '|', '?' }, true)
+			: readUntil({ ' ', '&', '|', '?', ')' }, true);
 
 	if (quotes) {
 		m_index++; // "
