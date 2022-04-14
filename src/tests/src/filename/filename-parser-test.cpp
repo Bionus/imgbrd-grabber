@@ -444,6 +444,17 @@ TEST_CASE("FilenameParser")
 		REQUIRE(tagCond->tag.text() == QString("my_tag"));
 	}
 
+	SECTION("Parse condition tag without quotes and with parenthesis")
+	{
+		FilenameParser parser("my_tag_(test)");
+		auto cond = parser.parseCondition();
+		REQUIRE(parser.error() == QString());
+
+		auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
+		REQUIRE(tagCond != nullptr);
+		REQUIRE(tagCond->tag.text() == QString("my_tag_(test)"));
+	}
+
 	SECTION("ParseConditionToken")
 	{
 		FilenameParser parser("%my_token%");
