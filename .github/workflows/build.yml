@@ -508,11 +508,10 @@ jobs:
           if-no-files-found: error
 
       - name: Generate package
-        shell: bash
+        shell: cmd
         run: |
-          apt update
-          apt install rsync zip
-          ./scripts/package-windows.sh ${{ matrix.suffix }}
+          scripts\package-windows.bat
+          mv Grabber.zip Grabber_${{ matrix.suffix }}.zip
 
       - name: Upload package
         uses: actions/upload-artifact@v2
