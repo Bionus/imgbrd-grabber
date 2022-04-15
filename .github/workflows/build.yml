@@ -509,7 +509,10 @@ jobs:
 
       - name: Generate package
         shell: bash
-        run: ./scripts/package-windows.sh ${{ matrix.suffix }}
+        run: |
+          apt update
+          apt install rsync zip
+          ./scripts/package-windows.sh ${{ matrix.suffix }}
 
       - name: Upload package
         uses: actions/upload-artifact@v2
