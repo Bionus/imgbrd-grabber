@@ -270,7 +270,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(6);
+		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
@@ -285,8 +285,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "photo_set", false, "unknown", "multiple", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", this));
+		const int tagsStackIndex = ui->stackedWidget->indexOf(ui->pageTags);
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
-			ui->stackedWidget->insertWidget(i + 9, m_tokenSettings[i]);
+			ui->stackedWidget->insertWidget(i + tagsStackIndex + 1, m_tokenSettings[i]);
 		}
 
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
