@@ -1142,6 +1142,10 @@ void ViewerWindow::fullScreen()
 			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
 		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
 			connect(toggleSlideshow, &QShortcut::activated, this, &ViewerWindow::toggleSlideshow);
+		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), m_fullScreen);
+			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
+		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), m_fullScreen);
+			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
 	m_settings->endGroup();
 
 	m_fullScreen->setFocus();
