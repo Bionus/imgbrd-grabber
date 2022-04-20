@@ -16,7 +16,7 @@ QSet<QString> FilenameResolutionVisitor::run(const FilenameNodeRoot &node)
 
 void FilenameResolutionVisitor::visit(const FilenameNodeConditionToken &node)
 {
-	m_results.insert(node.token);
+	m_results.insert(node.name);
 }
 
 void FilenameResolutionVisitor::visit(const FilenameNodeVariable &node)

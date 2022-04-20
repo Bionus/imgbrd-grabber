@@ -351,21 +351,24 @@ _Note: custom tokens with an already used name (such as %character%) will be use
 
 
 # Conditionals
-You can use conditionals in your filename, using strict inequality signs (< and >).
+You can use conditionals in your filename, using strict inequality signs (`<` and `>`).
 
 *Note: there is currently issues with conditionals inside other conditionals, so it is advised to not imbricate conditionals in your filename.*
 
 ## Simple conditionals
 ### Token conditionals
 If any token found in the conditional does not exist or is empty, nothing into it will be displayed.
+
 Since an example is worth a thousand words:
 ```
 image - <%artist% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%
 ```
+
 Assuming the image contains both an artist and a character, it will return:
 ```
 image - %artist% some text  test %md5%.%ext%
 ```
+
 If the image doesn't have any artist, it will be:
 ```
 image -  %md5%.%ext%
@@ -376,18 +379,22 @@ You can also test directly the presence of a tag surrounding him with quotes. Fo
 ```
 image - <image contains the tag "solo"><"group" is one of the image tags> %md5%.%ext%
 ```
+
 If the image contains the "solo" tag, it will return:
 ```
 image - image contains the tag solo  %md5%.%ext%
 ```
+
 If the image contains the "group" tag:
 ```
 image -  group is one of the image tags %md5%.%ext%
 ```
-If, for some obscure reason, it have both:
+
+If, for some obscure reason, it has both:
 ```
 image - image contains the tag solo group is one of the image tags %md5%.%ext%
 ```
+
 If, it does not have solo nor group:
 ```
 image -   %md5%.%ext%
@@ -405,8 +412,8 @@ As well as tags:
 <image does not contain the tag !"tag1"> %md5%.%ext%
 ```
 
-## Complex conditions
-Sometimes, it can be easier to have explicit "if then else" conditions.
+## If-then-else conditions
+Sometimes, it can be easier to have explicit "if ... then ... else ..." conditions.
 
 To do so, you should use the `<if?then:else>` syntax:
 ```
@@ -426,6 +433,8 @@ The condition part can use either tags or tokens, same as simple conditionals, c
 ```
 
 You can escape special characters (`?`, `!`...) by prefixing them with `^`. For `<` and `>`, you can also double them (`<<` and `>>`).
+
+Note that while double quotes are optional for tags, it's recommended to use them, especially in complex conditions or for tags containing special characters.
 
 # JavaScript
 You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, that you can open clicking the "..." button near the filename field, or by adding "javascript:" before your script.

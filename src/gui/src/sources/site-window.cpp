@@ -151,7 +151,7 @@ void SiteWindow::finish(Source *src)
 	bool ssl = false;
 	const QString url = getDomain(m_url, &ssl);
 
-	Site *site = new Site(url, src);
+	Site *site = new Site(url, src, m_profile);
 	m_profile->addSite(site);
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site

@@ -4,7 +4,7 @@
 #include <QObject>
 #include "models/qml-auth.h"
 #include "models/site.h"
-#include "models/source.h"
+#include "models/source-engine.h"
 #include "settings.h"
 
 
@@ -21,7 +21,7 @@ class QmlSite : public QObject
 		explicit QmlSite(Site *site, QObject *parent = nullptr)
 			: QObject(parent), m_site(site), m_settings(new Settings(site->settings(), this))
 		{
-			auto auths = m_site->getSource()->getAuths();
+			auto auths = m_site->getSourceEngine()->getAuths();
 			for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
 				m_fields.append(new QmlAuth(it.value(), this));
 			}
@@ -31,7 +31,8 @@ class QmlSite : public QObject
 		QString name() const { return m_site->name(); }
 		Settings *settings() const { return m_settings; }
 		QList<QmlAuth*> authFields() const { return m_fields; }
-		bool remove() { return m_site->remove(); }
+
+		Site *rawSite() const { return m_site; }
 
 	private:
 		Site *m_site;

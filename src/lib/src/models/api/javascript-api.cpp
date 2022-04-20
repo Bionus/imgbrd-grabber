@@ -9,6 +9,7 @@
 #include "mixed-settings.h"
 #include "models/image.h"
 #include "models/page.h"
+#include "models/page-information.h"
 #include "models/pool.h"
 #include "models/site.h"
 #include "tags/tag.h"
@@ -88,7 +89,7 @@ QJSValue buildParsedSearchOperator(QJSEngine *engine, const QString &op, const Q
 	return ret;
 }
 
-PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const
+PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, const PageInformation &lastPage, Site *site) const
 {
 	PageUrl ret;
 

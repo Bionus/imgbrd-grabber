@@ -32,8 +32,8 @@ TEST_CASE("Site")
 		settings.setValue("sources/source_3", "");
 		settings.setValue("sources/source_4", "");
 
-		Source source(profile, "tests/resources/sites/Danbooru (2.0)");
-		Site site("danbooru.donmai.us", &source);
+		Source source("tests/resources/sites/Danbooru (2.0)");
+		Site site("danbooru.donmai.us", &source, profile);
 
 		REQUIRE(site.getApis().count() == 3);
 	}
@@ -47,8 +47,8 @@ TEST_CASE("Site")
 		settings.setValue("sources/source_3", "3");
 		settings.setValue("sources/source_4", "4");
 
-		Source source(profile, "tests/resources/sites/Danbooru (2.0)");
-		Site site("danbooru.donmai.us", &source);
+		Source source("tests/resources/sites/Danbooru (2.0)");
+		Site site("danbooru.donmai.us", &source, profile);
 
 		REQUIRE(site.getApis().count() == 0);
 	}

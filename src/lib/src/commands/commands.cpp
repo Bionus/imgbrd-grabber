@@ -17,6 +17,7 @@ Commands::Commands(Profile *profile)
 {
 	QSettings *settings = profile->getSettings();
 
+	m_dryRun = settings->value("Exec/dry_run", false).toBool();
 	m_commandTagBefore = settings->value("Exec/tag_before").toString();
 	m_commandImage = settings->value("Exec/image").toString();
 	m_commandTagAfter = settings->value("Exec/tag_after", settings->value("Exec/tag").toString()).toString();
@@ -32,7 +33,8 @@ Commands::Commands(Profile *profile)
 		settings->value("Exec/SQL/host").toString(),
 		settings->value("Exec/SQL/user").toString(),
 		settings->value("Exec/SQL/password").toString(),
-		settings->value("Exec/SQL/database").toString());
+		settings->value("Exec/SQL/database").toString(),
+		settings->value("Exec/SQL/dry_run", false).toBool());
 	m_sqlWorker->setObjectName("SqlThread");
 }
 
@@ -152,6 +154,10 @@ bool Commands::execute(const QString &command) const
 	#else
 		log(QStringLiteral("Execution of \"%1\"").arg(command));
 		Logger::getInstance().logCommand(command);
+
+		if (m_dryRun) {
+			return true;
+		}
 
 		QStringList args = splitCommand(command);
 		QString program = args.takeFirst();

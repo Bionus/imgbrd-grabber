@@ -12,7 +12,7 @@ class ReadWritePath
 		ReadWritePath(QString readPath, QString writePath);
 
 		QString readPath() const;
-		QString readPath(const QString &path) const;
+		QString readPath(const QString &path, bool force = false) const;
 
 		QString writePath() const;
 		QString writePath(const QString &path, bool createParent = false) const;

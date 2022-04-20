@@ -500,11 +500,22 @@ jobs:
             scripts\windows-setup\setup.iss
           mv scripts/windows-setup/Grabber_*.exe "Grabber_${{ matrix.suffix }}.exe
 
-      - name: Upload package
+      - name: Upload installer
         uses: actions/upload-artifact@v2
         with:
           name: Grabber_${{ matrix.suffix }}.exe
           path: Grabber_${{ matrix.suffix }}.exe
+          if-no-files-found: error
+
+      - name: Generate package
+        shell: cmd
+        run: scripts\package-windows.bat && mv Grabber.zip Grabber_${{ matrix.suffix }}.zip
+
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: Grabber_${{ matrix.suffix }}.zip
+          path: Grabber_${{ matrix.suffix }}.zip
           if-no-files-found: error
 
       - name: Generate symbols ZIP
@@ -627,10 +638,15 @@ jobs:
         with:
           name: Grabber.dmg
 
-      - name: Download artifact (Windows 32-bit)
+      - name: Download artifact (Windows 32-bit installer)
         uses: actions/download-artifact@v2
         with:
           name: Grabber_x86.exe
+
+      - name: Download artifact (Windows 32-bit archive)
+        uses: actions/download-artifact@v2
+        with:
+          name: Grabber_x86.zip
 
       - name: Download artifact (Windows 32-bit symbols)
         uses: actions/download-artifact@v2
@@ -638,10 +654,15 @@ jobs:
         with:
           name: Grabber_x86_symbols.zip
 
-      - name: Download artifact (Windows 64-bit)
+      - name: Download artifact (Windows 64-bit installer)
         uses: actions/download-artifact@v2
         with:
           name: Grabber_x64.exe
+
+      - name: Download artifact (Windows 64-bit archive)
+        uses: actions/download-artifact@v2
+        with:
+          name: Grabber_x64.zip
 
       - name: Download artifact (Windows 64-bit symbols)
         uses: actions/download-artifact@v2
@@ -660,7 +681,9 @@ jobs:
           mv Grabber.tar.gz Grabber_${VERSION}.tar.gz
           mv Grabber.dmg Grabber_${VERSION}.dmg
           mv Grabber_x86.exe Grabber_${VERSION}_x86.exe
+          mv Grabber_x86.zip Grabber_${VERSION}_x86.zip
           mv Grabber_x64.exe Grabber_${VERSION}_x64.exe
+          mv Grabber_x64.zip Grabber_${VERSION}_x64.zip
           mv Grabber.apk Grabber_${VERSION}.apk
 
       - name: Rename symbols artifacts

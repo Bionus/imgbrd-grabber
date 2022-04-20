@@ -3,8 +3,8 @@
 #include "filename/ast/filename-visitor.h"
 
 
-FilenameNodeConditionToken::FilenameNodeConditionToken(QString token)
-	: token(std::move(token))
+FilenameNodeConditionToken::FilenameNodeConditionToken(QString name, QMap<QString, QString> opts)
+	: name(std::move(name)), opts(std::move(opts))
 {}
 
 void FilenameNodeConditionToken::accept(FilenameVisitor &v) const

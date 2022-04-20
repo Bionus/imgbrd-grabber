@@ -29,6 +29,18 @@ Grabber works on Windows, Mac, and Linux.
 [Windows (x86)]({{ asset.browser_download_url }})
 {% endif %}
 {% endfor %}
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '_x64.zip' %}
+[Windows (x64, zip)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '_x86.zip' %}
+[Windows (x86, zip)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
 </div>
 
 <div class="download" markdown="1">

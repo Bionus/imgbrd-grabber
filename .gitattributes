@@ -8,8 +8,12 @@ scripts/windows-setup/scripts/* linguist-vendored
 
 # Docs and translations should be ignored
 docs/* linguist-documentation
+docs/**/* linguist-documentation
 src/languages/* linguist-documentation
+src/gui-qml/languages/* linguist-documentation
 
 # Test resource files should be ignored
 src/sites/*/resources/* linguist-vendored
+src/sites/*/resources/**/* linguist-vendored
 src/tests/resources/* linguist-vendored
+src/tests/resources/**/* linguist-vendored

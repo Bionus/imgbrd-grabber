@@ -97,6 +97,9 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::toggleFullScreen);
 		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ViewerWindow::copyImageDataToClipboard);
+
+		auto *openInBrowser = new QShortcut(getKeySequence(m_settings, "keyOpenInBrowser"), this);
+			connect(openInBrowser, &QShortcut::activated, [this]() { QDesktopServices::openUrl(m_image->pageUrl()); });
 	m_settings->endGroup();
 
 	configureButtons();
@@ -479,7 +482,7 @@ void ViewerWindow::copyImageDataToClipboard()
 }
 void ViewerWindow::copyImageLinkToClipboard()
 {
-	QApplication::clipboard()->setText(m_image->fileUrl().toString());
+	QApplication::clipboard()->setText(m_image->fileUrl().toEncoded());
 }
 
 void ViewerWindow::showDetails()
@@ -1139,6 +1142,10 @@ void ViewerWindow::fullScreen()
 			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
 		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
 			connect(toggleSlideshow, &QShortcut::activated, this, &ViewerWindow::toggleSlideshow);
+		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), m_fullScreen);
+			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
+		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), m_fullScreen);
+			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
 	m_settings->endGroup();
 
 	m_fullScreen->setFocus();

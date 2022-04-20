@@ -10,22 +10,50 @@ class QNetworkCookie;
 class QObject;
 class QUrl;
 
+/**
+ * Network cookie jar which loads and stores cookies on a persistent file on disk.
+ */
 class PersistentCookieJar : public QNetworkCookieJar
 {
 	Q_OBJECT
 
 	public:
+		/**
+		 * Create a new persistent cookie jar.
+		 * @param filename The full path of the file to use to load and store cookies.
+		 * @param parent The Qt parent object.
+		 */
 		explicit PersistentCookieJar(QString filename, QObject *parent = nullptr);
-		~PersistentCookieJar();
 
+		/**
+		 * Saves the cookies before destroying the instance.
+		 */
+		~PersistentCookieJar() override;
+
+		/**
+		 * Remove all cookies from the cookie jar.
+		 */
 		void clear();
+
+		/**
+		 * Add new cookies to the cookie jar.
+		 * @param cookies The list of cookies to add to the cookie jar.
+		 * @return Whether all cookies were successfully added to the cookie jar.
+		 */
 		bool insertCookies(const QList<QNetworkCookie> &cookies);
 
-		virtual QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
-		virtual bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) override;
+		QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
+		bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) override;
 
 	protected:
+		/**
+		 * Save the cookies to the file.
+		 */
 		void save();
+
+		/**
+		 * Load the cookies from the file.
+		 */
 		void load();
 
 	private:

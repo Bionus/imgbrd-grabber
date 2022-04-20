@@ -4,6 +4,7 @@
 #include <QJSValue>
 #include <QString>
 #include "models/api/api.h"
+#include "models/page-information.h"
 
 
 class Page;
@@ -20,7 +21,7 @@ class JavascriptApi : public Api
 		explicit JavascriptApi(QJSEngine *engine, const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
 
 		// Normal search
-		PageUrl pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const override;
+		PageUrl pageUrl(const QString &search, int page, int limit, const PageInformation &lastPage, Site *site) const override;
 		bool parsePageErrors() const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const override;
 

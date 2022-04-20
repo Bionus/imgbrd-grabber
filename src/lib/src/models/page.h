@@ -7,6 +7,7 @@
 #include <QString>
 #include <QStringList>
 #include "models/page-api.h"
+#include "models/page-information.h"
 
 
 class Api;
@@ -22,9 +23,10 @@ class Page : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0, const QString& lastPageMinDate = "", const QString& lastPageMaxDate = "");
+		explicit Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = nullptr, int pool = 0, const PageInformation &lastPageInformation = {});
 		~Page() override;
-		void setLastPage(Page *page);
+		PageInformation pageInformation() const;
+		void setLastPage(const PageInformation &info);
 		void fallback(bool loadIfPossible = true);
 		void load(bool rateLimit = false);
 		void loadTags();
@@ -49,12 +51,6 @@ class Page : public QObject
 		int page() const;
 		int pageImageCount() const;
 		int filteredImageCount() const;
-		qulonglong minId() const;
-		qulonglong maxId() const;
-		QString minDate() const;
-		QString maxDate() const;
-		const QUrl &nextPage() const;
-		const QUrl &prevPage() const;
 		bool isLoaded() const;
 		bool isValid() const;
 		QMap<QString, QUrl> urls() const;

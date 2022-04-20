@@ -91,7 +91,7 @@ bool writeFile(const QString &filePath, const QByteArray &data)
 	// Write the data to the disk
 	QFile file(filePath);
 	if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
-		log(QStringLiteral("Could not open file `%1` for writing: error %2").arg(filePath).arg(file.error()), Logger::Error);
+		log(QStringLiteral("Could not open file `%1` for writing: error %2 (%3)").arg(filePath, file.errorString(), QString::number(file.error())), Logger::Error);
 		return false;
 	}
 	file.write(data);

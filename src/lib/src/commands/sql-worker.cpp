@@ -8,8 +8,8 @@
 #include "logger.h"
 
 
-SqlWorker::SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent)
-	: QThread(parent), m_driver(std::move(driver)), m_host(std::move(host)), m_user(std::move(user)), m_password(std::move(password)), m_database(std::move(database))
+SqlWorker::SqlWorker(QString driver, QString host, QString user, QString password, QString database, bool dryRun, QObject *parent)
+	: QThread(parent), m_driver(std::move(driver)), m_host(std::move(host)), m_user(std::move(user)), m_password(std::move(password)), m_database(std::move(database)), m_dryRun(dryRun)
 {
 	m_enabled = (m_driver == QLatin1String("QSQLITE") && !m_database.isEmpty())
 		|| (!m_host.isEmpty() && !m_user.isEmpty() && !m_database.isEmpty());
@@ -67,6 +67,10 @@ bool SqlWorker::execute(const QString &sql)
 
 	log(QStringLiteral("SQL execution of \"%1\"").arg(sql));
 	Logger::getInstance().logCommandSql(sql);
+
+	if (m_dryRun) {
+		return true;
+	}
 
 	QSqlQuery query(m_db);
 	return query.exec(sql);

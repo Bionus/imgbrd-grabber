@@ -34,7 +34,7 @@
 
 
 SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent, QString screenName)
-	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_screenName(std::move(screenName)), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pageMax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_screenName(std::move(screenName)), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pageMax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -347,11 +347,7 @@ void SearchTab::finishedLoading(Page *page)
 		return;
 	}
 
-	m_lastPage = page->page();
-	m_lastPageMinId = page->minId();
-	m_lastPageMaxId = page->maxId();
-	m_lastPageMinDate = page->minDate();
-	m_lastPageMaxDate = page->maxDate();
+	m_lastPageInformation = page->pageInformation();
 
 	// Filter images depending on tabs
 	QList<QSharedPointer<Image>> validImages;
@@ -1353,14 +1349,20 @@ void SearchTab::loadPage()
 
 		// Load results
 		const QStringList postFiltering = postFilter(true);
-		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perPage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_lastPageMinDate, m_lastPageMaxDate);
+		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perPage, postFiltering, false, this, 0, m_lastPageInformation);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);
 
+		// Skip invalid pages
+		if (!page->isValid()) {
+			failedLoading(page);
+			continue;
+		}
+
 		// Keep pointer to the new page
 		if (m_lastPages.contains(page->website())) {
-			page->setLastPage(m_lastPages[page->website()].data());
+			page->setLastPage(m_lastPages[page->website()]->pageInformation());
 		}
 		if (!m_pages.contains(page->website())) {
 			m_pages.insert(page->website(), QList<QSharedPointer<Page>>());
@@ -1378,12 +1380,6 @@ void SearchTab::loadPage()
 		}
 
 		m_stop = false;
-
-		// Skip invalid pages
-		if (!page->isValid()) {
-			failedLoading(page);
-			continue;
-		}
 
 		// Load tags if necessary
 		if (m_settings->value("useregexfortags", true).toBool()) {

@@ -25,7 +25,7 @@
 #include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/profile.h"
-#include "models/source.h"
+#include "models/source-engine.h"
 
 
 void setSource(QComboBox *combo, const QStringList &opts, const QStringList &vals, const QStringList &defs, Site *site, QSettings *settings, int index)
@@ -79,7 +79,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	const QStringList defs { "xml", "json", "regex", "rss" };
 	QStringList sources { "" };
 	QStringList opts { "" };
-	for (Api *api : site->getSource()->getApis()) {
+	for (Api *api : site->getSourceEngine()->getApis()) {
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
 		opts.append(api->getName());
@@ -119,7 +119,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	};
 	QStringList types;
 	QMultiMap<QString, QLineEdit*> fields;
-	auto auths = m_site->getSource()->getAuths();
+	auto auths = m_site->getSourceEngine()->getAuths();
 	int activeLoginIndex = 0;
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
 		bool canTestLogin = false;
@@ -227,10 +227,9 @@ void SourcesSettingsWindow::addHeader()
 
 void SourcesSettingsWindow::deleteSite()
 {
-	const int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes) {
-		m_site->remove();
-		emit siteDeleted(m_site->url());
+	const int response = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
+	if (response == QMessageBox::Yes) {
+		emit siteDeleted(m_site);
 	}
 }
 
@@ -318,7 +317,7 @@ void SourcesSettingsWindow::saveSettings()
 
 	const QStringList defs { "xml", "json", "regex", "rss" };
 	QStringList sources { "" };
-	for (Api *api : m_site->getSource()->getApis()) {
+	for (Api *api : m_site->getSourceEngine()->getApis()) {
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
 	}

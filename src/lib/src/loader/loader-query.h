@@ -7,17 +7,19 @@
 
 
 struct LoaderData;
+class Profile;
 class Site;
 
 class LoaderQuery
 {
 	public:
-		explicit LoaderQuery(Site *site, QMap<QString, QVariant> options);
+		explicit LoaderQuery(Profile *profile, Site *site, QMap<QString, QVariant> options);
 		bool start();
 		LoaderData next();
 		bool hasNext() const;
 
 	private:
+		Profile *m_profile;
 		Site *m_site;
 		QMap<QString, QVariant> m_options;
 		bool m_finished;

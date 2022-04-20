@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QVariant>
 #include "login/login.h"
+#include "utils/read-write-path.h"
 
 
 class Api;
@@ -15,9 +16,11 @@ class NetworkManager;
 class NetworkReply;
 class Page;
 class PersistentCookieJar;
+class Profile;
 class QNetworkCookie;
 class QNetworkRequest;
 class Source;
+class SourceEngine;
 class Tag;
 class TagDatabase;
 
@@ -51,7 +54,8 @@ class Site : public QObject
 			LoggedIn = 3,
 		};
 
-		Site(QString url, Source *source);
+		Site(QString url, Source *source, Profile *profile);
+		Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile);
 		~Site() override;
 
 		void loadConfig();
@@ -71,13 +75,13 @@ class Site : public QObject
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 		void setRequestHeaders(QNetworkRequest &request) const;
-		bool remove();
+		Profile *getProfile() { return m_profile; }
 
 		// Api
 		const QList<Api*> &getApis() const;
 		QList<Api*> getLoggedInApis() const;
 
-		Source *getSource() const;
+		SourceEngine *getSourceEngine() const;
 		Api *firstValidApi() const;
 		Api *detailsApi() const;
 		Api *fullDetailsApi() const;
@@ -100,10 +104,12 @@ class Site : public QObject
 		void removed();
 
 	private:
+		Profile *m_profile;
+		ReadWritePath m_dir;
 		QString m_type;
 		QString m_name;
 		QString m_url;
-		Source *m_source;
+		SourceEngine *m_sourceEngine;
 		QList<QNetworkCookie> m_cookies;
 		MixedSettings *m_settings;
 		NetworkManager *m_manager;

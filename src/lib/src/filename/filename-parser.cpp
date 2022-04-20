@@ -21,7 +21,7 @@
 
 
 FilenameParser::FilenameParser(QString str)
-	: m_str(std::move(str)), m_index(0)
+	: m_str(std::move(str)), m_index(0), m_conditionParenthesisDepth(0)
 {}
 
 const QString &FilenameParser::error() const
@@ -142,6 +142,19 @@ FilenameNodeRoot *FilenameParser::parseRootNode()
 	}
 
 	return new FilenameNodeRoot(exprs);
+}
+
+FilenameNode *FilenameParser::parseExprs(const QList<QChar> &chars)
+{
+	QList<FilenameNode*> exprs;
+
+	while (!finished() && !chars.contains(peek())) {
+		exprs.append(parseExpr(chars));
+	}
+
+	return exprs.count() == 1
+		? exprs.first()
+		: new FilenameNodeRoot(exprs);
 }
 
 FilenameNode *FilenameParser::parseExpr(const QList<QChar> &addChars)
@@ -268,10 +281,10 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		}
 		m_index++; // ?
 
-		ifTrue = parseExpr({ ':', '>' });
+		ifTrue = parseExprs({ ':', '>' });
 		if (peek() == ':') {
 			m_index++; // :
-			ifFalse = parseExpr({ '>' });
+			ifFalse = parseExprs({ '>' });
 		}
 
 		if (finished() || peek() != '>') {
@@ -359,6 +372,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 	// Parenthesis
 	if (c == '(') {
 		m_index++; // (
+		m_conditionParenthesisDepth++;
 
 		auto *ret = parseConditionNode();
 		if (finished() || peek() != ')') {
@@ -367,6 +381,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 		}
 
 		m_index++; // )
+		m_conditionParenthesisDepth--;
 		return ret;
 	}
 
@@ -426,7 +441,9 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 
 	QString tag = quotes
 		? readUntil({ '"' })
-		: readUntil({ ' ', '&', '|', '(', ')', '?' }, true);
+		: m_conditionParenthesisDepth == 0
+			? readUntil({ ' ', '&', '|', '?' }, true)
+			: readUntil({ ' ', '&', '|', '?', ')' }, true);
 
 	if (quotes) {
 		m_index++; // "
@@ -437,11 +454,8 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 
 FilenameNodeConditionToken *FilenameParser::parseConditionToken()
 {
-	m_index++; // %
-
-	QString token = readUntil({ '%' });
-
-	m_index++; // %
-
-	return new FilenameNodeConditionToken(token);
+	auto *variable = parseVariable();
+	auto *condition = new FilenameNodeConditionToken(variable->name, variable->opts);
+	delete variable;
+	return condition;
 }

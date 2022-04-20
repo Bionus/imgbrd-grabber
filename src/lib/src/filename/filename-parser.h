@@ -37,6 +37,7 @@ class FilenameParser
 		QString readUntil(const QList<QChar> &chars, bool allowEnd = false);
 
 		FilenameNodeRoot *parseRootNode();
+		FilenameNode *parseExprs(const QList<QChar> &chars);
 		FilenameNode *parseExpr(const QList<QChar> &addChars = {});
 		FilenameNodeJavaScript *parseJavaScript();
 		FilenameNodeConditional *parseConditional();
@@ -51,6 +52,7 @@ class FilenameParser
 	private:
 		QString m_str;
 		int m_index;
+		int m_conditionParenthesisDepth;
 		QString m_error;
 };
 

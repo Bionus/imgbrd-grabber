@@ -52,8 +52,8 @@ Profile::Profile(QString path)
 	for (const QString &dir : sites) {
 		const QString readDir = defaultPath + dir;
 		const QString writeDir = customPath + dir;
-		auto *source = new Source(this, ReadWritePath(readDir, writeDir));
-		if (source->getApis().isEmpty()) {
+		auto *source = new Source(ReadWritePath(readDir, writeDir));
+		if (!source->isValid()) {
 			source->deleteLater();
 			continue;
 		}
@@ -451,21 +451,24 @@ void Profile::addSource(Source *source)
 	m_sources.insert(source->getName(), source);
 	m_additionalTokens.append(source->getAdditionalTokens());
 
-	for (Site *site : source->getSites()) {
-		m_sites.insert(site->url(), site);
+	for (const QString &site : source->getSites()) {
+		m_sites.insert(site, new Site(site, source, this));
 	}
 }
 
 void Profile::addSite(Site *site)
 {
 	m_sites.insert(site->url(), site);
-	site->getSource()->addSite(site);
+	m_sources[site->type()]->addSite(site->url());
+
 	emit sitesChanged();
 }
 
 void Profile::removeSite(Site *site)
 {
 	m_sites.remove(site->url());
+	m_sources[site->type()]->removeSite(site->url());
+
 	emit siteDeleted(site);
 	emit sitesChanged();
 }

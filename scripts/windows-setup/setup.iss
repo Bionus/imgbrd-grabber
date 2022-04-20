@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.8.0"
+# define MyAppVersion "7.8.1"
 #endif
 
 #ifndef QtApngDll
@@ -170,6 +170,11 @@ Source: "{#SrcDir}\sites\Anime pictures\model.js";     DestDir: "{app}\sites\Ani
 Source: "{#SrcDir}\sites\Anime pictures\sites.txt";    DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\anime-pictures.net\defaults.ini";  DestDir: "{app}\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{app}\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\ArtStation\icon.png";      DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\ArtStation\model.js";      DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\ArtStation\sites.txt";     DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\ArtStation\supported.txt"; DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\ArtStation\www.artstation.com\defaults.ini"; DestDir: "{app}\sites\ArtStation\www.artstation.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Philomena\icon.png";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Philomena\model.js";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Philomena\sites.txt";    DestDir: "{app}\sites\Philomena"; Flags: ignoreversion

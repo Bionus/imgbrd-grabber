@@ -61,7 +61,7 @@ TEST_CASE("PageApi")
 		Page prevPage(profile, site, sites, tags, 1000);
 		Page page(profile, site, sites, tags, 1001);
 		PageApi pageApi(&page, profile, site, site->getApis().first(), tags, 1001);
-		pageApi.setLastPage(&prevPage);
+		pageApi.setLastPage(prevPage.pageInformation());
 
 		REQUIRE(pageApi.url().toString() == QString("https://danbooru.donmai.us/posts.xml?limit=25&page=b0&tags=test tag&login=user&password_hash=a867ce3dbb1f52ccb763d4a1ff4bee5baaea37c1"));
 	}

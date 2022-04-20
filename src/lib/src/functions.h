@@ -95,7 +95,7 @@ bool canCreateLinkType(const QString &type, const QString &dir);
 bool createLink(const QString &from, const QString &to, const QString &type);
 
 QKeySequence getKeySequence(QSettings *settings, const QString &key, QKeySequence::StandardKey standardDefault, const QKeySequence &altDefault);
-QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeySequence &def);
+QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeySequence &def = {});
 
 QString rectToString(const QRect &rect);
 QRect stringToRect(const QString &str);

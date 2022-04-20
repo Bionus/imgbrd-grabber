@@ -979,7 +979,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       =
+EXCLUDE_PATTERNS       = */vendor/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -990,7 +990,7 @@ EXCLUDE_PATTERNS       =
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories use the pattern */test/*
 
-EXCLUDE_SYMBOLS        = QObject
+EXCLUDE_SYMBOLS        =
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include
@@ -1296,8 +1296,8 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = src/doxygen/vendor/doxygen-awesome-css/doxygen-awesome.css \
-                         src/doxygen/vendor/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
+HTML_EXTRA_STYLESHEET  = docs/doxygen/vendor/doxygen-awesome-css/doxygen-awesome.css \
+                         docs/doxygen/vendor/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -2332,7 +2332,12 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               =
+TAGFILES               = /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtcore/qtcore.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtgui/qtgui.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtnetwork/qtnetwork.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtsql/qtsql.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtwidgets/qtwidgets.tags=https://doc.qt.io/qt-5.15/ \
+                         /mnt/c/Qt/Qt5.15.1/Docs/Qt-5.15.1/qtxml/qtxml.tags=https://doc.qt.io/qt-5.15/
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create a
 # tag file that is based on the input files it reads. See section "Linking to
@@ -2595,7 +2600,7 @@ INTERACTIVE_SVG        = YES
 # found. If left blank, it is assumed the dot tool can be found in the path.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_PATH               = src/doxygen/dot
+DOT_PATH               = docs/doxygen/dot
 
 # The DOTFILE_DIRS tag can be used to specify one or more directories that
 # contain dot files that are included in the documentation (see the \dotfile

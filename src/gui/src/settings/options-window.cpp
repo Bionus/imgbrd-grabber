@@ -270,7 +270,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(6);
+		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
@@ -285,8 +285,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "photo_set", false, "unknown", "multiple", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", this));
+		const int tagsStackIndex = ui->stackedWidget->indexOf(ui->pageTags);
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
-			ui->stackedWidget->insertWidget(i + 9, m_tokenSettings[i]);
+			ui->stackedWidget->insertWidget(i + tagsStackIndex + 1, m_tokenSettings[i]);
 		}
 
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
@@ -376,6 +377,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyViewerToggleSlideshow->setKeySequence(getKeySequence(settings, "keyToggleSlideshow", Qt::Key_Space));
 		ui->keyViewerToggleFullscreen->setKeySequence(getKeySequence(settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11));
 		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+		ui->keyViewerOpenInBrowser->setKeySequence(getKeySequence(settings, "keyOpenInBrowser"));
 	settings->endGroup();
 
 	settings->beginGroup("Coloring");
@@ -434,6 +436,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->lineCommandsTagBefore->setText(settings->value("tag_before").toString());
 		ui->lineCommandsImage->setText(settings->value("image").toString());
 		ui->lineCommandsTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
+		ui->checkCommandsDryRun->setChecked(settings->value("dry_run", false).toBool());
 		settings->beginGroup("SQL");
 			ui->comboCommandsSqlDriver->addItems(QSqlDatabase::drivers());
 			ui->comboCommandsSqlDriver->setCurrentIndex(QSqlDatabase::drivers().indexOf(settings->value("driver", "QMYSQL").toString()));
@@ -446,6 +449,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineCommandsSqlImage->setText(settings->value("image").toString());
 			ui->lineCommandsSqlTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
 			ui->lineCommandsSqlAfter->setText(settings->value("after").toString());
+			ui->checkSqlCommandsDryRun->setChecked(settings->value("dry_run", false).toBool());
 		settings->endGroup();
 	settings->endGroup();
 
@@ -484,14 +488,14 @@ void OptionsWindow::on_buttonTempPathOverride_clicked()
 
 void OptionsWindow::on_buttonFilenamePlus_clicked()
 {
-	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
+	auto *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	setupDialogShortcuts(fw, m_profile->getSettings());
 	fw->show();
 }
 void OptionsWindow::on_buttonFavoritesPlus_clicked()
 {
-	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
+	auto *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFavorites, &QLineEdit::setText);
 	setupDialogShortcuts(fw, m_profile->getSettings());
 	fw->show();
@@ -1297,6 +1301,7 @@ void OptionsWindow::save()
 		settings->setValue("keyToggleSlideshow", ui->keyViewerToggleSlideshow->keySequence().toString());
 		settings->setValue("keyToggleFullscreen", ui->keyViewerToggleFullscreen->keySequence().toString());
 		settings->setValue("keyDataToClipboard", ui->keyViewerDataToClipboard->keySequence().toString());
+		settings->setValue("keyOpenInBrowser", ui->keyViewerOpenInBrowser->keySequence().toString());
 	settings->endGroup();
 
 	settings->beginGroup("Coloring");
@@ -1357,9 +1362,10 @@ void OptionsWindow::save()
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
-		settings->setValue("tag_before", ui->lineCommandsTagAfter->text());
+		settings->setValue("tag_before", ui->lineCommandsTagBefore->text());
 		settings->setValue("image", ui->lineCommandsImage->text());
-		settings->setValue("tag_after", ui->lineCommandsTagBefore->text());
+		settings->setValue("tag_after", ui->lineCommandsTagAfter->text());
+		settings->setValue("dry_run", ui->checkCommandsDryRun->isChecked());
 		settings->beginGroup("SQL");
 			settings->setValue("driver", ui->comboCommandsSqlDriver->currentText());
 			settings->setValue("host", ui->lineCommandsSqlHost->text());
@@ -1371,6 +1377,7 @@ void OptionsWindow::save()
 			settings->setValue("image", ui->lineCommandsSqlImage->text());
 			settings->setValue("tag_after", ui->lineCommandsSqlTagAfter->text());
 			settings->setValue("after", ui->lineCommandsSqlAfter->text());
+			settings->setValue("dry_run", ui->checkSqlCommandsDryRun->isChecked());
 		settings->endGroup();
 	settings->endGroup();
 

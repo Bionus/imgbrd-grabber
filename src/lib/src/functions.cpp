@@ -712,6 +712,11 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	maxLength = maxLength == 0 ? MAX_PATH : maxLength;
 	QString filename = (path + fn).trimmed();
 
+	// Don't do anything when given the "\\?\" prefix (https://stackoverflow.com/questions/21194530/what-does-mean-when-prepended-to-a-file-path)
+	if (filename.startsWith(R"(\\?\)")) {
+		return fn;
+	}
+
 	// Drive
 	QString drive;
 	if (filename.mid(1, 2) == QLatin1String(":\\")) {

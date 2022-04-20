@@ -43,7 +43,7 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 	REQUIRE(srce != nullptr);
 
 	QList<Site*> sites;
-	Site *ste = new Site(site, srce);
+	Site *ste = new Site(site, srce, profile);
 	ste->setAutoLogin(false);
 	sites.append(ste);
 
@@ -117,7 +117,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	REQUIRE(srce != nullptr);
 
 	QList<Site*> sites;
-	Site *ste = new Site(site, srce);
+	Site *ste = new Site(site, srce, profile);
 	ste->setAutoLogin(false);
 	sites.append(ste);
 
@@ -188,7 +188,7 @@ QList<Tag> getTags(const QString &source, const QString &site, const QString &fo
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);
 
-	Site *ste = new Site(site, srce);
+	Site *ste = new Site(site, srce, profile);
 	ste->setAutoLogin(false);
 
 	QList<Tag> result;

@@ -75,7 +75,7 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionTag &node)
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionToken &node)
 {
-	QStringList var = node.token.split('.');
+	QStringList var = node.name.split('.');
 	QMap<QString, Token> context = m_tokens;
 
 	for (int i = 0; i < var.count() - 1; ++i) {

@@ -10,7 +10,7 @@
 #include "models/site.h"
 
 
-Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, const QString &lastPageMinDate, const QString &lastPageMaxDate)
+Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, const PageInformation &lastPageInformation)
 	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -54,7 +54,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 	m_siteApis = m_site->getLoggedInApis();
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : qAsConst(m_siteApis)) {
-		auto *pageApi = new PageApi(this, profile, m_site, api, m_query, page, limit, postFilter, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId, lastPageMinDate, lastPageMaxDate);
+		auto *pageApi = new PageApi(this, profile, m_site, api, m_query, page, limit, postFilter, smart, parent, pool, lastPageInformation);
 		if (m_pageApis.count() == 0) {
 			connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot);
 		}
@@ -96,10 +96,15 @@ void Page::fallback(bool loadIfPossible)
 	}
 }
 
-void Page::setLastPage(Page *page)
+PageInformation Page::pageInformation() const
+{
+	return m_pageApis[m_currentApi]->pageInformation();
+}
+
+void Page::setLastPage(const PageInformation& info)
 {
 	for (PageApi *api : qAsConst(m_pageApis)) {
-		api->setLastPage(page);
+		api->setLastPage(info);
 	}
 
 	m_currentApi--;
@@ -198,8 +203,6 @@ const QList<QSharedPointer<Image>> &Page::images() const { return m_pageApis[m_c
 const QUrl &Page::url() const { return m_pageApis[m_currentApi]->url(); }
 const QUrl &Page::friendlyUrl() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url(); }
 const QList<Tag> &Page::tags() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags(); }
-const QUrl &Page::nextPage() const { return m_pageApis[m_currentApi]->nextPage(); }
-const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage(); }
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }
@@ -268,21 +271,4 @@ int Page::maxPagesCount() const
 		}
 	}
 	return m_pageApis[m_currentApi]->maxPagesCount();
-}
-
-qulonglong Page::maxId() const
-{
-	return m_pageApis[m_currentApi]->maxId();
-}
-qulonglong Page::minId() const
-{
-	return m_pageApis[m_currentApi]->minId();
-}
-QString Page::maxDate() const
-{
-	return m_pageApis[m_currentApi]->maxDate();
-}
-QString Page::minDate() const
-{
-	return m_pageApis[m_currentApi]->minDate();
 }

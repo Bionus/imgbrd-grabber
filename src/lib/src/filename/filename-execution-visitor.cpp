@@ -74,7 +74,7 @@ void FilenameExecutionVisitor::visit(const FilenameNodeConditionTag &node)
 
 void FilenameExecutionVisitor::visit(const FilenameNodeConditionToken &node)
 {
-	visitVariable(node.token);
+	visitVariable(node.name, node.opts);
 }
 
 void FilenameExecutionVisitor::visit(const FilenameNodeJavaScript &node)
@@ -298,12 +298,12 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QStringL
 QString FilenameExecutionVisitor::cleanVariable(QString res, const QMap<QString, QString> &options) const
 {
 	// Forbidden characters
-	if (!options.contains("unsafe")) {
+	if (!options.contains("unsafe") && !options.contains("raw")) {
 		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 	}
 
 	// Replace underscores by spaces
-	if (!options.contains("underscores") && (!m_settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces"))) {
+	if (!options.contains("raw") && !options.contains("underscores") && (!m_settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces"))) {
 		res = res.replace("_", " ");
 	}
 

@@ -136,7 +136,7 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 	}
 
 	// Add site
-	Site *site = new Site(host, source);
+	Site *site = new Site(host, source, m_profile);
 	m_profile->addSite(site);
 
 	// Set HTTP setting
@@ -208,12 +208,10 @@ bool MainScreen::importSettings(const QString &source)
 
 bool MainScreen::removeSite(QmlSite *site)
 {
-	if (site->remove()) {
-		m_sites.removeAll(site);
-		emit sitesChanged();
-		return true;
-	}
-	return false;
+	m_profile->removeSite(site->rawSite());
+	m_sites.removeAll(site);
+	emit sitesChanged();
+	return true;
 }
 
 QString MainScreen::toLocalFile(const QString &url)
