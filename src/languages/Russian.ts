@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Автор программы: Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;сайт программы&lt;/span&gt;&lt;/a&gt;, чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -1382,7 +1382,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Web services</source>
-      <translation>Веб-сервисы</translation>
+      <translation>Веб-службы</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="32"/>
@@ -2139,7 +2139,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="179"/>
       <source>Web services</source>
-      <translation>Веб-сервисы</translation>
+      <translation>Веб-службы</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="184"/>
@@ -4029,7 +4029,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation type="unfinished"/>
+      <translation>Получить ИД из имени файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
@@ -4511,7 +4511,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="162"/>
       <source>Ignore (page 1)</source>
-      <translation>Игнорировать(1 страница)</translation>
+      <translation>Игнорировать (страница 1)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
@@ -4759,7 +4759,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="115"/>
       <source>Consumer key</source>
-      <translation>Ключ потребителя</translation>
+      <translation>Ключ клиента</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="116"/>

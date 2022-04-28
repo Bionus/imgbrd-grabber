@@ -16,7 +16,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation type="unfinished"/>
+      <translation>Szczególne podziękowania dla wszystkich współtwórców za ich pomoc w ulepszaniu programu na przestrzeni lat, czy to poprzez wprowadzenie kodu, tłumaczeń lub zgłaszaniu problemów związanych z nowymi funkcjonalnościami.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
@@ -1191,7 +1191,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Monitor</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -1667,12 +1667,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="443"/>
       <source>Save downloads list</source>
-      <translation type="unfinished"/>
+      <translation>Zapisz listę pobrań</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="452"/>
       <source>Load downloads list</source>
-      <translation type="unfinished"/>
+      <translation>Załaduj listę pobrań</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="457"/>
@@ -1722,12 +1722,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="898"/>
       <source>Unlock tab</source>
-      <translation type="unfinished"/>
+      <translation>Odblokuj kartę</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="903"/>
       <source>Lock tab</source>
-      <translation type="unfinished"/>
+      <translation>Zablokuj kartę</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="742"/>
@@ -1920,12 +1920,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="120"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Opóźnienie</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="138"/>
       <source>Notification</source>
-      <translation type="unfinished"/>
+      <translation>Powiadomienie</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="144"/>
@@ -2013,12 +2013,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="104"/>
       <source>Stop</source>
-      <translation type="unfinished"/>
+      <translation>Zatrzymaj</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
       <source>Start now</source>
-      <translation type="unfinished"/>
+      <translation>Uruchom teraz</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="74"/>
@@ -2249,7 +2249,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
       <source>Buttons</source>
-      <translation type="unfinished"/>
+      <translation>Przyciski</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
@@ -2506,12 +2506,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="1203"/>
       <location filename="../gui/src/settings/options-window.ui" line="1222"/>
       <source>Extensions</source>
-      <translation type="unfinished"/>
+      <translation>Rozszerzenia</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1216"/>
       <source>Exiftool</source>
-      <translation type="unfinished"/>
+      <translation>Exiftool</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1242"/>
@@ -2521,7 +2521,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1249"/>
       <source>Loading...</source>
-      <translation type="unfinished"/>
+      <translation>Ładowanie...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1263"/>
@@ -2531,17 +2531,17 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1275"/>
       <source>Resize</source>
-      <translation type="unfinished"/>
+      <translation>Zmień rozmiar</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1281"/>
       <source>Max width</source>
-      <translation type="unfinished"/>
+      <translation>Maksymalna szerokość</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1301"/>
       <source>Max height</source>
-      <translation type="unfinished"/>
+      <translation>Maksymalna wysokość</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1326"/>
@@ -2674,7 +2674,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="1570"/>
       <location filename="../gui/src/settings/options-window.ui" line="1584"/>
       <source>Ctrl+N</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+N</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1563"/>
