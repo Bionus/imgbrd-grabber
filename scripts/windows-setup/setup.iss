@@ -128,6 +128,7 @@ Source: "{#BuildDir}\crash-reporter\languages\German.qm";   DestDir: "{app}\cras
 Source: "{#BuildDir}\crash-reporter\languages\Japanese.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Korean.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\PortugueseBrazilian.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -145,9 +146,10 @@ Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"
 Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\German.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\Japanese.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Japanese.qm";    DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Korean.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Polish.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\PortugueseBrazilian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\languages"; Flags: ignoreversion
