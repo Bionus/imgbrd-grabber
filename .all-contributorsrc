@@ -158,6 +158,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "lucas-04",
+      "name": "lucas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95548091?v=4",
+      "profile": "https://github.com/lucas-04",
+      "contributions": [
+        "translation"
+      ]
     }
   ],
   "commitConvention": "none"
