@@ -7,6 +7,7 @@
 #include <QFontDialog>
 #include <QFutureWatcher>
 #include <QInputDialog>
+#include <QMessageBox>
 #include <QNetworkProxy>
 #include <QRegularExpression>
 #include <QSignalMapper>
@@ -17,6 +18,7 @@
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
+#include "backup.h"
 #include "custom-buttons.h"
 #include "exiftool.h"
 #include "functions.h"
@@ -862,6 +864,28 @@ void OptionsWindow::swapWebServices(int a, int b)
 	}
 
 	showWebServices();
+}
+
+
+void OptionsWindow::backupGenerate()
+{
+	QSettings *settings = m_profile->getSettings();
+
+	const QString lastDir = settings->value("lastDirBackup", "").toString();
+	const QString filename = "backup-" + QDateTime::currentDateTime().toString("yyyy.MM.dd-hh.mm.ss") + ".zip";
+	const QString pathName = QDir::toNativeSeparators(lastDir) + QDir::separator() + filename;
+
+	const QString path = QFileDialog::getSaveFileName(this, tr("Save backup"), pathName, tr("Backup file (*.zip)"));
+	if (path.isEmpty()) {
+		return;
+	}
+
+	settings->setValue("lastDirBackup", QDir::toNativeSeparators(path).section(QDir::separator(), 0, -2));
+	if (saveBackup(m_profile, path)) {
+		QMessageBox::information(this, QObject::tr("Success"), tr("Backup file created successfully."));
+	} else {
+		error(this, tr("Error saving backup file."));
+	}
 }
 
 

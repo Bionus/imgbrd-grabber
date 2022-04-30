@@ -113,6 +113,9 @@ class OptionsWindow : public QDialog
 		void moveDownWebService(int id);
 		void swapWebServices(int a, int b);
 
+		// Backup
+		void backupGenerate();
+
 		void save();
 
 	signals:
