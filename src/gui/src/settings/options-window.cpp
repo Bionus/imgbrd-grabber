@@ -437,6 +437,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->lineCommandsImage->setText(settings->value("image").toString());
 		ui->lineCommandsTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
 		ui->checkCommandsDryRun->setChecked(settings->value("dry_run", false).toBool());
+		ui->spinCommandsTimeout->setValue(settings->value("timeout", 30).toInt());
 		settings->beginGroup("SQL");
 			ui->comboCommandsSqlDriver->addItems(QSqlDatabase::drivers());
 			ui->comboCommandsSqlDriver->setCurrentIndex(QSqlDatabase::drivers().indexOf(settings->value("driver", "QMYSQL").toString()));
@@ -1366,6 +1367,7 @@ void OptionsWindow::save()
 		settings->setValue("image", ui->lineCommandsImage->text());
 		settings->setValue("tag_after", ui->lineCommandsTagAfter->text());
 		settings->setValue("dry_run", ui->checkCommandsDryRun->isChecked());
+		settings->setValue("timeout", ui->spinCommandsTimeout->value());
 		settings->beginGroup("SQL");
 			settings->setValue("driver", ui->comboCommandsSqlDriver->currentText());
 			settings->setValue("host", ui->lineCommandsSqlHost->text());

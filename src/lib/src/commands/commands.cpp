@@ -17,6 +17,7 @@ Commands::Commands(Profile *profile)
 {
 	QSettings *settings = profile->getSettings();
 
+	m_timeout = settings->value("Exec/timeout", 30).toInt() * 1000;
 	m_dryRun = settings->value("Exec/dry_run", false).toBool();
 	m_commandTagBefore = settings->value("Exec/tag_before").toString();
 	m_commandImage = settings->value("Exec/image").toString();
@@ -169,8 +170,8 @@ bool Commands::execute(const QString &command) const
 		QObject::connect(&proc, &QProcess::readyReadStandardOutput, [&proc]() { log(QStringLiteral("[Command stdout] %1").arg(QString(proc.readAllStandardOutput())), Logger::Debug); });
 		QObject::connect(&proc, &QProcess::readyReadStandardError, [&proc]() { log(QStringLiteral("[Command stderr] %1").arg(QString(proc.readAllStandardError())), Logger::Error); });
 
-		// Wait for  the command to finish 30s
-		if (!proc.waitForFinished()) {
+		// Wait for  the command to finish
+		if (!proc.waitForFinished(m_timeout)) {
 			log(QStringLiteral("Command execution timeout"), Logger::Error);
 		}
 

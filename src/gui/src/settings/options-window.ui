@@ -18,16 +18,6 @@
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -1139,8 +1129,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>473</width>
-             <height>505</height>
+             <width>57</width>
+             <height>16</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1813,7 +1803,7 @@
              <x>0</x>
              <y>0</y>
              <width>323</width>
-             <height>407</height>
+             <height>462</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -3901,7 +3891,7 @@
              <x>0</x>
              <y>0</y>
              <width>235</width>
-             <height>785</height>
+             <height>840</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -5159,9 +5149,6 @@
       </widget>
       <widget class="QWidget" name="pageCommands">
        <layout class="QFormLayout" name="formLayout_18">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_36">
           <property name="text">
@@ -5201,6 +5188,29 @@
         </item>
         <item row="3" column="1">
          <widget class="QLineEdit" name="lineCommandsTagAfter"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Timeout</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QSpinBox" name="spinCommandsTimeout">
+          <property name="suffix">
+           <string> s</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>3600</number>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+         </widget>
         </item>
         <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkCommandsDryRun">
@@ -5351,6 +5361,16 @@
        </layout>
       </widget>
      </widget>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
     </widget>
    </item>
   </layout>
