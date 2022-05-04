@@ -783,8 +783,9 @@ Image::Size Image::preferredDisplaySize() const
 {
 	const bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
 	const bool viewSample = m_settings->value("Viewer/viewSamples", false).toBool();
+	const bool isZip = getExtension(url(Size::Full)) == "zip";
 
-	return !url(Size::Sample).isEmpty() && (!getOriginals || viewSample)
+	return !url(Size::Sample).isEmpty() && (!getOriginals || viewSample || isZip)
 		? Size::Sample
 		: Size::Full;
 }
