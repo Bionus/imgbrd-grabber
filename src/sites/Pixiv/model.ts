@@ -118,6 +118,14 @@ function parseImage(image: any, fromGallery: boolean): IImage {
         img.preview_url = urlSampleToThumbnail(image["image_urls"]["medium"]);
     }
 
+    // Ugoira replace first frame by ZIP path
+    if (/ugoira0/.test(img.file_url)){
+        img.sample_url = img.file_url;
+        img.file_url = img.file_url
+            .replace("img-original", "img-zip-ugoira")
+            .replace(/ugoira0\.(jpe?g|png|webp)/, "ugoira1920x1080.zip");
+     }
+
     return img;
 }
 
