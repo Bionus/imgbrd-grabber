@@ -52,7 +52,7 @@ const meta: Record<string, MetaField> = {
 };
 
 export const source: ISource = {
-    name: "Slushe",
+    name: "ArtStation",
     modifiers: [],
     forcedTokens: [],
     meta,
