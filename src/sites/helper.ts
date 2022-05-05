@@ -274,3 +274,31 @@ addHelper("parseSearchQuery", (query: string, metas: Record<string, MetaField>):
     ret.query = tags.join(" ");
     return ret;
 });
+
+addHelper("setImageLinks", (image: IImage, versions: { size: number, url: string }[]): void => {
+    let previewWidth = 0;
+    let sampleWidth = 0;
+    let fullWidth = 0;
+
+    for (const version of versions) {
+        const size = version.size;
+
+        // preview_url gets the biggest size between 150 and 300
+        if (!previewWidth || (size <= 300 && size > previewWidth) || (size >= 150 && previewWidth > 300)) {
+            image.preview_url = version.url;
+            previewWidth = size;
+        }
+
+        // sample_url is optional and takes the biggest size between 500 and 1500
+        if (size >= 500 && size <= 1500 && size > sampleWidth) {
+            image.sample_url = version.url;
+            sampleWidth = size;
+        }
+
+        // file_url just takes the biggest size available
+        if (size > fullWidth) {
+            image.file_url = version.url;
+            fullWidth = size;
+        }
+    }
+})
