@@ -17,6 +17,9 @@ function completeImage(img: IImage & { json_uris: string }): IImage {
             .replace("full", "thumb")
             .replace(".svg", ".png");
     }
+    if (img.preview_url) {
+        img.preview_url = img.preview_url.replace(".webm", ".gif")
+    }
 
     return img;
 }
