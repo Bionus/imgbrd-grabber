@@ -177,10 +177,6 @@ Source: "{#SrcDir}\sites\ArtStation\model.js";      DestDir: "{app}\sites\ArtSta
 Source: "{#SrcDir}\sites\ArtStation\sites.txt";     DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\ArtStation\supported.txt"; DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\ArtStation\www.artstation.com\defaults.ini"; DestDir: "{app}\sites\ArtStation\www.artstation.com"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Philomena\icon.png";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Philomena\model.js";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Philomena\sites.txt";    DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Philomena\derpibooru.org\defaults.ini"; DestDir: "{app}\sites\Philomena\derpibooru.org"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\icon.png";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\model.js";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\sites.txt";          DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
@@ -232,6 +228,10 @@ Source: "{#SrcDir}\sites\Nijie\icon.png";   DestDir: "{app}\sites\Nijie"; Flags:
 Source: "{#SrcDir}\sites\Nijie\model.js";   DestDir: "{app}\sites\Nijie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Nijie\sites.txt";  DestDir: "{app}\sites\Nijie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Nijie\nijie.info\defaults.ini"; DestDir: "{app}\sites\Nijie\nijie.info"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Philomena\icon.png";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Philomena\model.js";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Philomena\sites.txt";    DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Philomena\derpibooru.org\defaults.ini"; DestDir: "{app}\sites\Philomena\derpibooru.org"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\icon.png";     DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\model.js";     DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\sites.txt";    DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
@@ -267,6 +267,7 @@ Type: files; Name: "{app}\libgcc_s_dw2-1.dll"
 Type: files; Name: "{app}\libeay32.dll"
 Type: files; Name: "{app}\libssl32.dll"
 Type: files; Name: "{app}\ssleay32.dll"
+; Qt4 DLLs
 Type: files; Name: "{app}\QtCore4.dll"
 Type: files; Name: "{app}\QtGui4.dll"
 Type: files; Name: "{app}\QtNetwork4.dll"
@@ -281,8 +282,69 @@ Type: files; Name: "{app}\imageformats\qsvg4.dll"
 Type: files; Name: "{app}\imageformats\qtga4.dll"
 Type: files; Name: "{app}\imageformats\qtiff4.dll"
 Type: files; Name: "{app}\sqldrivers\qsqlmysql4.dll"
+; Media engines
 Type: files; Name: "{app}\mediaservice\dsengine.dll"
 Type: files; Name: "{app}\mediaservice\wmfengine.dll"
+; Legacy sites files (now moved to "{app}\sites")
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\helper.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Anime pictures\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Anime pictures\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Danbooru\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Danbooru\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\DeviantArt\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\DeviantArt\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\DeviantArt\www.deviantart.com\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E621\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E621\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E621\e621.net\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Hentai\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Hentai\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Hentai\e-hentai.org\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Hentai\exhentai.org\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu\e-shuushuu.net\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\FurAffinity\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\FurAffinity\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\FurAffinity\www.furaffinity.net\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Moebooru\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Moebooru\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\NHentai\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\NHentai\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\NHentai\nhentai.net\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Nijie\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Nijie\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Nijie\nijie.info\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Philomena\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Philomena\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Philomena\derpibooru.org\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Pixiv\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Pixiv\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Pixiv\www.pixiv.net\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Reddit\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Reddit\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Reddit\www.reddit.com\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Shimmie\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Shimmie\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Twitter\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Twitter\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Twitter\api.twitter.com\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\WallHaven\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\WallHaven\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\WallHaven\wallhaven.cc\defaults.ini"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\icon.png"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\model.js"
+Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net\defaults.ini"
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{%UserProfile}\Grabber"
