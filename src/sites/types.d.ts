@@ -102,6 +102,58 @@ interface IImage {
     preview_file_size?: number;
     preview_rect?: string;
 
+    /**
+     * The media files. At least one is required.
+     * It's preferred to have one of each type, otherwise it will be inferred.
+     */
+    medias?: {
+        /**
+         * The URL to download the media file at.
+         */
+        url: string;
+
+        /**
+         * The "size" type of this media file. If not provided, it will be inferred from the dimensions.
+         *
+         * * full: the original sized media
+         * * sample: a big version of the media, better sized for slower connections
+         * * preview: a preview version of the media, used as a thumbnail
+         */
+        type?: "full" | "sample" | "preview";
+
+        /**
+         * The width (in pixels) of this media file.
+         */
+        width?: number;
+
+        /**
+         * The height (in pixels) of this media file.
+         */
+        height?: number;
+
+        /**
+         * For videos, the bitrate (in bits per second) of this file.
+         * Useful to differentiate multiple videos when they have the same
+         */
+        bitrate?: number;
+
+        /**
+         * The file size (in bytes) of this media file.
+         */
+        file_size?: number;
+
+        /**
+         * If this media is just a smaller part of the file, the rectangle to cut the media before showing it.
+         * Necessary sometimes for example in situations where all thumnails are concatenated into a single file to save bandwidth.
+         */
+        rect?: {
+            x: number;
+            y: number;
+            width: number;
+            height: number;
+        };
+    }[];
+
     // Additional raw tokens to pass to the filename
     tokens?: {
         [key: string]: any;

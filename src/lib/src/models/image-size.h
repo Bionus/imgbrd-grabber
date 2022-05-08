@@ -1,10 +1,12 @@
 #ifndef IMAGE_SIZE_H
 #define IMAGE_SIZE_H
 
+#include <QMetaType>
 #include <QPixmap>
 #include <QSize>
 #include <QString>
 #include <QUrl>
+#include "loader/downloadable.h"
 
 
 class QJsonObject;
@@ -13,8 +15,10 @@ struct ImageSize
 {
 	~ImageSize();
 
+	Downloadable::Size type = Downloadable::Size::Unknown;
 	QUrl url;
 	QSize size;
+	qint64 bitRate = 0;
 	qint64 fileSize = 0;
 	QRect rect;
 
@@ -42,5 +46,10 @@ struct ImageSize
 		QPixmap m_pixmap;
 		QString mutable m_md5;
 };
+
+Q_DECLARE_METATYPE(ImageSize)
+Q_DECLARE_METATYPE(QList<ImageSize>)
+Q_DECLARE_METATYPE(QSharedPointer<ImageSize>)
+Q_DECLARE_METATYPE(QList<QSharedPointer<ImageSize>>)
 
 #endif // IMAGE_SIZE_H
