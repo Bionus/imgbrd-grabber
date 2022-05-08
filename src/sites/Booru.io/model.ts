@@ -9,17 +9,16 @@ const buildImage = (data: any): IImage => {
     const img: IImage = Grabber.mapFields(data, map);
     img.tags =  Object.keys(data["tags"]);
 
-    const versions = [];
+    img.medias = [];
     for (const key in data["transforms"]) {
         const match = key.match(/width=(\d+):/);
         if (match) {
-            versions.push({
-                size: parseInt(match[1], 10),
+            img.medias.push({
                 url: "/api/legacy/data/" + data["transforms"][key],
+                width: parseInt(match[1], 10),
             });
         }
     }
-    Grabber.setImageLinks(img, versions);
 
     return img;
 };
