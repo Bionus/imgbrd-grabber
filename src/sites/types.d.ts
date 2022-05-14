@@ -199,8 +199,9 @@ interface IRequestPost extends IRequestBase {
 
     /**
      * The data to send with the POST request.
+     * If passing an object, it will be converted to JSON and the Content-Type header automatically set to "application/json".
      */
-    data?: string;
+    data?: any | string;
 }
 
 type IRequest = IRequestGet | IRequestPost;

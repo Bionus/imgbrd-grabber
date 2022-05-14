@@ -2,6 +2,7 @@
 #include <QJSEngine>
 #include <QJSValueIterator>
 #include <QMap>
+#include <QJsonDocument>
 // #include <QMutexLocker>
 #include "functions.h"
 #include "js-helpers.h"
@@ -48,6 +49,18 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 		}
 
 		url = result.property("url").toString();
+
+		ret.isPost = getPropertyOr(result, "method", QString()) == "POST";
+
+		if (result.hasProperty("data")) {
+			const QJSValue payload = result.property("data");
+			if (payload.isString()) {
+				ret.payload = payload.toString().toUtf8();
+			} else {
+				ret.payload = QJsonDocument::fromVariant(payload.toVariant()).toJson(QJsonDocument::Compact);
+				ret.headers["Content-Type"] = "application/json";
+			}
+		}
 
 		if (result.hasProperty("headers")) {
 			const QJSValue headers = result.property("headers");

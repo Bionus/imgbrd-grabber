@@ -337,6 +337,12 @@ NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageU
 	return m_manager->get(request, static_cast<int>(type));
 }
 
+NetworkReply *Site::post(const QUrl &url, QByteArray data, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &headers)
+{
+	const QNetworkRequest request = this->makeRequest(url, pageUrl, ref, img, headers);
+	return m_manager->post(request, std::move(data), static_cast<int>(type));
+}
+
 
 QVariant Site::setting(const QString &key, const QVariant &def) const { return m_settings->value(key, def); }
 void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def) const { m_settings->setValue(key, value, def); }
