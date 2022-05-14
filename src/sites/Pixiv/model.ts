@@ -123,8 +123,8 @@ function parseImage(image: any, fromGallery: boolean): IImage {
         img.sample_url = img.file_url;
         img.file_url = img.file_url
             .replace("img-original", "img-zip-ugoira")
-            .replace(/ugoira0\.(jpe?g|png|webp)/, "ugoira1920x1080.zip");
-     }
+            .replace(/ugoira0\.(jpe?g|png|webp|gif)/, "ugoira1920x1080.zip");
+    }
 
     return img;
 }
