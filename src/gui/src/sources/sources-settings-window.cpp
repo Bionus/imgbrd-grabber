@@ -7,25 +7,13 @@
 #include <QNetworkCookie>
 #include <QSettings>
 #include <ui_sources-settings-window.h>
-#include "auth/auth-field.h"
-#include "auth/auth-hash-field.h"
-#include "auth/field-auth.h"
-#include "auth/http-auth.h"
-#include "auth/http-basic-auth.h"
-#include "auth/oauth1-auth.h"
-#include "auth/oauth2-auth.h"
-#include "auth/url-auth.h"
+#include "auth/auth.h"
 #include "functions.h"
-#include "login/http-basic-login.h"
-#include "login/http-get-login.h"
-#include "login/http-post-login.h"
-#include "login/oauth1-login.h"
-#include "login/oauth2-login.h"
-#include "login/url-login.h"
 #include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/profile.h"
 #include "models/source-engine.h"
+#include "login/login-factory.h"
 
 
 void setSource(QComboBox *combo, const QStringList &opts, const QStringList &vals, const QStringList &defs, Site *site, QSettings *settings, int index)
@@ -122,8 +110,6 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	auto auths = m_site->getSourceEngine()->getAuths();
 	int activeLoginIndex = 0;
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
-		bool canTestLogin = false;
-
 		const QString id = it.key();
 		const QString type = it.value()->type();
 		const QString name = it.value()->name();
@@ -147,30 +133,13 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 			fields.insert(id, m_credentialFields[type][id]);
 		}
 
-		// TODO(Bionus): factorize login testability creation
-		if (type == "oauth2") {
-			auto *oauth = dynamic_cast<OAuth2Auth*>(it.value());
-			canTestLogin = OAuth2Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
-		} else if (type == "oauth1") {
-			auto *oauth = dynamic_cast<OAuth1Auth*>(it.value());
-			canTestLogin = OAuth1Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
-		} else if (type == "http_basic") {
-			auto *basicAuth = dynamic_cast<HttpBasicAuth*>(it.value());
-			canTestLogin = HttpBasicLogin(basicAuth, m_site, nullptr, m_site->settings()).isTestable();
-		} else {
-			auto fieldAuth = dynamic_cast<FieldAuth*>(it.value());
-			if (type == "url") {
-				canTestLogin = UrlLogin(dynamic_cast<UrlAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
-			} else if (type == "post") {
-				canTestLogin = HttpPostLogin(dynamic_cast<HttpAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
-			} else if (type == "get") {
-				canTestLogin = HttpGetLogin(dynamic_cast<HttpAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
-			}
-		}
-
 		credentialsWidget->setLayout(formLayout);
 		ui->stackedCredentials->addWidget(credentialsWidget);
-		m_canTestLogin.append(canTestLogin);
+
+		// Enable/disable the "Test" button
+		Login *login = LoginFactory::build(m_site, it.value(), nullptr);
+		m_canTestLogin.append(login->isTestable());
+		login->deleteLater();
 	}
 	for (const QString key : fields.keys()) {
 		const QList<QLineEdit*> l = fields.values(key);
