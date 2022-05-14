@@ -3588,7 +3588,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <location filename="../gui/src/settings/options-window.ui" line="5206"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>Tags adicionais: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: a tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tipo de tag, "geral", "artista", "copyright", "personagem", "modelo" ou "conjunto_de_fotos"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: o número do tipo de tag (entre 0 e 6)</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5156"/>
