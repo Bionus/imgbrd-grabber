@@ -2340,7 +2340,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="616"/>
       <source>Auto tag add</source>
-      <translation>Авто-добавенные теги</translation>
+      <translation>Автодобавленные теги</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="640"/>
@@ -3879,7 +3879,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="369"/>
       <source>Valid filename!</source>
-      <translation>Подходящее имя файла!</translation>
+      <translation>Допустимое имя файла!</translation>
     </message>
     <message>
       <location filename="../gui/src/helpers.cpp" line="31"/>
@@ -4153,7 +4153,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/search-tab.cpp" line="802"/>
       <location filename="../gui/src/tabs/search-tab.cpp" line="805"/>
       <source>max %1</source>
-      <translation>макс %1</translation>
+      <translation>макс. %1</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="774"/>
@@ -4764,7 +4764,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="116"/>
       <source>Consumer secret</source>
-      <translation>Секретный ключ потребителя</translation>
+      <translation>Секретный ключ клиента</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="117"/>
