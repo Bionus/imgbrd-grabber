@@ -3477,7 +3477,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4821"/>
       <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="unfinished"/>
+      <translation>Imagens contendo uma tag na lista negra não serão exibidas nos resultados se esta caixa estiver marcada. Caso esteja desmarcada, uma confirmação será solicitada antes de mostrar uma dessas imagens.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4842"/>
