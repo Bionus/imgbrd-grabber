@@ -4250,7 +4250,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="139"/>
       <source>Explicit</source>
-      <translation>Explícito</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="144"/>
