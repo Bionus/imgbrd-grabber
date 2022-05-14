@@ -3731,7 +3731,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="415"/>
       <source>Get &amp;selected</source>
-      <translation type="unfinished"/>
+      <translation>Obter &amp;selecionados</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="422"/>
