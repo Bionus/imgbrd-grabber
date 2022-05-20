@@ -1175,7 +1175,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
       <source>Get &amp;selected</source>
-      <translation>Obter &amp;selecionado</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="332"/>
