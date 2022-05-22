@@ -401,7 +401,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished"/>
+      <translation>Добавить условное имя файла</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
@@ -475,57 +475,57 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Теги</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="42"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Источник</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="43"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>Страница</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="44"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>Изображений на странице</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>Лимит изображений</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Имя файла</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Папка</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="48"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>В черный список</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"/>
+      <translation>Галереи считаются как одна</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>Прогресс</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="145"/>
@@ -548,57 +548,57 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation type="unfinished"/>
+      <translation>Id</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
       <source>Md5</source>
-      <translation type="unfinished"/>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="37"/>
       <source>Rating</source>
-      <translation type="unfinished"/>
+      <translation>Рейтинг</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="38"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Теги</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="39"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>Адрес</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="40"/>
       <source>Date</source>
-      <translation type="unfinished"/>
+      <translation>Дата</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="41"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Поиск</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Сайт</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Имя файла</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="44"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Папка</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
       <source>File size</source>
-      <translation type="unfinished"/>
+      <translation>Размер файла</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="46"/>
@@ -1867,7 +1867,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>Преобразователь базы данных MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
@@ -1988,37 +1988,37 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="45"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Поиск</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="46"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Источник</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Интервал</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="48"/>
       <source>Action</source>
-      <translation type="unfinished"/>
+      <translation>Действие</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
       <source>Post-filters</source>
-      <translation type="unfinished"/>
+      <translation>Постфильтры</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="50"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>Последняя проверка</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
       <source>Next check</source>
-      <translation type="unfinished"/>
+      <translation>Следующая проверка</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="52"/>
@@ -3915,7 +3915,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>Адрес</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="631"/>
@@ -4260,7 +4260,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
       <source>Destination filename</source>
-      <translation type="unfinished"/>
+      <translation>Новое имя файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -4351,17 +4351,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>Миниатюра</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
       <source>Original</source>
-      <translation type="unfinished"/>
+      <translation>Оригинал</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished"/>
+      <translation>Папка для сохранения</translation>
     </message>
   </context>
   <context>
@@ -4734,7 +4734,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>Адрес</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
