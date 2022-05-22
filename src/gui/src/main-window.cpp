@@ -85,6 +85,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	if (m_settings->value("Log/show", true).toBool()) {
 		m_logTab = new LogTab(this);
 		ui->tabWidget->addTab(m_logTab, m_logTab->windowTitle());
+		connect(m_logTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);
 	}
 
 	logSystemInformation(m_profile);
@@ -272,11 +273,13 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, m_trayIcon, this);
 	m_monitorsTab = new MonitorsTab(m_profile, m_profile->monitorManager(), m_monitoringCenter, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_monitorsTab, m_monitorsTab->windowTitle());
+	connect(m_monitorsTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);
 	ui->tabWidget->setCurrentIndex(0);
 
 	// Downloads tab
 	m_downloadsTab = new DownloadsTab(m_profile, m_downloadQueue, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
+	connect(m_downloadsTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);
 	ui->tabWidget->setCurrentIndex(0);
 
 	// "File" actions to load/save downloads list
@@ -565,11 +568,20 @@ bool MainWindow::loadTabs(const QString &filename)
 	m_forcedTab = currentTab;
 	return true;
 }
-void MainWindow::updateTabTitle(SearchTab *tab)
+void MainWindow::tabTitleChanged()
 {
-	int index = ui->tabWidget->indexOf(tab);
+	QObject *object = sender();
+	QWidget *widget = qobject_cast<QWidget*>(object);
+	if (widget != nullptr) {
+		updateTabTitle(widget);
+	}
+}
+void MainWindow::updateTabTitle(QWidget *widget)
+{
+	SearchTab *tab = qobject_cast<SearchTab*>(widget);
+	int index = ui->tabWidget->indexOf(widget);
 	const QString oldText = ui->tabWidget->tabText(index);
-	const QString newText = tab->windowTitle() + (tab->isLocked() ? " 🔒" : "");
+	const QString newText = widget->windowTitle() + (tab != nullptr && tab->isLocked() ? " 🔒" : "");
 	if (newText != oldText) {
 		ui->tabWidget->setTabText(index, newText);
 	}
