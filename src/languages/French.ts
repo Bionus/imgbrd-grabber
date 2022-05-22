@@ -399,7 +399,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter un nom de fichier conditionnel</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
@@ -473,57 +473,57 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="42"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Source</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="43"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>Page</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="44"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>Images par page</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>Limite d'images</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Nom de fichier</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Dossier</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="48"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>Post-filtrage</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Récupérer liste noire</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"/>
+      <translation>Les galeries comptent pour un</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>Progression</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="145"/>
@@ -546,62 +546,62 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation type="unfinished"/>
+      <translation>Id</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
       <source>Md5</source>
-      <translation type="unfinished"/>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="37"/>
       <source>Rating</source>
-      <translation type="unfinished"/>
+      <translation>Classe</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="38"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="39"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="40"/>
       <source>Date</source>
-      <translation type="unfinished"/>
+      <translation>Date</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="41"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Recherche</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Site</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Nom de fichier</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="44"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Dossier</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
       <source>File size</source>
-      <translation type="unfinished"/>
+      <translation>Taille du fichier</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="46"/>
       <source>Dimensions</source>
-      <translation type="unfinished"/>
+      <translation>Dimensions</translation>
     </message>
   </context>
   <context>
@@ -1643,7 +1643,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.ui" line="124"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>Édition</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="160"/>
@@ -1792,7 +1792,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.ui" line="487"/>
       <source>Prune sources</source>
-      <translation type="unfinished"/>
+      <translation>Nettoyer les sources</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="157"/>
@@ -1845,7 +1845,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>Convertisseur de base de données MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
@@ -1891,7 +1891,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
       <source>This tool will add the MD5 of all the files found in the folder set below to your MD5 list.</source>
-      <translation type="unfinished"/>
+      <translation>Cet outil ajoute le MD5 de tous les fichiers trouvés dans le dossier défini ci-dessous à votre liste de MD5.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="37"/>
@@ -1962,52 +1962,52 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="45"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Recherche</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="46"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Source</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Fréquence</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="48"/>
       <source>Action</source>
-      <translation type="unfinished"/>
+      <translation>Action</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
       <source>Post-filters</source>
-      <translation type="unfinished"/>
+      <translation>Post-filtrage</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="50"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>Dernière vérification</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
       <source>Next check</source>
-      <translation type="unfinished"/>
+      <translation>Prochaine vérification</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="52"/>
       <source>Last state</source>
-      <translation type="unfinished"/>
+      <translation>Dernier état</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="53"/>
       <source>Last state count</source>
-      <translation type="unfinished"/>
+      <translation>Dernier compte d'état</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="54"/>
       <source>Last state since</source>
-      <translation type="unfinished"/>
+      <translation>Dernier état depuis</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
@@ -2404,7 +2404,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="58"/>
       <source>Registries</source>
-      <translation type="unfinished"/>
+      <translation>Registres</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="127"/>
@@ -2414,7 +2414,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="189"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>Sauvegarde</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
@@ -2501,12 +2501,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="642"/>
       <source>New sources and sites can be supported by adding third-party source registries.</source>
-      <translation type="unfinished"/>
+      <translation>De nouvelles sources et de nouveaux sites peuvent être pris en charge en ajoutant des registres de sources tierces.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="652"/>
       <source>Add a new source registry</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter un nouveau registre de sources</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="679"/>
@@ -2848,7 +2848,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5373"/>
       <source>Generate a backup</source>
-      <translation type="unfinished"/>
+      <translation>Générer une sauvegarde</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1609"/>
@@ -3562,7 +3562,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4298"/>
       <source>Open in browser</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir dans le navigateur</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4324"/>
@@ -3802,7 +3802,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5200"/>
       <source>Timeout</source>
-      <translation type="unfinished"/>
+      <translation>Délai d'expiration</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5223"/>
@@ -3878,12 +3878,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
       <source>Add source registry</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter un registre de sources</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="631"/>
