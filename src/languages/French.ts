@@ -3906,17 +3906,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="878"/>
       <source>Backup file (*.zip)</source>
-      <translation type="unfinished"/>
+      <translation>Fichier de sauvegarde (*.zip)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="885"/>
       <source>Backup file created successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Fichier de sauvegarde créé avec succès.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="887"/>
       <source>Error saving backup file.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors de l'enregistrement du fichier de sauvegarde.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="896"/>
@@ -4194,7 +4194,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="885"/>
       <source>Success</source>
-      <translation type="unfinished"/>
+      <translation>Succès</translation>
     </message>
   </context>
   <context>
@@ -4228,7 +4228,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
       <source>Destination filename</source>
-      <translation type="unfinished"/>
+      <translation>Format de destination</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -4317,17 +4317,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>Miniature</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
       <source>Original</source>
-      <translation type="unfinished"/>
+      <translation>Origine</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished"/>
+      <translation>Destination</translation>
     </message>
   </context>
   <context>
@@ -4670,12 +4670,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="73"/>
       <source>A source supporting '%1' has been found in the registry '%2': '%3'. Install it?</source>
-      <translation type="unfinished"/>
+      <translation>Une source supportant '%1' a été trouvée dans le registre '%2': '%3'. L'installer ?</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="128"/>
       <source>Error importing source.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors de l'import de la source.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="138"/>
@@ -4688,32 +4688,32 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="17"/>
       <source>Source registry</source>
-      <translation type="unfinished"/>
+      <translation>Registre de sources</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Nom</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
       <source>Homepage</source>
-      <translation type="unfinished"/>
+      <translation>Page d'accueil</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Sources</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Fermer</translation>
     </message>
   </context>
   <context>
@@ -5015,7 +5015,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>OAuth 2 (client credentials header)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (en-têtes identifiants)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
@@ -5498,7 +5498,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/ui/toggle-columns-table-view.cpp" line="52"/>
       <source>Reset sorting</source>
-      <translation type="unfinished"/>
+      <translation>Réinitialiser le tri</translation>
     </message>
   </context>
   <context>
