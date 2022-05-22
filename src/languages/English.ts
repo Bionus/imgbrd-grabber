@@ -3906,17 +3906,17 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="878"/>
       <source>Backup file (*.zip)</source>
-      <translation type="unfinished"/>
+      <translation>Backup file (*.zip)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="885"/>
       <source>Backup file created successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Backup file created successfully.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="887"/>
       <source>Error saving backup file.</source>
-      <translation type="unfinished"/>
+      <translation>Error saving backup file.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="896"/>
@@ -4194,7 +4194,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="885"/>
       <source>Success</source>
-      <translation type="unfinished"/>
+      <translation>Success</translation>
     </message>
   </context>
   <context>
@@ -4228,7 +4228,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
       <source>Destination filename</source>
-      <translation type="unfinished"/>
+      <translation>Destination filename</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -4317,17 +4317,17 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>Thumbnail</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
       <source>Original</source>
-      <translation type="unfinished"/>
+      <translation>Original</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished"/>
+      <translation>Destination</translation>
     </message>
   </context>
   <context>
@@ -4670,12 +4670,12 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="73"/>
       <source>A source supporting '%1' has been found in the registry '%2': '%3'. Install it?</source>
-      <translation type="unfinished"/>
+      <translation>A source supporting '%1' has been found in the registry '%2': '%3'. Install it?</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="128"/>
       <source>Error importing source.</source>
-      <translation type="unfinished"/>
+      <translation>Error importing source.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="138"/>
@@ -4688,32 +4688,32 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="17"/>
       <source>Source registry</source>
-      <translation type="unfinished"/>
+      <translation>Source registry</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Name</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
       <source>Homepage</source>
-      <translation type="unfinished"/>
+      <translation>Homepage</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Sources</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Close</translation>
     </message>
   </context>
   <context>
@@ -5015,7 +5015,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>OAuth 2 (client credentials header)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (client credentials header)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
@@ -5498,7 +5498,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/ui/toggle-columns-table-view.cpp" line="52"/>
       <source>Reset sorting</source>
-      <translation type="unfinished"/>
+      <translation>Reset sorting</translation>
     </message>
   </context>
   <context>
