@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber é uma criação de Bionus'.&lt;br/&gt;Por favor visite o &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; para obter atualizações e mais informações sobre o Grabber.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber é uma criação de Bionus.&lt;br/&gt;Por favor visite o &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; para obter atualizações e mais informações sobre o projeto.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="62"/>
       <source>Tag</source>
-      <translation>Categoria</translation>
+      <translation>Tag</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="72"/>
@@ -478,12 +478,12 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="144"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation>O valor de imagem por página deve ser maior ou igual a 1.</translation>
+      <translation>O valor de imagens por página deve ser maior ou igual a 1.</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="154"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation>O limite de imagem deve ser maior ou igual a 0.</translation>
+      <translation>O limite de imagens deve ser maior ou igual a 0.</translation>
     </message>
   </context>
   <context>
@@ -517,7 +517,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="193"/>
       <source>Delete selected</source>
-      <translation>Apagar selecionado</translation>
+      <translation>Apagar selecionados</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="200"/>
@@ -538,7 +538,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
       <source>Move up</source>
-      <translation>Mover para baixo</translation>
+      <translation>Mover para cima</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="172"/>
@@ -622,7 +622,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="462"/>
       <source>You did not specify a filename!</source>
-      <translation>Você não especificou o nome do arquivo!</translation>
+      <translation>Você não especificou um nome de arquivo!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="570"/>
@@ -1018,7 +1018,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="107"/>
       <source>Descending</source>
-      <translation>Descendente</translation>
+      <translation>Decrescente</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="224"/>
@@ -1053,7 +1053,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="551"/>
       <source>Get &amp;selected</source>
-      <translation>Obter &amp;selecionado</translation>
+      <translation>Obter &amp;selecionados</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="558"/>
@@ -1175,7 +1175,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
       <source>Get &amp;selected</source>
-      <translation type="unfinished"/>
+      <translation>Obter &amp;selecionados</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="332"/>
@@ -1619,7 +1619,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="400"/>
       <source>Report an issue</source>
-      <translation>Reportar um erro(só em inglês)</translation>
+      <translation>Reportar um erro</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="405"/>
@@ -2583,7 +2583,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation>A lista de favoritos será ocultada assim que este número de imagem for alcançado.</translation>
+      <translation>A lista de favoritos será ocultada assim que este número de imagens for alcançado.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -2666,7 +2666,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1618"/>
       <source>Use a fixed-image-width layout</source>
-      <translation>Use um layout de largura fixa com base na imagem</translation>
+      <translation>Usar um layout de largura fixa com base na imagem</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1628"/>
@@ -2726,7 +2726,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1723"/>
       <source>Invert Click and Ctrl+Click actions</source>
-      <translation>Inverter ações de "clique" e "Ctrl+Clique"</translation>
+      <translation>Inverter ações de "Clique" e "Ctrl+Clique"</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1735"/>
@@ -2990,7 +2990,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="375"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
-      <translation type="unfinished"/>
+      <translation>Adicione explicitamente o pós-filtro global ao campo de pós-filtro da guia</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="396"/>
@@ -3015,7 +3015,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1052"/>
       <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
-      <translation>Se o comprimento do nome do arquivo for maior que este número, ele será encurtado. Deixe-o para 0 para usar o limite padrão. Não vá acima de 260 no Windows a menos que você saiba o que está fazendo.</translation>
+      <translation>Se o comprimento do nome do arquivo for maior que este número, ele será encurtado. Deixe-o em 0 para usar o limite padrão. Não vá acima de 260 no Windows a menos que você saiba o que está fazendo.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2097"/>
@@ -3588,7 +3588,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <location filename="../gui/src/settings/options-window.ui" line="5206"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="unfinished"/>
+      <translation>Tags adicionais: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: a tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tipo de tag, "general", "artist", "copyright", "character", "model" ou "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: o número do tipo de tag (entre 0 e 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5156"/>
@@ -3997,7 +3997,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation>Obter MD5 no nome de arquivo</translation>
+      <translation>Obter ID no nome de arquivo</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
@@ -4250,7 +4250,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="139"/>
       <source>Explicit</source>
-      <translation type="unfinished"/>
+      <translation>Apenas explícito</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="144"/>
