@@ -41,17 +41,17 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 		if (orientation == Qt::Horizontal) {
 			switch (section)
 			{
-				case 0: return QString("");
-				case 1: return QString("Search");
-				case 2: return QString("Source");
-				case 3: return QString("Interval");
-				case 4: return QString("Action");
-				case 5: return QString("Post-filters");
-				case 6: return QString("Last check");
-				case 7: return QString("Next check");
-				case 8: return QString("Last state");
-				case 9: return QString("Last state count");
-				case 10: return QString("Last state since");
+				case 0: return QString();
+				case 1: return tr("Search");
+				case 2: return tr("Source");
+				case 3: return tr("Interval");
+				case 4: return tr("Action");
+				case 5: return tr("Post-filters");
+				case 6: return tr("Last check");
+				case 7: return tr("Next check");
+				case 8: return tr("Last state");
+				case 9: return tr("Last state count");
+				case 10: return tr("Last state since");
 			}
 		} else {
 			return QString::number(section + 1);
