@@ -2265,7 +2265,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="148"/>
       <source>Log</source>
-      <translation>Registro</translation>
+      <translation>Registro de log</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="154"/>
@@ -3665,7 +3665,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4824"/>
       <source>Show log</source>
-      <translation>Mostrar registro</translation>
+      <translation>Mostrar registro de log</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4838"/>
@@ -5677,7 +5677,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Log</source>
-      <translation>Registro</translation>
+      <translation>Registro de log</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>
