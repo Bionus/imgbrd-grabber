@@ -870,6 +870,9 @@ void Image::setTags(const QList<Tag> &tags)
 void Image::setParentGallery(const QSharedPointer<Image> &parentGallery)
 {
 	m_parentGallery = parentGallery;
+	if (m_search.isEmpty()) {
+		m_search = m_parentGallery->search();
+	}
 	refreshTokens();
 }
 
