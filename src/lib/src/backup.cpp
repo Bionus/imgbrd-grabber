@@ -1,6 +1,7 @@
 #include "backup.h"
 #include <QFile>
 #include <QHash>
+#include <QTemporaryDir>
 #include "functions.h"
 #include "models/favorite.h"
 #include "models/profile.h"
@@ -43,4 +44,20 @@ bool saveBackup(Profile *profile, const QString &filePath)
 
 	// Create backup ZIP
 	return createZip(filePath, zipFiles);
+}
+
+bool loadBackup(Profile *profile, const QString &filePath)
+{
+	// Create temporary directory to store the backup
+	QTemporaryDir tmpDir;
+	if (!tmpDir.isValid()) {
+		return false;
+	}
+
+	// Unzip file
+	if (!unzipFile(filePath, tmpDir.path())) {
+		return false;
+	}
+
+	return true;
 }

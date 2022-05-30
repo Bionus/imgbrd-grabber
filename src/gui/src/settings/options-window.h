@@ -115,6 +115,7 @@ class OptionsWindow : public QDialog
 
 		// Backup
 		void backupGenerate();
+		void backupRestore();
 
 		void save();
 

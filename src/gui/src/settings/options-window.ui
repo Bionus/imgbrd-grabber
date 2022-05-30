@@ -5375,6 +5375,16 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="buttonBackupRestore">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Restore a backup</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer_8">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -5798,6 +5808,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonBackupRestore</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsWindow</receiver>
+   <slot>backupRestore()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>706</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>749</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
@@ -5805,5 +5831,6 @@
   <slot>addWebService()</slot>
   <slot>addSourceRegistry()</slot>
   <slot>backupGenerate()</slot>
+  <slot>backupRestore()</slot>
  </slots>
 </ui>

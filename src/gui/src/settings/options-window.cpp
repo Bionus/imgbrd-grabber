@@ -888,6 +888,24 @@ void OptionsWindow::backupGenerate()
 	}
 }
 
+void OptionsWindow::backupRestore()
+{
+	QSettings *settings = m_profile->getSettings();
+
+	const QString lastDir = settings->value("lastDirBackup", "").toString();
+	const QString path = QFileDialog::getOpenFileName(this, tr("Load backup"), lastDir, tr("Backup file (*.zip)"));
+	if (path.isEmpty()) {
+		return;
+	}
+
+	settings->setValue("lastDirBackup", QDir::toNativeSeparators(path).section(QDir::separator(), 0, -2));
+	if (loadBackup(m_profile, path)) {
+		QMessageBox::information(this, QObject::tr("Success"), tr("Backup restored successfully."));
+	} else {
+		error(this, tr("Error restoring backup."));
+	}
+}
+
 
 void OptionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
