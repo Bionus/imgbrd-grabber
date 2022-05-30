@@ -53,14 +53,9 @@ export const source: ISource = {
                     key: "login",
                 },
                 {
-                    id: "password",
+                    id: "apiKey",
+                    key: "api_key",
                     type: "password",
-                },
-                {
-                    key: "password_hash",
-                    type: "hash",
-                    hash: "sha1",
-                    salt: "choujin-steiner--%password%--",
                 },
             ],
         },
