@@ -224,6 +224,28 @@ artist1 tag1 character1 tag2
 artist1 character1 tag1 tag2
 ```
 
+### Case (enum)
+Change the casing (capitalization) of words in that list.
+
+Possible options:
+* `lower`: some_tag
+* `upper_first`: Some_tag
+* `upper`: Some_Tag
+* `caps`: SOME_TAG
+
+Example:
+```
+%character%
+test_tag1 test_tag2
+
+%character:case=upper_first%
+Test_tag1 Test_tag2
+
+%character:case=upper%
+Test_Tag1 Test_Tag2
+```
+
+
 ## Tag lists
 ### Include namespace (boolean)
 If enabled, the namespace of the tags will be included in the result. Better used with the `usafe` option to keep the `:`.

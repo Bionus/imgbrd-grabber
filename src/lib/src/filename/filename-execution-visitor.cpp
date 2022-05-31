@@ -21,6 +21,7 @@
 #include "loader/token.h"
 #include "logger.h"
 #include "models/image.h"
+#include "tags/tag-name-format.h"
 
 
 FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens, QSettings *settings)
@@ -276,6 +277,23 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QStringL
 
 	if (options.contains("sort")) {
 		std::sort(val.begin(), val.end());
+	}
+
+	if (options.contains("case")) {
+		static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+		{
+			{ "lower", TagNameFormat::Lower },
+			{ "upper_first", TagNameFormat::UpperFirst },
+			{ "upper", TagNameFormat::Upper },
+			{ "caps", TagNameFormat::Caps },
+		};
+		const QString tagCase = options.value("case");
+		if (caseAssoc.contains(tagCase)) {
+			TagNameFormat tagFormat(caseAssoc.value(tagCase), "_");
+			for (QString &t : val) {
+				t = tagFormat.formatted(t.split('_'));
+			}
+		}
 	}
 
 	// Clean each value separately

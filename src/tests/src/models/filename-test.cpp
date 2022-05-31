@@ -496,6 +496,15 @@ TEST_CASE("Filename")
 	{
 		assertPath(profile, img, "%general:separator=^,%", "tag1,tag2,tag3,test_tag1,test_tag2,test_tag3");
 	}
+	SECTION("PathOptionCase")
+	{
+		assertPath(profile, img, "%general:case,separator=+%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3");
+		assertPath(profile, img, "%general:case=invalid,separator=+%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3");
+		assertPath(profile, img, "%general:case=lower,separator=+%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3");
+		assertPath(profile, img, "%general:case=upper_first,separator=+%", "Tag1+Tag2+Tag3+Test_tag1+Test_tag2+Test_tag3");
+		assertPath(profile, img, "%general:case=upper,separator=+%", "Tag1+Tag2+Tag3+Test_Tag1+Test_Tag2+Test_Tag3");
+		assertPath(profile, img, "%general:case=caps,separator=+%", "TAG1+TAG2+TAG3+TEST_TAG1+TEST_TAG2+TEST_TAG3");
+	}
 	SECTION("PathOptionCount")
 	{
 		assertPath(profile, img, "%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");
