@@ -163,7 +163,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	QList<Site*> sites;
 	QJsonArray jsonSites = json["sites"].toArray();
 	for (auto jsonSite : jsonSites) {
-		const QString site  = jsonSite.toString();
+		const QString site = jsonSite.toString();
 		if (siteMap.contains(site)) {
 			sites.append(siteMap.value(site));
 		} else {

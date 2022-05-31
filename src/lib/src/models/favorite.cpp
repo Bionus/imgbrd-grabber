@@ -161,7 +161,7 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profil
 		QJsonArray jsonSites = json["sites"].toArray();
 		sites.reserve(jsonSites.count());
 		for (auto jsonSite : jsonSites) {
-			const QString site  = jsonSite.toString();
+			const QString site = jsonSite.toString();
 			if (siteMap.contains(site)) {
 				sites.append(siteMap.value(site));
 			} else {
