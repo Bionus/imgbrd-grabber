@@ -1616,7 +1616,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation>Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги.</translation>
+      <translation>Каждый раз при сохранении изображения с тем же именем в той же папке будет создаваться текстовый файл, содержащий его теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -2691,7 +2691,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1189"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation>Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги.</translation>
+      <translation>Каждый раз при сохранении изображения с тем же именем в той же папке будет создаваться текстовый файл, содержащий его теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1202"/>
