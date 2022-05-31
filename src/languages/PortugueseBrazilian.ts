@@ -1018,7 +1018,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="169"/>
       <source> min</source>
-      <translation> mínimo</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
