@@ -779,6 +779,16 @@ void GAnalytics::sendException(const QString &exceptionDescription,
 	d->enqueQueryWithCurrentTime(query);
 }
 
+QString getPlatform()
+{
+	QString platform = VERSION_PLATFORM;
+	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+		platform += "-" + QSysInfo::currentCpuArchitecture();
+		platform += "-" + QSysInfo::buildCpuArchitecture();
+	#endif
+	return platform;
+}
+
 /**
  * Session starts. This event will be sent by a POST message.
  * Query is setup in this method and stored in the message
@@ -788,7 +798,7 @@ void GAnalytics::startSession()
 {
 	QVariantMap customValues;
 	customValues.insert("sc", "start");
-	sendEvent("Session", "Start", QString(), QVariant(), customValues);
+	sendEvent("Session", "Start", getPlatform(), QVariant(), customValues);
 }
 
 /**
@@ -800,7 +810,7 @@ void GAnalytics::endSession()
 {
 	QVariantMap customValues;
 	customValues.insert("sc", "end");
-	sendEvent("Session", "End", QString(), QVariant(), customValues);
+	sendEvent("Session", "End", getPlatform(), QVariant(), customValues);
 }
 
 /**
