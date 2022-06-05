@@ -3808,7 +3808,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="5223"/>
       <location filename="../gui/src/settings/options-window.ui" line="5300"/>
       <source>Dry run</source>
-      <translation type="unfinished"/>
+      <translation>Test à blanc</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5240"/>
@@ -3873,7 +3873,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="573"/>
       <source>View</source>
-      <translation type="unfinished"/>
+      <translation>Voir</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
@@ -3901,7 +3901,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="878"/>
       <source>Save backup</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer une sauvegarde</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="878"/>

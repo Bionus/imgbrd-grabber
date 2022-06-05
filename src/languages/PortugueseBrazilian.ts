@@ -513,7 +513,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Obter listados na lista negra</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
@@ -1018,7 +1018,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="169"/>
       <source> min</source>
-      <translation> mínimo</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
@@ -1792,7 +1792,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="487"/>
       <source>Prune sources</source>
-      <translation type="unfinished"/>
+      <translation>Podar fontes</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="157"/>
@@ -1992,22 +1992,22 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
       <source>Next check</source>
-      <translation type="unfinished"/>
+      <translation>Próxima checagem</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="52"/>
       <source>Last state</source>
-      <translation type="unfinished"/>
+      <translation>Último estado</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="53"/>
       <source>Last state count</source>
-      <translation type="unfinished"/>
+      <translation>Contador do último estado</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="54"/>
       <source>Last state since</source>
-      <translation type="unfinished"/>
+      <translation>Último estado desde</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
@@ -3802,13 +3802,13 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5200"/>
       <source>Timeout</source>
-      <translation type="unfinished"/>
+      <translation>Tempo limite</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5223"/>
       <location filename="../gui/src/settings/options-window.ui" line="5300"/>
       <source>Dry run</source>
-      <translation type="unfinished"/>
+      <translation>Execução de teste</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5240"/>
@@ -3878,7 +3878,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
       <source>Add source registry</source>
-      <translation type="unfinished"/>
+      <translation>Adicionar registro de fontes</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
@@ -5498,7 +5498,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/ui/toggle-columns-table-view.cpp" line="52"/>
       <source>Reset sorting</source>
-      <translation type="unfinished"/>
+      <translation>Redefinir Ordenação</translation>
     </message>
   </context>
   <context>

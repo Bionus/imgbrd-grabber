@@ -603,7 +603,7 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="46"/>
       <source>Dimensions</source>
-      <translation type="unfinished"/>
+      <translation>Размеры</translation>
     </message>
   </context>
   <context>
@@ -1616,7 +1616,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation>Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги.</translation>
+      <translation>Каждый раз при сохранении изображения с тем же именем в той же папке будет создаваться текстовый файл, содержащий его теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1665,7 +1665,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="124"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>Правка</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="160"/>
@@ -1814,7 +1814,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="487"/>
       <source>Prune sources</source>
-      <translation type="unfinished"/>
+      <translation>Очистить источники</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="157"/>
@@ -1915,7 +1915,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
       <source>This tool will add the MD5 of all the files found in the folder set below to your MD5 list.</source>
-      <translation type="unfinished"/>
+      <translation>Этот инструмент добавит MD5 всех файлов, найденных в папке, указанной ниже в вашем списке MD5.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="37"/>
@@ -2023,17 +2023,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="52"/>
       <source>Last state</source>
-      <translation type="unfinished"/>
+      <translation>Последнее состояние</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="53"/>
       <source>Last state count</source>
-      <translation type="unfinished"/>
+      <translation>Счётчик последнего состояния</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="54"/>
       <source>Last state since</source>
-      <translation type="unfinished"/>
+      <translation>Последнее состояние с</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
@@ -2436,7 +2436,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="58"/>
       <source>Registries</source>
-      <translation type="unfinished"/>
+      <translation>Регистрации</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="127"/>
@@ -2446,7 +2446,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="189"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>Резервное копирование</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
@@ -2533,12 +2533,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="642"/>
       <source>New sources and sites can be supported by adding third-party source registries.</source>
-      <translation type="unfinished"/>
+      <translation>Новые источники и сайты могут поддерживаться после добавления регистраций сторонних источников.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="652"/>
       <source>Add a new source registry</source>
-      <translation type="unfinished"/>
+      <translation>Добавить регистрацию нового источника</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="679"/>
@@ -2691,7 +2691,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1189"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation>Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги.</translation>
+      <translation>Каждый раз при сохранении изображения с тем же именем в той же папке будет создаваться текстовый файл, содержащий его теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1202"/>
@@ -2880,7 +2880,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5373"/>
       <source>Generate a backup</source>
-      <translation type="unfinished"/>
+      <translation>Создать резервную копию</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1609"/>
@@ -3594,7 +3594,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4298"/>
       <source>Open in browser</source>
-      <translation type="unfinished"/>
+      <translation>Открыть в браузере</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4324"/>
@@ -3834,13 +3834,13 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5200"/>
       <source>Timeout</source>
-      <translation type="unfinished"/>
+      <translation>Задержка</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5223"/>
       <location filename="../gui/src/settings/options-window.ui" line="5300"/>
       <source>Dry run</source>
-      <translation type="unfinished"/>
+      <translation>Пробный запуск</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5240"/>
@@ -3905,12 +3905,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="573"/>
       <source>View</source>
-      <translation type="unfinished"/>
+      <translation>Вид</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
       <source>Add source registry</source>
-      <translation type="unfinished"/>
+      <translation>Добавить регистрацию источника</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="594"/>
@@ -3933,22 +3933,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="878"/>
       <source>Save backup</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить резервную копию</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="878"/>
       <source>Backup file (*.zip)</source>
-      <translation type="unfinished"/>
+      <translation>Файл резервной копии (*.zip)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="885"/>
       <source>Backup file created successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Файл резервной копии успешно создан.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="887"/>
       <source>Error saving backup file.</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка при сохранении файла резервной копии.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="896"/>
@@ -4226,7 +4226,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="885"/>
       <source>Success</source>
-      <translation type="unfinished"/>
+      <translation>Успешно</translation>
     </message>
   </context>
   <context>
@@ -4706,12 +4706,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="73"/>
       <source>A source supporting '%1' has been found in the registry '%2': '%3'. Install it?</source>
-      <translation type="unfinished"/>
+      <translation>Источник, поддерживающий «%1», был найден в регистрации «%2»: «%3». Установить его?</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="128"/>
       <source>Error importing source.</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка импорта источника.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="138"/>
@@ -4724,12 +4724,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="17"/>
       <source>Source registry</source>
-      <translation type="unfinished"/>
+      <translation>Регистрация источника</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Имя</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
@@ -4739,17 +4739,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
       <source>Homepage</source>
-      <translation type="unfinished"/>
+      <translation>Домашняя страница</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Источники</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Закрыть</translation>
     </message>
   </context>
   <context>
@@ -5051,7 +5051,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>OAuth 2 (client credentials header)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (заголовок учётных данных клиента)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
@@ -5536,7 +5536,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/ui/toggle-columns-table-view.cpp" line="52"/>
       <source>Reset sorting</source>
-      <translation type="unfinished"/>
+      <translation>Сброс сортировки</translation>
     </message>
   </context>
   <context>
