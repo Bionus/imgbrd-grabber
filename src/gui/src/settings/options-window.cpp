@@ -329,6 +329,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyMainNewTab->setKeySequence(getKeySequence(settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
 		ui->keyMainPrevTab->setKeySequence(getKeySequence(settings, "keyPrevTab", Qt::CTRL + Qt::Key_PageDown));
 		ui->keyMainNextTab->setKeySequence(getKeySequence(settings, "keyNextTab", Qt::CTRL + Qt::Key_PageUp));
+		ui->keyMainFirstPage->setKeySequence(getKeySequence(settings, "keyFirstPage", Qt::CTRL + Qt::Key_Home));
+		ui->keyMainPreviousPage->setKeySequence(getKeySequence(settings, "keyPreviousPage", Qt::CTRL + Qt::Key_Left));
+		ui->keyMainNextPage->setKeySequence(getKeySequence(settings, "keyNextPage", Qt::CTRL + Qt::Key_Right));
+		ui->keyMainLastPage->setKeySequence(getKeySequence(settings, "keyLastPage", Qt::CTRL + Qt::Key_End));
 		ui->keyMainBrowseSave->setKeySequence(getKeySequence(settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_O));
 		ui->keyMainFavoritesBack->setKeySequence(getKeySequence(settings, "keyFavoritesBack", Qt::Key_Escape));
 	settings->endGroup();
@@ -1296,6 +1300,10 @@ void OptionsWindow::save()
 		settings->setValue("keyNewTab", ui->keyMainNewTab->keySequence().toString());
 		settings->setValue("keyPrevTab", ui->keyMainPrevTab->keySequence().toString());
 		settings->setValue("keyNextTab", ui->keyMainNextTab->keySequence().toString());
+		settings->setValue("keyFirstPage", ui->keyMainFirstPage->keySequence().toString());
+		settings->setValue("keyPreviousPage", ui->keyMainPreviousPage->keySequence().toString());
+		settings->setValue("keyNextPage", ui->keyMainNextPage->keySequence().toString());
+		settings->setValue("keyLastPage", ui->keyMainLastPage->keySequence().toString());
 		settings->setValue("keyBrowseSave", ui->keyMainBrowseSave->keySequence().toString());
 		settings->setValue("keyFavoritesBack", ui->keyMainFavoritesBack->keySequence().toString());
 	settings->endGroup();

@@ -1984,6 +1984,78 @@
              </widget>
             </item>
             <item>
+             <widget class="QGroupBox" name="groupMainShortcutFirstPage">
+              <property name="title">
+               <string>Go to first page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_31">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainFirstPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutPreviousPage">
+              <property name="title">
+               <string>Go to previous page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_32">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainPreviousPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutNextPage">
+              <property name="title">
+               <string>Go to next page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_33">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainNextPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutLastPage">
+              <property name="title">
+               <string>Go to last page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_34">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainLastPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <widget class="QGroupBox" name="groupMainShortcutBrowseSave">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">

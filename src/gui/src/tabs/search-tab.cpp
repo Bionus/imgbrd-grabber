@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QSet>
+#include <QShortcut>
 #include <QtMath>
 #include <algorithm>
 #include "downloader/download-query-image.h"
@@ -79,6 +80,20 @@ void SearchTab::init()
 	if (m_settings->value("globalPostFilterExplicit", false).toBool()) {
 		QString globalPostFilter = m_settings->value("globalPostFilter").toString();
 		m_postFiltering->setText(globalPostFilter);
+	}
+
+	// Navigation keyboard shortcuts
+	if (ui_buttonFirstPage != nullptr) {
+		ui_buttonFirstPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyFirstPage", Qt::CTRL + Qt::Key_Home));
+	}
+	if (ui_buttonPreviousPage != nullptr) {
+		ui_buttonPreviousPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyPreviousPage", Qt::CTRL + Qt::Key_Left));
+	}
+	if (ui_buttonNextPage != nullptr) {
+		ui_buttonNextPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyNextPage", Qt::CTRL + Qt::Key_Right));
+	}
+	if (ui_buttonLastPage != nullptr) {
+		ui_buttonLastPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyLastPage", Qt::CTRL + Qt::Key_End));
 	}
 }
 
