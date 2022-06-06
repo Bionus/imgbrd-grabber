@@ -56,7 +56,7 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques", QList<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
-	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
+	ui->splitterDownloads->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
 
 	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
@@ -100,7 +100,7 @@ void DownloadsTab::closeEvent(QCloseEvent *event)
 	ui->tableBatchUniques->saveGeometry(m_settings, "Downloads/Uniques");
 
 	// Splitter
-	QList<int> splitterSizesOrig = ui->splitter->sizes();
+	QList<int> splitterSizesOrig = ui->splitterDownloads->sizes();
 	QStringList splitterSizes;
 	splitterSizes.reserve(splitterSizesOrig.count());
 	for (int size : splitterSizesOrig) {
