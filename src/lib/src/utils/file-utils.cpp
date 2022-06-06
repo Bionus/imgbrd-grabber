@@ -49,6 +49,32 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
 	return true;
 }
 
+bool safeCopyFile(const QString &from, const QString &filePath, bool backup)
+{
+	// Copy the file to a "bak" file to ensure no data is lost
+	const QString backupFilePath = filePath + ".bak";
+	if (QFile::exists(filePath)) {
+		if (QFile::exists(backupFilePath) && !QFile::remove(backupFilePath)) {
+			return false;
+		}
+		if (!QFile::rename(filePath, backupFilePath)) {
+			return false;
+		}
+	}
+
+	// Try to copy the file, otherwise restore the backup
+	if (!QFile::copy(from, filePath)) {
+		QFile::copy(backupFilePath, filePath);
+		return false;
+	}
+
+	// Clean-up backup file
+	if (!backup) {
+		QFile::remove(backupFilePath);
+	}
+	return true;
+}
+
 bool safeWriteFile(const QString &filePath, const QByteArray &data, bool backup)
 {
 	// Copy the file to a "bak" file to ensure no data is lost

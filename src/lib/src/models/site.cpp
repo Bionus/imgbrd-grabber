@@ -9,19 +9,8 @@
 #include <QSettings>
 #include <QStringList>
 #include <utility>
-#include "auth/http-auth.h"
-#include "auth/http-basic-auth.h"
-#include "auth/oauth1-auth.h"
-#include "auth/oauth2-auth.h"
-#include "auth/url-auth.h"
 #include "functions.h"
 #include "logger.h"
-#include "login/http-basic-login.h"
-#include "login/http-get-login.h"
-#include "login/http-post-login.h"
-#include "login/oauth1-login.h"
-#include "login/oauth2-login.h"
-#include "login/url-login.h"
 #include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/image.h"
@@ -34,6 +23,7 @@
 #include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
+#include "login/login-factory.h"
 
 #ifdef QT_DEBUG
 	// #define CACHE_POLICY QNetworkRequest::PreferCache
@@ -133,27 +123,7 @@ void Site::loadConfig()
 		if (m_login != nullptr) {
 			m_login->deleteLater();
 		}
-		if (m_auth != nullptr) {
-			QString type = m_auth->type();
-			if (type == "url") {
-				m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
-			} else if (type == "oauth2") {
-				m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
-			} else if (type == "oauth1") {
-				m_login = new OAuth1Login(dynamic_cast<OAuth1Auth*>(m_auth), this, m_manager, m_settings);
-			} else if (type == "post") {
-				m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
-			} else if (type == "get") {
-				m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
-			} else if (type == "http_basic") {
-				m_login = new HttpBasicLogin(dynamic_cast<HttpBasicAuth*>(m_auth), this, m_manager, m_settings);
-			} else {
-				m_login = nullptr;
-				log(QStringLiteral("[%1] Invalid login type '%1'").arg(m_url, type), Logger::Error);
-			}
-		} else {
-			m_login = nullptr;
-		}
+		m_login = LoginFactory::build(this, m_auth, m_manager);
 	}
 
 	// Cookies
@@ -335,6 +305,12 @@ NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageU
 {
 	const QNetworkRequest request = this->makeRequest(url, pageUrl, ref, img, headers);
 	return m_manager->get(request, static_cast<int>(type));
+}
+
+NetworkReply *Site::post(const QUrl &url, QByteArray data, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &headers)
+{
+	const QNetworkRequest request = this->makeRequest(url, pageUrl, ref, img, headers);
+	return m_manager->post(request, std::move(data), static_cast<int>(type));
 }
 
 

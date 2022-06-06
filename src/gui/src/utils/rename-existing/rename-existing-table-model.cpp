@@ -25,9 +25,9 @@ QVariant RenameExistingTableModel::headerData(int section, Qt::Orientation orien
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
 		switch (section)
 		{
-			case 0: return QString("Thumbnail");
-			case 1: return QString("Original");
-			case 2: return QString("Destination");
+			case 0: return tr("Thumbnail");
+			case 1: return tr("Original");
+			case 2: return tr("Destination");
 		}
 	}
 	return {};

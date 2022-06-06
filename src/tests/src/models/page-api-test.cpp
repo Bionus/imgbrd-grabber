@@ -21,7 +21,7 @@ TEST_CASE("PageApi")
 	QString path = "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini";
 	QSettings settings(path, QSettings::IniFormat);
 	settings.setValue("auth/pseudo", "user");
-	settings.setValue("auth/password", "a867ce3dbb1f52ccb763d4a1ff4bee5baaea37c1");
+	settings.setValue("auth/apiKey", "test-api-key");
 	settings.sync();
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
@@ -50,7 +50,7 @@ TEST_CASE("PageApi")
 		Page page(profile, site, sites, tags);
 		PageApi pageApi(&page, profile, site, site->getApis().first(), tags);
 
-		REQUIRE(pageApi.url().toString() == QString("https://danbooru.donmai.us/posts.xml?limit=25&page=1&tags=test tag&login=user&password_hash=a867ce3dbb1f52ccb763d4a1ff4bee5baaea37c1"));
+		REQUIRE(pageApi.url().toString() == QString("https://danbooru.donmai.us/posts.xml?limit=25&page=1&tags=test tag&login=user&api_key=test-api-key"));
 	}
 
 	SECTION("ParseUrlAltPage")
@@ -63,6 +63,6 @@ TEST_CASE("PageApi")
 		PageApi pageApi(&page, profile, site, site->getApis().first(), tags, 1001);
 		pageApi.setLastPage(prevPage.pageInformation());
 
-		REQUIRE(pageApi.url().toString() == QString("https://danbooru.donmai.us/posts.xml?limit=25&page=b0&tags=test tag&login=user&password_hash=a867ce3dbb1f52ccb763d4a1ff4bee5baaea37c1"));
+		REQUIRE(pageApi.url().toString() == QString("https://danbooru.donmai.us/posts.xml?limit=25&page=b0&tags=test tag&login=user&api_key=test-api-key"));
 	}
 }

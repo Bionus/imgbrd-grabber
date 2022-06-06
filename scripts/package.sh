@@ -12,8 +12,8 @@ cp build/cli/Grabber-cli* "$APP_DIR" 2> /dev/null
 cp build/languages/*.qm "$APP_DIR/languages/" 2> /dev/null
 
 # Copy other required files to the release directory
-if type rsync2 &> /dev/null; then
-    rsync2 -ar --exclude-from="src/sites/exclude.txt" src/sites "$APP_DIR"
+if type rsync &> /dev/null; then
+    rsync -ar --exclude-from="src/sites/exclude.txt" src/sites "$APP_DIR"
 else
     echo "rsync not found, could not copy sites"
 fi

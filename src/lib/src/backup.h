@@ -7,5 +7,6 @@
 class Profile;
 
 bool saveBackup(Profile *profile, const QString &filePath);
+bool loadBackup(Profile *profile, const QString &filePath);
 
 #endif // BACKUP_H

@@ -30,8 +30,21 @@ QVariant DownloadImageTableModel::headerData(int section, Qt::Orientation orient
 {
 	if (role == Qt::DisplayRole) {
 		if (orientation == Qt::Horizontal) {
-			static QStringList headers { "Id", "Md5", "Rating", "Tags", "Url", "Date", "Search", "Site", "Filename", "Folder", "File size", "Dimensions" };
-			return headers[section];
+			switch (section)
+			{
+				case 0: return tr("Id");
+				case 1: return tr("Md5");
+				case 2: return tr("Rating");
+				case 3: return tr("Tags");
+				case 4: return tr("Url");
+				case 5: return tr("Date");
+				case 6: return tr("Search");
+				case 7: return tr("Site");
+				case 8: return tr("Filename");
+				case 9: return tr("Folder");
+				case 10: return tr("File size");
+				case 11: return tr("Dimensions");
+			}
 		} else {
 			return QString::number(section + 1);
 		}

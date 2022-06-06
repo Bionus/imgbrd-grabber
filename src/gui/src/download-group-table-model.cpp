@@ -35,8 +35,21 @@ QVariant DownloadGroupTableModel::headerData(int section, Qt::Orientation orient
 {
 	if (role == Qt::DisplayRole) {
 		if (orientation == Qt::Horizontal) {
-			static QStringList headers { "", "Tags", "Source", "Page", "Images per page", "Images limit", "Filename", "Folder", "Post-filtering", "Get blacklisted", "Galleries count as one", "Progress" };
-			return headers[section];
+			switch (section)
+			{
+				case 0: return QString();
+				case 1: return tr("Tags");
+				case 2: return tr("Source");
+				case 3: return tr("Page");
+				case 4: return tr("Images per page");
+				case 5: return tr("Images limit");
+				case 6: return tr("Filename");
+				case 7: return tr("Folder");
+				case 8: return tr("Post-filtering");
+				case 9: return tr("Get blacklisted");
+				case 10: return tr("Galleries count as one");
+				case 11: return tr("Progress");
+			}
 		} else {
 			return QString::number(section + 1);
 		}

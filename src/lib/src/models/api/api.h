@@ -22,6 +22,8 @@ struct PageUrl
 	QString error;
 	QString url;
 	QMap<QString, QString> headers;
+	bool isPost = false;
+	QByteArray payload;
 };
 
 struct ParsedPage

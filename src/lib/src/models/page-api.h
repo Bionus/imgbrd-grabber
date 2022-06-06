@@ -97,6 +97,8 @@ class PageApi : public QObject
 		QString m_format, m_source, m_wiki, m_originalUrl;
 		QUrl m_url, m_urlNextPage, m_urlPrevPage;
 		QMap<QString, QString> m_headers;
+		bool m_isPost = false;
+		QByteArray m_payload;
 		QList<QSharedPointer<Image>> m_images;
 		QList<Tag> m_tags;
 		NetworkReply *m_reply;

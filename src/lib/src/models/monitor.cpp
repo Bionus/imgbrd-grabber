@@ -3,6 +3,7 @@
 #include <QJsonObject>
 #include <QMap>
 #include <utility>
+#include "logger.h"
 #include "models/profile.h"
 #include "models/search-query/search-query.h"
 #include "models/site.h"
@@ -161,11 +162,21 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 
 	QList<Site*> sites;
 	QJsonArray jsonSites = json["sites"].toArray();
-	for (auto site : jsonSites) {
-		sites.append(siteMap.value(site.toString()));
+	for (auto jsonSite : jsonSites) {
+		const QString site = jsonSite.toString();
+		if (siteMap.contains(site)) {
+			sites.append(siteMap.value(site));
+		} else {
+			log(QStringLiteral("Invalid source found for monitor: %1").arg(site), Logger::Error);
+		}
 	}
 	if (json.contains("site")) {
-		sites.append(siteMap.value(json["site"].toString()));
+		const QString site = json["site"].toString();
+		if (siteMap.contains(site)) {
+			sites.append(siteMap.value(site));
+		} else {
+			log(QStringLiteral("Invalid source found for monitor: %1").arg(site), Logger::Error);
+		}
 	}
 
 	const int interval = json["interval"].toInt();

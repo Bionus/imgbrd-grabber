@@ -83,7 +83,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): IUrl => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): IRequest => {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");

@@ -2,6 +2,7 @@
 #include <QJSEngine>
 #include <QJSValueIterator>
 #include <QMap>
+#include <QJsonDocument>
 // #include <QMutexLocker>
 #include "functions.h"
 #include "js-helpers.h"
@@ -48,6 +49,18 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 		}
 
 		url = result.property("url").toString();
+
+		ret.isPost = getPropertyOr(result, "method", QString()) == "POST";
+
+		if (result.hasProperty("data")) {
+			const QJSValue payload = result.property("data");
+			if (payload.isString()) {
+				ret.payload = payload.toString().toUtf8();
+			} else {
+				ret.payload = QJsonDocument::fromVariant(payload.toVariant()).toJson(QJsonDocument::Compact);
+				ret.headers["Content-Type"] = "application/json";
+			}
+		}
 
 		if (result.hasProperty("headers")) {
 			const QJSValue headers = result.property("headers");
@@ -237,6 +250,48 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 				}
 				data[dit.name()] = dval;
 			}
+		} else if (key == QLatin1String("medias")) {
+			QList<QSharedPointer<ImageSize>> medias;
+
+			const quint32 length = val.property("length").toUInt();
+			for (quint32 i = 0; i < length; ++i) {
+				const auto media = val.property(i);
+
+				auto size = QSharedPointer<ImageSize>::create();
+				if (media.hasProperty("url")) {
+					size->url = site->fixUrl(media.property("url").toString());
+				}
+				if (media.hasProperty("width")) {
+					size->size.setWidth(media.property("width").toInt());
+				}
+				if (media.hasProperty("height")) {
+					size->size.setWidth(media.property("height").toInt());
+				}
+				size->bitRate = getPropertyOr(media, "bitrate", 0);
+				size->fileSize = getPropertyOr(media, "file_size", 0);
+				if (media.hasProperty("rect")) {
+					const auto rect = media.property("rect");
+					size->rect = QRect(
+						getPropertyOr(rect, "x", 0),
+						getPropertyOr(rect, "y", 0),
+						getPropertyOr(rect, "width", 0),
+						getPropertyOr(rect, "height", 0)
+					);
+				}
+				if (media.hasProperty("type")) {
+					const QString type = media.property("type").toString();
+					if (type == "full") {
+						size->type = Image::Size::Full;
+					} else if (type == "sample") {
+						size->type = Image::Size::Sample;
+					} else if (type == "preview") {
+						size->type = Image::Size::Thumbnail;
+					}
+				}
+				medias.append(size);
+			}
+
+			data.insert("medias", QVariant::fromValue(medias));
 		} else if (val.isArray()) {
 			d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
 		} else {

@@ -25,13 +25,29 @@ QString TagNameFormat::wordSeparator() const
 
 QString TagNameFormat::formatted(const QStringList &words) const
 {
-	QStringList res;
-	res.reserve(words.count());
-	for (int i = 0; i < words.length(); ++i) {
-		res.append(formatted(words[i], i));
+	QString ret;
+
+	// Early return for empty inputs
+	if (words.isEmpty()) {
+		return ret;
 	}
 
-	return res.join(m_wordSeparator);
+	// Allocate the proper size for the return string
+	int totalLength = m_wordSeparator.length() * (words.length() - 1);
+	for (const QString &word : words) {
+		totalLength += word.length();
+	}
+	ret.reserve(totalLength);
+
+	// Format every word
+	for (int i = 0; i < words.length(); ++i) {
+		if (i > 0) {
+			ret.append(m_wordSeparator);
+		}
+		ret.append(formatted(words[i], i));
+	}
+
+	return ret;
 }
 
 QString TagNameFormat::formatted(const QString &word, int index) const

@@ -1,3 +1,5 @@
+const PREFER_MP4 = false;
+
 function completeImage(img: IImage & { json_uris: string }): IImage {
     if (img.json_uris) {
         const uris = JSON.parse(img.json_uris.replace(/&quot;/g, '"'));
@@ -9,6 +11,9 @@ function completeImage(img: IImage & { json_uris: string }): IImage {
         }
         if ("full" in uris && uris["full"].length > 5) {
             img.file_url = uris["full"];
+            if (PREFER_MP4) {
+                img.file_url = img.file_url!.replace(".webm", ".mp4");
+            }
         }
     }
 
@@ -16,6 +21,9 @@ function completeImage(img: IImage & { json_uris: string }): IImage {
         img.preview_url = img.file_url
             .replace("full", "thumb")
             .replace(".svg", ".png");
+    }
+    if (img.preview_url) {
+        img.preview_url = img.preview_url.replace(".webm", ".gif")
     }
 
     return img;
@@ -150,9 +158,14 @@ export const source: ISource = {
                         data = data["image"];
                     }
 
+                    let imageUrl = data["representations"]["full"];
+                    if (PREFER_MP4) {
+                        imageUrl = imageUrl.replace(".webm", ".mp4");
+                    };
+
                     return {
                         createdAt: data["created_at"],
-                        imageUrl: data["representations"]["full"],
+                        imageUrl,
                         tags: makeTags(data["tags"], data["tag_ids"]),
                     };
                 },

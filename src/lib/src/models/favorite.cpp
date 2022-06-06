@@ -7,6 +7,7 @@
 #include <QSize>
 #include <utility>
 #include "functions.h"
+#include "logger.h"
 #include "models/profile.h"
 #include "models/site.h"
 
@@ -159,8 +160,13 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profil
 		const QMap<QString, Site*> &siteMap = profile->getSites();
 		QJsonArray jsonSites = json["sites"].toArray();
 		sites.reserve(jsonSites.count());
-		for (auto site : jsonSites) {
-			sites.append(siteMap.value(site.toString()));
+		for (auto jsonSite : jsonSites) {
+			const QString site = jsonSite.toString();
+			if (siteMap.contains(site)) {
+				sites.append(siteMap.value(site));
+			} else {
+				log(QStringLiteral("Invalid source found for monitor: %1").arg(site), Logger::Error);
+			}
 		}
 	}
 

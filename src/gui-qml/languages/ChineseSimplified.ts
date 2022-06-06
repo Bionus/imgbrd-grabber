@@ -667,22 +667,22 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>艺术家</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="78"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>系列</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="85"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>角色</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="92"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>模型</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="99"/>
@@ -697,7 +697,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>元信息 (Meta)</translation>
     </message>
   </context>
   <context>
@@ -931,7 +931,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
       <source>Then add</source>
-      <translation type="unfinished"/>
+      <translation>然后添加</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
@@ -954,7 +954,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP 基本验证</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
@@ -994,7 +994,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="58"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>盐值</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="59"/>
@@ -1004,7 +1004,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="77"/>
       <source>Update available</source>
-      <translation type="unfinished"/>
+      <translation>可用更新</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>

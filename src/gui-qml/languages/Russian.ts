@@ -949,7 +949,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>Through URL</source>
-      <translation type="unfinished"/>
+      <translation>По адресу</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>

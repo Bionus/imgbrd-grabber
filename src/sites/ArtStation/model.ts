@@ -52,7 +52,7 @@ const meta: Record<string, MetaField> = {
 };
 
 export const source: ISource = {
-    name: "Slushe",
+    name: "ArtStation",
     modifiers: [],
     forcedTokens: [],
     meta,
@@ -67,15 +67,20 @@ export const source: ISource = {
                     if (search.query) {
                         /*const url = "/api/v2/search/projects.json";
                         const data = {
-                            filters: [{
-                                field: "tags",
-                                method: "include",
-                                value: query.search.split(" "),
-                            }],
+                            query: query.search,
                             page: query.page,
                             per_page: opts.limit,
-                            query: query.search,
-                            sorting: "relevance", // likes, date, rank
+                            sorting: "date", // relevance, likes, date, rank
+                            filters: [],
+                            additional_fields:[],
+                        };
+                        return {
+                            method: "POST",
+                            url,
+                            data,
+                            headers: {
+                                "PUBLIC-CSRF-TOKEN": (document.querySelector('meta[name="public-csrf-token"]') as any).content,
+                            },
                         };*/
                         return { error: "Search not supported" };
                     }

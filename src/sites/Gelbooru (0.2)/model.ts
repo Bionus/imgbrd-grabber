@@ -1,4 +1,6 @@
 function completeImage(img: IImage): IImage {
+    img.author = (img as any).owner;
+
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url
             .replace("/thumbnails/", "/images/")

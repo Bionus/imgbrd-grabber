@@ -18,16 +18,6 @@
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -193,6 +183,11 @@
          <string>Database</string>
         </property>
        </item>
+      </item>
+      <item>
+       <property name="text">
+        <string>Backup</string>
+       </property>
       </item>
      </widget>
      <widget class="QStackedWidget" name="stackedWidget">
@@ -1812,8 +1807,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>323</width>
-             <height>407</height>
+             <width>495</width>
+             <height>562</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1984,6 +1979,78 @@
                   <string>Ctrl+Tab</string>
                  </property>
                 </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutFirstPage">
+              <property name="title">
+               <string>Go to first page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_31">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainFirstPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutPreviousPage">
+              <property name="title">
+               <string>Go to previous page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_32">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainPreviousPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutNextPage">
+              <property name="title">
+               <string>Go to next page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_33">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainNextPage"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupMainShortcutLastPage">
+              <property name="title">
+               <string>Go to last page</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_34">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainLastPage"/>
                </item>
               </layout>
              </widget>
@@ -2450,7 +2517,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>388</width>
+             <width>474</width>
              <height>710</height>
             </rect>
            </property>
@@ -3900,8 +3967,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>235</width>
-             <height>785</height>
+             <width>474</width>
+             <height>840</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -5159,9 +5226,6 @@
       </widget>
       <widget class="QWidget" name="pageCommands">
        <layout class="QFormLayout" name="formLayout_18">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_36">
           <property name="text">
@@ -5201,6 +5265,29 @@
         </item>
         <item row="3" column="1">
          <widget class="QLineEdit" name="lineCommandsTagAfter"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Timeout</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QSpinBox" name="spinCommandsTimeout">
+          <property name="suffix">
+           <string> s</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>3600</number>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+         </widget>
         </item>
         <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkCommandsDryRun">
@@ -5350,7 +5437,51 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="pageBackup">
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <item>
+         <widget class="QPushButton" name="buttonBackupGenerate">
+          <property name="text">
+           <string>Generate a backup</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonBackupRestore">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Restore a backup</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_8">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
     </widget>
    </item>
   </layout>
@@ -5564,8 +5695,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>347</x>
-     <y>915</y>
+     <x>358</x>
+     <y>607</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -5580,8 +5711,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>415</x>
-     <y>915</y>
+     <x>426</x>
+     <y>607</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -5612,12 +5743,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>375</x>
-     <y>38</y>
+     <x>635</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>38</y>
+     <x>635</x>
+     <y>127</y>
     </hint>
    </hints>
   </connection>
@@ -5628,12 +5759,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>375</x>
-     <y>38</y>
+     <x>635</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>38</y>
+     <x>635</x>
+     <y>154</y>
     </hint>
    </hints>
   </connection>
@@ -5664,8 +5795,8 @@
      <y>29</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>38</y>
+     <x>623</x>
+     <y>87</y>
     </hint>
    </hints>
   </connection>
@@ -5676,8 +5807,8 @@
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>474</x>
-     <y>38</y>
+     <x>720</x>
+     <y>97</y>
     </hint>
     <hint type="destinationlabel">
      <x>659</x>
@@ -5692,12 +5823,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>375</x>
-     <y>38</y>
+     <x>623</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>38</y>
+     <x>623</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -5708,12 +5839,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>336</x>
-     <y>40</y>
+     <x>584</x>
+     <y>453</y>
     </hint>
     <hint type="destinationlabel">
-     <x>336</x>
-     <y>40</y>
+     <x>584</x>
+     <y>480</y>
     </hint>
    </hints>
   </connection>
@@ -5733,11 +5864,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonBackupGenerate</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsWindow</receiver>
+   <slot>backupGenerate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>513</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>735</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBackupRestore</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsWindow</receiver>
+   <slot>backupRestore()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>706</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>749</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>addLogFile()</slot>
   <slot>addWebService()</slot>
   <slot>addSourceRegistry()</slot>
+  <slot>backupGenerate()</slot>
+  <slot>backupRestore()</slot>
  </slots>
 </ui>

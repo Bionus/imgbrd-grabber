@@ -69,7 +69,8 @@ class MainWindow : public QMainWindow
 		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addSearchTab(SearchTab*, bool background = false, bool save = true, SearchTab *source = nullptr);
-		void updateTabTitle(SearchTab*);
+		void tabTitleChanged();
+		void updateTabTitle(QWidget*);
 		void tabClosed(SearchTab*);
 		void restoreLastClosedTab();
 		void currentTabChanged(int);

@@ -7,6 +7,7 @@
 #include <QFontDialog>
 #include <QFutureWatcher>
 #include <QInputDialog>
+#include <QMessageBox>
 #include <QNetworkProxy>
 #include <QRegularExpression>
 #include <QSignalMapper>
@@ -17,6 +18,7 @@
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
+#include "backup.h"
 #include "custom-buttons.h"
 #include "exiftool.h"
 #include "functions.h"
@@ -327,6 +329,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyMainNewTab->setKeySequence(getKeySequence(settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
 		ui->keyMainPrevTab->setKeySequence(getKeySequence(settings, "keyPrevTab", Qt::CTRL + Qt::Key_PageDown));
 		ui->keyMainNextTab->setKeySequence(getKeySequence(settings, "keyNextTab", Qt::CTRL + Qt::Key_PageUp));
+		ui->keyMainFirstPage->setKeySequence(getKeySequence(settings, "keyFirstPage", Qt::CTRL + Qt::Key_Home));
+		ui->keyMainPreviousPage->setKeySequence(getKeySequence(settings, "keyPreviousPage", Qt::CTRL + Qt::Key_Left));
+		ui->keyMainNextPage->setKeySequence(getKeySequence(settings, "keyNextPage", Qt::CTRL + Qt::Key_Right));
+		ui->keyMainLastPage->setKeySequence(getKeySequence(settings, "keyLastPage", Qt::CTRL + Qt::Key_End));
 		ui->keyMainBrowseSave->setKeySequence(getKeySequence(settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_O));
 		ui->keyMainFavoritesBack->setKeySequence(getKeySequence(settings, "keyFavoritesBack", Qt::Key_Escape));
 	settings->endGroup();
@@ -437,6 +443,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->lineCommandsImage->setText(settings->value("image").toString());
 		ui->lineCommandsTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
 		ui->checkCommandsDryRun->setChecked(settings->value("dry_run", false).toBool());
+		ui->spinCommandsTimeout->setValue(settings->value("timeout", 30).toInt());
 		settings->beginGroup("SQL");
 			ui->comboCommandsSqlDriver->addItems(QSqlDatabase::drivers());
 			ui->comboCommandsSqlDriver->setCurrentIndex(QSqlDatabase::drivers().indexOf(settings->value("driver", "QMYSQL").toString()));
@@ -864,6 +871,46 @@ void OptionsWindow::swapWebServices(int a, int b)
 }
 
 
+void OptionsWindow::backupGenerate()
+{
+	QSettings *settings = m_profile->getSettings();
+
+	const QString lastDir = settings->value("lastDirBackup", "").toString();
+	const QString filename = "backup-" + QDateTime::currentDateTime().toString("yyyy.MM.dd-hh.mm.ss") + ".zip";
+	const QString pathName = QDir::toNativeSeparators(lastDir) + QDir::separator() + filename;
+
+	const QString path = QFileDialog::getSaveFileName(this, tr("Save backup"), pathName, tr("Backup file (*.zip)"));
+	if (path.isEmpty()) {
+		return;
+	}
+
+	settings->setValue("lastDirBackup", QDir::toNativeSeparators(path).section(QDir::separator(), 0, -2));
+	if (saveBackup(m_profile, path)) {
+		QMessageBox::information(this, QObject::tr("Success"), tr("Backup file created successfully."));
+	} else {
+		error(this, tr("Error saving backup file."));
+	}
+}
+
+void OptionsWindow::backupRestore()
+{
+	QSettings *settings = m_profile->getSettings();
+
+	const QString lastDir = settings->value("lastDirBackup", "").toString();
+	const QString path = QFileDialog::getOpenFileName(this, tr("Load backup"), lastDir, tr("Backup file (*.zip)"));
+	if (path.isEmpty()) {
+		return;
+	}
+
+	settings->setValue("lastDirBackup", QDir::toNativeSeparators(path).section(QDir::separator(), 0, -2));
+	if (loadBackup(m_profile, path)) {
+		QMessageBox::information(this, QObject::tr("Success"), tr("Backup restored successfully."));
+	} else {
+		error(this, tr("Error restoring backup."));
+	}
+}
+
+
 void OptionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	const QString text = lineEdit->text();
@@ -1253,6 +1300,10 @@ void OptionsWindow::save()
 		settings->setValue("keyNewTab", ui->keyMainNewTab->keySequence().toString());
 		settings->setValue("keyPrevTab", ui->keyMainPrevTab->keySequence().toString());
 		settings->setValue("keyNextTab", ui->keyMainNextTab->keySequence().toString());
+		settings->setValue("keyFirstPage", ui->keyMainFirstPage->keySequence().toString());
+		settings->setValue("keyPreviousPage", ui->keyMainPreviousPage->keySequence().toString());
+		settings->setValue("keyNextPage", ui->keyMainNextPage->keySequence().toString());
+		settings->setValue("keyLastPage", ui->keyMainLastPage->keySequence().toString());
 		settings->setValue("keyBrowseSave", ui->keyMainBrowseSave->keySequence().toString());
 		settings->setValue("keyFavoritesBack", ui->keyMainFavoritesBack->keySequence().toString());
 	settings->endGroup();
@@ -1366,6 +1417,7 @@ void OptionsWindow::save()
 		settings->setValue("image", ui->lineCommandsImage->text());
 		settings->setValue("tag_after", ui->lineCommandsTagAfter->text());
 		settings->setValue("dry_run", ui->checkCommandsDryRun->isChecked());
+		settings->setValue("timeout", ui->spinCommandsTimeout->value());
 		settings->beginGroup("SQL");
 			settings->setValue("driver", ui->comboCommandsSqlDriver->currentText());
 			settings->setValue("host", ui->lineCommandsSqlHost->text());
