@@ -18,6 +18,7 @@ namespace Ui
 }
 
 
+class BatchDownloader;
 class BatchDownloadImage;
 class BatchWindow;
 class DownloadGroupTableModel;
@@ -124,6 +125,7 @@ class DownloadsTab : public QWidget
 		QMap<QUrl, QElapsedTimer> m_downloadTimeLast;
 		QList<DownloadQueryImage> m_batchs;
 		QMap<int, DownloadQueryGroup> m_batchPending;
+		QList<BatchDownloader*> m_batchDownloaders;
 		QSet<int> m_batchDownloading;
 		QSet<int> m_batchUniqueDownloading;
 		QList<DownloadQueryGroup> m_groupBatchs;

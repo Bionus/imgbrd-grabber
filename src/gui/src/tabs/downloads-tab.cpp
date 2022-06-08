@@ -22,6 +22,7 @@
 #include "commands/commands.h"
 #include "download-group-table-model.h"
 #include "download-image-table-model.h"
+#include "downloader/batch-downloader.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-loader.h"
@@ -610,6 +611,15 @@ void DownloadsTab::getAllLogin()
 {
 	m_progressDialog->clear();
 	m_progressDialog->setText(tr("Logging in, please wait..."));
+
+	// Batch downloaders
+	for (const int j : m_batchDownloading) {
+		auto *downloader = new BatchDownloader(&m_groupBatchs[j], m_profile, this);
+		m_batchDownloaders.append(downloader);
+		downloader->start();
+	}
+
+	return;
 
 	m_getAllLogins.clear();
 	for (auto it = m_batchPending.constBegin(); it != m_batchPending.constEnd(); ++it) {
