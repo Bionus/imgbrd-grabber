@@ -2848,22 +2848,22 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1989"/>
       <source>Go to first page</source>
-      <translation type="unfinished"/>
+      <translation>Go to first page</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2007"/>
       <source>Go to previous page</source>
-      <translation type="unfinished"/>
+      <translation>Go to previous page</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2025"/>
       <source>Go to next page</source>
-      <translation type="unfinished"/>
+      <translation>Go to next page</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2043"/>
       <source>Go to last page</source>
-      <translation type="unfinished"/>
+      <translation>Go to last page</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5445"/>
@@ -2873,7 +2873,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5455"/>
       <source>Restore a backup</source>
-      <translation type="unfinished"/>
+      <translation>Restore a backup</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1609"/>
@@ -3947,17 +3947,17 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="900"/>
       <source>Load backup</source>
-      <translation type="unfinished"/>
+      <translation>Load backup</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="907"/>
       <source>Backup restored successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Backup restored successfully.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="909"/>
       <source>Error restoring backup.</source>
-      <translation type="unfinished"/>
+      <translation>Error restoring backup.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="918"/>
@@ -5719,7 +5719,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Web service</source>
-      <translation type="unfinished"/>
+      <translation>Web service</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>
