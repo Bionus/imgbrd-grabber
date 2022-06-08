@@ -2848,22 +2848,22 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1989"/>
       <source>Go to first page</source>
-      <translation type="unfinished"/>
+      <translation>Aller à la première page</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2007"/>
       <source>Go to previous page</source>
-      <translation type="unfinished"/>
+      <translation>Aller à la page précédente</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2025"/>
       <source>Go to next page</source>
-      <translation type="unfinished"/>
+      <translation>Aller à la page suivante</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2043"/>
       <source>Go to last page</source>
-      <translation type="unfinished"/>
+      <translation>Aller à la dernière page</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5445"/>
@@ -2873,7 +2873,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5455"/>
       <source>Restore a backup</source>
-      <translation type="unfinished"/>
+      <translation>Restaurer une sauvegarde</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1609"/>
@@ -3947,17 +3947,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="900"/>
       <source>Load backup</source>
-      <translation type="unfinished"/>
+      <translation>Charger une sauvegarde</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="907"/>
       <source>Backup restored successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Sauvegarde restaurée avec succès.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="909"/>
       <source>Error restoring backup.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors de la restauration de la sauvegarde.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="918"/>
@@ -5719,7 +5719,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Web service</source>
-      <translation type="unfinished"/>
+      <translation>Service web</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>
