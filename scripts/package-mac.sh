@@ -10,6 +10,7 @@ mkdir -p $APP_DIR
 
 # Copy all required files to the application directory
 ./scripts/package.sh $APP_DIR
+rm "$APP_DIR/settings.ini"
 cp -r src/dist/macos/* "$APP_ROOT/Contents"
 
 # Create the DMG file
