@@ -24,7 +24,7 @@ QString fileMd5(const QString &path)
 TEST_CASE("FileDownloader")
 {
 	const QString successUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/gui/resources/images/icon.png";
-	const QString successMd5 = "005ffe0a3ffcb67fb2da4671d28fd363";
+	const QString successMd5 = "30d4506c7747c244219b8428a5fbff7f";
 	NetworkManager accessManager;
 
 	SECTION("Success")
