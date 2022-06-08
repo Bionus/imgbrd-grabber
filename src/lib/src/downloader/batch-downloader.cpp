@@ -18,8 +18,8 @@ BatchDownloader::BatchDownloader(DownloadQuery *query, Profile *profile, QObject
 
 void BatchDownloader::setCurrentStep(BatchDownloadStep step)
 {
-	emit stepChanged(step);
 	m_step = step;
+	emit stepChanged(step);
 }
 
 BatchDownloader::BatchDownloadStep BatchDownloader::currentStep() const
@@ -195,6 +195,7 @@ void BatchDownloader::loadImage(QSharedPointer<Image> img)
 		imgDownloader->setBlacklist(&m_profile->getBlacklist());
 	}
 	connect(imgDownloader, &ImageDownloader::saved, this, &BatchDownloader::loadImageFinished, Qt::UniqueConnection);
+	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &BatchDownloader::imageDownloadProgress, Qt::UniqueConnection);
 	m_imageDownloaders[img] = imgDownloader;
 	imgDownloader->save();
 }
@@ -238,6 +239,8 @@ void BatchDownloader::loadImageFinished(const QSharedPointer<Image> &img, QList<
 		QCoreApplication::processEvents();
 		QTimer::singleShot(0, this, SLOT(nextImage()));
 	}
+
+	emit imageDownloadFinished(img, res);
 }
 
 void BatchDownloader::allFinished()

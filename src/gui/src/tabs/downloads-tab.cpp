@@ -18,6 +18,7 @@
 #include "batch/add-group-window.h"
 #include "batch/add-unique-window.h"
 #include "batch/batch-window.h"
+#include "batch/download-progress-widget.h"
 #include "batch-download-image.h"
 #include "commands/commands.h"
 #include "download-group-table-model.h"
@@ -52,6 +53,40 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 
 	m_batchsModel = new DownloadImageTableModel(m_batchs, this);
 	ui->tableBatchUniques->setModel(m_batchsModel);
+
+	m_downloadProgressWidget = new DownloadProgressWidget(this);
+	ui->layoutProgress->addWidget(m_downloadProgressWidget);
+	ui->splitterProgress->setSizes({ 100, 0 });
+	connect(
+		ui->tableBatchGroups->selectionModel(),
+		&QItemSelectionModel::selectionChanged,
+		[=](const QItemSelection &selected, const QItemSelection &deselected) {
+			Q_UNUSED(deselected);
+
+			// Get selected rows
+			QSet<int> rows;
+			for (const QModelIndex &index : selected.indexes()) {
+				const int row = index.row();
+				if (!rows.contains(row)) {
+					rows.insert(row);
+				}
+			}
+
+			if (rows.count() != 1) {
+				ui->splitterProgress->setSizes({ 100, 0 });
+				return;
+			}
+
+			const int j = *rows.begin();
+			if (!m_batchDownloaders.contains(j)) {
+				auto *downloader = new BatchDownloader(&m_groupBatchs[j], m_profile, this);
+				m_batchDownloaders.insert(j, downloader);
+			}
+
+			m_downloadProgressWidget->setDownloader(m_batchDownloaders[j]);
+			ui->splitterProgress->setSizes({ 100, 1 });
+		}
+	);
 
 	ui->tableBatchGroups->loadGeometry(m_settings, "Downloads/Groups");
 	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques", QList<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
@@ -213,6 +248,7 @@ void DownloadsTab::batchRemoveGroups(QList<int> rows)
 		int pos = i - rem;
 		m_groupBatchsModel->removed(pos);
 		m_groupBatchs.removeAt(pos);
+		m_batchDownloaders.remove(pos);
 		rem++;
 	}
 
@@ -609,17 +645,19 @@ void DownloadsTab::getAll(bool all)
 
 void DownloadsTab::getAllLogin()
 {
-	m_progressDialog->clear();
-	m_progressDialog->setText(tr("Logging in, please wait..."));
-
 	// Batch downloaders
 	for (const int j : m_batchDownloading) {
-		auto *downloader = new BatchDownloader(&m_groupBatchs[j], m_profile, this);
-		m_batchDownloaders.append(downloader);
-		downloader->start();
+		if (!m_batchDownloaders.contains(j)) {
+			auto *downloader = new BatchDownloader(&m_groupBatchs[j], m_profile, this);
+			m_batchDownloaders.insert(j, downloader);
+		}
+		m_batchDownloaders[j]->start();
 	}
 
 	return;
+
+	m_progressDialog->clear();
+	m_progressDialog->setText(tr("Logging in, please wait..."));
 
 	m_getAllLogins.clear();
 	for (auto it = m_batchPending.constBegin(); it != m_batchPending.constEnd(); ++it) {

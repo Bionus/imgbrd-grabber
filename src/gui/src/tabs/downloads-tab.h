@@ -23,9 +23,11 @@ class BatchDownloadImage;
 class BatchWindow;
 class DownloadGroupTableModel;
 class DownloadImageTableModel;
+class DownloadProgressWidget;
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class DownloadQueue;
+class GroupDownloadProgress;
 class ImageDownloader;
 struct ImageSaveResult;
 class PackLoader;
@@ -125,7 +127,7 @@ class DownloadsTab : public QWidget
 		QMap<QUrl, QElapsedTimer> m_downloadTimeLast;
 		QList<DownloadQueryImage> m_batchs;
 		QMap<int, DownloadQueryGroup> m_batchPending;
-		QList<BatchDownloader*> m_batchDownloaders;
+		QMap<int, BatchDownloader*> m_batchDownloaders;
 		QSet<int> m_batchDownloading;
 		QSet<int> m_batchUniqueDownloading;
 		QList<DownloadQueryGroup> m_groupBatchs;
@@ -141,6 +143,7 @@ class DownloadsTab : public QWidget
 		DownloadGroupTableModel *m_groupBatchsModel;
 		DownloadImageTableModel *m_batchsModel;
 		QSoundEffect m_finishedSoundEffect;
+		DownloadProgressWidget *m_downloadProgressWidget;
 };
 
 #endif // DOWNLOADS_TAB_H

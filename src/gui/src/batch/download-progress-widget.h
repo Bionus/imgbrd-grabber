@@ -12,6 +12,8 @@ namespace Ui
 }
 
 
+class BatchDownloader;
+
 class DownloadProgressWidget : public QWidget
 {
 	Q_OBJECT
@@ -21,10 +23,15 @@ class DownloadProgressWidget : public QWidget
 		~DownloadProgressWidget() override;
 
 	public slots:
-		void setDownload(const DownloadQueryGroup &download);
+		void setDownloader(BatchDownloader *downloader);
+
+	protected slots:
+		void onStepChanged();
+		void onResultChanged();
 
 	private:
 		Ui::DownloadProgressWidget *ui;
+		BatchDownloader *m_downloader;
 };
 
 #endif // DOWNLOAD_PROGRESS_WIDGET_H
