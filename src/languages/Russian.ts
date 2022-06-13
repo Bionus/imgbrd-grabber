@@ -1161,7 +1161,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="224"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>О&amp;к</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="271"/>
@@ -1252,7 +1252,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="339"/>
       <source>Are you sure you want to mark all your favorites as viewed?</source>
-      <translation>Вы уверенны что хотите отметить всё избранное как просмотренное?</translation>
+      <translation>Вы уверены, что хотите отметить всё избранное как просмотренное?</translation>
     </message>
   </context>
   <context>
@@ -1280,7 +1280,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/filename-window.cpp" line="141"/>
       <source>You script contains error, are you sure you want to save it?</source>
-      <translation>Ваш скрипт содержит ошибки, вы уверены что хотите сохранить его?</translation>
+      <translation>Ваш скрипт содержит ошибки, вы уверены, что хотите сохранить его?</translation>
     </message>
   </context>
   <context>
@@ -1288,7 +1288,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="129"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>О&amp;к</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="176"/>
@@ -3250,7 +3250,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="375"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
-      <translation>Явно добавить глобальный постфильтр во поле вкладки постфильтра</translation>
+      <translation>Явно добавить глобальный постфильтр в поле вкладки постфильтра</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="396"/>
@@ -4035,7 +4035,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="139"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>О&amp;к</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="179"/>
@@ -4151,7 +4151,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="321"/>
       <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
-      <translation>Имена файлов не уникальны, при совпадении новые изображения могут затирать старые! Вам следует использовать переменную %md5% для того чтобы избежать этого.</translation>
+      <translation>Ваше имя файла не уникально, при совпадении новые изображения могут затирать старые! Во избежание этого следует использовать переменную %md5%.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="342"/>
@@ -5138,7 +5138,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
       <source>Refresh token</source>
-      <translation>Обновить токен</translation>
+      <translation>Токен обновления</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="199"/>
@@ -5148,7 +5148,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="199"/>
       <source>Are you sure you want to delete the site %1?</source>
-      <translation>Вы уверенны что хотите удалить %1?</translation>
+      <translation>Вы уверены, что хотите удалить сайт %1?</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="218"/>
@@ -5427,7 +5427,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="126"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>О&amp;к</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="166"/>
@@ -5457,7 +5457,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="351"/>
       <source>Load more results</source>
-      <translation>Показать ещё результаты</translation>
+      <translation>Загрузить больше результатов</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="412"/>
