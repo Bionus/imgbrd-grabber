@@ -16,7 +16,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation>Особая благодарность всем участникам за их помощь в улучшении программы на протяжении многих лет, будь то путём предоставления кода и переводов или сообщениями о проблемах и предложениями новых возможностей.</translation>
+      <translation>Особая благодарность всем участникам за их помощь в улучшении программы на протяжении многих лет, будь то путём предоставления кода и переводов, сообщением проблем или предложением новых возможностей.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="155"/>
       <source>Open destination folder</source>
-      <translation>Открыть папку с загрузками</translation>
+      <translation>Открыть папку сохранения</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="160"/>
@@ -406,7 +406,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation>Вы можете использовать либо переменную либо тег как условие.</translation>
+      <translation>Для условия вы можете использовать переменную либо теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
@@ -431,7 +431,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="96"/>
       <source>Leave empty to use the default filename.</source>
-      <translation>Оставьте пустым чтобы использовать имя по умолчанию.</translation>
+      <translation>Оставьте пустым, чтобы использовать имя по умолчанию.</translation>
     </message>
   </context>
   <context>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation>В черный список</translation>
+      <translation>В чёрный список</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
@@ -998,7 +998,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="87"/>
       <source>Image whose icon will be displayed in the favorites list.</source>
-      <translation>Изображение, иконка которого будет показываться в списке избранного.</translation>
+      <translation>Изображение, значок которого отобразится в списке избранного.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="90"/>
@@ -1196,7 +1196,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="558"/>
       <source>Get this &amp;page</source>
-      <translation>Скачать всю &amp;страницу</translation>
+      <translation>Скачать эту &amp;страницу</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="565"/>
@@ -1318,7 +1318,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="332"/>
       <source>Get this &amp;page</source>
-      <translation>Скачать всю &amp;страницу</translation>
+      <translation>Скачать эту &amp;страницу</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="339"/>
@@ -1580,7 +1580,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="20"/>
       <source>Location type</source>
-      <translation>Тип местоположения</translation>
+      <translation>Тип размещения</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="28"/>
@@ -1626,7 +1626,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
       <source>Available tokens: the same as in the "Save" part.</source>
-      <translation>Доступные переменные такие же как во вкладке "Сохранение".</translation>
+      <translation>Доступные переменные такие же, как в разделе «Сохранить».</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="233"/>
@@ -1688,7 +1688,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="232"/>
       <source>Destination</source>
-      <translation>Папка для сохранения</translation>
+      <translation>Путь сохранения</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="263"/>
@@ -1703,7 +1703,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="275"/>
       <source>Open destination folder</source>
-      <translation>Открыть папку с загрузками</translation>
+      <translation>Открыть папку сохранения</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="284"/>
@@ -3067,7 +3067,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2135"/>
       <source>Tag list position</source>
-      <translation>Расположение списка тегов</translation>
+      <translation>Положение списка тегов</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2143"/>
@@ -3145,7 +3145,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2248"/>
       <source>Image position</source>
-      <translation>Расположение изображения</translation>
+      <translation>Положение изображения</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2266"/>
@@ -3175,12 +3175,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2303"/>
       <source>Animation position</source>
-      <translation>Расположение анимации</translation>
+      <translation>Положение анимации</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2358"/>
       <source>Video position</source>
-      <translation>Расположение видео</translation>
+      <translation>Положение видео</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2413"/>
@@ -3359,7 +3359,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4180"/>
       <source>Destination folder</source>
-      <translation>Папка назначения</translation>
+      <translation>Папка сохранения</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4192"/>
@@ -3579,7 +3579,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4264"/>
       <source>Destination folder (fav)</source>
-      <translation>Папка назначения (избранное)</translation>
+      <translation>Папка сохранения (избранное)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4276"/>
@@ -3695,7 +3695,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4755"/>
       <source>Hosts</source>
-      <translation>В режиме поиска по нескольким сайтам</translation>
+      <translation>Источники</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4761"/>
@@ -3712,7 +3712,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4832"/>
       <source>Images</source>
-      <translation>В режиме поиска по одному сайту / Объединённые результаты</translation>
+      <translation>Изображения</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4855"/>
@@ -3836,7 +3836,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5208"/>
       <source>Add a web service</source>
-      <translation>Добавить веб-сервис</translation>
+      <translation>Добавить веб-службу</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5262"/>
@@ -3854,7 +3854,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5242"/>
       <location filename="../gui/src/settings/options-window.ui" line="5362"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;:означает тип тега, "general", "artist", "copyright", "character", "model" или "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Количество тегов этих типов (от 0 до 6)</translation>
+      <translation>Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: означает тип тега, "general", "artist", "copyright", "character", "model" или "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: количество тегов этих типов (от 0 до 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5272"/>
@@ -4065,7 +4065,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="422"/>
       <source>Get this &amp;page</source>
-      <translation>Скачать всю &amp;страницу</translation>
+      <translation>Скачать эту &amp;страницу</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
@@ -4302,7 +4302,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
       <source>Destination filename</source>
-      <translation>Новое имя файла</translation>
+      <translation>Имя файла сохранения</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -4403,7 +4403,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation>Папка для сохранения</translation>
+      <translation>Путь сохранения</translation>
     </message>
   </context>
   <context>
@@ -5482,7 +5482,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="486"/>
       <source>Get this &amp;page</source>
-      <translation>Скачать всю &amp;страницу</translation>
+      <translation>Скачать эту &amp;страницу</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="493"/>
