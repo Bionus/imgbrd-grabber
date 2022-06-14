@@ -3752,7 +3752,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4986"/>
       <source>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</source>
-      <translation>Эти теги не будут приниматься в учётной записи при сохранении изображения. Они не будут отображаться в токенах, таких как %copyright% или %all%.</translation>
+      <translation>Эти теги не будут учитываться при сохранении изображения. Они не будут отображаться в токенах, таких как %copyright% или %all%.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5011"/>
