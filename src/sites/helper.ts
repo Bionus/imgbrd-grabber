@@ -241,6 +241,13 @@ function parseSearchVal(value: string, meta: MetaField): any | null {
         }
     } else if (meta.type === "input") {
         return meta.parser ? meta.parser(value) : value;
+    } else if (meta.type === "bool") {
+        if (value === "true" || value === "yes" || value === "1") {
+            return true;
+        } else if (value === "false" || value === "no" || value === "0") {
+            return false;
+        }
+        return Boolean(value);
     }
     return null;
 }
