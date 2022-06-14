@@ -13,5 +13,6 @@ The only known working URL for this source is:
 ## Search syntax
 
 * `Username`: get all media for a given user
+* `list:LIST_ID`: get all media for a given list
 * `retweets:{yes,no}`: whether to also get media from retweets (default: `yes`)
 * `replies:{yes,no}`: whether to also get media from replies (default: `yes`)

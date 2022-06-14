@@ -6,33 +6,6 @@ function getExtension(url: string): string {
     return "";
 }
 
-interface ISearch {
-    user: string;
-    retweets: boolean;
-    replies: boolean;
-}
-
-function parseSearch(search: string[]): ISearch {
-    let user = "";
-    let retweets = true;
-    let replies = true;
-    for (let tag of search) {
-        tag = tag.trim();
-        if (tag.substr(0, 9) === "retweets:") {
-            retweets = tag.substr(9) === "yes";
-        } else if (tag.substr(0, 8) === "replies:") {
-            replies = tag.substr(8) === "yes";
-        } else {
-            user = tag;
-        }
-    }
-    return {
-        user,
-        retweets,
-        replies,
-    };
-}
-
 function parseTweetMedia(sc: any, original: any, media: any): IImage {
     const d: IImage = {} as any;
     const sizes = media["sizes"];
@@ -119,10 +92,25 @@ function parseTweet(sc: any, gallery: boolean): IImage {
     return parseTweetMedia(sc, original, medias[0]);
 }
 
+const meta: ISource["meta"] = {
+    list: {
+        type: "input",
+    },
+    retweets: {
+        type: "bool",
+        default: true,
+    },
+    replies: {
+        type: "bool",
+        default: true,
+    },
+};
+
 export const source: ISource = {
     name: "Twitter",
     modifiers: ["retweets:yes", "retweets:no", "replies:yes", "replies:no"],
     tokens: ["tweet_id", "original_tweet_id", "original_author", "original_author_id", "original_date"],
+    meta,
     auth: {
         oauth2: {
             type: "oauth2",
@@ -133,7 +121,7 @@ export const source: ISource = {
         /*oauth1: {
             type: "oauth1",
             temporaryCredentialsUrl: "/oauth/request_token",
-            authorizationUrl: "/oauth/authenticate",
+            authorizationUrl: "/oauth/authenticate", // Same as "/oauth/authorize" but doesn't need to re-approve every time
             tokenCredentialsUrl: "/oauth/access_token",
         },*/
     },
@@ -145,14 +133,28 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
-                        const search = parseSearch(query.search.split(" "));
+                        const search = Grabber.parseSearchQuery(query.search, meta);
                         const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
-                        const params = [
+                        const commonParams = [
                             "count=" + opts.limit,
                             "include_rts=" + (search.retweets ? "true" : "false"),
-                            "exclude_replies=" + (!search.replies ? "true" : "false"),
                             "tweet_mode=extended",
-                            "screen_name=" + encodeURIComponent(search.user),
+                        ];
+
+                        // List lookup
+                        if (search.list) {
+                            const params = [
+                                ...commonParams,
+                                "list_id=" + search.list,
+                            ];
+                            return "/1.1/lists/statuses.json?" + params.join("&") + pageUrl;
+                        }
+
+                        // User lookup
+                        const params = [
+                            ...commonParams,
+                            "exclude_replies=" + (!search.replies ? "true" : "false"),
+                            "screen_name=" + encodeURIComponent(search.query),
                         ];
                         return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
                     } catch (e: any) {
