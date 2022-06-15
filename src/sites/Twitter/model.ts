@@ -93,7 +93,10 @@ function parseTweet(sc: any, gallery: boolean): IImage {
 }
 
 const meta: ISource["meta"] = {
-    list: {
+    user_id: {
+        type: "input",
+    },
+    list_id: {
         type: "input",
     },
     retweets: {
@@ -142,10 +145,10 @@ export const source: ISource = {
                         ];
 
                         // List lookup
-                        if (search.list) {
+                        if (search.list_id) {
                             const params = [
                                 ...commonParams,
-                                "list_id=" + search.list,
+                                "list_id=" + search.list_id,
                             ];
                             return "/1.1/lists/statuses.json?" + params.join("&") + pageUrl;
                         }
@@ -154,7 +157,9 @@ export const source: ISource = {
                         const params = [
                             ...commonParams,
                             "exclude_replies=" + (!search.replies ? "true" : "false"),
-                            "screen_name=" + encodeURIComponent(search.query),
+                            search.user_id
+                                ? "user_id=" + search.user_id
+                                : "screen_name=" + encodeURIComponent(search.query),
                         ];
                         return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
                     } catch (e: any) {
