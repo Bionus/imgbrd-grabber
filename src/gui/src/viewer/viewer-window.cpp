@@ -797,13 +797,13 @@ void ViewerWindow::replyFinishedImage(const QSharedPointer<Image> &img, const QL
 			error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url().toString()));
 		}
 	} else if (res.result == Image::SaveResult::NotFound) {
-		showLoadingError("Image not found.");
+		showLoadingError(tr("Image not found."));
 	} else if (res.result == Image::SaveResult::NetworkError) {
-		showLoadingError("Error loading the image.");
+		showLoadingError(tr("Error loading the image."));
 	} else if (res.result == Image::SaveResult::DetailsLoadError) {
-		showLoadingError("Error loading the image's details.");
+		showLoadingError(tr("Error loading the image's details."));
 	} else if (res.result == Image::SaveResult::Error) {
-		showLoadingError("Error saving the image.");
+		showLoadingError(tr("Error saving the image."));
 	} else {
 		m_imagePath = res.path;
 		m_loadedImage = true;
