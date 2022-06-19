@@ -6,7 +6,7 @@ xcopy /I /E /Y /EXCLUDE:cpex.txt "src/sites" "release/sites/"
 xcopy /I /E /K /H "src/dist/windows" "release"
 
 :: Add Qt DLL and files
-%Qt5_Dir%/bin/windeployqt --dir "release" "release/Grabber.exe"
+%Qt5_Dir%/bin/windeployqt --dir "release" "release/Grabber.exe" --release --no-quick-import --angle --no-opengl-sw
 
 :: Add OpenSSL and MySQL DLL
 copy %OPENSSL_ROOT_DIR%/libcrypto-1_1*.dll "release"
