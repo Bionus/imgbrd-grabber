@@ -37,7 +37,7 @@ for pm in pacman apt-get emerge yum; do
 			yum)
 				## Assumes default USE flags are enabled.
 				$permission yum install -y \
-          openssl-devel g++ cmake nodejs npm qt5-qtbase-devel qt5-qtscript-devel qt5-qtmultimedia-devel qt5-qtdeclarative-devel qt5-qttools-devel rsync \
+          openssl-devel g++ cmake nodejs npm qt5-qtbase-devel qt5-qtscript-devel qt5-qtmultimedia-devel qt5-qtdeclarative-devel qt5-qttools-devel qt5-qtnetworkauth-devel rsync \
 				&& installed=1
 				;;
 		esac
