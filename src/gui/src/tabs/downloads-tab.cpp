@@ -305,7 +305,7 @@ void DownloadsTab::addGroup()
 }
 void DownloadsTab::addUnique()
 {
-	auto wAddUnique = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, this);
+	auto wAddUnique = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, &m_batchs, this);
 	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	wAddUnique->show();
 }
