@@ -3,7 +3,7 @@ layout: index
 ---
 
 
-Imageboard/booru downloader which can download thousands of images from multiple boorus very easily. It can either be used through its graphical user intertface or command-line.
+Imageboard/booru downloader which can download thousands of images from multiple boorus very easily. It can either be used through its graphical user interface or command-line.
 
 Thanks to its powerful naming features, you just have to set your filename and save directory using all the tokens available, and the program will generate a filename using the image's information. With this, you can store and manage your pictures in advanced directory structures, and save image with custom filenames!
 
@@ -161,7 +161,7 @@ Behoimi
 
 ## Browse
 
-* Tabs to make multiple searchs at the same time
+* Tabs to make multiple searches at the same time
 * Able to show results from multiple imageboards at the same time in a single tab
 * Remove duplicate results from multiple-imageboard searches
 * Auto-completion of tags in the search field

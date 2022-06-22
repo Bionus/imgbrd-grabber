@@ -7,7 +7,7 @@ _Note: shortcuts marked with `*` might change depending on your platform._
 
 # Mnemonics
 
-Also called "Access keys", those are the underlined characters you can find in menu titles or buttons around the user inteface. The underlined character correspond to the key to open the menu / click the button when in conjunction with the <kbd>Alt</kbd> key.
+Also called "Access keys", those are the underlined characters you can find in menu titles or buttons around the user interface. The underlined character correspond to the key to open the menu / click the button when in conjunction with the <kbd>Alt</kbd> key.
 
 Sometimes, the underline only appears when pressing the <kbd>Alt</kbd> key.
 
