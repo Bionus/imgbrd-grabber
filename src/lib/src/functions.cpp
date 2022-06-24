@@ -281,9 +281,18 @@ QDateTime qDateTimeFromString(const QString &str)
 {
 	QDateTime date;
 
+	// UTC timestamp
 	const uint toInt = str.toUInt();
 	if (toInt != 0) {
-		date = QDateTime::fromSecsSinceEpoch(toInt, Qt::UTC);
+		return QDateTime::fromSecsSinceEpoch(toInt, Qt::UTC);
+	}
+
+	if ((str.length() == 23 || str.length() == 26) && str[19] == '.') {
+		date = QDateTime::fromString(str.left(23), QStringLiteral("yyyy/MM/dd HH:mm:ss.zzz"));
+		if (!date.isValid()) {
+			date = QDateTime::fromString(str.left(23), QStringLiteral("yyyy-MM-dd HH:mm:ss.zzz"));
+		}
+		date.setTimeSpec(Qt::UTC);
 	} else if (str.length() == 19) {
 		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm:ss"));
 		if (!date.isValid()) {
