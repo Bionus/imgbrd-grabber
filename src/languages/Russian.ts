@@ -335,7 +335,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="56"/>
       <source>This directory does not exist.</source>
-      <translation>Этой папки не существует.</translation>
+      <translation>Этот каталог не существует.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="63"/>
@@ -1960,7 +1960,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="93"/>
       <source>This folder does not exist.</source>
-      <translation>Этой папки не существует.</translation>
+      <translation>Эта папка не существует.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="101"/>
@@ -2961,7 +2961,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1710"/>
       <source>Enable autocompletion</source>
-      <translation>Включить автозавершение</translation>
+      <translation>Включить автодополнение</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1720"/>
@@ -4337,7 +4337,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
       <source>This folder does not exist.</source>
-      <translation>Этой папки не существует.</translation>
+      <translation>Эта папка не существует.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="68"/>
