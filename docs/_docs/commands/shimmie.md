@@ -18,7 +18,7 @@ First of all, know that using commands can slow down huge batch downloads (a rec
 
 ## Local web server
 
-First, we're going to install WAMP, which contains everithing required to have a local web server.
+First, we're going to install WAMP, which contains everything required to have a local web server.
 
 1. Download the latest version of WampServer here (2.2e as I am writing this): http://sourceforge.net/projects/wampserver/
 2. Install it somewhere that doesn’t requires admin rights to write into (for example, the default location c:\wamp)
