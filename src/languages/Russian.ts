@@ -59,7 +59,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="77"/>
       <source>Images limit</source>
-      <translation>Лимит изображений</translation>
+      <translation>Предел изображений</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="33"/>
       <source>Id</source>
-      <translation>Id</translation>
+      <translation>ИД</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="40"/>
@@ -495,7 +495,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation>Лимит изображений</translation>
+      <translation>Предел изображений</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation>В чёрный список</translation>
+      <translation>В чёрном списке</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
@@ -540,7 +540,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="167"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation>Лимит изображений должен быть равен или больше 0.</translation>
+      <translation>Предел изображений должен быть равен или больше 0.</translation>
     </message>
   </context>
   <context>
@@ -548,7 +548,7 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation>Id</translation>
+      <translation>ИД</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
@@ -701,7 +701,7 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="365"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="394"/>
       <source>Imageboard-Grabber links (*.igl)</source>
-      <translation>Список ссылок из программы Imageboard-Grabber(*.igl)</translation>
+      <translation>Список ссылок Imageboard-Grabber (*.igl)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="374"/>
@@ -1397,7 +1397,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="968"/>
       <source>ID</source>
-      <translation>ID</translation>
+      <translation>ИД</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="969"/>
@@ -3270,7 +3270,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="940"/>
       <source>If it's in the same directory</source>
-      <translation>Если это есть в той же папке</translation>
+      <translation>Если файл уже есть в той же папке</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1091"/>
@@ -4527,12 +4527,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="40"/>
       <source>ID (ascending)</source>
-      <translation>ID (по возрастанию)</translation>
+      <translation>ИД (по возрастанию)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="45"/>
       <source>ID (descending)</source>
-      <translation>ID (по убыванию)</translation>
+      <translation>ИД (по убыванию)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="50"/>
