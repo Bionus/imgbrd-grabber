@@ -5676,12 +5676,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
       <source>Image not found.</source>
-      <translation type="unfinished"/>
+      <translation>未找到图片。</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>加载图片失败。</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
@@ -5691,7 +5691,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>保存图像时失败。</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
