@@ -2880,22 +2880,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1989"/>
       <source>Go to first page</source>
-      <translation type="unfinished"/>
+      <translation>Перейти к первой странице</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2007"/>
       <source>Go to previous page</source>
-      <translation type="unfinished"/>
+      <translation>Перейти к предыдущей странице</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2025"/>
       <source>Go to next page</source>
-      <translation type="unfinished"/>
+      <translation>Перейти к следующей странице</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2043"/>
       <source>Go to last page</source>
-      <translation type="unfinished"/>
+      <translation>Перейти к последней странице</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5445"/>
@@ -2905,7 +2905,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5455"/>
       <source>Restore a backup</source>
-      <translation type="unfinished"/>
+      <translation>Восстановить резервную копию</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1609"/>
@@ -3979,17 +3979,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="900"/>
       <source>Load backup</source>
-      <translation type="unfinished"/>
+      <translation>Загрузить резервную копию</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="907"/>
       <source>Backup restored successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Резервная копия успешно восстановлена.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="909"/>
       <source>Error restoring backup.</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка восстановления резервной копии.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="918"/>
@@ -5733,12 +5733,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
       <source>Image not found.</source>
-      <translation type="unfinished"/>
+      <translation>Изображение не найдено.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка при загрузке изображения.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
@@ -5748,7 +5748,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка при сохранении изображения.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
@@ -5782,7 +5782,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Web service</source>
-      <translation type="unfinished"/>
+      <translation>Веб-служба</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>
