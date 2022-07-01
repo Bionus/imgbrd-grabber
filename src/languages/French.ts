@@ -4432,7 +4432,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
       <source>Multiple sources</source>
-      <translation type="unfinished"/>
+      <translation>Multiple sources</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
@@ -5695,22 +5695,22 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
       <source>Image not found.</source>
-      <translation type="unfinished"/>
+      <translation>Image introuvable.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors du chargement de l'image.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
       <source>Error loading the image's details.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors du chargement des détails de l'image.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors de l'enregistrement de l'image.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
