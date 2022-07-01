@@ -1,6 +1,10 @@
 ---
 name: Crash report
 about: Report a program crash to help us fix it
+title: ''
+labels: crash
+assignees: ''
+
 ---
 
 **Steps to reproduce**
