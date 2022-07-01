@@ -4464,6 +4464,11 @@ Please solve the issue before resuming the download.</source>
       <translation>Некоторые теги изображения находятся в белом списке: %1. Также некоторые теги находятся в чёрном списке: %2. Всё равно хотите сохранить изображение?</translation>
     </message>
     <message>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
+      <source>Multiple sources</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
       <location filename="../gui/src/tabs/search-tab.cpp" line="819"/>
       <source>Page %1 of %2 (%3 of %4)</source>
@@ -5724,6 +5729,26 @@ Please solve the issue before resuming the download.</source>
 %1</source>
       <translation>Файл слишком большой для отображения.
 %1</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
+      <source>Image not found.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
+      <source>Error loading the image.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
+      <source>Error loading the image's details.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
+      <source>Error saving the image.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
