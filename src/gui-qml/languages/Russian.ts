@@ -652,7 +652,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation>Если это есть в той же папке</translation>
+      <translation>Если файл уже есть в той же папке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
