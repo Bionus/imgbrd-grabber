@@ -4413,6 +4413,11 @@ Please solve the issue before resuming the download.</source>
       <translation>这个图片中的一些标签是白名单中的：%1。但是，也有一些标签是黑名单中的：%2。你依然想要下载吗？</translation>
     </message>
     <message>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
+      <source>Multiple sources</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
       <location filename="../gui/src/tabs/search-tab.cpp" line="819"/>
       <source>Page %1 of %2 (%3 of %4)</source>
@@ -5667,6 +5672,26 @@ Please solve the issue before resuming the download.</source>
 %1</source>
       <translation>以下文件过大无法显示
 %1</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
+      <source>Image not found.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
+      <source>Error loading the image.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
+      <source>Error loading the image's details.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
+      <source>Error saving the image.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
