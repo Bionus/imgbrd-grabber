@@ -4430,6 +4430,11 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <translation>Algumas tags da imagem estão na lista de tags favoritas: %1. No entanto, algumas tags estão na lista negra: %2. Você quer baixá-las mesmo assim?</translation>
     </message>
     <message>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
+      <source>Multiple sources</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
       <location filename="../gui/src/tabs/search-tab.cpp" line="819"/>
       <source>Page %1 of %2 (%3 of %4)</source>
@@ -5686,6 +5691,26 @@ Por favor, resolver o problema antes de retomar o download.</translation>
 %1</source>
       <translation>O arquivo é muito grande para ser exibido.
 %1</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
+      <source>Image not found.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
+      <source>Error loading the image.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
+      <source>Error loading the image's details.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
+      <source>Error saving the image.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
