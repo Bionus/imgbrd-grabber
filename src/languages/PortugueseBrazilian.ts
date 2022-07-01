@@ -2848,22 +2848,22 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1989"/>
       <source>Go to first page</source>
-      <translation type="unfinished"/>
+      <translation>Ir para a primeira página</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2007"/>
       <source>Go to previous page</source>
-      <translation type="unfinished"/>
+      <translation>Voltar para a página anterior</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2025"/>
       <source>Go to next page</source>
-      <translation type="unfinished"/>
+      <translation>Ir para a próxima página</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2043"/>
       <source>Go to last page</source>
-      <translation type="unfinished"/>
+      <translation>Ir para a última página</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5445"/>
@@ -2873,7 +2873,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5455"/>
       <source>Restore a backup</source>
-      <translation type="unfinished"/>
+      <translation>Restaurar um backup</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1609"/>
@@ -3947,17 +3947,17 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="900"/>
       <source>Load backup</source>
-      <translation type="unfinished"/>
+      <translation>Carregar backup</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="907"/>
       <source>Backup restored successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Backup restaurado com sucesso.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="909"/>
       <source>Error restoring backup.</source>
-      <translation type="unfinished"/>
+      <translation>Erro ao restaurar backup.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="918"/>
@@ -5695,12 +5695,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="800"/>
       <source>Image not found.</source>
-      <translation type="unfinished"/>
+      <translation>Imagem não encontrada.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="802"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>Erro ao carregar a imagem.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
@@ -5710,7 +5710,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>Erro ao salvar a imagem.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1011"/>
@@ -5744,7 +5744,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Web service</source>
-      <translation type="unfinished"/>
+      <translation>Pesquisa reversa</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>
