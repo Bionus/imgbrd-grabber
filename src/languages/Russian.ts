@@ -1260,17 +1260,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="14"/>
       <source>Filenaming</source>
-      <translation>Названия</translation>
+      <translation>Имена файлов</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="22"/>
       <source>Classic filenaming</source>
-      <translation>Обычные названия</translation>
+      <translation>Обычные имена файлов</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="68"/>
       <source>Javascript filenaming</source>
-      <translation>Javascript названия</translation>
+      <translation>Имена файлов в Javascript</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.cpp" line="141"/>
