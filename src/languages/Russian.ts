@@ -4466,7 +4466,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
       <source>Multiple sources</source>
-      <translation type="unfinished"/>
+      <translation>Несколько источников</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
@@ -5743,7 +5743,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="804"/>
       <source>Error loading the image's details.</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка при загрузке подробностей изображения.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="806"/>
