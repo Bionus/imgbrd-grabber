@@ -178,6 +178,10 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		setStyleSheet("#ViewerWindow { background-color:" + bg + "; }");
 	}
 
+	m_resizeTimer = new QTimer(this);
+		connect(m_resizeTimer, SIGNAL(timeout()), this, SLOT(update()));
+		m_resizeTimer->setSingleShot(true);
+
 	load(image);
 }
 void ViewerWindow::go()
@@ -196,11 +200,6 @@ void ViewerWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image")) {
 		saveImage();
 	}
-
-	auto *timer = new QTimer(this);
-		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-		timer->setSingleShot(true);
-		m_resizeTimer = timer;
 
 	QString pos = m_settings->value("tagsposition", "top").toString();
 	if (pos == QLatin1String("auto")) {
