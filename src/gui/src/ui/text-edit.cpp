@@ -10,6 +10,7 @@
 #include <QWheelEvent>
 #include "functions.h"
 #include "models/profile.h"
+#include "search-syntax-highlighter.h"
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)
@@ -23,7 +24,7 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 	setFixedHeight(sizeHint().height());
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::openCustomContextMenu);
-	connect(m_profile, &Profile::favoritesChanged, this, &TextEdit::doColor);
+	new SearchSyntaxHighlighter(true, document(), m_profile);
 }
 
 QSize TextEdit::sizeHint() const
@@ -46,85 +47,6 @@ QSize TextEdit::sizeHint() const
 void TextEdit::wheelEvent(QWheelEvent *e)
 {
 	e->ignore();
-}
-
-/**
- * Colorize the contents of the text field.
- */
-void TextEdit::doColor()
-{
-	QString txt = " " + this->toPlainText().toHtmlEscaped() + " ";
-
-	// Color favorite tags
-	QFont fontFavorites;
-	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
-	const QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
-	const QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
-	for (const Favorite &fav : qAsConst(m_favorites)) {
-		txt.replace(" " + fav.getName() + " ", " <span style=\"" + styleFavorites + "\">" + fav.getName() + "</span> ");
-	}
-
-	// Color kept for later tags
-	QFont fontKeptForLater;
-	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
-	const QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
-	const QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
-	for (const QString &tag : qAsConst(m_viewItLater)) {
-		txt.replace(" " + tag + " ", " <span style=\"" + styleKeptForLater + "\">" + tag + "</span> ");
-	}
-
-	// Color meta-tags
-	static const QRegularExpression regexOr(" ~([^ ]+)"),
-		regexExclude(" -([^ ]+)"),
-		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
-		regexMd5(" ([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption),
-		regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
-	txt.replace(regexOr, R"( <span style="color:green">~\1</span>)");
-	txt.replace(regexExclude, R"( <span style="color:red">-\1</span>)");
-	txt.replace(regexMeta, R"( <span style="color:brown">\1:\2</span>)");
-	txt.replace(regexMd5, R"( <span style="color:purple">\1</span>)");
-	txt.replace(regexUrl, R"( <span style="color:blue">\1</span>)");
-
-	// Replace spaces to not be trimmed by the HTML renderer
-	txt = txt.mid(1, txt.length() - 2);
-	int depth = 0;
-	for (QChar &ch : txt) {
-		if (ch == ' ' && depth == 0) {
-			ch = QChar(29);
-		} else if (ch == '<') {
-			depth++;
-		} else if (ch == '>') {
-			depth--;
-		}
-	}
-	txt.replace(QChar(29), "&nbsp;");
-
-	// Setup cursor
-	QTextCursor cursor = textCursor();
-	const int pos = cursor.columnNumber();
-	const int start = cursor.selectionStart();
-	const int end = cursor.selectionEnd();
-	setHtml(txt);
-
-	// If the cursor is at the right side of (if any) selected text
-	if (pos == end) {
-		cursor.setPosition(start, QTextCursor::MoveAnchor);
-		cursor.setPosition(end, QTextCursor::KeepAnchor);
-	} else {
-		cursor.setPosition(end, QTextCursor::MoveAnchor);
-		cursor.setPosition(start, QTextCursor::KeepAnchor);
-	}
-	setTextCursor(cursor);
-}
-
-/**
- * Set the text of the field and color it.
- * @param text The text the field should be set to.
- */
-void TextEdit::setText(const QString &text)
-{
-	QTextEdit::setText(text);
-	doColor();
 }
 
 void TextEdit::setCompleter(QCompleter *completer)
@@ -204,7 +126,6 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 					emit returnPressed();
 				} else {
 					insertCompletion(curr);
-					doColor();
 				}
 				return;
 
@@ -224,7 +145,6 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		}
 		QTextEdit::keyPressEvent(e);
 	}
-	doColor();
 
 	const bool ctrlOrShift = e->modifiers().testFlag(Qt::ControlModifier) || e->modifiers().testFlag(Qt::ShiftModifier);
 	if (c == nullptr || (ctrlOrShift && e->text().isEmpty())) {
@@ -375,5 +295,4 @@ void TextEdit::insertFav(QAction *act)
 	cursor.setPosition(pos + text.length(), QTextCursor::KeepAnchor);
 
 	this->setTextCursor(cursor);
-	this->doColor();
 }
