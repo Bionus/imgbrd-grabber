@@ -89,7 +89,7 @@ export const source: ISource = {
                         .replace("//idol.", "//iapi.");
                     const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
                     const search = buildSearch(query.search);
-                    const url = baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(search);
+                    const url = baseUrl + "/posts?lang=en&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(search);
                     return {
                         url,
                         headers: {

@@ -227,8 +227,8 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 		const QString &key = it.name();
 		const QJSValue &val = it.value();
 
-		if (val.isUndefined()) {
-			log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
+		if (val.isUndefined() || val.isNull()) {
+			log(QStringLiteral("%1 value returned by JS model: %2").arg(val.isUndefined() ? "Undefined" : "Null", key), Logger::Debug);
 			continue;
 		}
 
