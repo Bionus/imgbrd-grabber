@@ -368,3 +368,19 @@ begin
     SaveStringToFile(ExpandConstant('{localappdata}') + '\Bionus\Grabber\innosetup.ini', '[general]' + #13#10 + 'language=' + ExpandConstant('{language}') + #13#10, False);
   end;
 end;
+
+{ Pop-up to ask to delete AppData settings }
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then begin
+    if MsgBox('Do you also want to delete your settings directory?', mbConfirmation, MB_YESNO) = IDYES
+    then begin
+      Log('Deleting settings directory');
+      if DelTree(ExpandConstant('{localappdata}\Bionus\Grabber'), True, True, True) then begin
+        Log('Deleted settings directory');
+      end else begin
+        MsgBox('Error deleting settings directory', mbError, MB_OK);
+      end;
+    end;
+  end;
+end;
