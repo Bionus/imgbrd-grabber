@@ -272,13 +272,13 @@ void ViewerWindow::configureButtons()
 	std::vector<std::vector<unsigned short>> spans;
 	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
 
-		// Load button configuration from settings:
+	// Load button configuration from settings
 	QList<ButtonSettings> bss = m_settings->value("Viewer/activeButtons").value<QList<ButtonSettings>>();
 	for (auto &bs : bss) {
 		auto *pushButton = new QPushButton(this);
 		m_buttons.insert(std::pair<QString, ButtonInstance>(
 			bs.name,
-			ButtonInstance{bs.type, pushButton, bs.states} // This is why I switched to C++14. Could be worked around.
+			ButtonInstance{bs.type, pushButton, bs.states}
 		));
 
 		unsigned short row;
@@ -293,14 +293,15 @@ void ViewerWindow::configureButtons()
 			row = 0;
 		}
 
-		if (maxColPos.size() <= row) { // Initialise new row.
-			while (maxColPos.size() <= row) { // Configure up to new row.
+		// If the button is on a new row, initialize values
+		if (maxColPos.size() <= row) {
+			while (maxColPos.size() <= row) {
 				maxColPos.push_back(-1);
 				spanSum.push_back(0);
 			}
 			spans.resize(row + 1);
 		}
-		spans.at(row).push_back(bs.relativeWidth - 1); // Don't count starting position.
+		spans.at(row).push_back(bs.relativeWidth - 1); // Don't count starting position
 
 		unsigned short effectivePosition = (bs.position > maxColPos.at(row) ? ++maxColPos.at(row) : bs.position) + spanSum.at(row);	// Make columns contiguous.
 		if (bs.relativeWidth > 1) {
@@ -313,13 +314,14 @@ void ViewerWindow::configureButtons()
 
 	unsigned short biggestMaxRow, biggestMaxColPos = 0;
 	for (unsigned short i = 0; i < maxColPos.size(); i++) {
-		if (maxColPos.at(i) + spans.at(i).back() > biggestMaxColPos) {
+		unsigned short spanBack = spans.at(i).empty() ? 0 : spans.at(i).back();
+		if (maxColPos.at(i) + spanBack > biggestMaxColPos) {
 			biggestMaxRow = i;
-			biggestMaxColPos = maxColPos.at(i) + spans.at(i).back();
-			log(("biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back())).c_str(), Logger::Debug);
+			biggestMaxColPos = maxColPos.at(i) + spanBack;
+			log(("biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spanBack) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spanBack)).c_str(), Logger::Debug);
 		}
 
-		maxColPos.at(i) += spans.at(i).back();	// Redefine as end, rather than beginning, position.
+		maxColPos.at(i) += spanBack;	// Redefine as end, rather than beginning, position.
 
 		// Configure rows:
 		ui->buttonsLayout->setRowStretch(i, 1);
