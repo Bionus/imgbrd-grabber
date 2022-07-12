@@ -520,7 +520,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
       <source>Galleries count as one</source>
-      <translation>Галереи считаются как одна</translation>
+      <translation>Считать галереи за одну</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
