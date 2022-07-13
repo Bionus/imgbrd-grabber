@@ -1,0 +1,16 @@
+\exclude.txt\
+\exclude_xcopy.txt\
+\CMakeLists.txt\
+
+\package.json\
+\package-lock.json\
+.config.js\
+\tsconfig.json\
+\tslint.json\
+
+.ts\
+\resources\
+\node_modules\
+
+\Sankaku\
+\Tumblr\

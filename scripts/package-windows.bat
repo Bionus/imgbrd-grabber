@@ -2,7 +2,7 @@
 
 :: Copy all required files to the release directory
 bash scripts/package.sh "release"
-xcopy /I /E /Y /EXCLUDE:cpex.txt "src/sites" "release/sites/"
+xcopy /I /E /Y /EXCLUDE:src\sites\exclude_xcopy.txt "src/sites" "release/sites/"
 xcopy /I /E /K /H "src/dist/windows" "release"
 
 :: Add Qt DLL and files
