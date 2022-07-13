@@ -91,6 +91,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "oauth2_client_credentials", tr("OAuth 2 (client credentials)") },
 		{ "oauth2_client_credentials_header", tr("OAuth 2 (client credentials header)") },
 		{ "oauth2_refresh_token", tr("OAuth 2 (refresh token)") },
+		{ "oauth2_authorization_code", tr("OAuth 2 (authorization code)") },
 		{ "oauth2_pkce", tr("OAuth 2 (PKCE)") }
 	};
 	static const QMap<QString, QString> fieldLabels

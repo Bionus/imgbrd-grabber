@@ -32,7 +32,7 @@ OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, 
 bool OAuth2Login::isTestable() const
 {
 	return !m_auth->tokenUrl().isEmpty()
-		&& (m_auth->authType() != "pkce" || !m_auth->authorizationUrl().isEmpty());
+		&& ((m_auth->authType() != "authorization_code" && m_auth->authType() != "pkce") || !m_auth->authorizationUrl().isEmpty());
 }
 
 QString toUrlBase64(const QByteArray &data)
@@ -274,7 +274,7 @@ void OAuth2Login::login()
 		loginPasswordJson();
 	} else if (type == "refresh_token") {
 		refresh(true);
-	} else if (type == "pkce") {
+	} else if (type == "authorization_code" || type == "pkce") {
 		loginAuthorizationCode();
 	}
 }
