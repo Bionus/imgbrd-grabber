@@ -66,36 +66,36 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 	ui->progressBarDownload->hide();
 
 	m_settings->beginGroup("Viewer/Shortcuts");
-		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), this);
+		auto *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), this);
 			connect(quit, &QShortcut::activated, this, &ViewerWindow::close);
-		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), this);
+		auto *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), this);
 			connect(prev, &QShortcut::activated, this, &ViewerWindow::previous);
-		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), this);
+		auto *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), this);
 			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
 
-		QShortcut *details = new QShortcut(getKeySequence(m_settings, "keyDetails", Qt::Key_D), this);
+		auto *details = new QShortcut(getKeySequence(m_settings, "keyDetails", Qt::Key_D), this);
 			connect(details, &QShortcut::activated, this, &ViewerWindow::showDetails);
-		QShortcut *saveAs = new QShortcut(getKeySequence(m_settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
+		auto *saveAs = new QShortcut(getKeySequence(m_settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
 			connect(saveAs, &QShortcut::activated, this, &ViewerWindow::saveImageAs);
 
-		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
+		auto *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
+		auto *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
 			// Pointer name must not overlap with function name ("saveNQuit"...
 			connect(SNQ, SIGNAL(activated()), this, SLOT(saveNQuit()));
-		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
+		auto *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDir()));
 
-		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
+		auto *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
 			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
-		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
+		auto *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
 			connect(saveNQuitFav, &QShortcut::activated, this, [this]{saveNQuit(true);});
-		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
+		auto *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
 			connect(openFav, &QShortcut::activated, this, [this]{openSaveDir(true);});
 
-		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
+		auto *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::toggleFullScreen);
-		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
+		auto *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ViewerWindow::copyImageDataToClipboard);
 
 		auto *openInBrowser = new QShortcut(getKeySequence(m_settings, "keyOpenInBrowser"), this);
@@ -444,15 +444,15 @@ void ViewerWindow::imageContextMenu()
 	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Reload action
-	QAction *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
+	auto *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
 	connect(reloadImageAction, &QAction::triggered, this, &ViewerWindow::reloadImage);
 
 	// Copy actions
-	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
+	auto *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
 	connect(copyImageAction, &QAction::triggered, this, &ViewerWindow::copyImageFileToClipboard);
-	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
+	auto *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
 	connect(copyDataAction, &QAction::triggered, this, &ViewerWindow::copyImageDataToClipboard);
-	QAction *copyLinkAction = new QAction(QIcon(":/images/icons/globe.png"), tr("Copy link"), menu);
+	auto *copyLinkAction = new QAction(QIcon(":/images/icons/globe.png"), tr("Copy link"), menu);
 	connect(copyLinkAction, &QAction::triggered, this, &ViewerWindow::copyImageLinkToClipboard);
 
 	// Insert actions at the beginning
@@ -1133,19 +1133,19 @@ void ViewerWindow::fullScreen()
 	prepareNextSlide();
 
 	m_settings->beginGroup("Viewer/Shortcuts"); // Could probably just use the variables already initialised when this ViewerWindow was constructed.
-		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), m_fullScreen);
+		auto *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), m_fullScreen);
 			connect(quit, &QShortcut::activated, this, &ViewerWindow::unfullScreen);
-		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
+		auto *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::unfullScreen);
-		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), m_fullScreen);
+		auto *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), m_fullScreen);
 			connect(prev, &QShortcut::activated, this, &ViewerWindow::previous);
-		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), m_fullScreen);
+		auto *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), m_fullScreen);
 			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
-		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
+		auto *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
 			connect(toggleSlideshow, &QShortcut::activated, this, &ViewerWindow::toggleSlideshow);
-		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), m_fullScreen);
+		auto *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), m_fullScreen);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), m_fullScreen);
+		auto *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), m_fullScreen);
 			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
 	m_settings->endGroup();
 
