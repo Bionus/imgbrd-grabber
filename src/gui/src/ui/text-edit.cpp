@@ -217,6 +217,7 @@ void TextEdit::openCustomContextMenu(const QPoint &pos)
 			auto *ratingsGroup = new QActionGroup(favs);
 				ratingsGroup->setExclusive(true);
 				connect(ratingsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
+					ratingsGroup->addAction(QIcon(":/images/ratings/general.png"), "rating:general");
 					ratingsGroup->addAction(QIcon(":/images/ratings/safe.png"), "rating:safe");
 					ratingsGroup->addAction(QIcon(":/images/ratings/questionable.png"), "rating:questionable");
 					ratingsGroup->addAction(QIcon(":/images/ratings/explicit.png"), "rating:explicit");

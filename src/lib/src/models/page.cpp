@@ -21,9 +21,11 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 		// Replace shortcuts to increase compatibility
 		QString text = " " + m_query.tags.join(' ') + " ";
 		text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
+			.replace(" rating:g ", " rating:general ", Qt::CaseInsensitive)
 			.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
 			.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
 			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
+			.replace(" -rating:g ", " -rating:general ", Qt::CaseInsensitive)
 			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
 			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 		QStringList tags = text.split(" ", Qt::SkipEmptyParts);

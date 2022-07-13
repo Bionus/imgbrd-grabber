@@ -98,6 +98,7 @@ void ImageFactory::parseRating(const QString &val, QVariantMap &data)
 {
 	static const QMap<QString, QString> assoc
 	{
+		{ "g", "general" },
 		{ "s", "safe" },
 		{ "q", "questionable" },
 		{ "e", "explicit" }
