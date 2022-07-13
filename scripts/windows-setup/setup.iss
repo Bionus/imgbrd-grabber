@@ -217,6 +217,9 @@ Source: "{#SrcDir}\sites\Gelbooru (0.2)\icon.png";     DestDir: "{app}\sites\Gel
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\model.js";     DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{app}\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Mastodon\icon.png";  DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Mastodon\model.js";  DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Mastodon\sites.txt"; DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\icon.png";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\model.js";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\sites.txt"; DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
