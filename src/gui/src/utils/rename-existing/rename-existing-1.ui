@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Rename existing images</string>
+   <string>Rename existing files</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../../resources/resources.qrc">

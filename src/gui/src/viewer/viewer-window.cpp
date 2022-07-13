@@ -798,7 +798,7 @@ void ViewerWindow::replyFinishedImage(const QSharedPointer<Image> &img, const QL
 			error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url().toString()));
 		}
 	} else if (res.result == Image::SaveResult::NotFound) {
-		showLoadingError(tr("Image not found."));
+		showLoadingError(tr("File not found."));
 	} else if (res.result == Image::SaveResult::NetworkError) {
 		showLoadingError(tr("Error loading the image."));
 	} else if (res.result == Image::SaveResult::DetailsLoadError) {
@@ -1364,11 +1364,9 @@ void ViewerWindow::updateWindowTitle()
 	}
 
 	// Update title if there are infos to show
-	QString title;
-	if (infos.isEmpty()) {
-		title = tr("Image");
-	} else {
-		title = QString(tr("Image") + " (%1)").arg(infos.join(", "));
+	QString title = m_image->isVideo() ? tr("Video") : (!m_isAnimated.isEmpty() ? tr("Animation") : tr("Image"));
+	if (!infos.isEmpty()) {
+		title += QString(" (%1)").arg(infos.join(", "));
 	}
 	setWindowTitle(QStringLiteral("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
