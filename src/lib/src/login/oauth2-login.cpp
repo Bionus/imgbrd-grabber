@@ -163,7 +163,8 @@ void OAuth2Login::loginAuthorizationCode()
 	}
 
 	auto *manager = new SiteNetworkAccessManager(m_site, this);
-	auto *flow = new QOAuth2AuthorizationCodeFlow(consumerKey, consumerSecret, manager, this);
+	auto *flow = new QOAuth2AuthorizationCodeFlow(manager, this);
+	flow->setClientIdentifier(consumerKey);
 	flow->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
 	flow->setAccessTokenUrl(m_site->fixUrl(m_auth->tokenUrl()));
 
