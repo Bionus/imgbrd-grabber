@@ -171,7 +171,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded files</source>
-      <translation type="unfinished"/>
+      <translation>Follow downloaded files</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="119"/>
       <source>Single files</source>
-      <translation type="unfinished"/>
+      <translation>Single files</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="186"/>
@@ -4245,7 +4245,7 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Rename existing files</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="24"/>
@@ -4336,7 +4336,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="14"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Rename existing files</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="24"/>
@@ -4556,12 +4556,12 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>General</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
       <source>General (no)</source>
-      <translation type="unfinished"/>
+      <translation>General (no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="123"/>
@@ -5082,7 +5082,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 2 (authorization code)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (authorization code)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
@@ -5709,17 +5709,17 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="801"/>
       <source>File not found.</source>
-      <translation type="unfinished"/>
+      <translation>File not found.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Video</source>
-      <translation type="unfinished"/>
+      <translation>Video</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Animation</source>
-      <translation type="unfinished"/>
+      <translation>Animation</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="803"/>
