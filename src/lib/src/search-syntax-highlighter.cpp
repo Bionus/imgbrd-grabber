@@ -21,7 +21,7 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 
 	if (!full) {
 		// Meta other format "unknown_meta:value"
-		rule.pattern = QRegularExpression("(?: |^)([^:]+):([^: ][^ ]*)?(?: |$)");
+		rule.pattern = QRegularExpression("(?: |^)([^:]+):([^: ][^ ]*)?");
 		rule.format.setForeground(QColor("#ff0000")); // red
 		highlightingRules.append(rule);
 	} else {
@@ -31,25 +31,23 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 		highlightingRules.append(rule);
 
 		// URL format "http://..."
-		rule.pattern = QRegularExpression("(?: |^)(https?://[^\\s/$.?#].[^\\s]*)(?: |$)");
+		rule.pattern = QRegularExpression("(?: |^)(https?://[^\\s/$.?#].[^\\s]*)");
 		rule.format.setForeground(Qt::blue);
 		highlightingRules.append(rule);
 	}
 
 	// Meta format "meta:value"
-	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?(?: |$)", QRegularExpression::CaseInsensitiveOption);
+	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?", QRegularExpression::CaseInsensitiveOption);
 	rule.format.setForeground(QColor("#a52a2a")); // brown
 	highlightingRules.append(rule);
 
 	if (m_profile != nullptr) {
 		// Favorites format "favorited_tag"
-		rule.pattern = QRegularExpression("(?: |^)(tomose_shunsaku|open_clothes)(?: |$)");
 		rule.format.setForeground(QColor("#ffc0cb")); // pink
 		highlightingRules.append(rule);
 		m_favoritesRule = &highlightingRules.last();
 
 		// Favorites format "kfl_tag"
-		rule.pattern = QRegularExpression("(?: |^)(kept|for_later)(?: |$)");
 		rule.format.setForeground(QColor("#000000")); // black
 		highlightingRules.append(rule);
 		m_kflRule = &highlightingRules.last();
@@ -70,12 +68,12 @@ void SearchSyntaxHighlighter::updateFavorites()
 		}
 		favorites += favorite.getName();
 	}
-	m_favoritesRule->pattern.setPattern("(?: |^)(" + favorites + ")(?: |$)");
+	m_favoritesRule->pattern.setPattern("(?: |^)(" + favorites + ")");
 }
 
 void SearchSyntaxHighlighter::updateKeptForLater()
 {
-	m_kflRule->pattern.setPattern("(?: |^)(" + m_profile->getKeptForLater().join('|') + ")(?: |$)");
+	m_kflRule->pattern.setPattern("(?: |^)(" + m_profile->getKeptForLater().join('|') + ")");
 }
 
 void SearchSyntaxHighlighter::highlightBlock(const QString &text)
