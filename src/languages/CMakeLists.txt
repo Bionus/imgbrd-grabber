@@ -10,9 +10,12 @@ listFilterRegex(TS_FILES_FOR_QM "YourLanguage.ts$")
 
 # Source files (used for 'location' and 'context' in TS files)
 file(GLOB_RECURSE SOURCES
+	"${CMAKE_CURRENT_LIST_DIR}/../lib/src/*.h"
 	"${CMAKE_CURRENT_LIST_DIR}/../lib/src/*.cpp"
+	"${CMAKE_CURRENT_LIST_DIR}/../gui/src/*.h"
 	"${CMAKE_CURRENT_LIST_DIR}/../gui/src/*.cpp"
 	"${CMAKE_CURRENT_LIST_DIR}/../gui/src/*.ui"
+	"${CMAKE_CURRENT_LIST_DIR}/../cli/src/*.h"
 	"${CMAKE_CURRENT_LIST_DIR}/../cli/src/*.cpp")
 
 qt_create_translation(QM_FILES_FOR_TS ${SOURCES} ${TS_FILES_FOR_TS}) # Re-generate TS and generate QM for 'YourLanguage'
