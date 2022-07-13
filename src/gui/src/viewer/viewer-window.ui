@@ -28,88 +28,88 @@
   </property>
   <layout class="QVBoxLayout" name="windowLayout" stretch="1,0,0">
    <item>
-    <layout class="QGridLayout" name="overlayLayout">
-     <item row="0" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
-       <item>
-        <widget class="QWidget" name="widgetLeft" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <property name="leftMargin">
-           <number>0</number>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+     <item>
+      <widget class="QWidget" name="widgetLeft" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
           </property>
-          <property name="topMargin">
-           <number>0</number>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
           </property>
-          <property name="rightMargin">
-           <number>0</number>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
-          <property name="bottomMargin">
-           <number>0</number>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
           </property>
-          <item>
-           <widget class="QScrollArea" name="scrollArea">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>85</width>
+             <height>479</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+            <property name="topMargin">
+             <number>0</number>
             </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QAbstractScrollArea::AdjustToContents</enum>
-            </property>
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>68</width>
-               <height>437</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-         </layout>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="overlayLayout">
+       <item row="1" column="0">
+        <widget class="QProgressBar" name="progressBarDownload">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
-       <item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelLoadingError">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
         <layout class="QVBoxLayout" name="verticalLayout"/>
        </item>
       </layout>
-     </item>
-     <item row="1" column="0">
-      <widget class="QProgressBar" name="progressBarDownload">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="labelLoadingError">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
