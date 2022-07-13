@@ -144,6 +144,12 @@ void OAuth2Login::loginAuthorizationCode()
 	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 
+	if (consumerKey.isEmpty()) {
+		log(QStringLiteral("[%1] You need a client ID to go through the OAuth authorization code flow").arg(m_site->url()), Logger::Warning);
+		emit loggedIn(Result::Failure);
+		return;
+	}
+
 	const QString urlProtocol = m_auth->urlProtocol();
 	if (!urlProtocol.isEmpty()) {
 		#ifdef Q_OS_WIN
