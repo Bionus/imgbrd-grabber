@@ -1490,6 +1490,11 @@ void OptionsWindow::initButtonSettingPairs()
 	}
 }
 
+QString otr(const QString &str)
+{
+	return QObject::tr(str.toStdString().c_str());
+}
+
 void OptionsWindow::loadButtonSettings(QSettings *settings)
 {
 	QList<ButtonSettings> buttons = settings->value("Viewer/allButtons").value<QList<ButtonSettings>>();
@@ -1503,16 +1508,16 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 		ui->checkButtonOpenFav->setCheckState(Qt::PartiallyChecked);
 
 		// Use default text from the ViewerWindowButtons namespace to have a single source of truth for default values
-		ui->lineButtonPrev->setText(ViewerWindowButtons::DefaultPrevState.text);
-		ui->lineButtonNext->setText(ViewerWindowButtons::DefaultNextState.text);
-		ui->lineButtonDetails->setText(ViewerWindowButtons::DefaultDetailsState.text);
-		ui->lineButtonSaveAs->setText(ViewerWindowButtons::DefaultSaveAsState.text);
-		ui->lineButtonSave->setText(ViewerWindowButtons::DefaultSaveStateSave.text);
-		ui->lineButtonSaveNQuit->setText(ViewerWindowButtons::DefaultSaveNQuitStateSave.text);
-		ui->lineButtonOpen->setText(ViewerWindowButtons::DefaultOpenState.text);
-		ui->lineButtonSaveFav->setText(ViewerWindowButtons::DefaultSaveFavStateSave.text);
-		ui->lineButtonSaveNQuitFav->setText(ViewerWindowButtons::DefaultSaveNQuitFavStateSave.text);
-		ui->lineButtonOpenFav->setText(ViewerWindowButtons::DefaultOpenFavState.text);
+		ui->lineButtonPrev->setText(otr(ViewerWindowButtons::DefaultPrevState.text));
+		ui->lineButtonNext->setText(otr(ViewerWindowButtons::DefaultNextState.text));
+		ui->lineButtonDetails->setText(otr(ViewerWindowButtons::DefaultDetailsState.text));
+		ui->lineButtonSaveAs->setText(otr(ViewerWindowButtons::DefaultSaveAsState.text));
+		ui->lineButtonSave->setText(otr(ViewerWindowButtons::DefaultSaveStateSave.text));
+		ui->lineButtonSaveNQuit->setText(otr(ViewerWindowButtons::DefaultSaveNQuitStateSave.text));
+		ui->lineButtonOpen->setText(otr(ViewerWindowButtons::DefaultOpenState.text));
+		ui->lineButtonSaveFav->setText(otr(ViewerWindowButtons::DefaultSaveFavStateSave.text));
+		ui->lineButtonSaveNQuitFav->setText(otr(ViewerWindowButtons::DefaultSaveNQuitFavStateSave.text));
+		ui->lineButtonOpenFav->setText(otr(ViewerWindowButtons::DefaultOpenFavState.text));
 
 		return;
 	}
@@ -1527,70 +1532,70 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				checker = ui->checkButtonPrev;
 				positionSpinner = ui->spinButtonPrevPosition;
 				widthSpinner = ui->spinButtonPrevWidth;
-				ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultPrevState.text : button.states[0].text);
+				ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultPrevState.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonNext :
 				checker = ui->checkButtonNext;
 				positionSpinner = ui->spinButtonNextPosition;
 				widthSpinner = ui->spinButtonNextWidth;
-				ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultNextState.text : button.states[0].text);
+				ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultNextState.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonDetails :
 				checker = ui->checkButtonDetails;
 				positionSpinner = ui->spinButtonDetailsPosition;
 				widthSpinner = ui->spinButtonDetailsWidth;
-				ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultDetailsState.text : button.states[0].text);
+				ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultDetailsState.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonSaveAs :
 				checker = ui->checkButtonSaveAs;
 				positionSpinner = ui->spinButtonSaveAsPosition;
 				widthSpinner = ui->spinButtonSaveAsWidth;
-				ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultSaveAsState.text : button.states[0].text);
+				ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultSaveAsState.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonSave:
 				checker = ui->checkButtonSave;
 				positionSpinner = ui->spinButtonSavePosition;
 				widthSpinner = ui->spinButtonSaveWidth;
-				ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultSaveStateSave.text : button.states[0].text);
+				ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultSaveStateSave.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonSaveNQuit :
 				checker = ui->checkButtonSaveNQuit;
 				positionSpinner = ui->spinButtonSaveNQuitPosition;
 				widthSpinner = ui->spinButtonSaveNQuitWidth;
-				ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultSaveNQuitStateSave.text : button.states[0].text);
+				ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultSaveNQuitStateSave.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonOpen :
 				checker = ui->checkButtonOpen;
 				positionSpinner = ui->spinButtonOpenPosition;
 				widthSpinner = ui->spinButtonOpenWidth;
-				ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultOpenState.text : button.states[0].text);
+				ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultOpenState.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
 				checker = ui->checkButtonSaveFav;
 				positionSpinner = ui->spinButtonSaveFavPosition;
 				widthSpinner = ui->spinButtonSaveFavWidth;
-				ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultSaveFavStateSave.text : button.states[0].text);
+				ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultSaveFavStateSave.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
 				checker = ui->checkButtonSaveNQuitFav;
 				positionSpinner = ui->spinButtonSaveNQuitFavPosition;
 				widthSpinner = ui->spinButtonSaveNQuitFavWidth;
-				ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultSaveNQuitFavStateSave.text : button.states[0].text);
+				ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultSaveNQuitFavStateSave.text) : button.states[0].text);
 				break;
 
 			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
 				checker = ui->checkButtonOpenFav;
 				positionSpinner = ui->spinButtonOpenFavPosition;
 				widthSpinner = ui->spinButtonOpenFavWidth;
-				ui->lineButtonOpenFav->setText(button.states[0].text.isEmpty() ? ViewerWindowButtons::DefaultOpenFavState.text : button.states[0].text);
+				ui->lineButtonOpenFav->setText(button.states[0].text.isEmpty() ? otr(ViewerWindowButtons::DefaultOpenFavState.text) : button.states[0].text);
 				break;
 
 			default :
@@ -1607,7 +1612,7 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 QList<ButtonState> buildButtonState(ViewerWindowButtons::SaveState saveState, const QString &text, const ButtonState &defaultState) {
 	const ButtonState buttonState {
 		saveState,
-		text.trimmed() == defaultState.text ? QString() : text.trimmed(),
+		text.trimmed() == defaultState.text || text.trimmed() == otr(defaultState.text) ? QString() : text.trimmed(),
 		defaultState.toolTip
 	};
 	return { buttonState };

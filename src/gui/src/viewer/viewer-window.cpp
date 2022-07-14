@@ -772,8 +772,8 @@ void ViewerWindow::setButtonState(bool fav, SaveButtonState state)
 
 		// Update button text
 		const ButtonState &defaultState = ViewerWindowButtons::DefaultStates.value(button->type);
-		button->pointer->setText( QString(newState->text.isEmpty() ? defaultState.text : newState->text).replace("&", "&&").toStdString().c_str());
-		button->pointer->setToolTip((newState->toolTip.isEmpty() ? defaultState.toolTip : newState->toolTip).toStdString().c_str());
+		button->pointer->setText(QObject::tr((newState->text.isEmpty() ? defaultState.text : newState->text).toStdString().c_str()).replace("&", "&&"));
+		button->pointer->setToolTip(QObject::tr((newState->toolTip.isEmpty() ? defaultState.toolTip : newState->toolTip).toStdString().c_str()));
 
 		// Connect button to its new action
 		if (newState->function == nullptr) {
