@@ -3882,7 +3882,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="577"/>
       <source>View</source>
-      <translation type="unfinished">查看</translation>
+      <translation>查看</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
@@ -3892,7 +3892,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="635"/>
@@ -4356,12 +4356,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
       <source>Close</source>
-      <translation type="unfinished">关闭</translation>
+      <translation>关闭</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open</source>
-      <translation type="unfinished">打开</translation>
+      <translation>打开</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
@@ -4371,7 +4371,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save (fav)</source>
-      <translation type="unfinished">保存 (收藏)</translation>
+      <translation>保存 (收藏)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
@@ -4392,22 +4392,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="48"/>
       <source>Copied! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>已复制！（收藏）</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="49"/>
       <source>Moved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>已移动！（收藏）</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="50"/>
       <source>Link created! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>链接已创建! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
       <source>MD5 already exists (fav)</source>
-      <translation type="unfinished"/>
+      <translation>MD5 已存在 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
@@ -4954,12 +4954,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished">名称</translation>
+      <translation>名称</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
@@ -4969,12 +4969,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished">来源</translation>
+      <translation>来源</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished">关闭</translation>
+      <translation>关闭</translation>
     </message>
   </context>
   <context>

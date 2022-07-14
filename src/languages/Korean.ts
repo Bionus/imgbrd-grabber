@@ -398,7 +398,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished">조건부 파일명 추가하기</translation>
+      <translation>조건부 파일명 추가하기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
@@ -472,17 +472,17 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished">태그</translation>
+      <translation>태그</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="42"/>
       <source>Source</source>
-      <translation type="unfinished">소스</translation>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="43"/>
       <source>Page</source>
-      <translation type="unfinished">페이지</translation>
+      <translation>페이지</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="44"/>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation type="unfinished">이미지 제한</translation>
+      <translation>이미지 제한</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished">폴더</translation>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="48"/>
@@ -522,7 +522,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
       <source>Progress</source>
-      <translation type="unfinished">진행률</translation>
+      <translation>진행률</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="145"/>
@@ -545,12 +545,12 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation type="unfinished">아이디</translation>
+      <translation>아이디</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
       <source>Md5</source>
-      <translation type="unfinished">MD5</translation>
+      <translation>MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="37"/>
@@ -560,27 +560,27 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="38"/>
       <source>Tags</source>
-      <translation type="unfinished">태그</translation>
+      <translation>태그</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="39"/>
       <source>Url</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="40"/>
       <source>Date</source>
-      <translation type="unfinished">날짜</translation>
+      <translation>날짜</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="41"/>
       <source>Search</source>
-      <translation type="unfinished">검색</translation>
+      <translation>검색</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished">사이트</translation>
+      <translation>사이트</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
@@ -590,7 +590,7 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="44"/>
       <source>Folder</source>
-      <translation type="unfinished">폴더</translation>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
@@ -1948,12 +1948,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="45"/>
       <source>Search</source>
-      <translation type="unfinished">검색</translation>
+      <translation>검색</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="46"/>
       <source>Source</source>
-      <translation type="unfinished">소스</translation>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
@@ -1968,7 +1968,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
       <source>Post-filters</source>
-      <translation type="unfinished">필터링 후</translation>
+      <translation>필터링 후</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="50"/>
@@ -1998,9 +1998,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
       <source>%n time(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -3881,7 +3879,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="577"/>
       <source>View</source>
-      <translation type="unfinished">보기</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
@@ -3891,7 +3889,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="635"/>
@@ -4563,17 +4561,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished">썸네일</translation>
+      <translation>썸네일</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
       <source>Original</source>
-      <translation type="unfinished">원본</translation>
+      <translation>원본</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished">목적지</translation>
+      <translation>목적지</translation>
     </message>
   </context>
   <context>
@@ -4679,9 +4677,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1088"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -4759,7 +4755,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished">일반</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
@@ -4953,12 +4949,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished">이름</translation>
+      <translation>이름</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
@@ -4968,12 +4964,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished">소스</translation>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished">닫기</translation>
+      <translation>닫기</translation>
     </message>
   </context>
   <context>

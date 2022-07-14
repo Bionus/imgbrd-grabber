@@ -349,6 +349,7 @@
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
   </context>
@@ -400,7 +401,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished">Dodaj nazwę warunkową</translation>
+      <translation>Dodaj nazwę warunkową</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
@@ -474,57 +475,57 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished">Tagi</translation>
+      <translation>Tagi</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="42"/>
       <source>Source</source>
-      <translation type="unfinished">Źródło</translation>
+      <translation>Źródło</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="43"/>
       <source>Page</source>
-      <translation type="unfinished">Strona</translation>
+      <translation>Strona</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="44"/>
       <source>Images per page</source>
-      <translation type="unfinished">Obrazów na stronę</translation>
+      <translation>Obrazów na stronę</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation type="unfinished">Limit obrazów</translation>
+      <translation>Limit obrazów</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
       <source>Filename</source>
-      <translation type="unfinished">Nazwa pliku</translation>
+      <translation>Nazwa pliku</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished">Folder</translation>
+      <translation>Folder</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="48"/>
       <source>Post-filtering</source>
-      <translation type="unfinished">Filtrowanie końcowe</translation>
+      <translation>Filtrowanie końcowe</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Odzyskaj czarną listę</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"/>
+      <translation>Galerie liczą się jako jedna</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
       <source>Progress</source>
-      <translation type="unfinished">Postęp</translation>
+      <translation>Postęp</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="145"/>
@@ -547,52 +548,52 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation type="unfinished">Id</translation>
+      <translation>Id</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
       <source>Md5</source>
-      <translation type="unfinished">Md5</translation>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="37"/>
       <source>Rating</source>
-      <translation type="unfinished">Ocena</translation>
+      <translation>Ocena</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="38"/>
       <source>Tags</source>
-      <translation type="unfinished">Tagi</translation>
+      <translation>Tagi</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="39"/>
       <source>Url</source>
-      <translation type="unfinished">Url</translation>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="40"/>
       <source>Date</source>
-      <translation type="unfinished">Data</translation>
+      <translation>Data</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="41"/>
       <source>Search</source>
-      <translation type="unfinished">Wyszukaj</translation>
+      <translation>Wyszukaj</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished">Witryna</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
       <source>Filename</source>
-      <translation type="unfinished">Nazwa pliku</translation>
+      <translation>Nazwa pliku</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="44"/>
       <source>Folder</source>
-      <translation type="unfinished">Folder</translation>
+      <translation>Folder</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
@@ -732,6 +733,7 @@
         <numerusform>Ładowanie %n pobrania</numerusform>
         <numerusform>Ładowanie %n pobrań</numerusform>
         <numerusform>Ładowanie %n pobrań</numerusform>
+        <numerusform>Ładowanie %n pobrań</numerusform>
       </translation>
     </message>
     <message>
@@ -814,6 +816,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik został pobrany pomyślnie.</numerusform>
         <numerusform>%n pliki zostały pobrane pomyślnie.</numerusform>
         <numerusform>%n plików zostało pobranych pomyślnie.</numerusform>
+        <numerusform>%n plików zostało pobranych pomyślnie.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -822,6 +825,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n plik został zignorowany.</numerusform>
         <numerusform>%n pliki zostały zignorowane.</numerusform>
+        <numerusform>%n plików zostało zignorowanych.</numerusform>
         <numerusform>%n plików zostało zignorowanych.</numerusform>
       </translation>
     </message>
@@ -832,6 +836,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik już istnieje.</numerusform>
         <numerusform>%n pliki już istnieją.</numerusform>
         <numerusform>%n plików już istnieje.</numerusform>
+        <numerusform>%n plików już istnieje.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -840,6 +845,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n plik nie został znaleziony na serwerze.</numerusform>
         <numerusform>%n pliki nie zostały znalezione na serwerze.</numerusform>
+        <numerusform>%n plików nie zostało znalezionych na serwerze.</numerusform>
         <numerusform>%n plików nie zostało znalezionych na serwerze.</numerusform>
       </translation>
     </message>
@@ -850,6 +856,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik został pominięty.</numerusform>
         <numerusform>%n pliki zostały pominięte.</numerusform>
         <numerusform>%n plików zostało pominiętych.</numerusform>
+        <numerusform>%n plików zostało pominiętych.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -859,6 +866,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik pominięto z poprzedniego pobierania.</numerusform>
         <numerusform>%n pliki pominięto z poprzedniego pobierania.</numerusform>
         <numerusform>%n plików pominięto z poprzedniego pobierania.</numerusform>
+        <numerusform>%n plików pominięto z poprzedniego pobierania.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -867,6 +875,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n błąd.</numerusform>
         <numerusform>%n błędy.</numerusform>
+        <numerusform>%n błędów.</numerusform>
         <numerusform>%n błędów.</numerusform>
       </translation>
     </message>
@@ -935,6 +944,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>Zamierzasz usunąć %n folder. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz usunąć %n foldery. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz usunąć %n folderów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz usunąć %n folderów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
@@ -1442,6 +1452,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>Źródło</numerusform>
         <numerusform>Źródła</numerusform>
         <numerusform>Źródeł</numerusform>
+        <numerusform>Źródeł</numerusform>
       </translation>
     </message>
     <message>
@@ -1655,7 +1666,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="124"/>
       <source>Edit</source>
-      <translation type="unfinished">Edytuj</translation>
+      <translation>Edytuj</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="160"/>
@@ -1857,7 +1868,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished">Konwerter bazy danych MD5</translation>
+      <translation>Konwerter bazy danych MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
@@ -1887,11 +1898,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation type="unfinished">
-        <numerusform/>
-        <numerusform/>
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1968,6 +1975,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n MD5 załadowano</numerusform>
         <numerusform>%n MD5 załadowano</numerusform>
         <numerusform>%n MD5 załadowano</numerusform>
+        <numerusform>%n MD5 załadowano</numerusform>
       </translation>
     </message>
   </context>
@@ -1976,17 +1984,17 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="45"/>
       <source>Search</source>
-      <translation type="unfinished">Wyszukaj</translation>
+      <translation>Wyszukaj</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="46"/>
       <source>Source</source>
-      <translation type="unfinished">Źródło</translation>
+      <translation>Źródło</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
       <source>Interval</source>
-      <translation type="unfinished">Ineterwał</translation>
+      <translation>Ineterwał</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="48"/>
@@ -1996,12 +2004,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
       <source>Post-filters</source>
-      <translation type="unfinished">Filtry końcowe</translation>
+      <translation>Filtry końcowe</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="50"/>
       <source>Last check</source>
-      <translation type="unfinished">Ostatnie sprawdzenie</translation>
+      <translation>Ostatnie sprawdzenie</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
@@ -2026,11 +2034,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
       <source>%n time(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-        <numerusform/>
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2157,6 +2161,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n nowy obraz został znaleziony dla tagu '%1' w '%2'</numerusform>
         <numerusform>%n nowe obrazy zostały znalezione dla tagu '%1' w '%2'</numerusform>
         <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
+        <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -2165,6 +2170,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>Znaleziono więcej niż %n nowy obraz dla tagu '%1' w '%2'</numerusform>
         <numerusform>Znaleziono więcej niż %n nowe obrazy dla tagu '%1' w '%2'</numerusform>
+        <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
         <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
       </translation>
     </message>
@@ -2431,7 +2437,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="189"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>Kopia zapasowa</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
@@ -3604,7 +3610,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4373"/>
       <source>Open in browser</source>
-      <translation type="unfinished">Otwórz w przeglądarce</translation>
+      <translation>Otwórz w przeglądarce</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4399"/>
@@ -3915,7 +3921,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="577"/>
       <source>View</source>
-      <translation type="unfinished">Widok</translation>
+      <translation>Widok</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
@@ -3925,7 +3931,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="635"/>
@@ -4253,7 +4259,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/settings/options-window.cpp" line="889"/>
       <location filename="../gui/src/settings/options-window.cpp" line="907"/>
       <source>Success</source>
-      <translation type="unfinished"/>
+      <translation>Sukces</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
@@ -4563,6 +4569,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
     <message>
@@ -4599,17 +4606,17 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished">Miniatura</translation>
+      <translation>Miniatura</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
       <source>Original</source>
-      <translation type="unfinished">Oryginał</translation>
+      <translation>Oryginał</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished">Cel</translation>
+      <translation>Cel</translation>
     </message>
   </context>
   <context>
@@ -4719,6 +4726,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n tag figurujący na czarnej liście został wykryty na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
         <numerusform>%n tagi figurujące na czarnej liście zostały wykryte na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
         <numerusform>%n tagów figurujących na czarnej liście zostało wykrytych na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
+        <numerusform>%n tagów figurujących na czarnej liście zostało wykrytych na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
       </translation>
     </message>
   </context>
@@ -4797,7 +4805,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished">Ogólne</translation>
+      <translation>Ogólne</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
@@ -4991,12 +4999,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished">Nazwa</translation>
+      <translation>Nazwa</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
@@ -5006,12 +5014,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished">Źródła</translation>
+      <translation>Źródła</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished">Zamknij</translation>
+      <translation>Zamknij</translation>
     </message>
   </context>
   <context>
@@ -5643,6 +5651,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n tag załadowany</numerusform>
         <numerusform>%n tagi załadowane</numerusform>
         <numerusform>%n tagów załadowanych</numerusform>
+        <numerusform>%n tagów załadowanych</numerusform>
       </translation>
     </message>
   </context>
@@ -5701,7 +5710,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>Monitor</source>
-      <translation type="unfinished">Monitor</translation>
+      <translation>Monitor</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>

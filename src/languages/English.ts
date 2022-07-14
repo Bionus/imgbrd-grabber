@@ -5086,7 +5086,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="185"/>
       <source>Added tags</source>
-      <translation type="unfinished"/>
+      <translation>Added tags</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="196"/>
