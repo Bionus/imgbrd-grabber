@@ -4265,48 +4265,48 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>详情</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>保存为...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="40"/>
       <source>Saving...</source>
-      <translation type="unfinished"/>
+      <translation>保存...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="31"/>
       <source>Saved!</source>
-      <translation type="unfinished"/>
+      <translation>保存完成！</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="32"/>
       <source>Copied!</source>
-      <translation type="unfinished"/>
+      <translation>已复制！</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="33"/>
       <source>Moved!</source>
-      <translation type="unfinished"/>
+      <translation>已移动！</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="34"/>
       <source>Link created!</source>
-      <translation type="unfinished"/>
+      <translation>链接已创建！</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
       <source>MD5 already exists</source>
-      <translation type="unfinished"/>
+      <translation>MD5 已存在</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
@@ -4316,7 +4316,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>删除</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
@@ -4377,22 +4377,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
       <source>Delete (fav)</source>
-      <translation type="unfinished"/>
+      <translation>删除（收藏）</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save &amp; close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存并关闭 (收藏)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
       <source>Close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>关闭（收藏）</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>打开 (收藏)</translation>
     </message>
   </context>
   <context>
@@ -5226,7 +5226,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>OAuth 2 (client credentials header)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (客户端凭据头)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
@@ -5236,7 +5236,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 2 (authorization code)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (授权码)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
