@@ -345,9 +345,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -472,22 +470,22 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished">タグ</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="42"/>
       <source>Source</source>
-      <translation type="unfinished">ソース</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="43"/>
       <source>Page</source>
-      <translation type="unfinished">ページ</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="44"/>
       <source>Images per page</source>
-      <translation type="unfinished">ページ毎の画像数</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
@@ -497,17 +495,17 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
       <source>Filename</source>
-      <translation type="unfinished">ファイル名</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished">フォルダー</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="48"/>
       <source>Post-filtering</source>
-      <translation type="unfinished">投稿フィルター</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
@@ -522,7 +520,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
       <source>Progress</source>
-      <translation type="unfinished">進捗状況</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="145"/>
@@ -545,52 +543,52 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation type="unfinished">Id</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
       <source>Md5</source>
-      <translation type="unfinished">Md5</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="37"/>
       <source>Rating</source>
-      <translation type="unfinished">レーティング</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="38"/>
       <source>Tags</source>
-      <translation type="unfinished">タグ</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="39"/>
       <source>Url</source>
-      <translation type="unfinished">Url</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="40"/>
       <source>Date</source>
-      <translation type="unfinished">日付</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="41"/>
       <source>Search</source>
-      <translation type="unfinished">検索</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished">サイト</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
       <source>Filename</source>
-      <translation type="unfinished">ファイル名</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="44"/>
       <source>Folder</source>
-      <translation type="unfinished">フォルダー</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
@@ -726,9 +724,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="419"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="461"/>
@@ -802,51 +798,37 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1109"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1110"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1111"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1112"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1113"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1114"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1115"/>
       <source>%n error(s).</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -910,9 +892,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1629,7 +1609,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="124"/>
       <source>Edit</source>
-      <translation type="unfinished">編集</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="160"/>
@@ -1831,7 +1811,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished">MD5データベース変換</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
@@ -1861,9 +1841,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1936,9 +1914,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1946,17 +1922,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="45"/>
       <source>Search</source>
-      <translation type="unfinished">検索</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="46"/>
       <source>Source</source>
-      <translation type="unfinished">ソース</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
       <source>Interval</source>
-      <translation type="unfinished">間隔</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="48"/>
@@ -1966,12 +1942,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
       <source>Post-filters</source>
-      <translation type="unfinished">投稿フィルター</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="50"/>
       <source>Last check</source>
-      <translation type="unfinished">最後に確認</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
@@ -1996,9 +1972,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
       <source>%n time(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2121,16 +2095,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="111"/>
@@ -3879,7 +3849,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="577"/>
       <source>View</source>
-      <translation type="unfinished">表示</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
@@ -3889,7 +3859,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="635"/>
@@ -4523,9 +4493,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4561,7 +4529,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished">サムネイル</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
@@ -4571,7 +4539,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished">保存先</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -4677,9 +4645,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1088"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -4757,7 +4723,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished">全般</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
@@ -4951,12 +4917,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished">名前</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
@@ -4966,12 +4932,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished">ソース</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished">閉じる</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5599,9 +5565,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
