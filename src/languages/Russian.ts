@@ -171,7 +171,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded files</source>
-      <translation type="unfinished"/>
+      <translation>Следовать за загружаемыми файлами</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -627,7 +627,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="119"/>
       <source>Single files</source>
-      <translation type="unfinished"/>
+      <translation>Отдельные файлы</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="186"/>
@@ -4270,6 +4270,178 @@ Please solve the issue before resuming the download.</source>
       <source>Success</source>
       <translation>Успешно</translation>
     </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>B</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <source>KB</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <source>MB</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <source>GB</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>KiB</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>MiB</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>GiB</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
+      <source>Details</source>
+      <translation>Подробности</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
+      <source>Save as...</source>
+      <translation>Сохранить как...</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
+      <source>Save</source>
+      <translation>Сохранить</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="40"/>
+      <source>Saving...</source>
+      <translation>Сохранение...</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="31"/>
+      <source>Saved!</source>
+      <translation>Сохранено!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="32"/>
+      <source>Copied!</source>
+      <translation>Скопировано!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="33"/>
+      <source>Moved!</source>
+      <translation>Перемещено!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="34"/>
+      <source>Link created!</source>
+      <translation>Ссылка создана!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
+      <source>MD5 already exists</source>
+      <translation>Совпадение MD5</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
+      <source>Already saved</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
+      <source>Delete</source>
+      <translation>Удалить</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
+      <source>Save &amp; close</source>
+      <translation>Сохранить и закрыть</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
+      <source>Close</source>
+      <translation>Закрыть</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
+      <source>Open</source>
+      <translation>Открыть</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
+      <source>Save (fav)</source>
+      <translation>Сохранить (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="56"/>
+      <source>Saving... (fav)</source>
+      <translation>Сохранение... (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="47"/>
+      <source>Saved! (fav)</source>
+      <translation>Сохранено! (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="48"/>
+      <source>Copied! (fav)</source>
+      <translation>Скопировано! (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="49"/>
+      <source>Moved! (fav)</source>
+      <translation>Перемещено! (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="50"/>
+      <source>Link created! (fav)</source>
+      <translation>Ссылка создана! (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
+      <source>MD5 already exists (fav)</source>
+      <translation>Совпадение MD5 (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
+      <source>Already saved (fav)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
+      <source>Delete (fav)</source>
+      <translation>Удалить (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
+      <source>Save &amp; close (fav)</source>
+      <translation>Сохранить и закрыть (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
+      <source>Close (fav)</source>
+      <translation>Закрыть (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
+      <source>Open (fav)</source>
+      <translation>Открыть (избр)</translation>
+    </message>
   </context>
   <context>
     <name>RenameExisting1</name>
@@ -4277,7 +4449,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Переименовать существующие файлы</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="24"/>
@@ -4370,7 +4542,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="14"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Переименовать существующие файлы</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="24"/>
@@ -4592,12 +4764,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Общий</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
       <source>General (no)</source>
-      <translation type="unfinished"/>
+      <translation>Не общий</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="123"/>
@@ -5118,7 +5290,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 2 (authorization code)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (код авторизации)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
@@ -5747,17 +5919,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="801"/>
       <source>File not found.</source>
-      <translation type="unfinished"/>
+      <translation>Файл не найден.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Video</source>
-      <translation type="unfinished"/>
+      <translation>Видео</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Animation</source>
-      <translation type="unfinished"/>
+      <translation>Анимация</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="803"/>
