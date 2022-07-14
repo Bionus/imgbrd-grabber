@@ -4281,12 +4281,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
       <source>Previous search result</source>
-      <translation type="unfinished"/>
+      <translation>Résultat de recherche précédent</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
       <source>Next search result</source>
-      <translation type="unfinished"/>
+      <translation>Résultat de recherche suivant</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4296,7 +4296,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Media details</source>
-      <translation type="unfinished"/>
+      <translation>Détails du média</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
@@ -4306,7 +4306,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save to irregular location</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer à l'emplacement spécial</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
@@ -4316,7 +4316,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save to usual location</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer à l'emplacement habituel</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4367,7 +4367,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save to usual location and close window</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer à l'emplacement habituel et fermer la fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
@@ -4382,7 +4382,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open usual save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir l'emplacement d'enregistrement habituel dans une nouvelle fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
@@ -4392,7 +4392,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save to favourite location</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer à l'emplacement favori</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4443,7 +4443,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save to favourite location and close window</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer à l'emplacement favori et fermer la fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
@@ -4458,7 +4458,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open favourite save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir l'emplacement d'enregistrement favori dans une nouvelle fenêtre</translation>
     </message>
   </context>
   <context>
