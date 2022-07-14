@@ -4275,40 +4275,40 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/functions.h" line="31"/>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>B</source>
-      <translation type="unfinished"/>
+      <translation>Б</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>KB</source>
-      <translation type="unfinished"/>
+      <translation>КБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>MB</source>
-      <translation type="unfinished"/>
+      <translation>МБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>GB</source>
-      <translation type="unfinished"/>
+      <translation>ГБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>KiB</source>
-      <translation type="unfinished"/>
+      <translation>КиБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>MiB</source>
-      <translation type="unfinished"/>
+      <translation>МиБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>GiB</source>
-      <translation type="unfinished"/>
+      <translation>ГиБ</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4359,7 +4359,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
       <source>Already saved</source>
-      <translation type="unfinished"/>
+      <translation>Уже сохранено</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
@@ -4420,7 +4420,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
       <source>Already saved (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Уже сохранено (избр)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
@@ -4613,7 +4613,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="419"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation>Обнаружено перенаправление HTTP на HTTPS для веб-сайта %1. Вы хотите включить SSL на нем? Рекомендуемая настройка 'да'.</translation>
+      <translation>Обнаружено перенаправление с HTTP на HTTPS на веб-сайте %1. Хотите включить SSL для него? Рекомендуемая настройка — «да».</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="421"/>
