@@ -4238,6 +4238,178 @@ Please solve the issue before resuming the download.</translation>
       <source>Success</source>
       <translation>Success</translation>
     </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>B</source>
+      <translation>B</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <source>KB</source>
+      <translation>KB</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <source>MB</source>
+      <translation>MB</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="27"/>
+      <location filename="../lib/src/functions.h" line="31"/>
+      <source>GB</source>
+      <translation>GB</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>KiB</source>
+      <translation>KiB</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>MiB</source>
+      <translation>MiB</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/functions.h" line="35"/>
+      <source>GiB</source>
+      <translation>GiB</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
+      <source>Details</source>
+      <translation>Details</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
+      <source>Save as...</source>
+      <translation>Save as...</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
+      <source>Save</source>
+      <translation>Save</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="40"/>
+      <source>Saving...</source>
+      <translation>Saving...</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="31"/>
+      <source>Saved!</source>
+      <translation>Saved!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="32"/>
+      <source>Copied!</source>
+      <translation>Copied!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="33"/>
+      <source>Moved!</source>
+      <translation>Moved!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="34"/>
+      <source>Link created!</source>
+      <translation>Link created!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
+      <source>MD5 already exists</source>
+      <translation>MD5 already exists</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
+      <source>Already saved</source>
+      <translation>Already saved</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
+      <source>Delete</source>
+      <translation>Delete</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
+      <source>Save &amp; close</source>
+      <translation>Save &amp; close</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
+      <source>Close</source>
+      <translation>Close</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
+      <source>Open</source>
+      <translation>Open</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
+      <source>Save (fav)</source>
+      <translation>Save (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="56"/>
+      <source>Saving... (fav)</source>
+      <translation>Saving... (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="47"/>
+      <source>Saved! (fav)</source>
+      <translation>Saved! (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="48"/>
+      <source>Copied! (fav)</source>
+      <translation>Copied! (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="49"/>
+      <source>Moved! (fav)</source>
+      <translation>Moved! (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="50"/>
+      <source>Link created! (fav)</source>
+      <translation>Link created! (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
+      <source>MD5 already exists (fav)</source>
+      <translation>MD5 already exists (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
+      <source>Already saved (fav)</source>
+      <translation>Already saved (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
+      <source>Delete (fav)</source>
+      <translation>Delete (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
+      <source>Save &amp; close (fav)</source>
+      <translation>Save &amp; close (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
+      <source>Close (fav)</source>
+      <translation>Close (fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
+      <source>Open (fav)</source>
+      <translation>Open (fav)</translation>
+    </message>
   </context>
   <context>
     <name>RenameExisting1</name>
