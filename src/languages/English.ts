@@ -2210,10 +2210,10 @@ Please solve the issue before resuming the download.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="64"/>
-      <location filename="../gui/src/settings/options-window.ui" line="832"/>
-      <location filename="../gui/src/settings/options-window.ui" line="948"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3096"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4124"/>
+      <location filename="../gui/src/settings/options-window.ui" line="835"/>
+      <location filename="../gui/src/settings/options-window.ui" line="951"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3099"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4127"/>
       <source>Save</source>
       <translation>Save</translation>
     </message>
@@ -2289,13 +2289,13 @@ Please solve the issue before resuming the download.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="179"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5306"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5309"/>
       <source>Commands</source>
       <translation>Commands</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="183"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5418"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5421"/>
       <source>Database</source>
       <translation>Database</translation>
     </message>
@@ -2311,7 +2311,7 @@ Please solve the issue before resuming the download.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="229"/>
-      <location filename="../gui/src/settings/options-window.ui" line="793"/>
+      <location filename="../gui/src/settings/options-window.ui" line="796"/>
       <source>Do nothing</source>
       <translation>Do nothing</translation>
     </message>
@@ -2387,12 +2387,12 @@ Please solve the issue before resuming the download.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="159"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4996"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4999"/>
       <source>Ignored tags</source>
       <translation>Ignored tags</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4960"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4963"/>
       <source>Download images containing blacklisted tags</source>
       <translation>Download images containing blacklisted tags</translation>
     </message>
@@ -2504,678 +2504,678 @@ Please solve the issue before resuming the download.</translation>
       <translation>New sources and sites can be supported by adding third-party source registries.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="652"/>
+      <location filename="../gui/src/settings/options-window.ui" line="655"/>
       <source>Add a new source registry</source>
       <translation>Add a new source registry</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="679"/>
+      <location filename="../gui/src/settings/options-window.ui" line="682"/>
       <source>Download original images</source>
       <translation>Download original images</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="689"/>
+      <location filename="../gui/src/settings/options-window.ui" line="692"/>
       <source>Download sample on error</source>
       <translation>Download sample on error</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="699"/>
+      <location filename="../gui/src/settings/options-window.ui" line="702"/>
       <source>Download images automatically</source>
       <translation>Download images automatically</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="706"/>
+      <location filename="../gui/src/settings/options-window.ui" line="709"/>
       <source>Keep original creation date</source>
       <translation>Keep original creation date</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="716"/>
+      <location filename="../gui/src/settings/options-window.ui" line="719"/>
       <source>Get extension from file header</source>
       <translation>Get extension from file header</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="726"/>
+      <location filename="../gui/src/settings/options-window.ui" line="729"/>
       <source>Folder</source>
       <translation>Folder</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="738"/>
-      <location filename="../gui/src/settings/options-window.ui" line="759"/>
-      <location filename="../gui/src/settings/options-window.ui" line="931"/>
+      <location filename="../gui/src/settings/options-window.ui" line="741"/>
+      <location filename="../gui/src/settings/options-window.ui" line="762"/>
+      <location filename="../gui/src/settings/options-window.ui" line="934"/>
       <source>Browse</source>
       <translation>Browse</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="747"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1008"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4568"/>
+      <location filename="../gui/src/settings/options-window.ui" line="750"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1011"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4571"/>
       <source>Favorites</source>
       <translation>Favorites</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="768"/>
+      <location filename="../gui/src/settings/options-window.ui" line="771"/>
       <source>Simultaneous downloads</source>
       <translation>Simultaneous downloads</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="785"/>
+      <location filename="../gui/src/settings/options-window.ui" line="788"/>
       <source>When the download is finished</source>
       <translation>When the download is finished</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="798"/>
+      <location filename="../gui/src/settings/options-window.ui" line="801"/>
       <source>Close window</source>
       <translation>Close window</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="803"/>
+      <location filename="../gui/src/settings/options-window.ui" line="806"/>
       <source>Open CD tray</source>
       <translation>Open CD tray</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="808"/>
+      <location filename="../gui/src/settings/options-window.ui" line="811"/>
       <source>Play a sound</source>
       <translation>Play a sound</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="813"/>
+      <location filename="../gui/src/settings/options-window.ui" line="816"/>
       <source>Shutdown</source>
       <translation>Shutdown</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="821"/>
+      <location filename="../gui/src/settings/options-window.ui" line="824"/>
       <source>If a file already exists globally</source>
       <translation>If a file already exists globally</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="837"/>
-      <location filename="../gui/src/settings/options-window.ui" line="896"/>
-      <location filename="../gui/src/settings/options-window.ui" line="953"/>
+      <location filename="../gui/src/settings/options-window.ui" line="840"/>
+      <location filename="../gui/src/settings/options-window.ui" line="899"/>
+      <location filename="../gui/src/settings/options-window.ui" line="956"/>
       <source>Copy</source>
       <translation>Copy</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="842"/>
-      <location filename="../gui/src/settings/options-window.ui" line="958"/>
+      <location filename="../gui/src/settings/options-window.ui" line="845"/>
+      <location filename="../gui/src/settings/options-window.ui" line="961"/>
       <source>Move</source>
       <translation>Move</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="847"/>
-      <location filename="../gui/src/settings/options-window.ui" line="963"/>
+      <location filename="../gui/src/settings/options-window.ui" line="850"/>
+      <location filename="../gui/src/settings/options-window.ui" line="966"/>
       <source>Don't save</source>
       <translation>Don't save</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="860"/>
+      <location filename="../gui/src/settings/options-window.ui" line="863"/>
       <source>File's identity is based on the MD5 algorithm.</source>
       <translation>File's identity is based on the MD5 algorithm.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="867"/>
+      <location filename="../gui/src/settings/options-window.ui" line="870"/>
       <source>Automatic redownload</source>
       <translation>Automatic re-download</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="881"/>
+      <location filename="../gui/src/settings/options-window.ui" line="884"/>
       <source>Keep deleted files in the MD5 list</source>
       <translation>Keep deleted files in the MD5 list</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="888"/>
+      <location filename="../gui/src/settings/options-window.ui" line="891"/>
       <source>If an image yields multiple files</source>
       <translation>If an image yields multiple files</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="975"/>
+      <location filename="../gui/src/settings/options-window.ui" line="978"/>
       <source>Default</source>
       <translation>Default</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1041"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1044"/>
       <source>Tags separator</source>
       <translation>Tags separator</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1055"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1058"/>
       <source>Replace spaces by underscores</source>
       <translation>Replace spaces by underscores</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1062"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1065"/>
       <source>Replace JPEG by JPG</source>
       <translation>Replace JPEG by JPG</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1072"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1075"/>
       <source>Max length</source>
       <translation>Max length</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1105"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1108"/>
       <source>Add a conditional filename</source>
       <translation>Add a conditional filename</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1189"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1192"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
       <translation>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1202"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1205"/>
       <source>Add a separate log file</source>
       <translation>Add a separate log file</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1226"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1229"/>
       <source>Windows Property System</source>
       <translation>Windows Property System</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1235"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1274"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1238"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1277"/>
       <source>Add new property</source>
       <translation>Add new property</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1242"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1261"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1245"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1264"/>
       <source>Extensions</source>
       <translation>Extensions</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1255"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1258"/>
       <source>Exiftool</source>
       <translation>Exiftool</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1281"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1284"/>
       <source>Version</source>
       <translation>Version</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1288"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1291"/>
       <source>Loading...</source>
       <translation>Loading...</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1302"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1305"/>
       <source>Add a custom token</source>
       <translation>Add a custom token</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1314"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1317"/>
       <source>Resize</source>
       <translation>Resize</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1320"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1323"/>
       <source>Max width</source>
       <translation>Max width</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1340"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1343"/>
       <source>Max height</source>
       <translation>Max height</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1365"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1368"/>
       <source>Images bigger than the max width and/or height will be resized to fit.</source>
       <translation>Images bigger than the max width and/or height will be resized to fit.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1398"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1401"/>
       <source>Theme</source>
       <translation>Theme</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1415"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1418"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1428"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1431"/>
       <source>Favorites display</source>
       <translation>Favorites display</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1436"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1439"/>
       <source>Image, name and details</source>
       <translation>Image, name and details</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1441"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1444"/>
       <source>Image and name</source>
       <translation>Image and name</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1446"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1449"/>
       <source>Image and details</source>
       <translation>Image and details</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1451"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1454"/>
       <source>Name and details</source>
       <translation>Name and details</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1456"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1459"/>
       <source>Image only</source>
       <translation>Image only</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1461"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1464"/>
       <source>Name only</source>
       <translation>Name only</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1466"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1469"/>
       <source>Details only</source>
       <translation>Details only</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1474"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1477"/>
       <source>Hide favorites</source>
       <translation>Hide favorites</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1496"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1499"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
       <translation>The favorites list will be hidden as soon as this image number has been reached.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1506"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1509"/>
       <source>Source's type display</source>
       <translation>Source's type display</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1514"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1517"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1519"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5252"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5332"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1522"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5255"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5335"/>
       <source>Image</source>
       <translation>Image</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1524"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>Image and text</source>
       <translation>Image and text</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1529"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1532"/>
       <source>Don't show</source>
       <translation>Don't show</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1537"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1540"/>
       <source>Displayed letters</source>
       <translation>Displayed letters</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1547"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1550"/>
       <source>Display n letters</source>
       <translation>Display n letters</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1552"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1555"/>
       <source>Before first dot</source>
       <translation>Before first dot</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1557"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1560"/>
       <source>Before last dot</source>
       <translation>Before last dot</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1585"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1588"/>
       <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
       <translation>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1595"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1598"/>
       <source>Preload all tabs when restoring a previous session</source>
       <translation>Preload all tabs when restoring a previous session</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1616"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1619"/>
       <source>Decline dialogue</source>
       <translation>Decline dialogue</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1989"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1992"/>
       <source>Go to first page</source>
       <translation>Go to first page</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2007"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2010"/>
       <source>Go to previous page</source>
       <translation>Go to previous page</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2025"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2028"/>
       <source>Go to next page</source>
       <translation>Go to next page</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2043"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2046"/>
       <source>Go to last page</source>
       <translation>Go to last page</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5445"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5448"/>
       <source>Generate a backup</source>
       <translation>Generate a backup</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5455"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5458"/>
       <source>Restore a backup</source>
       <translation>Restore a backup</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1609"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1623"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1612"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1626"/>
       <source>Ctrl+N</source>
       <translation>Ctrl+N</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1602"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1605"/>
       <source>Accept dialogue</source>
       <translation>Accept dialogue</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1647"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1650"/>
       <source>Use a scroll area</source>
       <translation>Use a scroll area</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1657"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1660"/>
       <source>Use a fixed-image-width layout</source>
       <translation>Use a fixed-image-width layout</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1667"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1670"/>
       <source>Infinite scroll</source>
       <translation>Infinite scroll</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1675"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1678"/>
       <source>Disabled</source>
       <translation>Disabled</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1680"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1683"/>
       <source>Button</source>
       <translation>Button</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1685"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1688"/>
       <source>Scroll</source>
       <translation>Scroll</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1693"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1696"/>
       <source>Remember page number when infinite scrolling</source>
       <translation>Remember page number when infinite scrolling</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1700"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1703"/>
       <source>Resize previews instead of cropping them</source>
       <translation>Resize previews instead of cropping them</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1710"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1713"/>
       <source>Enable autocompletion</source>
       <translation>Enable auto-completion</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1720"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1723"/>
       <source>Show warning if an incompatible modifier is found</source>
       <translation>Show warning if an incompatible modifier is found</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1730"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1733"/>
       <source>Show other warnings</source>
       <translation>Show other warnings</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1740"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1743"/>
       <source>Download not loaded pages</source>
       <translation>Download not loaded pages</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1752"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1755"/>
       <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
       <translation>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1762"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1765"/>
       <source>Invert Click and Ctrl+Click actions</source>
       <translation>Invert Click and Ctrl+Click actions</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1774"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1777"/>
       <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
       <translation>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1824"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1827"/>
       <source>Quit application</source>
       <translation>Quit application</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1839"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1842"/>
       <source>Ctrl+Q</source>
       <translation>Ctrl+Q</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1855"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1858"/>
       <source>Focus search field</source>
       <translation>Focus search field</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1867"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4136"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1870"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4139"/>
       <source>S</source>
       <translation>S</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1883"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1886"/>
       <source>Close tab</source>
       <translation>Close tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1895"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1898"/>
       <source>Ctrl+W</source>
       <translation>Ctrl+W</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1911"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1914"/>
       <source>New tab</source>
       <translation>New tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1923"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1926"/>
       <source>Ctrl+T</source>
       <translation>Ctrl+T</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1939"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1942"/>
       <source>Open previous tab</source>
       <translation>Open previous tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1951"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1954"/>
       <source>Ctrl+Shift+Tab</source>
       <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1967"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1970"/>
       <source>Open next tab</source>
       <translation>Open next tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1979"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1982"/>
       <source>Ctrl+Tab</source>
       <translation>Ctrl+Tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2067"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2070"/>
       <source>Call external application to browse save directory</source>
       <translation>Call external application to browse save directory</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2079"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2082"/>
       <source>Ctrl+O</source>
       <translation>Ctrl+O</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2135"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2138"/>
       <source>Tag list position</source>
       <translation>Tag list position</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2143"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2261"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2316"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2371"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2146"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2264"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2319"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2374"/>
       <source>Top</source>
       <translation>Top</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2148"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2283"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2338"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2393"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4024"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2151"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2286"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2341"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2396"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4027"/>
       <source>Left</source>
       <translation>Left</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2153"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2156"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2161"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2164"/>
       <source>Preloading</source>
       <translation>Preloading</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2171"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2174"/>
       <source>Slideshow</source>
       <translation>Slideshow</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2178"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2181"/>
       <source>s</source>
       <translation>s</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2188"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2191"/>
       <source>Middle click to close window</source>
       <translation>Middle click to close window</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2198"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2201"/>
       <source>Enable scroll wheel navigation</source>
       <translation>Enable scroll wheel navigation</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2215"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2218"/>
       <source>Show tag count</source>
       <translation>Show tag count</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2222"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2225"/>
       <source>Tag order</source>
       <translation>Tag order</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2230"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5119"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2233"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5122"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2235"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2238"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2240"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2243"/>
       <source>Count</source>
       <translation>Count</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2248"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2251"/>
       <source>Image position</source>
       <translation>Image position</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2266"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2288"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2321"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2343"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2376"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2398"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2269"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2291"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2324"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2346"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2379"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2401"/>
       <source>Center</source>
       <translation>Center</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2271"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2326"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2381"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2274"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2329"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2384"/>
       <source>Bottom</source>
       <translation>Bottom</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2293"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2348"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2403"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4052"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2296"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2351"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2406"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4055"/>
       <source>Right</source>
       <translation>Right</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2303"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2306"/>
       <source>Animation position</source>
       <translation>Animation position</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2358"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2361"/>
       <source>Video position</source>
       <translation>Video position</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2413"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2416"/>
       <source>Background color</source>
       <translation>Background color</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2425"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4412"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4440"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4468"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4496"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4524"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4552"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4580"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4608"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4636"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4664"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4692"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4720"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4798"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4820"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2428"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4415"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4443"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4471"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4499"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4527"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4555"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4583"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4611"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4639"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4667"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4695"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4723"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4801"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4823"/>
       <source>Color</source>
       <translation>Color</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2128"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2131"/>
       <source>Use a single image window</source>
       <translation>Use a single image window</translation>
     </message>
@@ -3226,174 +3226,160 @@ Please solve the issue before resuming the download.</translation>
       <translation>Use system locale for dates and numbers</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="904"/>
+      <location filename="../gui/src/settings/options-window.ui" line="907"/>
       <source>Temporary directory</source>
       <translation>Temporary directory</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="916"/>
+      <location filename="../gui/src/settings/options-window.ui" line="919"/>
       <source>Leave empty to use the default temporary directory.</source>
       <translation>Leave empty to use the default temporary directory.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="940"/>
+      <location filename="../gui/src/settings/options-window.ui" line="943"/>
       <source>If it's in the same directory</source>
       <translation>If it's in the same directory</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1091"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1094"/>
       <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
       <translation>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2208"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2211"/>
       <source>Use image samples</source>
       <translation>Use image samples</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2434"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2437"/>
       <source>Scale up small images to fit window</source>
       <translation>Scale up small images to fit window</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2441"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2444"/>
       <source>Use built-in video player</source>
       <translation>Use built-in video player</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2471"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2474"/>
       <source>Show video player controls</source>
       <translation>Show video player controls</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2481"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2484"/>
       <source>Show GIF player controls</source>
       <translation>Show GIF player controls</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3984"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3987"/>
       <source>Close</source>
       <translation>Close</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3996"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3999"/>
       <source>Esc</source>
       <translation>Esc</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2537"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4012"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2540"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4015"/>
       <source>Prev</source>
       <translation>Prev</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2682"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4040"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2685"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4043"/>
       <source>Next</source>
       <translation>Next</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2818"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4068"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2821"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4071"/>
       <source>Details</source>
       <translation>Details</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4080"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4083"/>
       <source>D</source>
       <translation>D</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4096"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4099"/>
       <source>Save as...</source>
       <translation>Save as...</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4108"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4111"/>
       <source>Shift+S</source>
       <translation>Shift+S</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3235"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4152"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3238"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4155"/>
       <source>Save and close</source>
       <translation>Save and close</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4164"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4167"/>
       <source>W</source>
       <translation>W</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4180"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4183"/>
       <source>Destination folder</source>
       <translation>Destination folder</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4192"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4195"/>
       <source>O</source>
       <translation>O</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3513"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4208"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3516"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4211"/>
       <source>Save (fav)</source>
       <translation>Save (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4220"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4223"/>
       <source>Alt+S</source>
       <translation>Alt+S</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3652"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4236"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3655"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4239"/>
       <source>Save and close (fav)</source>
       <translation>Save and close (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1408"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1411"/>
       <source>Thumbnail scaling</source>
       <translation>Thumbnail scaling</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1630"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1633"/>
       <source>Scale font size</source>
       <translation>Scale font size</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2089"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2092"/>
       <source>Back out from favorites results</source>
       <translation>Back out from favorites results</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2451"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2454"/>
       <source>Remember button drawer state</source>
       <translation>Remember button drawer state</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2461"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2464"/>
       <source>Remember window geometry</source>
       <translation>Remember window geometry</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2534"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2537"/>
       <source>Previous media entry</source>
       <translation>Previous media entry</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2549"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2694"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2830"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2969"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3108"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3247"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3386"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3525"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3664"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3803"/>
-      <source>Partial checks are stored in collapsable drawer</source>
-      <translation>Partial checks are stored in collapsable drawer</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2552"/>
@@ -3406,64 +3392,64 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3528"/>
       <location filename="../gui/src/settings/options-window.ui" line="3667"/>
       <location filename="../gui/src/settings/options-window.ui" line="3806"/>
+      <source>Partial checks are stored in collapsable drawer</source>
+      <translation>Partial checks are stored in collapsable drawer</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="2555"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2700"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2836"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2975"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3114"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3253"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3392"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3531"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3670"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3809"/>
       <source>Enable</source>
       <translation>Enable</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2584"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2729"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2865"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3004"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3143"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3282"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3421"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3560"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3699"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3838"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2587"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2732"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2868"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3007"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3146"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3285"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3424"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3563"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3702"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3841"/>
       <source>Ascending from left to right</source>
       <translation>Ascending from left to right</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2599"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2738"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2874"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3013"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3152"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3291"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3430"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3569"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3708"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3847"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2602"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2741"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2877"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3016"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3155"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3294"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3433"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3572"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3711"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3850"/>
       <source>Position: </source>
       <translation>Position: </translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2628"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2770"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2906"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3045"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3184"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3323"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3462"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3601"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3740"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3879"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2631"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2773"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2909"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3048"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3187"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3326"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3465"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3604"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3743"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3882"/>
       <source>Button display text</source>
       <translation>Button display text</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2660"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2796"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2932"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3071"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3210"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3349"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3488"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3627"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3766"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3905"/>
-      <source>Smaller numbers make for smaller buttons</source>
-      <translation>Smaller numbers make for smaller buttons</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2663"/>
@@ -3476,382 +3462,396 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3630"/>
       <location filename="../gui/src/settings/options-window.ui" line="3769"/>
       <location filename="../gui/src/settings/options-window.ui" line="3908"/>
+      <source>Smaller numbers make for smaller buttons</source>
+      <translation>Smaller numbers make for smaller buttons</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="2666"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2802"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2938"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3077"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3216"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3355"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3494"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3633"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3772"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3911"/>
       <source>Width: </source>
       <translation>Width: </translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2679"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2682"/>
       <source>Next media entry</source>
       <translation>Next media entry</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2815"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2818"/>
       <source>View media details</source>
       <translation>View media details</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2954"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2957"/>
       <source>Save file with specified path</source>
       <translation>Save file with specified path</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2957"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2960"/>
       <source>Save As...</source>
       <translation>Save As...</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3093"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3096"/>
       <source>Save file to usual path</source>
       <translation>Save file to usual path</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3232"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3235"/>
       <source>Save file to usual path and close the viewer window</source>
       <translation>Save file to usual path and close the viewer window</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3371"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3374"/>
       <source>Open usual save path in file browser</source>
       <translation>Open usual save path in file browser</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3374"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3377"/>
       <source>Open</source>
       <translation>Open</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3510"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3513"/>
       <source>Save file to favourite path</source>
       <translation>Save file to favourite path</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3649"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3652"/>
       <source>Save file to favourite path and close the viewer window</source>
       <translation>Save file to favourite path and close the viewer window</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3788"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3791"/>
       <source>Open favourite save path in file browser</source>
       <translation>Open favourite save path in file browser</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3791"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3794"/>
       <source>Open (fav)</source>
       <translation>Open (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4248"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4251"/>
       <source>Alt+W</source>
       <translation>Alt+W</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4264"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4267"/>
       <source>Destination folder (fav)</source>
       <translation>Destination folder (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4276"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4279"/>
       <source>Alt+O</source>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4292"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4295"/>
       <source>Toggle full-screen</source>
       <translation>Toggle full-screen</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4304"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4307"/>
       <source>F11</source>
       <translation>F11</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4320"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4323"/>
       <source>Toggle slideshow</source>
       <translation>Toggle slideshow</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4332"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4335"/>
       <source>Space</source>
       <translation>Space</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4348"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4351"/>
       <source>Copy raw media data to clipboard</source>
       <translation>Copy raw media data to clipboard</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4360"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4363"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4370"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4373"/>
       <source>Open in browser</source>
       <translation>Open in browser</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4396"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4399"/>
       <source>Artists</source>
       <translation>Artists</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4419"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4447"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4475"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4503"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4531"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4559"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4587"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4615"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4643"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4671"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4699"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4727"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4422"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4450"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4478"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4506"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4534"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4562"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4590"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4618"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4646"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4674"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4702"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4730"/>
       <source>Font</source>
       <translation>Font</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4428"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4431"/>
       <source>Circle</source>
       <translation>Circle</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4456"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4459"/>
       <source>Series</source>
       <translation>Series</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4484"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4487"/>
       <source>Characters</source>
       <translation>Characters</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4512"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4515"/>
       <source>Models</source>
       <translation>Models</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4540"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4543"/>
       <source>Generals</source>
       <translation>Generals</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4596"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4599"/>
       <source>Blacklisted</source>
       <translation>Blacklisted</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4624"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4627"/>
       <source>Ignored</source>
       <translation>Ignored</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4652"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4655"/>
       <source>Species</source>
       <translation>Species</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4680"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4683"/>
       <source>Kept for later</source>
       <translation>Kept for later</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4708"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4711"/>
       <source>Metas</source>
       <translation>Metas</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4755"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4758"/>
       <source>Hosts</source>
       <translation>Hosts</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4761"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4838"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4764"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4841"/>
       <source>Horizontal margins</source>
       <translation>Horizontal margins</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4781"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4872"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4784"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4875"/>
       <source>Borders</source>
       <translation>Borders</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4832"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4835"/>
       <source>Images</source>
       <translation>Images</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4855"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4858"/>
       <source>Vertical margins</source>
       <translation>Vertical margins</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4896"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4899"/>
       <source>Show log</source>
       <translation>Show log</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4910"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4913"/>
       <source>Blacklisted tags</source>
       <translation>Blacklisted tags</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4928"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4931"/>
       <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
       <translation>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4938"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4941"/>
       <source>Ignore images containing a blacklisted tag</source>
       <translation>Ignore images containing a blacklisted tag</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4950"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4953"/>
       <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
       <translation>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4971"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4974"/>
       <source>Removed tags</source>
       <translation>Removed tags</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4986"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4989"/>
       <source>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</source>
       <translation>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5011"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5014"/>
       <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
       <translation>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5025"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5028"/>
       <source>Delay on startup</source>
       <translation>Delay on startup</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5032"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5279"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5035"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5282"/>
       <source> s</source>
       <translation> s</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5042"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5045"/>
       <source>Tray icon</source>
       <translation>Tray icon</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5051"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5054"/>
       <source>Minimize to tray</source>
       <translation>Minimize to tray</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5061"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5064"/>
       <source>Close to tray</source>
       <translation>Close to tray</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5068"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5071"/>
       <source>Enable system tray icon</source>
       <translation>Enable system tray icon</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5082"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5085"/>
       <source>Use proxy</source>
       <translation>Use proxy</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5127"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5130"/>
       <source>HTTP</source>
       <translation>HTTP</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5132"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5135"/>
       <source>SOCKS v5</source>
       <translation>SOCKS v5</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5140"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5388"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5143"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5391"/>
       <source>Host</source>
       <translation>Host</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5150"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5153"/>
       <source>Port</source>
       <translation>Port</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5164"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5398"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5167"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5401"/>
       <source>User</source>
       <translation>User</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5171"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5408"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5174"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5411"/>
       <source>Password</source>
       <translation>Password</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5191"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5194"/>
       <source>Use system-wide proxy settings</source>
       <translation>Use system-wide proxy settings</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5208"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5211"/>
       <source>Add a web service</source>
       <translation>Add a web service</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5262"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5342"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5265"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5345"/>
       <source>Tag (after)</source>
       <translation>Tag (after)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5232"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5322"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5235"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5325"/>
       <source>Tag (before)</source>
       <translation>Tag (before)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5242"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5362"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5245"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5365"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
       <translation>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5272"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5275"/>
       <source>Timeout</source>
       <translation>Timeout</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5295"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5372"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5298"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5375"/>
       <source>Dry run</source>
       <translation>Dry run</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5312"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5315"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5352"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5355"/>
       <source>End</source>
       <translation>End</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5382"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5385"/>
       <source>Credentials</source>
       <translation>Credentials</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5428"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5431"/>
       <source>Driver</source>
       <translation>Driver</translation>
     </message>
@@ -3983,12 +3983,12 @@ Please solve the issue before resuming the download.</translation>
   <context>
     <name>Page</name>
     <message>
-      <location filename="../lib/src/models/page.cpp" line="86"/>
+      <location filename="../lib/src/models/page.cpp" line="91"/>
       <source>No valid source of the site returned result.</source>
       <translation>No valid source of the site returned result.</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/page.cpp" line="120"/>
+      <location filename="../lib/src/models/page.cpp" line="125"/>
       <source>No available API to perform the request.</source>
       <translation>No available API to perform the request.</translation>
     </message>
@@ -5063,8 +5063,8 @@ Please solve the issue before resuming the download.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="145"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="551"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="579"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="561"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="589"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
@@ -5084,305 +5084,310 @@ Please solve the issue before resuming the download.</translation>
       <translation>Use a secure connection (https)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="185"/>
+      <source>Added tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="196"/>
       <source>Download</source>
       <translation>Download</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="192"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
       <source>Max simultaneous downloads</source>
       <translation>Max simultaneous downloads</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="209"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="219"/>
       <source>Interval (thumbnail)</source>
       <translation>Interval (thumbnail)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="226"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="236"/>
       <source>Interval (image)</source>
       <translation>Interval (image)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="243"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="253"/>
       <source>Interval (page)</source>
       <translation>Interval (page)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="260"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="270"/>
       <source>Interval (details)</source>
       <translation>Interval (details)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="277"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="287"/>
       <source>Interval (error)</source>
       <translation>Interval (error)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="216"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="233"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="250"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="267"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="284"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="226"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="243"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="260"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="277"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="294"/>
       <source>s</source>
       <translation>s</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="295"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="305"/>
       <source>Sources</source>
       <translation>Sources</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="322"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="332"/>
       <source>Source 1</source>
       <translation>Source 1</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="338"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="377"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="416"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="455"/>
-      <source>XML</source>
-      <translation>XML</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="343"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="382"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="421"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="460"/>
-      <source>JSON</source>
-      <translation>JSON</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="348"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="387"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="426"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="465"/>
-      <source>Regex</source>
-      <translation>Regex</translation>
+      <source>XML</source>
+      <translation>XML</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="353"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="392"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="431"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="470"/>
+      <source>JSON</source>
+      <translation>JSON</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="358"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="397"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="436"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="475"/>
+      <source>Regex</source>
+      <translation>Regex</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="363"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="402"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="441"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="480"/>
       <source>RSS</source>
       <translation>RSS</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="361"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="371"/>
       <source>Source 2</source>
       <translation>Source 2</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="400"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="410"/>
       <source>Source 3</source>
       <translation>Source 3</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="439"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="449"/>
       <source>Source 4</source>
       <translation>Source 4</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="481"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="491"/>
       <source>Use default sources</source>
       <translation>Use default sources</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="99"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="100"/>
       <source>Username</source>
       <translation>Username</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="101"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="102"/>
       <source>Password</source>
       <translation>Password</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="533"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="543"/>
       <source>Test</source>
       <translation>Test</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="492"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="502"/>
       <source>Login</source>
       <translation>Login</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="498"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="508"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
       <source>Through URL</source>
       <translation>Through URL</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
       <source>HTTP Basic</source>
       <translation>HTTP Basic</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="88"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="88"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="89"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="544"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="554"/>
       <source>Cookies</source>
       <translation>Cookies</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="556"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="584"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="566"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="594"/>
       <source>Value</source>
       <translation>Value</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="564"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="592"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="574"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="602"/>
       <source>Add</source>
       <translation>Add</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="572"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="582"/>
       <source>Headers</source>
       <translation>Headers</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="617"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="627"/>
       <source>Delete</source>
       <translation>Delete</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="637"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="647"/>
       <source>Cancel</source>
       <translation>Cancel</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="644"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="654"/>
       <source>Confirm</source>
       <translation>Confirm</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="89"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
       <source>OAuth 2 (password)</source>
       <translation>OAuth 2 (password)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
       <source>OAuth 2 (JSON password)</source>
       <translation>OAuth 2 (JSON password)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>OAuth 2 (client credentials)</source>
       <translation>OAuth 2 (client credentials)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
       <source>OAuth 2 (client credentials header)</source>
       <translation>OAuth 2 (client credentials header)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 2 (refresh token)</source>
       <translation>OAuth 2 (refresh token)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
       <source>OAuth 2 (authorization code)</source>
       <translation>OAuth 2 (authorization code)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="96"/>
       <source>OAuth 2 (PKCE)</source>
       <translation>OAuth 2 (PKCE)</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="100"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="101"/>
       <source>User ID</source>
       <translation>User ID</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="102"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="103"/>
       <source>Salt</source>
       <translation>Salt</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="103"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="104"/>
       <source>API key</source>
       <translation>API key</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="104"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="105"/>
       <source>Consumer key</source>
       <translation>Consumer key</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="105"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
       <source>Consumer secret</source>
       <translation>Consumer secret</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="107"/>
       <source>Access token</source>
       <translation>Access token</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="107"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="108"/>
       <source>Refresh token</source>
       <translation>Refresh token</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="200"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="201"/>
       <source>Delete a site</source>
       <translation>Delete a site</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="200"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="201"/>
       <source>Are you sure you want to delete the site %1?</source>
       <translation>Are you sure you want to delete the site %1?</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="219"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="220"/>
       <source>Connection...</source>
       <translation>Connection...</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="232"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="233"/>
       <source>Success!</source>
       <translation>Success!</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="236"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="237"/>
       <source>Failure</source>
       <translation>Failure</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="240"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="241"/>
       <source>Unable to test</source>
       <translation>Unable to test</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="313"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="315"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="313"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="315"/>
       <source>You should at least select one source</source>
       <translation>You should at least select one source</translation>
     </message>

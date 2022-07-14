@@ -17,6 +17,11 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 	m_imagesCount = -1;
 	m_pagesCount = -1;
 
+	// Add site-level automatically added tags
+	if (m_query.gallery == nullptr) {
+		m_query.tags += m_site->setting("added_tags").toString().split(" ", Qt::SkipEmptyParts);
+	}
+
 	if (!m_query.tags.isEmpty()) {
 		// Replace shortcuts to increase compatibility
 		QString text = " " + m_query.tags.join(' ') + " ";
@@ -46,8 +51,8 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 				log(QStringLiteral("[%1] Unsupported modifier removed from search: %2").arg(m_site->url(), mod), Logger::Warning);
 			}
 		}
-		m_search = tags;
 
+		m_search = tags;
 		m_query.tags = m_search;
 	}
 

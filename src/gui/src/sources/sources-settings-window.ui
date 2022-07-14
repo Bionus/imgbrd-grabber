@@ -31,14 +31,14 @@
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="labelReferer">
          <property name="text">
           <string>Referer (default)</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QComboBox" name="comboReferer">
          <item>
           <property name="text">
@@ -62,14 +62,14 @@
          </item>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="labelRefererPreview">
          <property name="text">
           <string>Referer (preview)</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="QComboBox" name="comboRefererPreview">
          <item>
           <property name="text">
@@ -98,14 +98,14 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="labelRefererImage">
          <property name="text">
           <string>Referer (image)</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <widget class="QComboBox" name="comboRefererImage">
          <item>
           <property name="text">
@@ -169,7 +169,7 @@
        <item row="2" column="1">
         <widget class="QSpinBox" name="spinIgnoreAlways"/>
        </item>
-       <item row="6" column="0" colspan="2">
+       <item row="7" column="0" colspan="2">
         <widget class="QCheckBox" name="checkSsl">
          <property name="text">
           <string>Use a secure connection (https)</string>
@@ -178,6 +178,16 @@
           <bool>false</bool>
          </property>
         </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelAddedTags">
+         <property name="text">
+          <string>Added tags</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="lineAddedTags"/>
        </item>
       </layout>
      </widget>
@@ -654,18 +664,31 @@
   <tabstop>lineSiteName</tabstop>
   <tabstop>spinIgnore1</tabstop>
   <tabstop>spinIgnoreAlways</tabstop>
+  <tabstop>lineAddedTags</tabstop>
   <tabstop>comboReferer</tabstop>
   <tabstop>comboRefererPreview</tabstop>
   <tabstop>comboRefererImage</tabstop>
   <tabstop>checkSsl</tabstop>
   <tabstop>spinSimultaneousDownloads</tabstop>
+  <tabstop>spinThrottleThumbnail</tabstop>
+  <tabstop>spinThrottleImage</tabstop>
+  <tabstop>spinThrottlePage</tabstop>
+  <tabstop>spinThrottleDetails</tabstop>
+  <tabstop>spinThrottleRetry</tabstop>
   <tabstop>checkSourcesDefault</tabstop>
   <tabstop>comboSources1</tabstop>
   <tabstop>comboSources2</tabstop>
   <tabstop>comboSources3</tabstop>
   <tabstop>comboSources4</tabstop>
+  <tabstop>comboLoginType</tabstop>
+  <tabstop>tableCookies</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>tableHeaders</tabstop>
+  <tabstop>buttonAddHeader</tabstop>
+  <tabstop>buttonDelete</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonAccept</tabstop>
+  <tabstop>buttonTestLogin</tabstop>
  </tabstops>
  <resources>
   <include location="../../resources/resources.qrc"/>

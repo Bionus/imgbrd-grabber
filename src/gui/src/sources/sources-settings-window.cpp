@@ -50,6 +50,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->comboReferer->setCurrentIndex(referers.indexOf(site->setting("referer", "none").toString()));
 	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "").toString()));
 	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "").toString()));
+	ui->lineAddedTags->setText(site->setting("added_tags").toString());
 	ui->spinIgnoreAlways->setValue(site->setting("ignore/always", 0).toInt());
 	ui->spinIgnore1->setValue(site->setting("ignore/1", 0).toInt());
 	ui->checkSsl->setChecked(site->setting("ssl", false).toBool());
@@ -274,6 +275,7 @@ void SourcesSettingsWindow::saveSettings()
 	m_site->setSetting("referer", referers[ui->comboReferer->currentIndex()], "none");
 	m_site->setSetting("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()], "");
 	m_site->setSetting("referer_image", referers_image[ui->comboRefererImage->currentIndex()], "");
+	m_site->setSetting("added_tags", ui->lineAddedTags->text(), "");
 	m_site->setSetting("ignore/always", ui->spinIgnoreAlways->value(), 0);
 	m_site->setSetting("ignore/1", ui->spinIgnore1->value(), 0);
 	m_site->setSetting("ssl", ui->checkSsl->isChecked(), false);
