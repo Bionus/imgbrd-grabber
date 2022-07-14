@@ -399,7 +399,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished"/>
+      <translation>Añadir nombre de archivo condicional</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
@@ -473,42 +473,42 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Etiquetas</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="42"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Fuente</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="43"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>Página</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="44"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>Imágenes por página</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>Límite de imágenes</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Nombre del archivo</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Carpeta</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="48"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>Después del filtro</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
@@ -523,7 +523,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>Progreso</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="145"/>
@@ -546,52 +546,52 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="35"/>
       <source>Id</source>
-      <translation type="unfinished"/>
+      <translation>Id</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="36"/>
       <source>Md5</source>
-      <translation type="unfinished"/>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="37"/>
       <source>Rating</source>
-      <translation type="unfinished"/>
+      <translation>Clasificación</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="38"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Etiquetas</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="39"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="40"/>
       <source>Date</source>
-      <translation type="unfinished"/>
+      <translation>Fecha</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="41"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Buscar</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Sitio web</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Nombre del archivo</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="44"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Carpeta</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
@@ -1639,7 +1639,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="124"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>Editar</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="160"/>
@@ -1955,12 +1955,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="45"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Buscar</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="46"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Fuente</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
@@ -3577,7 +3577,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4373"/>
       <source>Open in browser</source>
-      <translation type="unfinished"/>
+      <translation>Abrir en el navegador web</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4399"/>
@@ -3888,7 +3888,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="577"/>
       <source>View</source>
-      <translation type="unfinished"/>
+      <translation>Ver</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
@@ -3898,7 +3898,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="598"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="635"/>
@@ -4571,17 +4571,17 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>Miniatura</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
       <source>Original</source>
-      <translation type="unfinished"/>
+      <translation>Original</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Destination</source>
-      <translation type="unfinished"/>
+      <translation>Destino</translation>
     </message>
   </context>
   <context>
