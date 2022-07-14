@@ -4232,48 +4232,48 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>詳細</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>名前を付けて保存...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="40"/>
       <source>Saving...</source>
-      <translation type="unfinished"/>
+      <translation>保存中...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="31"/>
       <source>Saved!</source>
-      <translation type="unfinished"/>
+      <translation>保存しました!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="32"/>
       <source>Copied!</source>
-      <translation type="unfinished"/>
+      <translation>コピーしました!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="33"/>
       <source>Moved!</source>
-      <translation type="unfinished"/>
+      <translation>移動しました!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="34"/>
       <source>Link created!</source>
-      <translation type="unfinished"/>
+      <translation>リンクを作成しました!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
       <source>MD5 already exists</source>
-      <translation type="unfinished"/>
+      <translation>MD5が既に存在</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
@@ -4283,17 +4283,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>削除</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save &amp; close</source>
-      <translation type="unfinished"/>
+      <translation>保存して閉じる</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>閉じる</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
@@ -4303,38 +4303,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="56"/>
       <source>Saving... (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存中... (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="47"/>
       <source>Saved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存しました! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="48"/>
       <source>Copied! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>コピーしました! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="49"/>
       <source>Moved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>移動しました! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="50"/>
       <source>Link created! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>リンクを作成しました! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
       <source>MD5 already exists (fav)</source>
-      <translation type="unfinished"/>
+      <translation>MD5が既に存在 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
@@ -4344,17 +4344,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
       <source>Delete (fav)</source>
-      <translation type="unfinished"/>
+      <translation>削除 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save &amp; close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存して閉じる (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
       <source>Close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>閉じる (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
