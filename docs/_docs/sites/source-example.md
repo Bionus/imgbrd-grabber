@@ -14,7 +14,7 @@ The goal of this page is to provide a step-by-step example on how to create a ne
 
 All sources in Grabber are coded in TypeScript. So before going further, it is recommended to set it up first. For that, you'll first need to install [NodeJS](https://nodejs.org/en/).
 
-Then, download Grabber source code somwhere, either via git or via Github "download code as ZIP" feature.
+Then, download Grabber source code somewhere, either via git or via Github "download code as ZIP" feature.
 
 Once done, run `npm install` in the "src/sites/" directory to install the dependencies. Then, you can build all sources with `npm run build`. You can also run the linter to check for invalid coding style issues with `npm run check`.
 
@@ -92,13 +92,13 @@ export const source: ISource = {
 
 We can see a few things here:
 * The `name` field is quite obvious, we just use "JSON" because that's the format used by this API
-* The `auth` field is left as an empty array, because even anonymous users can use this API, no autentication is required
+* The `auth` field is left as an empty array, because even anonymous users can use this API, no authentication is required
 * The `search` object contains two functions, `url()` and `parse()` that we will now discuss in more detail
 
 
 ## Search "url" function
 
-This function returns the URL that lists the image on that API. As we saw at the beinning, that would be "/posts.json" for Danbooru.
+This function returns the URL that lists the image on that API. As we saw at the beginning, that would be "/posts.json" for Danbooru.
 
 The [types.d.ts](https://github.com/Bionus/imgbrd-grabber/blob/develop/src/sites/types.d.ts) file also explains which parameters are passed to this function. In our case, we only need the `query` parameter. Each of its member is described more in depth in the `types.d.ts` file, but what's of interest are those two:
 ```typescript
@@ -249,7 +249,7 @@ Once the HTTP call is done, it can be very useful to check whether the login was
 
 For our example, we can use the simplest one, "cookie". Indeed, when logged in, many websites will generate what is called a user session, whose ID will be stored in a cookie. That means that anonymous users don't have said cookie, but logged-in users have it. As such, if we check that this cookie exists, we can know whether the login was successful or not.
 
-We can also check other various cookies, such as a "remember me" cookie or similar. All cookies can be checked using the browser's "Storage" devtool, so it's quite easy to see which ones are specific to a logged in user ot not.
+We can also check other various cookies, such as a "remember me" cookie or similar. All cookies can be checked using the browser's "Storage" devtool, so it's quite easy to see which ones are specific to a logged in user or not.
 
 Doing this kind of check is quite simple, for example for the cookie "password_hash" on Danbooru:
 
@@ -301,7 +301,7 @@ Now the source is properly working, but there's a few additional things that are
 
 ## Tag format
 
-This describes how the tags are formatted on the source, described by the `ITagFormat` type. For Danbooru, tags look ike "some_tag". It's fully lowercase, with an underscore between individual tags.
+This describes how the tags are formatted on the source, described by the `ITagFormat` type. For Danbooru, tags look like "some_tag". It's fully lowercase, with an underscore between individual tags.
 
 As such, the tag format is quite straightforward:
 ```typescript
@@ -322,7 +322,7 @@ This describes how the searches are built on the source, described by the `Searc
 
 But there's actually a lesser known feature to do "OR" operations, using tilde. "~tag1 ~tag2" will return all images having either tag1 OR tag2.
 
-Both the "or" and "and" members of a search format can either be a simple separator string, or a separator plus a prefix. There also is a `parenthesis` member to say whether parenthesis are supported on this source. Finally, there is a `precedence` member that says which search operator ("or" or "and") have priority over the other. Here, it can be determined by searching "tag1 ~tag2 ~tag3". If it returns results looking like "tag1 (~tag2 ~tag3)" that means the "or" operator has precendence. If it's "(tag1 ~tag2) ~tag3", then it's the "and" operator.
+Both the "or" and "and" members of a search format can either be a simple separator string, or a separator plus a prefix. There also is a `parenthesis` member to say whether parenthesis are supported on this source. Finally, there is a `precedence` member that says which search operator ("or" or "and") have priority over the other. Here, it can be determined by searching "tag1 ~tag2 ~tag3". If it returns results looking like "tag1 (~tag2 ~tag3)" that means the "or" operator has precedence. If it's "(tag1 ~tag2) ~tag3", then it's the "and" operator.
 
 In this case, it gives this result:
 

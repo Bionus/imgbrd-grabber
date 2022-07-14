@@ -14,7 +14,7 @@ The only known working URL for this source is:
 * `subreddit:SUBREDDIT`: load results from a specific subreddit
 * `user:USERNAME`: load results from a specific user
 * `sort:{hot,new,top,rising,relevance,comments}`: sort order for results. `rising` is only valid for listing. `relevance` and `comments` is only valid for search (default: `hot` for listing, `relevance` for search)
-* `since:{hour,day,week,month,year,all}`: retrive posts for a given duration, only valid for search or "top" listing (default: `all`)
+* `since:{hour,day,week,month,year,all}`: retrieve posts for a given duration, only valid for search or "top" listing (default: `all`)
 
 
 Search:

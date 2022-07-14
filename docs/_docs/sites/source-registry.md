@@ -41,7 +41,7 @@ They can be hosted anywhere an can point to sources anywhere. The official sourc
     * `name`: the name of this source (same as `name` in the source model file)
     * `hash`: the SHA256 hash of the `model.js` file
     * `lastCommit`: the last change to this model file
-        * `hase`: the commit hash for this change
+        * `hash`: the commit hash for this change
         * `author`: the author of this change
         * `date`: the date of this change in ISO format
         * `subject`: the subject of this change

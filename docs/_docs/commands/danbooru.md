@@ -30,7 +30,7 @@ It pretty much only amounts to downloading the `docker-compose.yaml` file and do
 
 ## Install NodeJS
 
-You need NodeJS to be installed on your maching to use the upload script used by Grabber.
+You need NodeJS to be installed on your machine to use the upload script used by Grabber.
 You can download it from [their website](https://nodejs.org/en/download/), or from a package manager [here](https://nodejs.org/en/download/package-manager/).
 
 
