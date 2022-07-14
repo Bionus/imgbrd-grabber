@@ -4768,12 +4768,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>General</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
       <source>General (no)</source>
-      <translation type="unfinished"/>
+      <translation>General (no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="123"/>
@@ -4967,7 +4967,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
@@ -4977,12 +4977,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Fuentes</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="144"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Cerrar</translation>
     </message>
   </context>
   <context>
