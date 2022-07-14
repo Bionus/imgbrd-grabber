@@ -4275,40 +4275,50 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/functions.h" line="31"/>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>B</source>
-      <translation type="unfinished"/>
+      <translation>Б</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>KB</source>
-      <translation type="unfinished"/>
+      <translation>КБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>MB</source>
-      <translation type="unfinished"/>
+      <translation>МБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>GB</source>
-      <translation type="unfinished"/>
+      <translation>ГБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>KiB</source>
-      <translation type="unfinished"/>
+      <translation>КиБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>MiB</source>
-      <translation type="unfinished"/>
+      <translation>МиБ</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>GiB</source>
-      <translation type="unfinished"/>
+      <translation>ГиБ</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
+      <source>Previous search result</source>
+      <translation>Предыдущий результат поиска</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
+      <source>Next search result</source>
+      <translation>Следующий результат поиска</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4316,14 +4326,29 @@ Please solve the issue before resuming the download.</source>
       <translation>Подробности</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
+      <source>Media details</source>
+      <translation>Сведения о медиа</translation>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save as...</source>
       <translation>Сохранить как...</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
+      <source>Save to irregular location</source>
+      <translation>Сохранить в особый каталог</translation>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save</source>
       <translation>Сохранить</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
+      <source>Save to usual location</source>
+      <translation>Сохранить в стандартный каталог</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4359,7 +4384,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
       <source>Already saved</source>
-      <translation type="unfinished"/>
+      <translation>Уже сохранено</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
@@ -4372,6 +4397,11 @@ Please solve the issue before resuming the download.</source>
       <translation>Сохранить и закрыть</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
+      <source>Save to usual location and close window</source>
+      <translation>Сохранить в стандартный каталог и закрыть окно</translation>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
       <source>Close</source>
       <translation>Закрыть</translation>
@@ -4382,9 +4412,19 @@ Please solve the issue before resuming the download.</source>
       <translation>Открыть</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
+      <source>Open usual save location in new window</source>
+      <translation>Открыть стандартный каталог сохранения в новом окне</translation>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save (fav)</source>
       <translation>Сохранить (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
+      <source>Save to favourite location</source>
+      <translation>Сохранить в каталог избранного</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4420,7 +4460,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
       <source>Already saved (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Уже сохранено (избр)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
@@ -4433,6 +4473,11 @@ Please solve the issue before resuming the download.</source>
       <translation>Сохранить и закрыть (избр)</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
+      <source>Save to favourite location and close window</source>
+      <translation>Сохранить в каталог избранного и закрыть окно</translation>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
       <source>Close (fav)</source>
       <translation>Закрыть (избр)</translation>
@@ -4441,6 +4486,11 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open (fav)</source>
       <translation>Открыть (избр)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
+      <source>Open favourite save location in new window</source>
+      <translation>Открыть каталог сохранения избранного в новом окне</translation>
     </message>
   </context>
   <context>
@@ -4613,7 +4663,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="419"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation>Обнаружено перенаправление HTTP на HTTPS для веб-сайта %1. Вы хотите включить SSL на нем? Рекомендуемая настройка 'да'.</translation>
+      <translation>Обнаружено перенаправление с HTTP на HTTPS на веб-сайте %1. Хотите включить SSL для него? Рекомендуемая настройка — «да».</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="421"/>
@@ -5718,49 +5768,49 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>TextEdit</name>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="179"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="180"/>
       <source>Favorites</source>
       <translation>Избранное</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="188"/>
-      <location filename="../gui/src/ui/text-edit.cpp" line="207"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="189"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="208"/>
       <source>Remove</source>
       <translation>Убрать</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="190"/>
-      <location filename="../gui/src/ui/text-edit.cpp" line="209"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="191"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="210"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="198"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="199"/>
       <source>Kept for later</source>
       <translation>На потом</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="216"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="217"/>
       <source>Ratings</source>
       <translation>Рейтинги</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="227"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="228"/>
       <source>Sortings</source>
       <translation>Сортировки</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="249"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="250"/>
       <source>Copy</source>
       <translation>Копировать</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="250"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="251"/>
       <source>Cut</source>
       <translation>Вырезать</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="252"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="253"/>
       <source>Paste</source>
       <translation>Вставить</translation>
     </message>
