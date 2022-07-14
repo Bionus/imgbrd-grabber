@@ -4281,12 +4281,12 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
       <source>Previous search result</source>
-      <translation type="unfinished"/>
+      <translation>Previous search result</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
       <source>Next search result</source>
-      <translation type="unfinished"/>
+      <translation>Next search result</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4296,7 +4296,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Media details</source>
-      <translation type="unfinished"/>
+      <translation>Media details</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
@@ -4306,7 +4306,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save to irregular location</source>
-      <translation type="unfinished"/>
+      <translation>Save to irregular location</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
@@ -4316,7 +4316,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save to usual location</source>
-      <translation type="unfinished"/>
+      <translation>Save to usual location</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4367,7 +4367,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save to usual location and close window</source>
-      <translation type="unfinished"/>
+      <translation>Save to usual location and close window</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
@@ -4382,7 +4382,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open usual save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Open usual save location in new window</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
@@ -4392,7 +4392,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save to favourite location</source>
-      <translation type="unfinished"/>
+      <translation>Save to favourite location</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4443,7 +4443,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save to favourite location and close window</source>
-      <translation type="unfinished"/>
+      <translation>Save to favourite location and close window</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
@@ -4458,7 +4458,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open favourite save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Open favourite save location in new window</translation>
     </message>
   </context>
   <context>
