@@ -4262,48 +4262,48 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>자세히</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>다른 이름으로 저장</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>저장</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="40"/>
       <source>Saving...</source>
-      <translation type="unfinished"/>
+      <translation>저장 중...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="31"/>
       <source>Saved!</source>
-      <translation type="unfinished"/>
+      <translation>저장됨!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="32"/>
       <source>Copied!</source>
-      <translation type="unfinished"/>
+      <translation>복사됨!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="33"/>
       <source>Moved!</source>
-      <translation type="unfinished"/>
+      <translation>이동됨!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="34"/>
       <source>Link created!</source>
-      <translation type="unfinished"/>
+      <translation>링크 생성됨!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
       <source>MD5 already exists</source>
-      <translation type="unfinished"/>
+      <translation>MD5가 이미 존재합니다</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
@@ -4313,17 +4313,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>삭제</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save &amp; close</source>
-      <translation type="unfinished"/>
+      <translation>저장하고 닫기</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>닫기</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
@@ -4333,38 +4333,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save (fav)</source>
-      <translation type="unfinished"/>
+      <translation>저장 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="56"/>
       <source>Saving... (fav)</source>
-      <translation type="unfinished"/>
+      <translation>저장 중... (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="47"/>
       <source>Saved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>저장됨! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="48"/>
       <source>Copied! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>복사됨! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="49"/>
       <source>Moved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>이동됨! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="50"/>
       <source>Link created! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>링크 생성됨! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
       <source>MD5 already exists (fav)</source>
-      <translation type="unfinished"/>
+      <translation>MD5가 이미 존재합니다 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
@@ -4374,17 +4374,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
       <source>Delete (fav)</source>
-      <translation type="unfinished"/>
+      <translation>삭제하기 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save &amp; close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>저장하고 닫기 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
       <source>Close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>닫기 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
