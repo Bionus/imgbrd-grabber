@@ -4272,8 +4272,23 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation type="unfinished"/>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
+      <source>Previous search result</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
+      <source>Next search result</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Details</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
+      <source>Media details</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -4282,9 +4297,19 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Speichern unter...</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
+      <source>Save to irregular location</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save</source>
       <translation>Speichern</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
+      <source>Save to usual location</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4333,6 +4358,11 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Speichern &amp; schließen</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
+      <source>Save to usual location and close window</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
       <source>Close</source>
       <translation>Schließen</translation>
@@ -4343,9 +4373,19 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation type="unfinished"/>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
+      <source>Open usual save location in new window</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save (fav)</source>
       <translation>Speichern (Fav)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
+      <source>Save to favourite location</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4394,6 +4434,11 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Speichern &amp; schließen (Fav)</translation>
     </message>
     <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
+      <source>Save to favourite location and close window</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
       <source>Close (fav)</source>
       <translation>Schließen (Fav)</translation>
@@ -4401,6 +4446,11 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open (fav)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
+      <source>Open favourite save location in new window</source>
       <translation type="unfinished"/>
     </message>
   </context>
@@ -5673,49 +5723,49 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
   <context>
     <name>TextEdit</name>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="179"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="180"/>
       <source>Favorites</source>
       <translation>Favoriten</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="188"/>
-      <location filename="../gui/src/ui/text-edit.cpp" line="207"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="189"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="208"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="190"/>
-      <location filename="../gui/src/ui/text-edit.cpp" line="209"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="191"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="210"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="198"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="199"/>
       <source>Kept for later</source>
       <translation>Für später gespeichert</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="216"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="217"/>
       <source>Ratings</source>
       <translation>Bewertungen</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="227"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="228"/>
       <source>Sortings</source>
       <translation>Sortierungen</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="249"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="250"/>
       <source>Copy</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="250"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="251"/>
       <source>Cut</source>
       <translation>Ausschneiden</translation>
     </message>
     <message>
-      <location filename="../gui/src/ui/text-edit.cpp" line="252"/>
+      <location filename="../gui/src/ui/text-edit.cpp" line="253"/>
       <source>Paste</source>
       <translation>Einfügen</translation>
     </message>
