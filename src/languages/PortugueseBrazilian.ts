@@ -4281,43 +4281,43 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>Detalhes</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>Salvar como...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Salvar</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="40"/>
       <source>Saving...</source>
-      <translation type="unfinished"/>
+      <translation>Salvando...</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="31"/>
       <source>Saved!</source>
-      <translation type="unfinished"/>
+      <translation>Salvo!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="32"/>
       <source>Copied!</source>
-      <translation type="unfinished"/>
+      <translation>Copiado!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="33"/>
       <source>Moved!</source>
-      <translation type="unfinished"/>
+      <translation>Movido!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="34"/>
       <source>Link created!</source>
-      <translation type="unfinished"/>
+      <translation>Link criado!</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
@@ -4337,48 +4337,48 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save &amp; close</source>
-      <translation type="unfinished"/>
+      <translation>Salvar &amp; fechar</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Fechar</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>Abrir</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Salvar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="56"/>
       <source>Saving... (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Salvando... (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="47"/>
       <source>Saved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Salvo! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="48"/>
       <source>Copied! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Copiado! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="49"/>
       <source>Moved! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Movido! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="50"/>
       <source>Link created! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Link criado! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
@@ -4398,17 +4398,17 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save &amp; close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Salvar &amp; fechar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
       <source>Close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Fechar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Abrir (fav)</translation>
     </message>
   </context>
   <context>
@@ -5886,12 +5886,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Video</source>
-      <translation type="unfinished"/>
+      <translation>Vídeo</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Animation</source>
-      <translation type="unfinished"/>
+      <translation>Animação</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="803"/>
