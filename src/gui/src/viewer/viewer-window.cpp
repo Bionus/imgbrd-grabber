@@ -388,8 +388,8 @@ void ViewerWindow::configureButtons()
 			// From state:
 		ButtonState *state = it.second.current = &(it.second.states.first()); // Consider using [].
 		const ButtonState &defaultState = ViewerWindowButtons::DefaultStates.value(it.second.type);
-		button->setText(QString(state->text.isEmpty() ? defaultState.text : state->text).replace("&", "&&"));
-		button->setToolTip(state->toolTip.isEmpty() ? defaultState.toolTip : state->toolTip);
+		button->setText(QObject::tr((state->text.isEmpty() ? defaultState.text : state->text).toStdString().c_str()).replace("&", "&&"));
+		button->setToolTip(QObject::tr((state->toolTip.isEmpty() ? defaultState.toolTip : state->toolTip).toStdString().c_str()));
 
 			// Initialise state 0 functions. This should be eliminated if possible.
 		switch (it.second.type) {
