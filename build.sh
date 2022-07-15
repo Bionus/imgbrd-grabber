@@ -23,7 +23,7 @@ for pm in pacman apt-get emerge yum; do
 				$permission pacman -S "qt" "gcc" "cmake" "libpulse" "nodejs" "npm" && installed=1
 				;;
 			apt-get)
-				$permission apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools" || continue
+				$permission apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools" "libqt5networkauth5-dev" || continue
 				$permission apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs" "npm" && installed=1
 				;;
 			emerge)
