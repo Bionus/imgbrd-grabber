@@ -1,53 +1,79 @@
 #include "search-syntax-highlighter.h"
 #include <QColor>
 #include <QRegularExpression>
+#include "models/profile.h"
 
 
-SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *parent)
-	: QSyntaxHighlighter(parent)
+SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *parent, Profile *profile)
+	: QSyntaxHighlighter(parent), m_profile(profile)
 {
-	favoritesFormat.setForeground(QColor("#ffc0cb"));
-	keptForLaterFormat.setForeground(QColor("#000000"));
-
 	HighlightingRule rule;
 
 	// Or format "~tag"
-	orFormat.setForeground(Qt::green);
 	rule.pattern = QRegularExpression("(?: |^)~([^ ]+)");
-	rule.format = orFormat;
+	rule.format.setForeground(Qt::green);
 	highlightingRules.append(rule);
 
 	// Exclusion format "-tag"
-	excludeFormat.setForeground(Qt::red);
 	rule.pattern = QRegularExpression("(?: |^)-([^ ]+)");
-	rule.format = excludeFormat;
+	rule.format.setForeground(Qt::red);
 	highlightingRules.append(rule);
 
 	if (!full) {
 		// Meta other format "unknown_meta:value"
-		metaOtherFormat.setForeground(QColor("#ff0000"));
-		rule.pattern = QRegularExpression("(?: |^)([^:]+):([^: ][^ ]*)?(?: |$)");
-		rule.format = metaOtherFormat;
+		rule.pattern = QRegularExpression("(?: |^)([^:]+):([^: ][^ ]*)?");
+		rule.format.setForeground(QColor("#ff0000")); // red
 		highlightingRules.append(rule);
 	} else {
 		// MD5 format "qdrg15sdfgs1d2f1gs3dfg"
-		md5Format.setForeground(QColor("#800080"));
 		rule.pattern = QRegularExpression("(?: |^)([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption);
-		rule.format = md5Format;
+		rule.format.setForeground(QColor("#800080")); // purple
 		highlightingRules.append(rule);
 
 		// URL format "http://..."
-		urlFormat.setForeground(Qt::blue);
-		rule.pattern = QRegularExpression("(?: |^)(https?://[^\\s/$.?#].[^\\s]*)(?: |$)");
-		rule.format = urlFormat;
+		rule.pattern = QRegularExpression("(?: |^)(https?://[^\\s/$.?#].[^\\s]*)");
+		rule.format.setForeground(Qt::blue);
 		highlightingRules.append(rule);
 	}
 
 	// Meta format "meta:value"
-	metaFormat.setForeground(QColor("#a52a2a"));
-	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?(?: |$)", QRegularExpression::CaseInsensitiveOption);
-	rule.format = metaFormat;
+	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?", QRegularExpression::CaseInsensitiveOption);
+	rule.format.setForeground(QColor("#a52a2a")); // brown
 	highlightingRules.append(rule);
+
+	if (m_profile != nullptr) {
+		// Favorites format "favorited_tag"
+		rule.format.setForeground(QColor("#ffc0cb")); // pink
+		highlightingRules.append(rule);
+		m_favoritesRule = &highlightingRules.last();
+
+		// Favorites format "kfl_tag"
+		rule.format.setForeground(QColor("#000000")); // black
+		highlightingRules.append(rule);
+		m_kflRule = &highlightingRules.last();
+
+		updateFavorites();
+		updateKeptForLater();
+		connect(m_profile, &Profile::favoritesChanged, this, &SearchSyntaxHighlighter::updateFavorites);
+		connect(m_profile, &Profile::keptForLaterChanged, this, &SearchSyntaxHighlighter::updateKeptForLater);
+	}
+}
+
+void SearchSyntaxHighlighter::updateFavorites()
+{
+	QString favorites;
+	for (const auto &favorite : m_profile->getFavorites()) {
+		if (!favorites.isEmpty()) {
+			favorites += '|';
+		}
+		favorites += favorite.getName();
+	}
+	m_favoritesRule->pattern.setPattern("(?: |^)(" + favorites + ")");
+}
+
+void SearchSyntaxHighlighter::updateKeptForLater()
+{
+	m_kflRule->pattern.setPattern("(?: |^)(" + m_profile->getKeptForLater().join('|') + ")");
 }
 
 void SearchSyntaxHighlighter::highlightBlock(const QString &text)

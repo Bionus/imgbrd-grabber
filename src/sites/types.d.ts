@@ -352,7 +352,7 @@ type IAuth = IBasicAuth | IOauth2Auth | IOauth1Auth | IHttpAuth | IHttpBasicAuth
  */
 interface IOauth2Auth {
     type: "oauth2";
-    authType: "password" | "password_json" | "client_credentials" | "refresh_token"  | "pkce";
+    authType: "password" | "password_json" | "client_credentials" | "refresh_token"  | "pkce" | "authorization_code";
 
     /**
      * Where should the client authentication parameters should be passed (default: body).
@@ -569,7 +569,7 @@ interface ISearchFormatType {
     prefix?: string;
 }
 
-type MetaField = IMetaFieldOptions | IMetaTypeInput;
+type MetaField = IMetaFieldOptions | IMetaTypeInput | IMetaTypeBoolean;
 interface IMetaFieldBase {
     label?: string;
     default?: any;
@@ -584,6 +584,10 @@ interface IMetaFieldOptions extends IMetaFieldBase {
 interface IMetaTypeInput extends IMetaFieldBase  {
     type: "input";
     parser?: (value: string) => any;
+}
+interface IMetaTypeBoolean extends IMetaFieldBase  {
+    type: "bool";
+    default?: boolean;
 }
 
 type IParsedSearchQuery = ITag | IParsedSearchOperator;

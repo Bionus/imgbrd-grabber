@@ -15,6 +15,7 @@ Page {
 
     property int page: 1
     property string site
+    property bool queryChanged: false
 
     TagSearchLoader {
         id: pageLoader
@@ -25,11 +26,18 @@ Page {
         perPage: 20
         postFilter: textFieldPostFiltering.text
         profile: backend.profile
+
+        onQueryChanged: searchTab.queryChanged = true
     }
 
     function load(tag) {
         if (tag) {
             textFieldSearch.text = tag
+            queryChanged = true
+        }
+        if (queryChanged) {
+            page = 1
+            queryChanged = false
         }
         pageLoader.load()
     }

@@ -116,7 +116,7 @@
          <item>
           <widget class="QLabel" name="labelUniques">
            <property name="text">
-            <string>Single images</string>
+            <string>Single files</string>
            </property>
           </widget>
          </item>

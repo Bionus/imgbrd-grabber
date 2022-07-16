@@ -641,6 +641,9 @@
           <property name="text">
            <string>New sources and sites can be supported by adding third-party source registries.</string>
           </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>

@@ -137,6 +137,7 @@ See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.h
     <td align="center"><a href="https://github.com/waitingmoon"><img src="https://avatars.githubusercontent.com/u/16256443?v=4?s=122" width="122px;" alt=""/><br /><sub><b>waitingmoon</b></sub></a><br /><a href="#translation-waitingmoon" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/Penguin-Guru"><img src="https://avatars.githubusercontent.com/u/22182988?v=4?s=122" width="122px;" alt=""/><br /><sub><b>Penguin-Guru</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Penguin-Guru" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/lucas-04"><img src="https://avatars.githubusercontent.com/u/95548091?v=4?s=122" width="122px;" alt=""/><br /><sub><b>lucas</b></sub></a><br /><a href="#translation-lucas-04" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/adem4ik"><img src="https://avatars.githubusercontent.com/u/4707112?v=4?s=122" width="122px;" alt=""/><br /><sub><b>Andrei Stepanov</b></sub></a><br /><a href="#translation-adem4ik" title="Translation">🌍</a> <a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Aadem4ik" title="Bug reports">🐛</a> <a href="#ideas-adem4ik" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 

@@ -5,10 +5,14 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+    branches-ignore:
+      - crowdin
   pull_request:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+    branches-ignore:
+      - crowdin
 
 env:
   QT_VERSION: 5.15.2
@@ -439,7 +443,7 @@ jobs:
         shell: cmd
         run: |
           if "${{ matrix.suffix }}"=="x86" (set "OPENSSL_PREFIX=Win32OpenSSL") else (set "OPENSSL_PREFIX=Win64OpenSSL")
-          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1o.exe" --fail
+          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1q.exe" --fail
           OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
           rm OpenSSL.exe
 

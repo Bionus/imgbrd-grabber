@@ -110,6 +110,16 @@
        </item>
        <item>
         <property name="text">
+         <string>General</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>General (no)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Safe</string>
         </property>
        </item>

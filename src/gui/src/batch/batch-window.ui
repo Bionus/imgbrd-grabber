@@ -111,7 +111,7 @@
         <item>
          <widget class="QCheckBox" name="checkScrollToDownload">
           <property name="text">
-           <string>Follow downloaded images</string>
+           <string>Follow downloaded files</string>
           </property>
          </widget>
         </item>

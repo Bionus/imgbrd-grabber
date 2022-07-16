@@ -58,7 +58,6 @@ TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *paren
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 	optionsChanged();
 	ui->widgetPlus->hide();
-	setWindowIcon(QIcon());
 	updateCheckboxes();
 	m_search->setFocus();
 

@@ -20,8 +20,6 @@ class TextEdit : public QTextEdit
 		void setCompleter(QCompleter *completer);
 		QCompleter *completer() const;
 		QSize sizeHint() const override;
-		void doColor();
-		void setText(const QString &text);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e) override;

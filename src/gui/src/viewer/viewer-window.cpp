@@ -66,36 +66,36 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 	ui->progressBarDownload->hide();
 
 	m_settings->beginGroup("Viewer/Shortcuts");
-		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), this);
+		auto *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), this);
 			connect(quit, &QShortcut::activated, this, &ViewerWindow::close);
-		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), this);
+		auto *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), this);
 			connect(prev, &QShortcut::activated, this, &ViewerWindow::previous);
-		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), this);
+		auto *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), this);
 			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
 
-		QShortcut *details = new QShortcut(getKeySequence(m_settings, "keyDetails", Qt::Key_D), this);
+		auto *details = new QShortcut(getKeySequence(m_settings, "keyDetails", Qt::Key_D), this);
 			connect(details, &QShortcut::activated, this, &ViewerWindow::showDetails);
-		QShortcut *saveAs = new QShortcut(getKeySequence(m_settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
+		auto *saveAs = new QShortcut(getKeySequence(m_settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
 			connect(saveAs, &QShortcut::activated, this, &ViewerWindow::saveImageAs);
 
-		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
+		auto *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
+		auto *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
 			// Pointer name must not overlap with function name ("saveNQuit"...
 			connect(SNQ, SIGNAL(activated()), this, SLOT(saveNQuit()));
-		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
+		auto *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDir()));
 
-		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
+		auto *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
 			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
-		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
+		auto *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
 			connect(saveNQuitFav, &QShortcut::activated, this, [this]{saveNQuit(true);});
-		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
+		auto *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
 			connect(openFav, &QShortcut::activated, this, [this]{openSaveDir(true);});
 
-		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
+		auto *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::toggleFullScreen);
-		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
+		auto *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ViewerWindow::copyImageDataToClipboard);
 
 		auto *openInBrowser = new QShortcut(getKeySequence(m_settings, "keyOpenInBrowser"), this);
@@ -178,6 +178,10 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		setStyleSheet("#ViewerWindow { background-color:" + bg + "; }");
 	}
 
+	m_resizeTimer = new QTimer(this);
+		connect(m_resizeTimer, SIGNAL(timeout()), this, SLOT(update()));
+		m_resizeTimer->setSingleShot(true);
+
 	load(image);
 }
 void ViewerWindow::go()
@@ -196,11 +200,6 @@ void ViewerWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image")) {
 		saveImage();
 	}
-
-	auto *timer = new QTimer(this);
-		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-		timer->setSingleShot(true);
-		m_resizeTimer = timer;
 
 	QString pos = m_settings->value("tagsposition", "top").toString();
 	if (pos == QLatin1String("auto")) {
@@ -272,13 +271,13 @@ void ViewerWindow::configureButtons()
 	std::vector<std::vector<unsigned short>> spans;
 	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
 
-		// Load button configuration from settings:
+	// Load button configuration from settings
 	QList<ButtonSettings> bss = m_settings->value("Viewer/activeButtons").value<QList<ButtonSettings>>();
 	for (auto &bs : bss) {
 		auto *pushButton = new QPushButton(this);
 		m_buttons.insert(std::pair<QString, ButtonInstance>(
 			bs.name,
-			ButtonInstance{bs.type, pushButton, bs.states} // This is why I switched to C++14. Could be worked around.
+			ButtonInstance{bs.type, pushButton, bs.states}
 		));
 
 		unsigned short row;
@@ -293,14 +292,15 @@ void ViewerWindow::configureButtons()
 			row = 0;
 		}
 
-		if (maxColPos.size() <= row) { // Initialise new row.
-			while (maxColPos.size() <= row) { // Configure up to new row.
+		// If the button is on a new row, initialize values
+		if (maxColPos.size() <= row) {
+			while (maxColPos.size() <= row) {
 				maxColPos.push_back(-1);
 				spanSum.push_back(0);
 			}
 			spans.resize(row + 1);
 		}
-		spans.at(row).push_back(bs.relativeWidth - 1); // Don't count starting position.
+		spans.at(row).push_back(bs.relativeWidth - 1); // Don't count starting position
 
 		unsigned short effectivePosition = (bs.position > maxColPos.at(row) ? ++maxColPos.at(row) : bs.position) + spanSum.at(row);	// Make columns contiguous.
 		if (bs.relativeWidth > 1) {
@@ -313,13 +313,14 @@ void ViewerWindow::configureButtons()
 
 	unsigned short biggestMaxRow, biggestMaxColPos = 0;
 	for (unsigned short i = 0; i < maxColPos.size(); i++) {
-		if (maxColPos.at(i) + spans.at(i).back() > biggestMaxColPos) {
+		unsigned short spanBack = spans.at(i).empty() ? 0 : spans.at(i).back();
+		if (maxColPos.at(i) + spanBack > biggestMaxColPos) {
 			biggestMaxRow = i;
-			biggestMaxColPos = maxColPos.at(i) + spans.at(i).back();
-			log(("biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back())).c_str(), Logger::Debug);
+			biggestMaxColPos = maxColPos.at(i) + spanBack;
+			log(("biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spanBack) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spanBack)).c_str(), Logger::Debug);
 		}
 
-		maxColPos.at(i) += spans.at(i).back();	// Redefine as end, rather than beginning, position.
+		maxColPos.at(i) += spanBack;	// Redefine as end, rather than beginning, position.
 
 		// Configure rows:
 		ui->buttonsLayout->setRowStretch(i, 1);
@@ -387,8 +388,8 @@ void ViewerWindow::configureButtons()
 			// From state:
 		ButtonState *state = it.second.current = &(it.second.states.first()); // Consider using [].
 		const ButtonState &defaultState = ViewerWindowButtons::DefaultStates.value(it.second.type);
-		button->setText(QString(state->text.isEmpty() ? defaultState.text : state->text).replace("&", "&&"));
-		button->setToolTip(state->toolTip.isEmpty() ? defaultState.toolTip : state->toolTip);
+		button->setText(QObject::tr((state->text.isEmpty() ? defaultState.text : state->text).toStdString().c_str()).replace("&", "&&"));
+		button->setToolTip(QObject::tr((state->toolTip.isEmpty() ? defaultState.toolTip : state->toolTip).toStdString().c_str()));
 
 			// Initialise state 0 functions. This should be eliminated if possible.
 		switch (it.second.type) {
@@ -443,15 +444,15 @@ void ViewerWindow::imageContextMenu()
 	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Reload action
-	QAction *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
+	auto *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
 	connect(reloadImageAction, &QAction::triggered, this, &ViewerWindow::reloadImage);
 
 	// Copy actions
-	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
+	auto *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
 	connect(copyImageAction, &QAction::triggered, this, &ViewerWindow::copyImageFileToClipboard);
-	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
+	auto *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
 	connect(copyDataAction, &QAction::triggered, this, &ViewerWindow::copyImageDataToClipboard);
-	QAction *copyLinkAction = new QAction(QIcon(":/images/icons/globe.png"), tr("Copy link"), menu);
+	auto *copyLinkAction = new QAction(QIcon(":/images/icons/globe.png"), tr("Copy link"), menu);
 	connect(copyLinkAction, &QAction::triggered, this, &ViewerWindow::copyImageLinkToClipboard);
 
 	// Insert actions at the beginning
@@ -771,8 +772,8 @@ void ViewerWindow::setButtonState(bool fav, SaveButtonState state)
 
 		// Update button text
 		const ButtonState &defaultState = ViewerWindowButtons::DefaultStates.value(button->type);
-		button->pointer->setText(tr( QString(newState->text.isEmpty() ? defaultState.text : newState->text).replace("&", "&&").toStdString().c_str()));
-		button->pointer->setToolTip(tr((newState->toolTip.isEmpty() ? defaultState.toolTip : newState->toolTip).toStdString().c_str()));
+		button->pointer->setText(QObject::tr((newState->text.isEmpty() ? defaultState.text : newState->text).toStdString().c_str()).replace("&", "&&"));
+		button->pointer->setToolTip(QObject::tr((newState->toolTip.isEmpty() ? defaultState.toolTip : newState->toolTip).toStdString().c_str()));
 
 		// Connect button to its new action
 		if (newState->function == nullptr) {
@@ -797,13 +798,13 @@ void ViewerWindow::replyFinishedImage(const QSharedPointer<Image> &img, const QL
 			error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url().toString()));
 		}
 	} else if (res.result == Image::SaveResult::NotFound) {
-		showLoadingError("Image not found.");
+		showLoadingError(tr("File not found."));
 	} else if (res.result == Image::SaveResult::NetworkError) {
-		showLoadingError("Error loading the image.");
+		showLoadingError(tr("Error loading the image."));
 	} else if (res.result == Image::SaveResult::DetailsLoadError) {
-		showLoadingError("Error loading the image's details.");
+		showLoadingError(tr("Error loading the image's details."));
 	} else if (res.result == Image::SaveResult::Error) {
-		showLoadingError("Error saving the image.");
+		showLoadingError(tr("Error saving the image."));
 	} else {
 		m_imagePath = res.path;
 		m_loadedImage = true;
@@ -1132,19 +1133,19 @@ void ViewerWindow::fullScreen()
 	prepareNextSlide();
 
 	m_settings->beginGroup("Viewer/Shortcuts"); // Could probably just use the variables already initialised when this ViewerWindow was constructed.
-		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), m_fullScreen);
+		auto *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), m_fullScreen);
 			connect(quit, &QShortcut::activated, this, &ViewerWindow::unfullScreen);
-		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
+		auto *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::unfullScreen);
-		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), m_fullScreen);
+		auto *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), m_fullScreen);
 			connect(prev, &QShortcut::activated, this, &ViewerWindow::previous);
-		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), m_fullScreen);
+		auto *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), m_fullScreen);
 			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
-		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
+		auto *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
 			connect(toggleSlideshow, &QShortcut::activated, this, &ViewerWindow::toggleSlideshow);
-		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), m_fullScreen);
+		auto *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), m_fullScreen);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), m_fullScreen);
+		auto *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), m_fullScreen);
 			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
 	m_settings->endGroup();
 
@@ -1363,11 +1364,9 @@ void ViewerWindow::updateWindowTitle()
 	}
 
 	// Update title if there are infos to show
-	QString title;
-	if (infos.isEmpty()) {
-		title = tr("Image");
-	} else {
-		title = QString(tr("Image") + " (%1)").arg(infos.join(", "));
+	QString title = m_image->isVideo() ? tr("Video") : (!m_isAnimated.isEmpty() ? tr("Animation") : tr("Image"));
+	if (!infos.isEmpty()) {
+		title += QString(" (%1)").arg(infos.join(", "));
 	}
 	setWindowTitle(QStringLiteral("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }

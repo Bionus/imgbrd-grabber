@@ -39,7 +39,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);
 
 	const QStringList orders { "id", "id_desc", "score_asc", "score", "mpixels_asc", "mpixels", "filesize", "landscape", "portrait", "favcount", "rank" };
-	const QStringList ratings { "rating:safe", "-rating:safe", "rating:questionable", "-rating:questionable", "rating:explicit", "-rating:explicit" };
+	const QStringList ratings { "rating:general", "-rating:general", "rating:safe", "-rating:safe", "rating:questionable", "-rating:questionable", "rating:explicit", "-rating:explicit" };
 	const QStringList status { "deleted", "active", "flagged", "pending", "any" };
 
 	if (tags.contains("order:")) {
@@ -78,7 +78,7 @@ SearchWindow::~SearchWindow()
 QString SearchWindow::generateSearch(const QString &additional) const
 {
 	const QStringList orders { "id", "id_desc", "score_asc", "score", "mpixels_asc", "mpixels", "filesize", "landscape", "portrait", "favcount", "rank" };
-	const QStringList ratings { "rating:safe", "-rating:safe", "rating:questionable", "-rating:questionable", "rating:explicit", "-rating:explicit" };
+	const QStringList ratings { "rating:general", "-rating:general", "rating:safe", "-rating:safe", "rating:questionable", "-rating:questionable", "rating:explicit", "-rating:explicit" };
 	const QStringList status = { "deleted", "active", "flagged", "pending", "any" };
 
 	QString prefix = !additional.isEmpty() ? additional + " " : QString();

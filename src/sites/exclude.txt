@@ -1,5 +1,6 @@
 # Meta
 exclude.txt
+exclude_xcopy.txt
 CMakeLists.txt
 
 # Build config files

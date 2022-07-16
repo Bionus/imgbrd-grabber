@@ -35,7 +35,7 @@ class AddUniqueWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent = nullptr);
+		AddUniqueWindow(Site *selected, Profile *profile, QList<DownloadQueryImage> *pending, QWidget *parent = nullptr);
 		void loadNext();
 
 	public slots:
@@ -58,6 +58,7 @@ class AddUniqueWindow : public QDialog
 
 	private:
 		Ui::AddUniqueWindow *ui;
+		QList<DownloadQueryImage> *m_pending;
 		Page *m_page;
 		QMap<QString, Site*> m_sites;
 		QQueue<UniqueQuery> m_queue;

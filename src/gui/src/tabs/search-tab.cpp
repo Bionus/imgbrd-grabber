@@ -756,7 +756,7 @@ void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 
 	QString links;
 	if (m_pages.count() > 5) {
-		links = "Multiple sources";
+		links = tr("Multiple sources");
 	} else {
 		for (const auto &ps : qAsConst(m_pages)) {
 			const auto &p = ps.last();

@@ -52,6 +52,7 @@ bool Exiftool::start(int msecs)
 bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &metadata, int msecs)
 {
 	QStringList commands;
+	commands.append({ "-charset", "filename=utf8" });
 	commands.append({ "-sep", ";" });
 	for (auto it = metadata.constBegin(); it != metadata.constEnd(); ++it) {
 		commands.append("-" + it.key() + "=" + it.value());

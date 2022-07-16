@@ -2,11 +2,13 @@
 
 :: Copy all required files to the release directory
 bash scripts/package.sh "release"
-xcopy /I /E /Y /EXCLUDE:cpex.txt "src/sites" "release/sites/"
-xcopy /I /E /K /H "src/dist/windows" "release"
+rmdir /S /Q "release/sites/"
+xcopy /I /E /Y /EXCLUDE:src\sites\exclude_xcopy.txt "src/sites" "release/sites/"
+xcopy /I /E /Y /K /H "src/dist/windows" "release"
 
 :: Add Qt DLL and files
-%Qt5_Dir%/bin/windeployqt --dir "release" "release/Grabber.exe"
+%Qt5_Dir%/bin/windeployqt --dir "release" "release/Grabber.exe" --release --no-quick-import --angle --no-opengl-sw
+copy %Qt5_Dir%/lib/qscintilla2_qt5.dll "release"
 
 :: Add OpenSSL and MySQL DLL
 copy %OPENSSL_ROOT_DIR%/libcrypto-1_1*.dll "release"

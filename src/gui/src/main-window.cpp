@@ -852,7 +852,7 @@ void MainWindow::aboutGithub()
 }
 void MainWindow::aboutReportBug()
 {
-	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new/choose"));
 }
 void MainWindow::aboutDonatePaypal()
 {

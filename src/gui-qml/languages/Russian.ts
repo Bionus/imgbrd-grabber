@@ -423,7 +423,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="63"/>
       <source>Spaced grid</source>
-      <translation>Разнесённая сетка</translation>
+      <translation>Пробельная сетка</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
@@ -443,12 +443,12 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
       <source>Load samples</source>
-      <translation>Загрузить образцы</translation>
+      <translation>Загружать образцы</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="82"/>
       <source>Load sample-sized versions of the images by default if available.</source>
-      <translation>По умолчанию загружать изображения, уменьшенного размера, если возможно.</translation>
+      <translation>Загружать уменьшенные версии изображений по умолчанию, если возможно.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="87"/>
@@ -652,7 +652,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation>Если это есть в той же папке</translation>
+      <translation>Если файл уже есть в той же папке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -703,12 +703,12 @@
   <context>
     <name>SearchScreen</name>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="50"/>
+      <location filename="../src/components/SearchScreen.qml" line="58"/>
       <source>Search...</source>
       <translation>Поиск...</translation>
     </message>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="176"/>
+      <location filename="../src/components/SearchScreen.qml" line="184"/>
       <source>Sources</source>
       <translation>Источники</translation>
     </message>

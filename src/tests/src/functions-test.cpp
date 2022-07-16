@@ -287,6 +287,10 @@ TEST_CASE("Functions")
 		REQUIRE(qDateTimeFromString("1492192180").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 
 		// Standart dates
+		REQUIRE(qDateTimeFromString("2017/04/14 17:49:40.123456").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40.123456").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017/04/14 17:49:40.123").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40.123").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017/04/14 17:49:40").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017/04/14 17:49").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));

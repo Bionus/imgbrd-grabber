@@ -202,6 +202,7 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 	} else {
 		if (m_type == "rating") {
 			QMap<QString, QString> assoc;
+			assoc["g"] = "general";
 			assoc["s"] = "safe";
 			assoc["q"] = "questionable";
 			assoc["e"] = "explicit";

@@ -17,8 +17,8 @@
 #include "models/site.h"
 
 
-AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(nullptr), m_sites(profile->getSites()), m_close(false), m_profile(profile)
+AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QList<DownloadQueryImage> *pending, QWidget *parent)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_pending(pending), m_page(nullptr), m_sites(profile->getSites()), m_close(false), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -142,6 +142,18 @@ void AddUniqueWindow::loadNext()
 	}
 
 	const UniqueQuery q = m_queue.dequeue();
+
+	// Skip images already present in the downloads list
+	for (const auto &img : *m_pending) {
+		if (q.site != img.site) {
+			continue;
+		}
+		if ((!q.id.isEmpty() && q.id.toULongLong() == img.image->id()) || (!q.md5.isEmpty() && q.md5 == img.image->md5())) {
+			log(QStringLiteral("Skipping duplicate unique download (%1)").arg(!q.id.isEmpty() ? q.id : q.md5), Logger::Debug);
+			next();
+			return;
+		}
+	}
 
 	if (q.api != nullptr && false) {
 		const QString url = q.api->detailsUrl(q.id.toULongLong(), q.md5, q.site).url;

@@ -32,7 +32,7 @@ OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, 
 bool OAuth2Login::isTestable() const
 {
 	return !m_auth->tokenUrl().isEmpty()
-		&& (m_auth->authType() != "pkce" || !m_auth->authorizationUrl().isEmpty());
+		&& ((m_auth->authType() != "authorization_code" && m_auth->authType() != "pkce") || !m_auth->authorizationUrl().isEmpty());
 }
 
 QString toUrlBase64(const QByteArray &data)
@@ -144,6 +144,12 @@ void OAuth2Login::loginAuthorizationCode()
 	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 
+	if (consumerKey.isEmpty()) {
+		log(QStringLiteral("[%1] You need a client ID to go through the OAuth authorization code flow").arg(m_site->url()), Logger::Warning);
+		emit loggedIn(Result::Failure);
+		return;
+	}
+
 	const QString urlProtocol = m_auth->urlProtocol();
 	if (!urlProtocol.isEmpty()) {
 		#ifdef Q_OS_WIN
@@ -157,7 +163,8 @@ void OAuth2Login::loginAuthorizationCode()
 	}
 
 	auto *manager = new SiteNetworkAccessManager(m_site, this);
-	auto *flow = new QOAuth2AuthorizationCodeFlow(consumerKey, consumerSecret, manager, this);
+	auto *flow = new QOAuth2AuthorizationCodeFlow(manager, this);
+	flow->setClientIdentifier(consumerKey);
 	flow->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
 	flow->setAccessTokenUrl(m_site->fixUrl(m_auth->tokenUrl()));
 
@@ -274,7 +281,7 @@ void OAuth2Login::login()
 		loginPasswordJson();
 	} else if (type == "refresh_token") {
 		refresh(true);
-	} else if (type == "pkce") {
+	} else if (type == "authorization_code" || type == "pkce") {
 		loginAuthorizationCode();
 	}
 }

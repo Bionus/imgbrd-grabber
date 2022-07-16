@@ -1,6 +1,7 @@
 ---
 name: Bug report
 about: Report a bug to help us fix it
+labels: bug
 ---
 
 **Bug description**

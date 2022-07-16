@@ -305,7 +305,7 @@ void DownloadsTab::addGroup()
 }
 void DownloadsTab::addUnique()
 {
-	auto wAddUnique = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, this);
+	auto wAddUnique = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, &m_batchs, this);
 	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	wAddUnique->show();
 }
@@ -339,7 +339,7 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 		return;
 	}
 
-	log(QStringLiteral("Adding single image: `%1`").arg(query.image->fileUrl().toString()), Logger::Info);
+	log(QStringLiteral("Adding single file: `%1`").arg(query.image->fileUrl().toString()), Logger::Info);
 
 	m_batchs.append(query);
 	m_batchsModel->inserted(m_batchs.count() - 1);

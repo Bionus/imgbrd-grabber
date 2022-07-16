@@ -62,7 +62,7 @@ npm root -g
 
 Open Grabber, then go to "Options > Commands", and set the "Image" field to:
 ```
-node szurubooru.js "YOUR_USERNAME" "YOUR_TOKEN" "%all:includenamespace,unsafe,underscores%" "%rating%" "%source:raw%" "%path%"
+node szurubooru.js "YOUR_USERNAME" "YOUR_TOKEN" "%all:includenamespace,unsafe,underscores%" "%rating%" "%source:raw%" "%path:nobackslash%"
 ```
 
 Make sure to replace `YOUR_USERNAME` by your Szurubooru username, and `YOUR_TOKEN` by the token created earlier (in the `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` format or similar).

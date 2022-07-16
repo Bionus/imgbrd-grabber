@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.9.0"
+# define MyAppVersion "7.9.1"
 #endif
 
 #ifndef QtApngDll
@@ -115,12 +115,12 @@ Source: "{#QtDir}\Qt5MultimediaWidgets.dll";    DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Network.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5NetworkAuth.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5OpenGL.dll";               DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5PrintSupport.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Qml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt5Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
@@ -217,6 +217,9 @@ Source: "{#SrcDir}\sites\Gelbooru (0.2)\icon.png";     DestDir: "{app}\sites\Gel
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\model.js";     DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{app}\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Mastodon\icon.png";  DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Mastodon\model.js";  DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Mastodon\sites.txt"; DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\icon.png";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\model.js";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\sites.txt"; DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
@@ -365,5 +368,21 @@ begin
   begin
     Log('Post install');
     SaveStringToFile(ExpandConstant('{localappdata}') + '\Bionus\Grabber\innosetup.ini', '[general]' + #13#10 + 'language=' + ExpandConstant('{language}') + #13#10, False);
+  end;
+end;
+
+{ Pop-up to ask to delete AppData settings }
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then begin
+    if MsgBox('Do you also want to delete your settings directory?', mbConfirmation, MB_YESNO) = IDYES
+    then begin
+      Log('Deleting settings directory');
+      if DelTree(ExpandConstant('{localappdata}\Bionus\Grabber'), True, True, True) then begin
+        Log('Deleted settings directory');
+      end else begin
+        MsgBox('Error deleting settings directory', mbError, MB_OK);
+      end;
+    end;
   end;
 end;

@@ -703,12 +703,12 @@
   <context>
     <name>SearchScreen</name>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="50"/>
+      <location filename="../src/components/SearchScreen.qml" line="58"/>
       <source>Search...</source>
       <translation>Wyszukaj...</translation>
     </message>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="176"/>
+      <location filename="../src/components/SearchScreen.qml" line="184"/>
       <source>Sources</source>
       <translation>Źródła</translation>
     </message>

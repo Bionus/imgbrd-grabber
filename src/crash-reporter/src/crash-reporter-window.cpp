@@ -76,7 +76,7 @@ void CrashReporterWindow::restart()
 void CrashReporterWindow::sendCrashReport()
 {
 	if (ui->checkSend->isChecked()) {
-		QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new?labels[]=crash"));
+		QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new?labels=crash&template=crash-report.md"));
 	}
 
 	finished();
