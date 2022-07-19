@@ -61,19 +61,26 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 
 void SearchSyntaxHighlighter::updateFavorites()
 {
-	QString favorites;
+	QString merged;
 	for (const auto &favorite : m_profile->getFavorites()) {
-		if (!favorites.isEmpty()) {
-			favorites += '|';
+		if (!merged.isEmpty()) {
+			merged += '|';
 		}
-		favorites += favorite.getName();
+		merged += QRegularExpression::escape(favorite.getName());
 	}
-	m_favoritesRule->pattern.setPattern("(?: |^)(" + favorites + ")(?: |$)");
+	m_favoritesRule->pattern.setPattern("(?: |^)(" + merged + ")(?: |$)");
 }
 
 void SearchSyntaxHighlighter::updateKeptForLater()
 {
-	m_kflRule->pattern.setPattern("(?: |^)(" + m_profile->getKeptForLater().join('|') + ")(?: |$)");
+	QString merged;
+	for (const auto &kfl : m_profile->getKeptForLater()) {
+		if (!merged.isEmpty()) {
+			merged += '|';
+		}
+		merged += QRegularExpression::escape(kfl);
+	}
+	m_kflRule->pattern.setPattern("(?: |^)(" + merged + ")(?: |$)");
 }
 
 void SearchSyntaxHighlighter::highlightBlock(const QString &text)
