@@ -59,6 +59,15 @@ if(USE_QSCINTILLA)
 	endif()
 endif()
 
+find_program(JQ_EXISTS "jq")
+if(JQ_EXISTS)
+	execute_process(COMMAND jq -r "[.contributors[].login] | @tsv" "${CMAKE_CURRENT_LIST_DIR}/../../.all-contributorsrc" OUTPUT_VARIABLE CONTRIBUTORS)
+	string(STRIP "${CONTRIBUTORS}" CONTRIBUTORS)
+else()
+	message(WARNING "No contributors list passed and 'jq' not found")
+endif()
+add_definitions(-DCONTRIBUTORS="${CONTRIBUTORS}")
+
 # Input
 file(GLOB SOURCES
 	"src/main/main.cpp"
