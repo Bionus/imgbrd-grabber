@@ -69,6 +69,8 @@ void SearchSyntaxHighlighter::updateFavorites()
 		merged += QRegularExpression::escape(favorite.getName());
 	}
 	m_favoritesRule->pattern.setPattern("(?: |^)(" + merged + ")(?: |$)");
+
+	rehighlight();
 }
 
 void SearchSyntaxHighlighter::updateKeptForLater()
@@ -81,6 +83,8 @@ void SearchSyntaxHighlighter::updateKeptForLater()
 		merged += QRegularExpression::escape(kfl);
 	}
 	m_kflRule->pattern.setPattern("(?: |^)(" + merged + ")(?: |$)");
+
+	rehighlight();
 }
 
 void SearchSyntaxHighlighter::highlightBlock(const QString &text)
