@@ -112,6 +112,7 @@ class DownloadsTab : public QWidget
 		void changeEvent(QEvent *event) override;
 		void closeEvent(QCloseEvent *event) override;
 		QSet<int> selectedRows(QTableView *table) const;
+		BatchDownloader *downloaderForRow(int j);
 
 	private:
 		Ui::DownloadsTab *ui;

@@ -7,6 +7,7 @@
 #include "downloader/download-query-image.h"
 #include "downloader/image-downloader.h"
 #include "loader/pack-loader.h"
+#include "logger.h"
 #include "models/profile.h"
 #include "models/site.h"
 
@@ -15,6 +16,13 @@ BatchDownloader::BatchDownloader(DownloadQuery *query, Profile *profile, QObject
 	: QObject(parent), m_query(query), m_profile(profile), m_settings(profile->getSettings()), m_step(BatchDownloadStep::NotStarted)
 {}
 
+
+bool BatchDownloader::isRunning() const
+{
+	return m_step != BatchDownloadStep::NotStarted
+		&& m_step != BatchDownloadStep::Finished
+		&& m_step != BatchDownloadStep::Aborted;
+}
 
 void BatchDownloader::setCurrentStep(BatchDownloadStep step)
 {
@@ -64,7 +72,8 @@ void BatchDownloader::start()
 		}
 	}
 	// Invalid step
-	else if (m_step != BatchDownloadStep::NotStarted) {
+	else if (m_step != BatchDownloadStep::NotStarted && m_step != BatchDownloadStep::Finished) {
+		log(QStringLiteral("Trying to  start a BatchDownloader in an invalid step"), Logger::Error);
 		return;
 	}
 
@@ -75,6 +84,8 @@ void BatchDownloader::start()
 	// Reset total
 	auto *group = dynamic_cast<DownloadQueryGroup*>(m_query);
 	m_totalCount = group != nullptr ? group->total : 1;
+
+	emit progressChanged(m_counterSum, m_totalCount);
 
 	// m_profile->getCommands().before();
 	login();
@@ -235,6 +246,7 @@ void BatchDownloader::loadImageFinished(const QSharedPointer<Image> &img, QList<
 	// Start downloading the next image
 	if (!diskError) {
 		m_counterSum++;
+		emit progressChanged(m_counterSum, m_totalCount);
 
 		QCoreApplication::processEvents();
 		QTimer::singleShot(0, this, SLOT(nextImage()));

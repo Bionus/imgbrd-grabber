@@ -78,12 +78,8 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 			}
 
 			const int j = *rows.begin();
-			if (!m_batchDownloaders.contains(j)) {
-				auto *downloader = new BatchDownloader(&m_groupBatchs[j], m_profile, this);
-				m_batchDownloaders.insert(j, downloader);
-			}
+			m_downloadProgressWidget->setDownloader(downloaderForRow(j));
 
-			m_downloadProgressWidget->setDownloader(m_batchDownloaders[j]);
 			ui->splitterProgress->setSizes({ 100, 1 });
 		}
 	);
@@ -116,6 +112,43 @@ DownloadsTab::~DownloadsTab()
 {
 	close();
 	delete ui;
+}
+
+BatchDownloader *DownloadsTab::downloaderForRow(int j)
+{
+	if (m_batchDownloaders.contains(j)) {
+		return m_batchDownloaders[j];
+	}
+
+	auto *query = &m_groupBatchs[j];
+	auto *downloader = new BatchDownloader(query, m_profile, this);
+
+	// Keep the in-query progress updated
+	connect(downloader, &BatchDownloader::progressChanged, [=](int progress, int total) {
+		query->progressFinished = false;
+		query->progressVal = progress;
+		m_groupBatchsModel->changed(j);
+	});
+	connect(downloader, &BatchDownloader::finished, [=]() {
+		query->progressFinished = true;
+		m_groupBatchsModel->changed(j);
+
+		// Update 'm_getAll' variable when all batch downloads finish
+		// TODO(Bionus): get rid of this variable
+		bool allFinished = true;
+		for (auto it = m_batchDownloaders.constBegin(); it != m_batchDownloaders.constEnd(); ++it) {
+			if (it.value()->isRunning()) {
+				allFinished = false;
+				break;
+			}
+		}
+		if (allFinished) {
+			m_getAll = false;
+		}
+	});
+
+	m_batchDownloaders.insert(j, downloader);
+	return downloader;
 }
 
 void DownloadsTab::changeEvent(QEvent *event)
@@ -647,11 +680,7 @@ void DownloadsTab::getAllLogin()
 {
 	// Batch downloaders
 	for (const int j : m_batchDownloading) {
-		if (!m_batchDownloaders.contains(j)) {
-			auto *downloader = new BatchDownloader(&m_groupBatchs[j], m_profile, this);
-			m_batchDownloaders.insert(j, downloader);
-		}
-		m_batchDownloaders[j]->start();
+		downloaderForRow(j)->start();
 	}
 
 	return;

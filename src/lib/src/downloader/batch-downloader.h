@@ -42,6 +42,7 @@ class BatchDownloader : public QObject
 		};
 
 		BatchDownloader(DownloadQuery *query, Profile *profile, QObject *parent = nullptr);
+		bool isRunning() const;
 		BatchDownloadStep currentStep() const;
 		int totalCount() const;
 		int downloadedCount() const;
@@ -67,6 +68,7 @@ class BatchDownloader : public QObject
 
 	signals:
 		void stepChanged(BatchDownloadStep step);
+		void progressChanged(int progress, int total);
 		void imageDownloadProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal);
 		void imageDownloadFinished(const QSharedPointer<Image> &img, Image::SaveResult result);
 		void finished();
