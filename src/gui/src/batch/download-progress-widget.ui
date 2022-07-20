@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>840</width>
-    <height>290</height>
+    <width>809</width>
+    <height>237</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,6 +36,20 @@
        <string>Status</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelStepLabel">
+         <property name="text">
+          <string>Current step</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="labelStep">
+         <property name="text">
+          <string notr="true">{step}</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="labelStatusTotalProgress">
          <property name="text">
@@ -51,114 +65,86 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="labelStatusCurrentProgress">
-         <property name="text">
-          <string>Current pack</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QProgressBar" name="progressCurrent">
-         <property name="value">
-          <number>24</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
         <widget class="QLabel" name="labelSuccessLabel">
          <property name="text">
           <string>Success</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="labelIgnoredLabel">
-         <property name="text">
-          <string>Ignored</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="labelExistsLabel">
-         <property name="text">
-          <string>Already existing</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="labelNotFoundLabel">
-         <property name="text">
-          <string>Not found</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="labelSkippedLabel">
-         <property name="text">
-          <string>Skipped</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
+       <item row="2" column="1">
         <widget class="QLabel" name="labelSuccess">
          <property name="text">
           <string notr="true">0</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelIgnoredLabel">
+         <property name="text">
+          <string>Ignored</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
         <widget class="QLabel" name="labelIgnored">
          <property name="text">
           <string notr="true">0</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelExistsLabel">
+         <property name="text">
+          <string>Already existing</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
         <widget class="QLabel" name="labelExists">
          <property name="text">
           <string notr="true">0</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="5" column="0">
+        <widget class="QLabel" name="labelNotFoundLabel">
+         <property name="text">
+          <string>Not found</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
         <widget class="QLabel" name="labelNotFound">
          <property name="text">
           <string notr="true">0</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
+       <item row="6" column="0">
+        <widget class="QLabel" name="labelSkippedLabel">
+         <property name="text">
+          <string>Skipped</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
         <widget class="QLabel" name="labelSkipped">
          <property name="text">
           <string notr="true">0</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="0">
+       <item row="7" column="0">
         <widget class="QLabel" name="labelErrorsLabel">
          <property name="text">
           <string>Errors</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="1">
+       <item row="7" column="1">
         <widget class="QLabel" name="labelErrors">
          <property name="text">
           <string notr="true">0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelStepLabel">
-         <property name="text">
-          <string>Current step</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="labelStep">
-         <property name="text">
-          <string notr="true">{step}</string>
          </property>
         </widget>
        </item>
