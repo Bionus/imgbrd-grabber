@@ -19,12 +19,17 @@
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/about-window.cpp" line="38"/>
+      <location filename="../gui/src/about-window.ui" line="89"/>
+      <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/about-window.cpp" line="43"/>
       <source>A new version is available: %1</source>
       <translation>새로운 업데이트가 존재합니다: %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/about-window.cpp" line="38"/>
+      <location filename="../gui/src/about-window.cpp" line="43"/>
       <source>Grabber is up to date</source>
       <translation>Grabber가 최신 버전입니다.</translation>
     </message>
@@ -4755,7 +4760,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>일반</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
@@ -5675,27 +5680,27 @@ Please solve the issue before resuming the download.</source>
       <translation>모두 &amp;받기</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
       <source>Monitoring an empty search</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
       <source>Monitoring a big search</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
       <translation>엄청 많은 검색 결과물들을 모니터링을 하려고 합니다(%1 개). 진짜 할거에요?</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="302"/>
       <source>Search</source>
       <translation>검색</translation>
     </message>

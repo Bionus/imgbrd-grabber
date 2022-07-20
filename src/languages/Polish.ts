@@ -19,12 +19,17 @@
       <translation>Szczególne podziękowania dla wszystkich współtwórców za ich pomoc w ulepszaniu programu na przestrzeni lat, czy to poprzez wprowadzenie kodu, tłumaczeń lub zgłaszaniu problemów związanych z nowymi funkcjonalnościami.</translation>
     </message>
     <message>
-      <location filename="../gui/src/about-window.cpp" line="38"/>
+      <location filename="../gui/src/about-window.ui" line="89"/>
+      <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/about-window.cpp" line="43"/>
       <source>A new version is available: %1</source>
       <translation>Dostępna jest nowa wersja: %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/about-window.cpp" line="38"/>
+      <location filename="../gui/src/about-window.cpp" line="43"/>
       <source>Grabber is up to date</source>
       <translation>Grabber jest aktualny</translation>
     </message>
@@ -5728,27 +5733,27 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>Pobierz &amp;wszystkie</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
       <source>Monitoring an empty search</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
       <source>Monitoring a big search</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="302"/>
       <source>Search</source>
       <translation>Wyszukaj</translation>
     </message>
