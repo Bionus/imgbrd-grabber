@@ -145,6 +145,7 @@ class DownloadsTab : public QWidget
 		DownloadImageTableModel *m_batchsModel;
 		QSoundEffect m_finishedSoundEffect;
 		DownloadProgressWidget *m_downloadProgressWidget;
+		bool m_progressSplitterOpen = false;
 };
 
 #endif // DOWNLOADS_TAB_H

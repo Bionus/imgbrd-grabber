@@ -72,23 +72,28 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 				}
 			}
 
-			if (rows.count() != 1) {
-				ui->splitterProgress->setSizes({ 100, 0 });
+			bool shouldOpen = rows.count() == 1;
+			if (shouldOpen == m_progressSplitterOpen) {
 				return;
 			}
+			m_progressSplitterOpen = shouldOpen;
 
-			const int j = *rows.begin();
-			m_downloadProgressWidget->setDownloader(downloaderForRow(j));
+			if (!shouldOpen) {
+				setSplitterSizes(m_settings, "Downloads/progressSplitter", ui->splitterProgress->sizes());
+				ui->splitterProgress->setSizes({ 100, 0 });
+			} else {
+				const int j = *rows.begin();
+				m_downloadProgressWidget->setDownloader(downloaderForRow(j));
 
-			ui->splitterProgress->setSizes({ 100, 1 });
+				ui->splitterProgress->setSizes(getSplitterSizes(m_settings, "Downloads/progressSplitter", "100,1"));
+			}
 		}
 	);
 
 	ui->tableBatchGroups->loadGeometry(m_settings, "Downloads/Groups");
 	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques", QList<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 
-	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
-	ui->splitterDownloads->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
+	ui->splitterDownloads->setSizes(getSplitterSizes(m_settings, "batchSplitter", "100,100"));
 
 	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
@@ -168,14 +173,7 @@ void DownloadsTab::closeEvent(QCloseEvent *event)
 	ui->tableBatchGroups->saveGeometry(m_settings, "Downloads/Groups");
 	ui->tableBatchUniques->saveGeometry(m_settings, "Downloads/Uniques");
 
-	// Splitter
-	QList<int> splitterSizesOrig = ui->splitterDownloads->sizes();
-	QStringList splitterSizes;
-	splitterSizes.reserve(splitterSizesOrig.count());
-	for (int size : splitterSizesOrig) {
-		splitterSizes.append(QString::number(size));
-	}
-	m_settings->setValue("batchSplitter", splitterSizes.join(","));
+	setSplitterSizes(m_settings, "batchSplitter", ui->splitterDownloads->sizes());
 }
 
 void DownloadsTab::batchDownloadsTableContextMenu(const QPoint &pos)

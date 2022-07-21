@@ -247,6 +247,23 @@ QList<QPair<QString, QString>> getMetadataExiftool(QSettings *settings)
 	return getMetadata(settings, "Save/MetadataExiftool");
 }
 
+void setSplitterSizes(QSettings *settings, const QString &key, const QList<int> &values)
+{
+	QStringList list;
+	list.reserve(values.count());
+	for (int val : values) {
+		list.append(QString::number(val));
+	}
+	settings->setValue(key, list.join(','));
+}
+
+QList<int> getSplitterSizes(QSettings *settings, const QString &key, const QString &def)
+{
+	const QString raw = settings->value(key, def).toString();
+	const QStringList split = (raw.contains(',') ? raw : def).split(',');
+	return { split[0].toInt(), split[1].toInt() };
+}
+
 QStringList removeWildards(const QStringList &elements, const QStringList &remove)
 {
 	QStringList tags;

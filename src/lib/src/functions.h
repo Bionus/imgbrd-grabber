@@ -65,6 +65,9 @@ QList<ConditionalFilename> getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
 QStringList getExternalLogFilesSuffixes(QSettings *settings);
 
+void setSplitterSizes(QSettings *settings, const QString &key, const QList<int> &values);
+QList<int> getSplitterSizes(QSettings *settings, const QString &key, const QString &def);
+
 QList<QPair<QString, QString>> getMetadataPropsys(QSettings *settings);
 QList<QPair<QString, QString>> getMetadataExiftool(QSettings *settings);
 

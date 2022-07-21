@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>798</width>
+    <width>752</width>
     <height>570</height>
    </rect>
   </property>
@@ -33,7 +33,7 @@
    <item>
     <widget class="QSplitter" name="splitterProgress">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
      <widget class="QWidget" name="widgetDownloads" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -44,6 +44,9 @@
         <number>0</number>
        </property>
        <property name="rightMargin">
+        <number>11</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -245,6 +248,9 @@
      <widget class="QWidget" name="widgetProgress" native="true">
       <layout class="QVBoxLayout" name="layoutProgress">
        <property name="leftMargin">
+        <number>11</number>
+       </property>
+       <property name="topMargin">
         <number>0</number>
        </property>
        <property name="rightMargin">
