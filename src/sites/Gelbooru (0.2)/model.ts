@@ -58,7 +58,7 @@ export const source: ISource = {
         xml: {
             name: "XML",
             auth: [],
-            maxLimit: 1000,
+            maxLimit: 100,
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
                     const page: number = query.page - 1;
