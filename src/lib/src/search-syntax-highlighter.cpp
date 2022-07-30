@@ -68,7 +68,7 @@ void SearchSyntaxHighlighter::updateFavorites()
 		}
 		merged += QRegularExpression::escape(favorite.getName());
 	}
-	m_favoritesRule->pattern.setPattern("(?: |^)(" + merged + ")(?: |$)");
+	m_favoritesRule->pattern.setPattern(merged.isEmpty() ? "" : "(?: |^)(" + merged + ")(?: |$)");
 
 	rehighlight();
 }
@@ -82,7 +82,7 @@ void SearchSyntaxHighlighter::updateKeptForLater()
 		}
 		merged += QRegularExpression::escape(kfl);
 	}
-	m_kflRule->pattern.setPattern("(?: |^)(" + merged + ")(?: |$)");
+	m_kflRule->pattern.setPattern(merged.isEmpty() ? "" : "(?: |^)(" + merged + ")(?: |$)");
 
 	rehighlight();
 }
@@ -90,6 +90,11 @@ void SearchSyntaxHighlighter::updateKeptForLater()
 void SearchSyntaxHighlighter::highlightBlock(const QString &text)
 {
 	for (const HighlightingRule &rule : highlightingRules) {
+		// Ignore invalid highlighting rules
+		if (!rule.pattern.isValid() || rule.pattern.pattern().isEmpty()) {
+			continue;
+		}
+
 		int offset = 0;
 		QRegularExpressionMatch match = rule.pattern.match(text, offset);
 		while (match.hasMatch()) {
