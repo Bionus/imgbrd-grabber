@@ -136,7 +136,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 	// Conditional filenames
 	if (flags.testFlag(PathFlag::ConditionalFilenames)) {
-		QList<ConditionalFilename> filenames = getFilenames(settings);
+		const QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
 		for (const auto &fn : filenames) {
 			if (fn.matches(tokens, settings)) {
 				if (!fn.path.isEmpty()) {

@@ -169,7 +169,7 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QList<ConditionalFilename> getFilenames(QSettings *settings)
+QList<ConditionalFilename> getConditionalFilenames(QSettings *settings)
 {
 	QList<ConditionalFilename> ret;
 

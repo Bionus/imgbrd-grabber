@@ -61,7 +61,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path = "", int maxL
 QString fixFilenameLinux(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
 QMap<QString, QStringList> getCustoms(QSettings *settings);
-QList<ConditionalFilename> getFilenames(QSettings *settings);
+QList<ConditionalFilename> getConditionalFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
 QStringList getExternalLogFilesSuffixes(QSettings *settings);
 
