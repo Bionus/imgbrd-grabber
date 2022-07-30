@@ -137,15 +137,19 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	// Conditional filenames
 	if (flags.testFlag(PathFlag::ConditionalFilenames)) {
 		const QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
+		Filename filenameOverride;
 		for (const auto &fn : filenames) {
 			if (fn.matches(tokens, settings)) {
 				if (!fn.path.isEmpty()) {
 					folder = fn.path;
 				}
 				if (!fn.filename.format().isEmpty()) {
-					return fn.filename.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
+					filenameOverride = fn.filename;
 				}
 			}
+		}
+		if (!filenameOverride.format().isEmpty()) {
+			return filenameOverride.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
 		}
 	}
 
