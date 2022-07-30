@@ -114,19 +114,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
 	for (const auto &fn : filenames) {
-		auto leCondition = new QLineEdit(fn.condition);
-		auto leFilename = new QLineEdit(fn.filename.format());
-		auto leFolder = new QLineEdit(fn.path);
-
-		m_filenamesConditions.append(leCondition);
-		m_filenamesFilenames.append(leFilename);
-		m_filenamesFolders.append(leFolder);
-
-		auto *layout = new QHBoxLayout;
-		layout->addWidget(leCondition);
-		layout->addWidget(leFilename);
-		layout->addWidget(leFolder);
-		ui->layoutConditionals->addLayout(layout);
+		addFilename(fn.condition, fn.filename.format(), fn.path);
 	}
 	const QStringList types { "text", "icon", "both", "hide" };
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
