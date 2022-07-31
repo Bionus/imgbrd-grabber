@@ -20,6 +20,9 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 	// Add site-level automatically added tags
 	if (m_query.gallery == nullptr) {
 		m_query.tags += m_site->setting("added_tags").toString().split(" ", Qt::SkipEmptyParts);
+		for (const QString &removedTag : m_site->setting("removed_tags").toString().split(" ", Qt::SkipEmptyParts)) {
+			m_query.tags.removeAll(removedTag);
+		}
 	}
 
 	if (!m_query.tags.isEmpty()) {
