@@ -39,6 +39,8 @@ You can download it from [their website](https://nodejs.org/en/download/), or fr
 
 Download the [szurubooru.js](szurubooru.js) file into Grabber's installation folder.
 
+ℹ️ If your Szurubooru instance is not on the same machine as Grabber, or simply not accessible at `http://localhost:8080/`, make sure to update the URL in the script.
+
 
 ## Install NodeJS global packages
 
@@ -66,3 +68,5 @@ node szurubooru.js "YOUR_USERNAME" "YOUR_TOKEN" "%all:includenamespace,unsafe,un
 ```
 
 Make sure to replace `YOUR_USERNAME` by your Szurubooru username, and `YOUR_TOKEN` by the token created earlier (in the `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` format or similar).
+
+This command will be run every time an image is saved, causing it to also be sent to your Szurubooru instance!
