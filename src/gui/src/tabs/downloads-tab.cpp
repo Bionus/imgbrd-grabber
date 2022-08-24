@@ -550,7 +550,7 @@ void DownloadsTab::getAll(bool all)
 	// Try to resume downloads that were stopped in the middle
 	bool resume = resumeCount > 0;
 	if (resume) {
-		int resumeAnswer = QMessageBox::question(this, "", "Some downloads were started but not finished. Do you want to continue from where you left off?");
+		int resumeAnswer = QMessageBox::question(this, "", tr("Some downloads were started but not finished. Do you want to continue from where you left off?"));
 		if (resumeAnswer == QMessageBox::Yes) {
 			m_getAllResumed = resumeCount;
 		} else {
