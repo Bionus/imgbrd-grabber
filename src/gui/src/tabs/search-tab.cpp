@@ -1197,6 +1197,10 @@ void SearchTab::openSourcesWindow()
 
 void SearchTab::pruneSources()
 {
+	if (m_images.isEmpty()) {
+		return;
+	}
+
 	log(QStringLiteral("Pruning sources..."), Logger::Info);
 
     QSet<Site*> sitesWithImages;
