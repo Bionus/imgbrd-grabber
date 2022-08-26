@@ -1,3 +1,70 @@
+function parseCommonImage(item: any, pageUrl: any, preview: any): IImage {
+    const parsedUrl = Grabber.regexMatch("/g/(?<id>\\d+)/(?<token>[^/]+)/", pageUrl);
+
+    return {
+        type: "gallery",
+        page_url: pageUrl,
+        id: parsedUrl["id"],
+        md5: parsedUrl["id"] + "/" + parsedUrl["token"],
+        tokens: {
+            token: parsedUrl["token"],
+            category: item.find(".cn, .cs")[0].innerText(),
+        },
+        preview_url: preview.attr("data-src") || preview.attr("src"),
+        created_at: item.find("[id^=posted_]")[0].innerText(),
+        name: item.find(".glink")[0].innerText(),
+    };
+}
+
+function parseCompactImage(item: any): IImage | null {
+    // Skip header
+    if (item.find("th").length > 0) {
+        return null;
+    }
+
+    // Skip ads
+    if (item.find("script").length > 0) {
+        return null;
+    }
+
+    const pageUrl = item.find(".glname a")[0].attr("href");
+    const preview = item.find(".glthumb img")[0];
+
+    return {
+        ...parseCommonImage(item, pageUrl, preview),
+        gallery_count: item.find(".glthumb")[0].innerHTML().match(/>(\d+) pages?</)[1],
+        author: item.find(".glhide a")[0]?.innerText(), // Can be missing for "Disowned" galleries
+        tags: item.find(".glname .gt, .glname .gtl").map((tag: any) => tag.attr("title")),
+    };
+}
+
+function parseThumbnailImage(item: any): IImage {
+    const pageUrl = item.find("a")[0].attr("href");
+    const preview = item.find("img")[0];
+
+    return {
+        ...parseCommonImage(item, pageUrl, preview),
+        gallery_count: item.innerHTML().match(/>(\d+) pages?</)[1],
+    };
+}
+
+function parseExtendedImage(item: any): IImage | null {
+    // Skip ads
+    if (item.find("script").length > 0) {
+        return null;
+    }
+
+    const pageUrl = item.find(".gl1e a")[0].attr("href");
+    const preview = item.find(".gl1e img")[0];
+
+    return {
+        ...parseCommonImage(item, pageUrl, preview),
+        gallery_count: item.find(".gl3e")[0].innerHTML().match(/>(\d+) pages?</)[1],
+        author: item.find(".gl3e a")[0]?.innerText(), // Can be missing for "Disowned" galleries
+        tags: item.find(".gl4e .gt, .gl4e .gtl").map((tag: any) => tag.attr("title")),
+    };
+}
+
 function cssToObject(css: string): any {
     const ret: any = {};
     css.split(";").map((style: string) => {
@@ -95,40 +162,48 @@ export const source: ISource = {
                     return "/?page=" + (query.page - 1) + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
-                    const rows = src.match(/<tr[^>]*>(.+?)<\/tr>/g);
-                    if (!rows) {
-                        return { error: "Parse error: no <tr> tag found" };
+                    const html = Grabber.parseHTML(src);
+
+                    // Check display mode
+                    const modeOption = html.find("#dms select option[selected]");
+                    let mode = "l";
+                    if (!modeOption) {
+                        console.warn("Parsing mode not found, falling back to 'Compact'"); // tslint:disable-line: no-console
+                    } else {
+                        mode = modeOption[0].attr("value");
+                        if (["m", "p", "l", "e", "t"].indexOf(mode) === -1) {
+                            console.warn(`Unknown parsing mode "${mode}", falling back to 'Compact'`); // tslint:disable-line: no-console
+                            mode = "l"
+                        }
                     }
-                    const images = rows.map((row: any) => {
-                        const match: any = {};
-                        match["type"] = "gallery";
 
-                        const urlName = row.match(new RegExp('<a href="([^"]+?/g/[^"]+)"><div[^>]*>([^>]+)<'));
-                        const preview = row.match(new RegExp('<img[^>]* src="([^"]+)"(?: data-src="([^"]+)")?[^>]*>'));
-                        const date = row.match(/>(\d{4}-\d{2}-\d{2} \d{2}:\d{2})</);
-                        const author = row.match(new RegExp('<a href="[^"]+?/uploader/[^"]+">([^>]+)</a>'));
-                        const pages = row.match(/>(\d+) pages</);
+                    // Use different parser depending on the display mode
+                    let itemQuery;
+                    let parseFunction: (item: any) => IImage | null;
+                    if (mode === "m" || mode === "p" || mode === "l") {
+                        itemQuery = "table.itg > tbody > tr, table.itg > tr";
+                        parseFunction = parseCompactImage;
+                    } else if (mode === "e") {
+                        itemQuery = "table.itg > tbody > tr, table.itg > tr";
+                        parseFunction = parseExtendedImage;
+                    } else if (mode === "t") {
+                        itemQuery = "div.itg > div.gl1t";
+                        parseFunction = parseThumbnailImage;
+                    }
 
-                        if (!urlName || !preview || !pages) {
-                            return;
+                    // Parse all images
+                    const images: IImage[] = [];
+                    for (const item of html.find(itemQuery)) {
+                        try {
+                            const image = parseFunction!(item);
+                            if (image) {
+                                images.push(image);
+                            }
+                        } catch (e) {
+                            console.warn("Error parsing image: " + e + " / " + item.innerHTML()); // tslint:disable-line: no-console
                         }
-                        match["page_url"] = urlName[1];
-                        match["name"] = urlName[2];
-                        match["preview_url"] = preview[2] || preview[1];
-                        match["gallery_count"] = pages[1];
-                        if (date) {
-                            match["date"] = date[1];
-                        }
-                        if (author) {
-                            match["author"] = author[1];
-                        }
+                    }
 
-                        const gallery = Grabber.regexMatches("/g/(?<id>\\d+)/(?<token>[^/]+)/", match["page_url"]);
-                        match["id"] = gallery[0]["id"];
-                        match["token"] = gallery[0]["token"];
-                        match["md5"] = match["id"] + "/" + match["token"];
-                        return match;
-                    });
                     return {
                         images,
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
