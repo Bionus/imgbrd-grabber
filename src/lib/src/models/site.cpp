@@ -128,7 +128,10 @@ void Site::loadConfig()
 
 	// Cookies
 	m_cookies.clear();
-	QList<QVariant> settingsCookies = m_settings->value("cookies").toList();
+	QVariant settingsCookiesVariant = m_settings->value("cookies");
+	QList<QVariant> settingsCookies = settingsCookiesVariant.type() == QVariant::String || settingsCookiesVariant.type() == QVariant::ByteArray
+		? QList<QVariant>{ settingsCookiesVariant }
+		: settingsCookiesVariant.toList();
 	for (const QVariant &variant : settingsCookies) {
 		QByteArray byteArray = variant.type() == QVariant::ByteArray ? variant.toByteArray() : variant.toString().toUtf8();
 		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(byteArray);
