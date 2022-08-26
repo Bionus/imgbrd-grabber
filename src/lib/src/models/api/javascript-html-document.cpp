@@ -65,6 +65,12 @@ QJSValue JavascriptHtmlDocument::pathIds() const
 	return listToJsValue(&m_engine, m_node.pathIds());
 }
 
+QJSValue JavascriptHtmlDocument::parent() const
+{
+	auto *parent = new JavascriptHtmlDocument(m_engine, m_node.parent());
+	return m_engine.newQObject(parent);
+}
+
 QJSValue JavascriptHtmlDocument::find(const QString &css) const
 {
 	const QList<HtmlNode> nodes = m_node.find(css);

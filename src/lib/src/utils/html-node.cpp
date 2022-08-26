@@ -141,6 +141,11 @@ lxb_status_t find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t 
 	return LXB_STATUS_OK;
 }
 
+HtmlNode HtmlNode::parent() const
+{
+	return HtmlNode(m_node->parent);
+}
+
 QList<HtmlNode> HtmlNode::find(const QString &css) const
 {
 	// Create CSS parser
