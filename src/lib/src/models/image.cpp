@@ -916,12 +916,6 @@ QColor Image::color() const
 
 QString Image::tooltip() const
 {
-	if (m_isGallery) {
-		return QStringLiteral("%1%2")
-			.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
-			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
-	}
-
 	double size = m_sizes[Image::Size::Full]->fileSize;
 	const QString unit = getUnit(&size);
 
@@ -930,13 +924,14 @@ QString Image::tooltip() const
 	const QString &author = token<QString>("author");
 	const QString &score = token<QString>("score");
 
-	return QStringLiteral("%1%2%3%4%5%6%7%8")
+	return QStringLiteral("%1%2%3%4%5%6%7%8%9")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Viewer/tagOrder", "type").toString()).join(' ')))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
+		.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name))
 		.arg(rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(rating))
 		.arg(!score.isEmpty() ? tr("<b>Score:</b> %1<br/>").arg(score) : " ")
 		.arg(author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(author))
-		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
+		.arg(width() <= 0 || height() <= 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
 		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(QLocale().toString(createdAt.toLocalTime(), QLocale::ShortFormat)));
 }
