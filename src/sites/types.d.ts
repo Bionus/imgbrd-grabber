@@ -79,7 +79,7 @@ interface IImage {
     tags?: string[] | ITag[];
     ext?: string;
     created_at?: string;
-    date?: string;
+    date?: string; // same as created_at, but only accepts ISO dates
 
     // Full size
     file_url?: string;
