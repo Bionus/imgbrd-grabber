@@ -21,7 +21,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
-      <translation type="unfinished"/>
+      <translation>&lt;u&gt;Участники:&lt;/u&gt; {contributors}</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
@@ -744,7 +744,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="553"/>
       <source>Some downloads were started but not finished. Do you want to continue from where you left off?</source>
-      <translation type="unfinished"/>
+      <translation>Некоторые загрузки были начаты, но не завершены. Хотите продолжить с того места, где вы остановились?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="573"/>
@@ -2616,7 +2616,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1113"/>
       <source>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</source>
-      <translation type="unfinished"/>
+      <translation>Имена файлов с условием анализируются сверху вниз, где последующее переопределяет предыдущее. Это означает, что последнее имя файла более приоритетно, чем первое.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1123"/>
@@ -5096,12 +5096,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Поиск</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Удалённые теги</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="322"/>
