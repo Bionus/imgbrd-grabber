@@ -21,7 +21,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
-      <translation type="unfinished"/>
+      <translation>&lt;u&gt;Colaboradores:&lt;/u&gt; {contributors}</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded files</source>
-      <translation type="unfinished"/>
+      <translation>Seguir arquivos baixados</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -627,7 +627,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="119"/>
       <source>Single files</source>
-      <translation type="unfinished"/>
+      <translation>Arquivos individuais</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="186"/>
@@ -4210,50 +4210,50 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../lib/src/functions.h" line="31"/>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>B</source>
-      <translation type="unfinished"/>
+      <translation>B</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>KB</source>
-      <translation type="unfinished"/>
+      <translation>KB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>MB</source>
-      <translation type="unfinished"/>
+      <translation>MB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>GB</source>
-      <translation type="unfinished"/>
+      <translation>GB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>KiB</source>
-      <translation type="unfinished"/>
+      <translation>KiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>MiB</source>
-      <translation type="unfinished"/>
+      <translation>MiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>GiB</source>
-      <translation type="unfinished"/>
+      <translation>GiB</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
       <source>Previous search result</source>
-      <translation type="unfinished"/>
+      <translation>Resultado da pesquisa anterior</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
       <source>Next search result</source>
-      <translation type="unfinished"/>
+      <translation>Resultado da próxima pesquisa</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4263,7 +4263,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Media details</source>
-      <translation type="unfinished"/>
+      <translation>Detalhes da mídia</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
@@ -4273,7 +4273,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save to irregular location</source>
-      <translation type="unfinished"/>
+      <translation>Salvar em local irregular</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
@@ -4283,7 +4283,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save to usual location</source>
-      <translation type="unfinished"/>
+      <translation>Salvar no local padrão</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4314,17 +4314,17 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="35"/>
       <source>MD5 already exists</source>
-      <translation type="unfinished"/>
+      <translation>MD5 já existe</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
       <source>Already saved</source>
-      <translation type="unfinished"/>
+      <translation>Já salvo</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>Excluir</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
@@ -4334,7 +4334,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save to usual location and close window</source>
-      <translation type="unfinished"/>
+      <translation>Salvar no local padrão e fechar janela</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
@@ -4349,7 +4349,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open usual save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Abra o local padrão para salvar em uma nova janela</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
@@ -4359,7 +4359,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save to favourite location</source>
-      <translation type="unfinished"/>
+      <translation>Salvar no local para salvar favoritos</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4390,17 +4390,17 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="51"/>
       <source>MD5 already exists (fav)</source>
-      <translation type="unfinished"/>
+      <translation>MD5 já existe (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
       <source>Already saved (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Já salvo (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
       <source>Delete (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Apagar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
@@ -4410,7 +4410,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save to favourite location and close window</source>
-      <translation type="unfinished"/>
+      <translation>Salvar na pasta de favoritos e fechar janela</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
@@ -4425,7 +4425,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open favourite save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Abrir local para salvar favoritos em uma nova janela</translation>
     </message>
   </context>
   <context>
@@ -4434,7 +4434,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Renomear arquivos existentes</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="24"/>
@@ -4522,7 +4522,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="14"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Renomear arquivos existentes</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="24"/>
@@ -4618,7 +4618,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
       <source>Multiple sources</source>
-      <translation type="unfinished"/>
+      <translation>Fontes múltiplas</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
@@ -4739,12 +4739,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="113"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Apenas geral</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
       <source>General (no)</source>
-      <translation type="unfinished"/>
+      <translation>Geral desabilitado</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="123"/>
@@ -5047,7 +5047,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="192"/>
       <source>Added tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags adicionadas</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="213"/>
@@ -5096,12 +5096,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Pesquisar</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags removidas</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="322"/>
@@ -5280,7 +5280,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
       <source>OAuth 2 (authorization code)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (código de autorização)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="99"/>
@@ -5904,7 +5904,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="801"/>
       <source>File not found.</source>
-      <translation type="unfinished"/>
+      <translation>Arquivo não encontrado.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
@@ -5924,7 +5924,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="805"/>
       <source>Error loading the image's details.</source>
-      <translation type="unfinished"/>
+      <translation>Erro ao carregar os detalhes da imagem.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="807"/>
