@@ -186,7 +186,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="132"/>
       <source>When the download is finished</source>
-      <translation>Когда загрузка завершена</translation>
+      <translation>По окончании загрузки</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="140"/>
@@ -2522,7 +2522,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
       <source>When the download is finished</source>
-      <translation>Когда загрузка завершена</translation>
+      <translation>По окончании загрузки</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="801"/>
@@ -2576,7 +2576,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="870"/>
       <source>Automatic redownload</source>
-      <translation>Пытаться скачать заново</translation>
+      <translation>Попытки скачать заново</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="884"/>
