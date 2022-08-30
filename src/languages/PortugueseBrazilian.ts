@@ -744,7 +744,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="553"/>
       <source>Some downloads were started but not finished. Do you want to continue from where you left off?</source>
-      <translation type="unfinished"/>
+      <translation>Alguns downloads foram iniciados, mas não terminaram. Deseja continuar de onde parou?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="573"/>
@@ -2616,7 +2616,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1113"/>
       <source>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</source>
-      <translation type="unfinished"/>
+      <translation>Os nomes de arquivos condicionais são avaliados de cima para baixo, com cada um sobreposto ao anterior. Isto significa que o último nome de arquivo tem prioridade sobre o primeiro.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1123"/>
