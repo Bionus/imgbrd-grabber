@@ -11,7 +11,7 @@ function parseImage(raw: any, media?: any): IImage {
     if (medias.length >= 1) {
         img.file_url = medias[0].remote_url || medias[0].url;
         img.preview_url = medias[0].preview_remote_url || medias[0].preview_url;
-        if (medias[0].meta) {
+        if (medias[0].meta && medias[0].type !== "audio") {
             img.width = medias[0].meta.original.width;
             img.height = medias[0].meta.original.height;
             img.preview_width = medias[0].meta.small.width;
