@@ -129,8 +129,8 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
-                        tags: Grabber.regexToTags('<a href="[^"]*/tag/(?<name>[^"]+)"', src),
-                        imageUrl: Grabber.regexToConst("url", '<img[^>]*aria-hidden="true"[^>]+src="(?<url>[^"]+)"', src),
+                        tags: Grabber.regexToTags('<a [^>]*href="[^"]*/tag/(?<name>[^"]+)"', src),
+                        imageUrl: Grabber.regexToConst("url", '<img [^>]*aria-hidden="true"[^>]+src="(?<url>[^"]+)"', src),
                     };
                 },
             },
