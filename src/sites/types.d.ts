@@ -767,7 +767,12 @@ interface IApi {
          * @see {@link ISearchQuery#parsedSearch}
          */
         parseInput?: boolean;
+
+        /**
+         * Whether to still pass HTTP errors to the parse function.
+         */
         parseErrors?: boolean;
+
         url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IRequest | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
