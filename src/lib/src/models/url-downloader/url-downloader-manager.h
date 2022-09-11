@@ -7,6 +7,7 @@
 
 
 class QJSEngine;
+class ReadWritePath;
 class UrlDownloader;
 
 class UrlDownloaderManager : public QObject
@@ -14,7 +15,7 @@ class UrlDownloaderManager : public QObject
 	Q_OBJECT
 
 	public:
-		explicit UrlDownloaderManager(const QString &root, QObject *parent = nullptr);
+		explicit UrlDownloaderManager(const ReadWritePath &root, QObject *parent = nullptr);
 		~UrlDownloaderManager();
 
 		bool load(const QString &file);

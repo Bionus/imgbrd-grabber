@@ -176,7 +176,7 @@ Profile::Profile(QString path)
 	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
 
 	// URL downloaders
-	m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
+	m_urlDownloaderManager = new UrlDownloaderManager(ReadWritePath(defaultPath, customPath), this);
 
 	// Complete auto-complete
 	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };

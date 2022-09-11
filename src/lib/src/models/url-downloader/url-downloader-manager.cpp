@@ -6,16 +6,17 @@
 #include "url-downloader.h"
 #include "js-helpers.h"
 #include "logger.h"
+#include "utils/read-write-path.h"
 
 
-UrlDownloaderManager::UrlDownloaderManager(const QString &root, QObject *parent)
+UrlDownloaderManager::UrlDownloaderManager(const ReadWritePath &root, QObject *parent)
 	: QObject(parent)
 {
-	m_engine = buildJsEngine(root + "/helper.js");
+	m_engine = buildJsEngine(root.readPath("helper.js"));
 
-	const QStringList dirs = QDir(root).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	const QStringList dirs = QDir(root.readPath()).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (const QString &dir : dirs) {
-		load(root + "/" + dir + "/downloader.js");
+		load(root.readPath() + "/" + dir + "/downloader.js");
 	}
 }
 
