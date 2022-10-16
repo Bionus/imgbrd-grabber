@@ -350,10 +350,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Está a punto de descargar información de %n imagen. ¿Desea continuar?</numerusform>
-        <numerusform>Está a punto de descargar información de %n imágenes. ¿Desea continuar?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -732,10 +729,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="419"/>
       <source>Loading %n download(s)</source>
-      <translation>
-        <numerusform>Cargando %n descarga</numerusform>
-        <numerusform>Cargando %n descargas</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="461"/>
@@ -816,42 +810,27 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1109"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation>
-        <numerusform>%n archivo descargado correctamente.</numerusform>
-        <numerusform>%n archivos descargados correctamente.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1110"/>
       <source>%n file(s) ignored.</source>
-      <translation>
-        <numerusform>%n archivo ignorado.</numerusform>
-        <numerusform>%n archivos ignorados.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1111"/>
       <source>%n file(s) already existing.</source>
-      <translation>
-        <numerusform>%n archivo ya existe.</numerusform>
-        <numerusform>%n archivos ya existen.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1112"/>
       <source>%n file(s) not found on the server.</source>
-      <translation>
-        <numerusform>%n archivo no se encontró en el servidor.</numerusform>
-        <numerusform>%n archivos no se encontraron en el servidor.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1113"/>
       <source>%n file(s) skipped.</source>
-      <translation>
-        <numerusform>%n archivo ignorado.</numerusform>
-        <numerusform>%n archivos ignorados.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1114"/>
@@ -861,10 +840,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1115"/>
       <source>%n error(s).</source>
-      <translation>
-        <numerusform>%n error.</numerusform>
-        <numerusform>%n errores.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -928,10 +904,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Está a punto de borrar %n carpeta. ¿Desea continuar?</numerusform>
-        <numerusform>Está a punto de borrar %n carpetas. ¿Desea continuar?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1432,10 +1405,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="975"/>
       <source>Source(s)</source>
-      <translation>
-        <numerusform>Fuente</numerusform>
-        <numerusform>Fuentes</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="976"/>
@@ -1953,10 +1923,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation>
-        <numerusform>%n archivo MD5 cargado</numerusform>
-        <numerusform>%n archivos MD5 cargados</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2137,18 +2104,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>%n nueva imagen encontradas para la etiqueta '%1' en '%2'</numerusform>
-        <numerusform>%n nuevas imagenes encontradas para la etiqueta '%1' en '%2'</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>Mas de %n nueva imagen encontradas para la etiqueta '%1' en '%2'</numerusform>
-        <numerusform>Mas de %n nuevas imagenes encontradas para la etiqueta '%1' en '%2'</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="111"/>
@@ -4546,10 +4507,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Está a punto de descargar información de %n imagen. ¿Desea continuar?</numerusform>
-        <numerusform>Está a punto de descargar información de %n imágenes. ¿Desea continuar?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4701,10 +4659,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1088"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation>
-        <numerusform>se detectó %n etiqueta de esta imagen en la lista negra: %1. ¿Desea mostrarla de todas formas?</numerusform>
-        <numerusform>se detectaron %n etiquetas de esta imagen en la lista negra: %1. ¿Desea mostrarla de todas formas?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -4976,7 +4931,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation>Nombre</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
@@ -5139,7 +5094,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
       <source>Search</source>
-      <translation>Buscar</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
@@ -5634,10 +5589,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation>
-        <numerusform>%n etiqueta cargada</numerusform>
-        <numerusform>%n etiquetas cargadas</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
