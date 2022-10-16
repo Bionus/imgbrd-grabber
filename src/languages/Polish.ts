@@ -1330,123 +1330,122 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
   <context>
     <name>Image</name>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="934"/>
+      <location filename="../lib/src/models/image.cpp" line="928"/>
       <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
       <translation>&lt;b&gt;Tagi:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="921"/>
-      <location filename="../lib/src/models/image.cpp" line="935"/>
+      <location filename="../lib/src/models/image.cpp" line="929"/>
       <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="922"/>
+      <location filename="../lib/src/models/image.cpp" line="930"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;Nazwa:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="936"/>
+      <location filename="../lib/src/models/image.cpp" line="931"/>
       <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;Ocena:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="937"/>
+      <location filename="../lib/src/models/image.cpp" line="932"/>
       <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;Punkty:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="938"/>
+      <location filename="../lib/src/models/image.cpp" line="933"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
       <translation>&lt;b&gt;Użytkownik:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="939"/>
+      <location filename="../lib/src/models/image.cpp" line="934"/>
       <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
       <translation>&lt;b&gt;Wymiary:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="940"/>
+      <location filename="../lib/src/models/image.cpp" line="935"/>
       <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
       <translation>&lt;b&gt;Rozmiar pliku:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="941"/>
+      <location filename="../lib/src/models/image.cpp" line="936"/>
       <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
       <translation>&lt;b&gt;Data:&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="951"/>
+      <location filename="../lib/src/models/image.cpp" line="946"/>
       <source>&lt;i&gt;Unknown&lt;/i&gt;</source>
       <translation>&lt;i&gt;Nieznany&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="952"/>
+      <location filename="../lib/src/models/image.cpp" line="947"/>
       <source>yes</source>
       <translation>tak</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="953"/>
+      <location filename="../lib/src/models/image.cpp" line="948"/>
       <source>no</source>
       <translation>nie</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="966"/>
+      <location filename="../lib/src/models/image.cpp" line="961"/>
       <source>Tags</source>
       <translation>Tagi</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="968"/>
+      <location filename="../lib/src/models/image.cpp" line="963"/>
       <source>ID</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="969"/>
+      <location filename="../lib/src/models/image.cpp" line="964"/>
       <source>MD5</source>
       <translation>MD5</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="970"/>
+      <location filename="../lib/src/models/image.cpp" line="965"/>
       <source>Rating</source>
       <translation>Ocena</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="971"/>
+      <location filename="../lib/src/models/image.cpp" line="966"/>
       <source>Score</source>
       <translation>Punkty</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="972"/>
+      <location filename="../lib/src/models/image.cpp" line="967"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="974"/>
+      <location filename="../lib/src/models/image.cpp" line="969"/>
       <source>Date</source>
       <translation>Data</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="975"/>
+      <location filename="../lib/src/models/image.cpp" line="970"/>
       <source>Size</source>
       <translation>Rozmiar</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="976"/>
+      <location filename="../lib/src/models/image.cpp" line="971"/>
       <source>Filesize</source>
       <translation>Rozmiar pliku</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="978"/>
+      <location filename="../lib/src/models/image.cpp" line="973"/>
       <source>Page</source>
       <translation>Strona</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="979"/>
+      <location filename="../lib/src/models/image.cpp" line="974"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message numerus="yes">
-      <location filename="../lib/src/models/image.cpp" line="980"/>
+      <location filename="../lib/src/models/image.cpp" line="975"/>
       <source>Source(s)</source>
       <translation>
         <numerusform>Źródło</numerusform>
@@ -1455,37 +1454,37 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="981"/>
+      <location filename="../lib/src/models/image.cpp" line="976"/>
       <source>Sample</source>
       <translation>Przykład</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="982"/>
+      <location filename="../lib/src/models/image.cpp" line="977"/>
       <source>Thumbnail</source>
       <translation>Miniatura</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="984"/>
+      <location filename="../lib/src/models/image.cpp" line="979"/>
       <source>Parent</source>
       <translation>Nadrzędna</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="984"/>
+      <location filename="../lib/src/models/image.cpp" line="979"/>
       <source>yes (#%1)</source>
       <translation>tak (#%1)</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="985"/>
+      <location filename="../lib/src/models/image.cpp" line="980"/>
       <source>Comments</source>
       <translation>Komentarze</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="986"/>
+      <location filename="../lib/src/models/image.cpp" line="981"/>
       <source>Children</source>
       <translation>Dzieci</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="987"/>
+      <location filename="../lib/src/models/image.cpp" line="982"/>
       <source>Notes</source>
       <translation>Notatki</translation>
     </message>
@@ -1511,22 +1510,22 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
   <context>
     <name>ImagePreview</name>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="269"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="249"/>
       <source>Delete</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="271"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="251"/>
       <source>Save</source>
       <translation>Zapisz</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="277"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="257"/>
       <source>Save as...</source>
       <translation>Zapisz jako...</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="341"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="321"/>
       <source>Save image</source>
       <translation>Zapisz obraz</translation>
     </message>
@@ -5161,12 +5160,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
       <source>Search</source>
-      <translation type="unfinished">Wyszukaj</translation>
+      <translation>Wyszukaj</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
       <source>Removed tags</source>
-      <translation type="unfinished">Usunięte tagi</translation>
+      <translation>Usunięte tagi</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="322"/>
@@ -5736,27 +5735,27 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>Pobierz &amp;wszystkie</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>Monitoring an empty search</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>Monitoring a big search</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="302"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
       <source>Search</source>
       <translation>Wyszukaj</translation>
     </message>
