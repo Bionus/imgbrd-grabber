@@ -377,6 +377,7 @@ jobs:
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
+      VCINSTALLDIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
 
     steps:
       - name: Set environment
@@ -424,7 +425,7 @@ jobs:
           7z x "QScintilla.zip" -y
           rm "QScintilla.zip"
           cd "%QSCINTILLA_DIR%\src"
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           qmake qscintilla.pro
           nmake
 
@@ -433,7 +434,7 @@ jobs:
         shell: cmd
         run: |
           cd "%QSCINTILLA_DIR%\src"
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           nmake install
 
       - name: Install OpenSSL
@@ -463,7 +464,7 @@ jobs:
           git clone https://github.com/Skycoder42/QtApng APNG
           cd APNG
           git checkout $(git tag | tail -1)
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           qmake "CONFIG += libpng_static"
           nmake
 
