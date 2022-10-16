@@ -261,17 +261,17 @@ void PageApi::parseActual()
 	}
 
 	// Fill data from parsing result
-	if (page.pageCount >= 0) {
-		setPageCount(page.pageCount, true);
-	}
-	if (page.imageCount >= 0) {
-		setImageCount(page.imageCount, true);
-	}
 	for (const Tag &tag : qAsConst(page.tags)) {
 		m_tags.append(tag);
 	}
 	for (const QSharedPointer<Image> &img : qAsConst(page.images)) {
 		addImage(img);
+	}
+	if (page.pageCount >= 0) {
+		setPageCount(page.pageCount, true);
+	}
+	if (page.imageCount >= 0) {
+		setImageCount(page.imageCount, true);
 	}
 	if (page.urlNextPage.isValid()) {
 		m_urlNextPage = page.urlNextPage;
@@ -543,7 +543,7 @@ void PageApi::setPageCount(int count, bool sure)
 
 		if (sure) {
 			const int forcedLimit = m_api->forcedLimit();
-			const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			const int perPage = forcedLimit > 0 ? forcedLimit : qMax(m_pageImageCount, m_imagesPerPage);
 			setImageCount(count * perPage, false);
 		}
 	}
