@@ -1289,158 +1289,157 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>Image</name>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="934"/>
+      <location filename="../lib/src/models/image.cpp" line="928"/>
       <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
       <translation>&lt;b&gt;标签:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="921"/>
-      <location filename="../lib/src/models/image.cpp" line="935"/>
+      <location filename="../lib/src/models/image.cpp" line="929"/>
       <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="922"/>
+      <location filename="../lib/src/models/image.cpp" line="930"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;名称:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="936"/>
+      <location filename="../lib/src/models/image.cpp" line="931"/>
       <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;分级:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="937"/>
+      <location filename="../lib/src/models/image.cpp" line="932"/>
       <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;得分:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="938"/>
+      <location filename="../lib/src/models/image.cpp" line="933"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
       <translation>&lt;b&gt;用户:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="939"/>
+      <location filename="../lib/src/models/image.cpp" line="934"/>
       <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
       <translation>&lt;b&gt;大小:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="940"/>
+      <location filename="../lib/src/models/image.cpp" line="935"/>
       <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
       <translation>&lt;b&gt;文件大小:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="941"/>
+      <location filename="../lib/src/models/image.cpp" line="936"/>
       <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
       <translation>&lt;b&gt;日期:&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="951"/>
+      <location filename="../lib/src/models/image.cpp" line="946"/>
       <source>&lt;i&gt;Unknown&lt;/i&gt;</source>
       <translation>&lt;i&gt;未知&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="952"/>
+      <location filename="../lib/src/models/image.cpp" line="947"/>
       <source>yes</source>
       <translation>是</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="953"/>
+      <location filename="../lib/src/models/image.cpp" line="948"/>
       <source>no</source>
       <translation>否</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="966"/>
+      <location filename="../lib/src/models/image.cpp" line="961"/>
       <source>Tags</source>
       <translation>标签</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="968"/>
+      <location filename="../lib/src/models/image.cpp" line="963"/>
       <source>ID</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="969"/>
+      <location filename="../lib/src/models/image.cpp" line="964"/>
       <source>MD5</source>
       <translation>MD5</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="970"/>
+      <location filename="../lib/src/models/image.cpp" line="965"/>
       <source>Rating</source>
       <translation>分级</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="971"/>
+      <location filename="../lib/src/models/image.cpp" line="966"/>
       <source>Score</source>
       <translation>得分</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="972"/>
+      <location filename="../lib/src/models/image.cpp" line="967"/>
       <source>Author</source>
       <translation>作者</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="974"/>
+      <location filename="../lib/src/models/image.cpp" line="969"/>
       <source>Date</source>
       <translation>日期</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="975"/>
+      <location filename="../lib/src/models/image.cpp" line="970"/>
       <source>Size</source>
       <translation>大小</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="976"/>
+      <location filename="../lib/src/models/image.cpp" line="971"/>
       <source>Filesize</source>
       <translation>文件大小</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="978"/>
+      <location filename="../lib/src/models/image.cpp" line="973"/>
       <source>Page</source>
       <translation>页面</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="979"/>
+      <location filename="../lib/src/models/image.cpp" line="974"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message numerus="yes">
-      <location filename="../lib/src/models/image.cpp" line="980"/>
+      <location filename="../lib/src/models/image.cpp" line="975"/>
       <source>Source(s)</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="981"/>
+      <location filename="../lib/src/models/image.cpp" line="976"/>
       <source>Sample</source>
       <translation>样本</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="982"/>
+      <location filename="../lib/src/models/image.cpp" line="977"/>
       <source>Thumbnail</source>
       <translation>缩略图</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="984"/>
+      <location filename="../lib/src/models/image.cpp" line="979"/>
       <source>Parent</source>
       <translation>父级</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="984"/>
+      <location filename="../lib/src/models/image.cpp" line="979"/>
       <source>yes (#%1)</source>
       <translation>是 (#%1)</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="985"/>
+      <location filename="../lib/src/models/image.cpp" line="980"/>
       <source>Comments</source>
       <translation>评论</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="986"/>
+      <location filename="../lib/src/models/image.cpp" line="981"/>
       <source>Children</source>
       <translation>子级</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="987"/>
+      <location filename="../lib/src/models/image.cpp" line="982"/>
       <source>Notes</source>
       <translation>备注</translation>
     </message>
@@ -1466,22 +1465,22 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>ImagePreview</name>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="269"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="249"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="271"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="251"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="277"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="257"/>
       <source>Save as...</source>
       <translation>保存为...</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/image-preview.cpp" line="341"/>
+      <location filename="../gui/src/tabs/image-preview.cpp" line="321"/>
       <source>Save image</source>
       <translation>保存图片</translation>
     </message>
@@ -5667,27 +5666,27 @@ Please solve the issue before resuming the download.</source>
       <translation>获取全部 (&amp;a)</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>Monitoring an empty search</source>
       <translation>正监视一个结果为空的搜索</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="261"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
       <translation>您正要为一个结果为空的搜索添加监视器，该搜索可能会产生大量结果。您确定要这么做吗？</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>Monitoring a big search</source>
       <translation>正监视一个巨型搜索</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="266"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
       <translation>您正要为一个有巨量结果 (%1) 的搜索添加监视器。您确定要这么做吗？</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="302"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
       <source>Search</source>
       <translation>搜索</translation>
     </message>
