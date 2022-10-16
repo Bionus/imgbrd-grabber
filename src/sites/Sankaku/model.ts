@@ -104,13 +104,14 @@ export const source: ISource = {
                 },
             },
             details: {
+                fullResults: true,
                 url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     return baseUrl + "/posts/" + id;
                 },
-                parse: (src: string): IParsedDetails => {
+                parse: (src: string): IImage => {
                     const data = JSON.parse(src);
                     return buildImageFromJson(data);
                 },
