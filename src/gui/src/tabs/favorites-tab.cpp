@@ -434,6 +434,7 @@ void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image>
 		if (index >= 0) {
 			m_favorites[index].setImage(img->previewImage());
 		}
+		m_profile->emitFavorite();
 	});
 	menu->insertAction(first, actionUseAsThumbnail);
 
