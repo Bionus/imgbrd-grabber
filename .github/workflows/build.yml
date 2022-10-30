@@ -32,12 +32,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Uncrustify cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: bin-cache
         with:
           path: bin
@@ -79,7 +79,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -88,17 +88,10 @@ jobs:
           sudo apt update
           sudo apt install libpulse-dev lcov
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
-
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
@@ -131,7 +124,7 @@ jobs:
           lcov --list coverage.info
 
       - name: Upload coverage results
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
 
   version:
     name: Version
@@ -163,7 +156,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -172,22 +165,15 @@ jobs:
           sudo apt update
           sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
-
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: vendor-cache
         with:
           path: vendor
@@ -249,7 +235,7 @@ jobs:
           mv Grabber_*-x86_64.AppImage Grabber-x86_64.AppImage
 
       - name: Upload AppImage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Grabber-x86_64.AppImage
           path: Grabber-x86_64.AppImage
@@ -259,7 +245,7 @@ jobs:
         run: ./scripts/package-linux.sh
 
       - name: Upload archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Grabber.tar.gz
           path: Grabber.tar.gz
@@ -278,26 +264,19 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
-
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: vendor-cache
         with:
           path: vendor
@@ -346,7 +325,7 @@ jobs:
         run: ./scripts/package-mac.sh
 
       - name: Upload package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Grabber.dmg
           path: Grabber.dmg
@@ -385,27 +364,20 @@ jobs:
         run: echo "BUILD_TYPE=$([ "$GRABBER_IS_NIGHTLY" = "1" ] && echo "Release" || echo "RelWithDebInfo")" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
-
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
           arch: ${{ matrix.qt_arch }}
 
       - name: Vendor cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: vendor-cache
         with:
           path: vendor
@@ -505,7 +477,7 @@ jobs:
           mv scripts/windows-setup/Grabber_*.exe "Grabber_${{ matrix.suffix }}.exe
 
       - name: Upload installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Grabber_${{ matrix.suffix }}.exe
           path: Grabber_${{ matrix.suffix }}.exe
@@ -516,7 +488,7 @@ jobs:
         run: scripts\package-windows.bat && mv Grabber.zip Grabber_${{ matrix.suffix }}.zip
 
       - name: Upload package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Grabber_${{ matrix.suffix }}.zip
           path: Grabber_${{ matrix.suffix }}.zip
@@ -528,7 +500,7 @@ jobs:
         run: 7z a "Grabber_${{ matrix.suffix }}_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
 
       - name: Upload symbols
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
         with:
           name: Grabber_${{ matrix.suffix }}_symbols.zip
@@ -546,7 +518,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
 
@@ -555,17 +527,10 @@ jobs:
         sudo apt update
         sudo apt install libpulse-dev
 
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v1
-      with:
-        path: ../Qt
-        key: ${{ runner.os }}-android-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
-
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
         target: android
@@ -615,7 +580,7 @@ jobs:
         mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber.apk 2> /dev/null || true
 
     - name: Upload package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Grabber.apk
         path: Grabber.apk
@@ -634,54 +599,54 @@ jobs:
 
     steps:
       - name: Download artifact (Linux AppImage)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber-x86_64.AppImage
 
       - name: Download artifact (Linux archive)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber.tar.gz
 
       - name: Download artifact (macOS)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber.dmg
 
       - name: Download artifact (Windows 32-bit installer)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber_x86.exe
 
       - name: Download artifact (Windows 32-bit archive)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber_x86.zip
 
       - name: Download artifact (Windows 32-bit symbols)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         if: needs.version.outputs.release == '1'
         with:
           name: Grabber_x86_symbols.zip
 
       - name: Download artifact (Windows 64-bit installer)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber_x64.exe
 
       - name: Download artifact (Windows 64-bit archive)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber_x64.zip
 
       - name: Download artifact (Windows 64-bit symbols)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         if: needs.version.outputs.release == '1'
         with:
           name: Grabber_x64_symbols.zip
 
       - name: Download artifact (Android)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: Grabber.apk
 
