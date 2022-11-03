@@ -216,6 +216,20 @@ export const source: ISource = {
                     return "/g/" + query.md5 + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {
+                    const html = Grabber.parseHTML(src);
+
+                    const posted = src.match(/>Posted:<\/td>\s*<td.*?>(.+?)</)?.[1];
+                    const author = html.find("#gdn a")[0].innerText();
+
+                    const tags: ITag[] = [];
+                    const tagGroups = html.find("#taglist")[0].find("tr");
+                    for (const tagGroup of tagGroups) {
+                        let type = tagGroup.find("td")[0].innerText();
+                        type = type.substr(0, type.length - 1);
+                        const list = tagGroup.find("td")[1].find("a").map((tag: any) => tag.innerText());
+                        tags.push(...list.map((name: string) => ({ type, name })));
+                    }
+
                     const images: IImage[] = [];
                     const matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
                     for (const match of matches) {
@@ -231,6 +245,9 @@ export const source: ISource = {
                             sizeToInt(styles["height"]),
                         ].join(";"); // x;y;w;h
 
+                        match["created_at"] = posted;
+                        match["tags"] = tags;
+                        match["author"] = author;
                         images.push(match);
                     }
 
