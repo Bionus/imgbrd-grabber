@@ -8,7 +8,7 @@
 
 
 JavascriptHtmlDocument::JavascriptHtmlDocument(QJSEngine &engine, const HtmlNode &node)
-	: QObject(&engine), m_engine(engine), m_node(node)
+	: QObject(nullptr), m_engine(engine), m_node(node)
 {}
 
 JavascriptHtmlDocument *JavascriptHtmlDocument::fromString(QJSEngine &engine, const QString &html, bool fragment)

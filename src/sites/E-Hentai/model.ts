@@ -246,8 +246,8 @@ export const source: ISource = {
                         ].join(";"); // x;y;w;h
 
                         match["created_at"] = posted;
-                        match["tags"] = tags;
                         match["author"] = author;
+                        match["tags"] = tags;
                         images.push(match);
                     }
 
