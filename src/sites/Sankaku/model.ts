@@ -8,7 +8,11 @@ function buildSearch(search: string): string {
 function buildImageFromJson(img: any): IImage {
     img.created_at = img.created_at["s"];
     img.score = img.total_score;
-    img.author = img.author.name;
+
+    // Not set for anonymous uploads / deleted users
+    if (img.author) {
+        img.author = img.author.name;
+    }
 
     return completeImage(img, true);
 }
