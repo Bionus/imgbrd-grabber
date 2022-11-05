@@ -253,7 +253,7 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 	loadImage();
 }
 
-void ImageDownloader::loadImage()
+void ImageDownloader::loadImage(bool rateLimit)
 {
 	connect(&m_fileDownloader, &FileDownloader::success, this, &ImageDownloader::success, Qt::UniqueConnection);
 	connect(&m_fileDownloader, &FileDownloader::networkError, this, &ImageDownloader::networkError, Qt::UniqueConnection);
@@ -266,7 +266,7 @@ void ImageDownloader::loadImage()
 
 	// Load the image directly on the disk
 	Site *site = m_image->parentSite();
-	m_reply = site->get(site->fixUrl(m_url.toString()), Site::QueryType::Img, m_image->parentUrl(), QStringLiteral("image"), m_image.data());
+	m_reply = site->get(site->fixUrl(m_url.toString()), rateLimit ? Site::QueryType::Retry : Site::QueryType::Img, m_image->parentUrl(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
 	connect(m_reply, &NetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
@@ -346,6 +346,14 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 		if (error == NetworkReply::NetworkError::HostNotFoundError || msg.contains("unreachable")) {
 			log(QStringLiteral("Host '%1' not found for the image: `%2`: %3 (%4)").arg(m_reply->url().host(), m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
+			return;
+		}
+
+		// Detect HTTP 429 / 503 / 509 usage limit reached
+		const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+		if (statusCode == 429 || statusCode == 503 || statusCode == 509) {
+			log(QStringLiteral("Rate limit reached (%1) for the image `%2`. New try.").arg(QString::number(statusCode), m_image->url().toString().toHtmlEscaped()), Logger::Warning);
+			loadImage(true);
 			return;
 		}
 
