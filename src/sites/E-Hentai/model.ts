@@ -221,14 +221,15 @@ export const source: ISource = {
                     const posted = src.match(/>Posted:<\/td>\s*<td.*?>(.+?)</)?.[1];
                     const author = html.find("#gdn a")[0].innerText();
 
-                    const tags: ITag[] = [];
+                    /*const tags: ITag[] = [];
                     const tagGroups = html.find("#taglist")[0].find("tr");
                     for (const tagGroup of tagGroups) {
-                        let type = tagGroup.find("td")[0].innerText();
+                        const td = tagGroup.find("td");
+                        let type = td[0].innerText();
                         type = type.substr(0, type.length - 1);
-                        const list = tagGroup.find("td")[1].find("a").map((tag: any) => tag.innerText());
+                        const list = td[1].find("a").map((tag: any) => tag.innerText());
                         tags.push(...list.map((name: string) => ({ type, name })));
-                    }
+                    }*/
 
                     const images: IImage[] = [];
                     const matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
@@ -247,7 +248,7 @@ export const source: ISource = {
 
                         match["created_at"] = posted;
                         match["author"] = author;
-                        match["tags"] = tags;
+                        // match["tags"] = tags;
                         images.push(match);
                     }
 
