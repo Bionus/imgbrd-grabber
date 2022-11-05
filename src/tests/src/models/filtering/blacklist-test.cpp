@@ -24,6 +24,14 @@ TEST_CASE("Blacklist")
 		REQUIRE(blacklist.contains("not_found") == false);
 	}
 
+	SECTION("IsEmpty")
+	{
+		REQUIRE(Blacklist().isEmpty() == true);
+		REQUIRE(Blacklist(QStringList()).isEmpty() == true);
+		REQUIRE(Blacklist(QStringList() << "tag1").isEmpty() == false);
+		REQUIRE(Blacklist(QStringList() << "tag1" << "tag2").isEmpty() == false);
+	}
+
 	SECTION("Remove")
 	{
 		Blacklist blacklist(QStringList() << "tag1" << "tag2");

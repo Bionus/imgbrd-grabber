@@ -87,7 +87,7 @@ void ImageDownloader::save()
 	const int localNeedTags = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
-	const bool blacklistNeedTags = m_blacklist != nullptr && m_image->tags().isEmpty();
+	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
 	if (!blacklistNeedTags && !needFileUrl && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;

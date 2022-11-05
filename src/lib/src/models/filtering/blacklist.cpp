@@ -23,6 +23,11 @@ int Blacklist::indexOf(const QString &tag) const
 	return -1;
 }
 
+bool Blacklist::isEmpty() const
+{
+	return m_filters.isEmpty();
+}
+
 bool Blacklist::contains(const QString &tag) const
 {
 	return indexOf(tag) != -1;
