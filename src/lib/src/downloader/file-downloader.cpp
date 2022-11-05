@@ -60,7 +60,7 @@ void FileDownloader::replyFinished()
 	const auto msg = m_reply->errorString();
 	const QUrl redirectUrl = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	const bool failedLastWrite = data.length() > 0 && written < 0;
-	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
+	const bool invalidHtml = !m_allowHtmlResponses && isHtml(data);
 	const bool emptyFile = m_readSize == 0 && redirectUrl.isEmpty();
 
 	if (error != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml || emptyFile) {

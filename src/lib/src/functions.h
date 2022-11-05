@@ -103,6 +103,8 @@ QRect stringToRect(const QString &str);
 void renameSettingsGroup(QSettings *settings, const QString &before, const QString &after);
 void renameSettingsKey(QSettings *settings, const QString &before, const QString &after);
 
+bool isHtml(const QByteArray &data);
+
 
 
 template <typename T>

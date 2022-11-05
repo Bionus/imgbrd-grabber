@@ -1210,3 +1210,15 @@ void renameSettingsKey(QSettings *settings, const QString &before, const QString
 	settings->setValue(after, settings->value(before));
 	settings->remove(before);
 }
+
+
+/**
+ * Helper function to know if a byte array contains HTML.
+ * Only performs a basic check and might fail for XML or some differently formatted documents.
+ */
+bool isHtml(const QByteArray &data)
+{
+	const QString left = QString(data.left(100)).trimmed();
+	return left.startsWith("<!DOCTYPE", Qt::CaseInsensitive)
+		|| left.startsWith("<html>", Qt::CaseInsensitive);
+}
