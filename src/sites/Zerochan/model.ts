@@ -6,15 +6,13 @@ function formatSearch(query: string): string {
 
 function completeImage(img: IImage): IImage {
     if (!img.file_url || img.file_url.length < 5) {
-        img.file_url = img.preview_url;
+        img.file_url = (img.sample_url || img.preview_url || "")
+            .replace(/\/s\d+\.zerochan/, "/static.zerochan")
+            .replace(".240.", ".full.")
+            .replace(".600.", ".full.")
+            .replace("/240/", "/full/")
+            .replace("/600/", "/full/");
     }
-
-    img.file_url = img.file_url!
-        .replace(/\/s\d+\.zerochan/, "/static.zerochan")
-        .replace(".240.", ".full.")
-        .replace(".600.", ".full.")
-        .replace("/240/", "/full/")
-        .replace("/600/", "/full/");
 
     if (img.file_size) {
         img.file_size = Grabber.fileSizeToInt(img.file_size);
@@ -91,12 +89,17 @@ export const source: ISource = {
                             name: image["title"]["#text"],
                             tags: image["media:keywords"]["#text"].trim().split(", "),
                             preview_url: image["media:thumbnail"]["#text"] || image["media:thumbnail"]["@attributes"]["url"],
-                            file_url: image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"],
-                            width: image["media:content"]["@attributes"]["width"],
-                            height: image["media:content"]["@attributes"]["height"],
                         };
                         img.id = Grabber.regexToConst("id", "/(?<id>\\d+)", img.page_url);
-                        img.sample_url = img.file_url;
+                        if (image["media:content"]["@attributes"]["expression"] === "sample") {
+                            img.sample_url = image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"];
+                            img.sample_width = image["media:content"]["@attributes"]["width"];
+                            img.sample_height = image["media:content"]["@attributes"]["height"];
+                        } else {
+                            img.file_url = image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"];
+                            img.width = image["media:content"]["@attributes"]["width"];
+                            img.height = image["media:content"]["@attributes"]["height"];
+                        }
                         images.push(completeImage(img));
                     }
 
