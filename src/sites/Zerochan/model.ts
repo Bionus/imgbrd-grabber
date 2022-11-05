@@ -88,6 +88,7 @@ export const source: ISource = {
                     for (const image of data) {
                         const img: IImage = {
                             page_url: image["link"]["#text"],
+                            name: image["title"]["#text"],
                             tags: image["media:keywords"]["#text"].trim().split(", "),
                             preview_url: image["media:thumbnail"]["#text"] || image["media:thumbnail"]["@attributes"]["url"],
                             file_url: image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"],
