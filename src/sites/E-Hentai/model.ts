@@ -165,9 +165,9 @@ export const source: ISource = {
                     const html = Grabber.parseHTML(src);
 
                     // Check display mode
-                    const modeOption = html.find("#dms select option[selected]");
+                    const modeOption = html.find("#dms select option[selected], .searchnav select option[selected]");
                     let mode = "l";
-                    if (!modeOption) {
+                    if (!modeOption || !Array.isArray(modeOption) || modeOption.length === 0) {
                         console.warn("Parsing mode not found, falling back to 'Compact'"); // tslint:disable-line: no-console
                     } else {
                         mode = modeOption[0].attr("value");
