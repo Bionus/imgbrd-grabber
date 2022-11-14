@@ -68,6 +68,9 @@ QNetworkReply::NetworkError NetworkReply::error() const
 	if (m_reply != nullptr) {
 		return m_reply->error();
 	}
+	if (m_aborted) {
+		return QNetworkReply::NetworkError::OperationCanceledError;
+	}
 	return QNetworkReply::NetworkError::NoError;
 }
 
