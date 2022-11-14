@@ -23,6 +23,7 @@ class NetworkManager : public QObject
 		explicit NetworkManager(QObject *parent = nullptr);
 
 		int maxConcurrency() const;
+		int activeQueries() const;
 		void setMaxConcurrency(int maxConcurrency);
 		int interval(int key) const;
 		void setInterval(int key, int msInterval);

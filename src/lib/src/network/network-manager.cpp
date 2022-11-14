@@ -16,6 +16,11 @@ int NetworkManager::maxConcurrency() const
 	return m_maxConcurrency;
 }
 
+int NetworkManager::activeQueries() const
+{
+	return m_activeQueries;
+}
+
 void NetworkManager::setMaxConcurrency(int maxConcurrency)
 {
 	m_maxConcurrency = maxConcurrency;
