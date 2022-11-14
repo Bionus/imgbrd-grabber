@@ -136,14 +136,17 @@ void ImagePreview::finishedLoadingPreview()
 
 	// Loading error
 	if (m_reply->error() != NetworkReply::NetworkError::NoError) {
+		// Retry with JPG in case the original thumbnail had a weird extension
 		const QString ext = getExtension(m_reply->url());
 		if (!ext.isEmpty() && ext != "jpg") {
 			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(m_reply->errorString()), Logger::Warning);
 			m_thumbnailUrl = setExtension(m_reply->url(), "jpg");
 			load();
-		} else {
-			log(QStringLiteral("Error loading thumbnail (%1)").arg(m_reply->errorString()), Logger::Error);
+			return;
 		}
+
+		log(QStringLiteral("Error loading thumbnail (%1)").arg(m_reply->errorString()), Logger::Error);
+		finishedLoading();
 		return;
 	}
 
@@ -152,11 +155,8 @@ void ImagePreview::finishedLoadingPreview()
 	thumbnail.loadFromData(m_reply->readAll());
 	if (thumbnail.isNull()) {
 		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(m_image->url(Image::Size::Thumbnail).toString()), Logger::Error);
-		if (m_image->hasTag(QStringLiteral("flash"))) {
-			thumbnail.load(QStringLiteral(":/images/flash.png"));
-		} else {
-			return;
-		}
+		finishedLoading();
+		return;
 	}
 	m_image->setPreviewImage(thumbnail);
 
@@ -186,7 +186,11 @@ void ImagePreview::finishedLoading()
 
 		const QPixmap &thumbnail = m_image->previewImage();
 		if (thumbnail.isNull()) {
-			l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
+			if (m_image->hasTag(QStringLiteral("flash"))) {
+				l->scale(QPixmap(":/images/flash.png"), QSize(imageSize, imageSize));
+			} else {
+				l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
+			}
 		} else {
 			l->scale(thumbnail, QSize(imageSize, imageSize));
 		}
