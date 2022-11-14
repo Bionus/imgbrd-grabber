@@ -139,6 +139,11 @@ void NetworkReply::startNow()
 
 void NetworkReply::abort()
 {
+	// Do nothing if we are already aborted or already running
+	if (m_aborted || (m_reply != nullptr && !m_reply->isRunning())) {
+		return;
+	}
+
 	m_aborted = true;
 	if (m_reply != nullptr) {
 		m_reply->abort();
