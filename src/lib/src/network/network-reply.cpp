@@ -86,9 +86,11 @@ QByteArray NetworkReply::rawHeader(const QByteArray &headerName) const
 
 bool NetworkReply::isRunning() const
 {
+	// A reply that hasn't been actually started or aborted yet is considered as running
 	if (!m_started && !m_aborted) {
 		return true;
 	}
+
 	return m_reply != nullptr && m_reply->isRunning();
 }
 
@@ -128,6 +130,8 @@ void NetworkReply::abort()
 	m_aborted = true;
 	if (m_reply != nullptr) {
 		m_reply->abort();
+	} else {
+		emit finished();
 	}
 	if (timer.isActive()) {
 		timer.stop();
