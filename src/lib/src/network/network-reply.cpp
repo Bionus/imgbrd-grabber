@@ -15,6 +15,15 @@ NetworkReply::NetworkReply(QNetworkRequest request, QByteArray data, CustomNetwo
 	init();
 }
 
+NetworkReply::~NetworkReply()
+{
+	abort();
+
+	m_reply->deleteLater();
+	m_reply = nullptr;
+}
+
+
 void NetworkReply::init()
 {
 	timer.setSingleShot(true);

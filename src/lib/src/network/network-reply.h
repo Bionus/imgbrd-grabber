@@ -21,6 +21,8 @@ class NetworkReply : public QObject
 
 		NetworkReply(QNetworkRequest request, CustomNetworkAccessManager *manager, QObject *parent = nullptr);
 		NetworkReply(QNetworkRequest request, QByteArray data, CustomNetworkAccessManager *manager, QObject *parent = nullptr);
+		~NetworkReply();
+
 		QUrl url() const;
 		QVariant attribute(QNetworkRequest::Attribute code) const;
 		QByteArray readAll();
