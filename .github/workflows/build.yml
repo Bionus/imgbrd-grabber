@@ -163,7 +163,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0
+          sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0 zsync
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
@@ -233,12 +233,20 @@ jobs:
         run: |
           ./scripts/package-appimage.sh
           mv Grabber_*-x86_64.AppImage Grabber-x86_64.AppImage
+          mv Grabber_*-x86_64.AppImage.zsync Grabber-x86_64.AppImage.zsync
 
       - name: Upload AppImage
         uses: actions/upload-artifact@v3
         with:
           name: Grabber-x86_64.AppImage
           path: Grabber-x86_64.AppImage
+          if-no-files-found: error
+
+      - name: Upload AppImage update information
+        uses: actions/upload-artifact@v3
+        with:
+          name: Grabber-x86_64.AppImage.zsync
+          path: Grabber-x86_64.AppImage.zsync
           if-no-files-found: error
 
       - name: Generate archive
@@ -603,6 +611,11 @@ jobs:
         with:
           name: Grabber-x86_64.AppImage
 
+      - name: Download artifact (Linux AppImage update information)
+        uses: actions/download-artifact@v3
+        with:
+          name: Grabber-x86_64.AppImage.zsync
+
       - name: Download artifact (Linux archive)
         uses: actions/download-artifact@v3
         with:
@@ -653,6 +666,7 @@ jobs:
       - name: Rename artifacts
         run: |
           mv Grabber-x86_64.AppImage Grabber_${VERSION}-x86_64.AppImage
+          mv Grabber-x86_64.AppImage.zsync Grabber_${VERSION}-x86_64.AppImage.zsync
           mv Grabber.tar.gz Grabber_${VERSION}.tar.gz
           mv Grabber.dmg Grabber_${VERSION}.dmg
           mv Grabber_x86.exe Grabber_${VERSION}_x86.exe
