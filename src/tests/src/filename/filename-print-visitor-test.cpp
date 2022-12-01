@@ -2,7 +2,7 @@
 #include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/filename-parser.h"
-#include "filename/filename-print-visitor.h"
+#include "filename/visitors/filename-print-visitor.h"
 #include "catch.h"
 
 

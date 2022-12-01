@@ -11,6 +11,9 @@ class QJSValue;
 class QSettings;
 class Token;
 
+/**
+ * Base class for a visitor to be able to execute JavaScript code.
+ */
 class FilenameVisitorJavaScript : public FilenameVisitorBase
 {
 	public:

@@ -5,7 +5,7 @@
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
-#include "filename/filename-condition-visitor.h"
+#include "filename/visitors/filename-condition-visitor.h"
 #include "loader/token.h"
 #include "catch.h"
 

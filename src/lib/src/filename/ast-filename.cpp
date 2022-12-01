@@ -1,9 +1,9 @@
 #include "filename/ast-filename.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/filename-parser.h"
-#include "filename/filename-resolution-visitor.h"
+#include "filename/visitors/filename-resolution-visitor.h"
 #if DEBUG
-	#include "filename/filename-print-visitor.h"
+	#include "filename/visitors/filename-print-visitor.h"
 	#include "logger.h"
 #endif
 

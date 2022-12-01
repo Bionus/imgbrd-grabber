@@ -1,7 +1,7 @@
 #include <QSet>
 #include <QString>
 #include "filename/filename-parser.h"
-#include "filename/filename-resolution-visitor.h"
+#include "filename/visitors/filename-resolution-visitor.h"
 #include "catch.h"
 
 

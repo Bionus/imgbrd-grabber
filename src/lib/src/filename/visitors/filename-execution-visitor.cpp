@@ -1,4 +1,4 @@
-#include "filename/filename-execution-visitor.h"
+#include "filename/visitors/filename-execution-visitor.h"
 #include <QDateTime>
 #include <QJSEngine>
 #include <QJSValue>
@@ -17,7 +17,7 @@
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"
 #include "filename/ast/filename-node-variable.h"
-#include "filename/filename-condition-visitor.h"
+#include "filename/visitors/filename-condition-visitor.h"
 #include "loader/token.h"
 #include "logger.h"
 #include "models/image.h"

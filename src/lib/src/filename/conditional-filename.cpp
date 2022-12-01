@@ -2,8 +2,8 @@
 #include <QSettings>
 #include <utility>
 #include "filename/ast/filename-node-condition.h"
-#include "filename/filename-condition-visitor.h"
 #include "filename/filename-parser.h"
+#include "filename/visitors/filename-condition-visitor.h"
 #include "logger.h"
 
 

@@ -1,4 +1,4 @@
-#include "filename/filename-text-extraction-visitor.h"
+#include "filename/visitors/filename-text-extraction-visitor.h"
 #include <QList>
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"
