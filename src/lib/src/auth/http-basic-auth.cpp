@@ -2,9 +2,13 @@
 #include <utility>
 
 
-HttpBasicAuth::HttpBasicAuth(QString type, int maxPage, QString passwordType)
-	: Auth(std::move(type)), m_maxPage(maxPage), m_passwordType(std::move(passwordType))
-{}
+HttpBasicAuth::HttpBasicAuth(QString type, int maxPage, QString passwordType, QString tokenType)
+	: Auth(std::move(type)), m_maxPage(maxPage), m_passwordType(std::move(passwordType)), m_tokenType(std::move(tokenType))
+{
+	if (m_tokenType.isEmpty()) {
+		m_tokenType = "Basic";
+	}
+}
 
 
 int HttpBasicAuth::maxPage() const
@@ -15,6 +19,11 @@ int HttpBasicAuth::maxPage() const
 QString HttpBasicAuth::passwordType() const
 {
 	return m_passwordType;
+}
+
+QString HttpBasicAuth::tokenType() const
+{
+	return m_tokenType;
 }
 
 QList<AuthSettingField> HttpBasicAuth::settingFields() const

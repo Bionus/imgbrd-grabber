@@ -474,6 +474,11 @@ interface IHttpBasicAuth {
      */
     passwordType?: "password" | "apiKey";
 
+	/**
+	 * The token type to pass in the Authorization header. Defaults to "Basic".
+	 */
+	tokenType?: string;
+
     /**
      * Method to check for successful authentication.
      */
