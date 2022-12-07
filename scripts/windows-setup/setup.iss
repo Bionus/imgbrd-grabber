@@ -247,6 +247,9 @@ Source: "{#SrcDir}\sites\Reddit\www.reddit.com\defaults.ini";              DestD
 Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Szurubooru\icon.png";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Szurubooru\model.js";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Szurubooru\sites.txt";  DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\icon.png";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\model.js";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\sites.txt";  DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
