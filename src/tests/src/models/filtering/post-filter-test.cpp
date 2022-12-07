@@ -66,12 +66,6 @@ TEST_CASE("PostFilter")
 
 	auto img = ImageFactory::build(site, details, profile);
 
-	SECTION("Count")
-	{
-		REQUIRE(PostFilter(QStringList() << "id:<=10000" << "width:>100" << "date:<2017-01-01").count() == 3);
-		REQUIRE(PostFilter(QStringList() << "" << "id:<=10000").count() == 1);
-	}
-
 	SECTION("FilterNumeric")
 	{
 		auto tokens = img->tokens(profile);
@@ -115,5 +109,20 @@ TEST_CASE("PostFilter")
 		// All match
 		filters = PostFilter(QStringList() << "-id:<=10000" << "-width:>100" << "-date:<2017-01-01").match(tokens);
 		REQUIRE(filters == QStringList() << "image's id match" << "image's width match" << "image's date match");
+	}
+
+	SECTION("Advanced mode")
+	{
+		auto tokens = img->tokens(profile);
+
+		QStringList filters;
+
+		// No match
+		filters = PostFilter("(rating:safe & tag1) | rating:q").match(tokens);
+		REQUIRE(filters == QStringList());
+
+		// All match
+		filters = PostFilter("(rating:explicit & tag1) | rating:q").match(tokens);
+		REQUIRE(filters == QStringList() << "post-filter");
 	}
 }
