@@ -172,9 +172,7 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const i in data) {
                         const img = parseTweet(data[i], false);
-                        if (img !== false) {
-                            images.push(img as any);
-                        }
+                        images.push(img as any);
                     }
 
                     return { images };
