@@ -8,11 +8,11 @@ describe("Twitter", () => {
     describe("JSON API", () => {
         describe("Search", () => {
             it("works for basic listing", () => {
-                expect(search(source.apis.json, "Twitter")).toEqual("/1.1/statuses/user_timeline.json?count=10&include_rts=true&exclude_replies=false&tweet_mode=extended&screen_name=Twitter")
+                expect(search(source.apis.json, "Twitter")).toEqual("/1.1/statuses/user_timeline.json?count=10&include_rts=true&tweet_mode=extended&exclude_replies=false&screen_name=Twitter")
             });
 
             it("correctly detect flags", () => {
-                expect(search(source.apis.json, "Twitter retweets:no replies:no")).toEqual("/1.1/statuses/user_timeline.json?count=10&include_rts=false&exclude_replies=true&tweet_mode=extended&screen_name=Twitter")
+                expect(search(source.apis.json, "Twitter retweets:no replies:no")).toEqual("/1.1/statuses/user_timeline.json?count=10&include_rts=false&tweet_mode=extended&exclude_replies=true&screen_name=Twitter")
             });
 
             it("parses the response correctly", () => {
