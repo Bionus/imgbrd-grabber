@@ -4,6 +4,7 @@
         "forin": false,
         "max-line-length": false,
         "member-ordering": false,
+        "no-console": false,
         "no-string-literal": false,
         "no-unnecessary-initializer": false,
         "object-literal-key-quotes": false,
