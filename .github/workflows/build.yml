@@ -117,6 +117,12 @@ jobs:
             ../build/gui/tests/gui-tests
             ../build/crash-reporter/tests/crash-reporter-tests
 
+      - name: Test sites
+        working-directory: src/sites
+        run: |
+          npm ci
+          npm run test
+
       - name: Capture coverage info
         run: |
           lcov --directory . --capture --output-file coverage.info
