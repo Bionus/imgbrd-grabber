@@ -5096,12 +5096,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Wyszukaj</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Usunięte tagi</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="322"/>
