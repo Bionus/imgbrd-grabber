@@ -4931,7 +4931,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Nombre</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
@@ -5094,7 +5094,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Buscar</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
