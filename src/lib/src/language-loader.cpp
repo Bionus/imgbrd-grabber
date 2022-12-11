@@ -79,6 +79,7 @@ QLocale LanguageLoader::localeFromString(const QString &lang)
 		{ "Polish", QLocale::Polish },
 		{ "Portuguese", QLocale::Portuguese },
 		{ "Russian", QLocale::Russian },
+		{ "Vietnamese", QLocale::Vietnamese },
 		{ "Spanish", QLocale::Spanish }
 	};
 	if (languages.contains(lang)) {
