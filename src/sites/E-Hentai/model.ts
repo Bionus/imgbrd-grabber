@@ -232,19 +232,24 @@ export const source: ISource = {
                     }*/
 
                     const images: IImage[] = [];
-                    const matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
+                    let matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
+                    if (matches.length < 1) {
+                        matches = Grabber.regexMatches('<div class="gdtl"[^>]*><a href="(?<page_url>[^"]+)"><img[^>]*src="(?<preview_url>[^"]+)"[^>]*></a></div>', src);
+                    }
                     for (const match of matches) {
-                        const styles = cssToObject(match["div_style"]);
-                        delete match["div_style"];
+						if ("div_style" in match) {
+							const styles = cssToObject(match["div_style"]);
+							delete match["div_style"];
 
-                        const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
-                        match["preview_url"] = background[1];
-                        match["preview_rect"] = [
-                            -sizeToInt(background[2]),
-                            -sizeToInt(background[3]),
-                            sizeToInt(styles["width"]),
-                            sizeToInt(styles["height"]),
-                        ].join(";"); // x;y;w;h
+							const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
+							match["preview_url"] = background[1];
+							match["preview_rect"] = [
+								-sizeToInt(background[2]),
+								-sizeToInt(background[3]),
+								sizeToInt(styles["width"]),
+								sizeToInt(styles["height"]),
+							].join(";"); // x;y;w;h
+						}
 
                         match["created_at"] = posted;
                         match["author"] = author;
