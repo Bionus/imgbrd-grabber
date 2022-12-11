@@ -23,9 +23,18 @@ env:
   ANDROID_NDK_VERSION: 21.4.7075529
 
 jobs:
+  # Gatekeeper job to skip build for Crowdin PRs
+  gatekeeper:
+    name: Gatekeeper
+    if: startsWith(github.head_ref, 'crowdin') == false
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "OK"
+
   uncrustify:
     name: Uncrustify
     runs-on: ubuntu-18.04
+    needs: gatekeeper
 
     env:
       UNCRUSTIFY_COMMIT: 8edb7262e855c4271e9e5fc26af93861103e14fa
@@ -73,6 +82,7 @@ jobs:
   coverage:
     name: Code coverage
     runs-on: ubuntu-18.04
+    needs: gatekeeper
 
     env:
       COVERAGE: 1
@@ -135,6 +145,7 @@ jobs:
   version:
     name: Version
     runs-on: ubuntu-latest
+    needs: gatekeeper
 
     outputs:
       version: ${{ steps.get-version.outputs.version }}
