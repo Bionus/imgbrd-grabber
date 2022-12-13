@@ -58,7 +58,6 @@ export const source: ISource = {
                     };
                 },
                 parse: (src: string): IParsedSearch => {
-                    console.log(src)
                     const data = JSON.parse(src);
                     return {
                         images: data.results.map(buildImage),
