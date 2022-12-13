@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Bionus <bio.nus@hotmail.fr> -->
 <component type="desktop-application">
-	<id>org.bionus.grabber</id>
+	<id>org.bionus.Grabber</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>Apache-2.0</project_license>
 
-	<icon type="stock">grabber</icon>
 	<name>Grabber</name>
 	<summary>Very customizable imageboard/booru downloader with powerful filenaming features</summary>
 
@@ -13,7 +12,7 @@
 		<p>Very customizable imageboard/booru downloader with powerful filenaming features.</p>
 	</description>
 
-	<launchable type="desktop-id">grabber.desktop</launchable>
+	<launchable type="desktop-id">org.bionus.Grabber.desktop</launchable>
 
 	<screenshots>
 		<screenshot type="default">
@@ -162,7 +161,7 @@
 	</releases>
 
 	<provides>
-		<id>grabber.desktop</id>
+		<id>org.bionus.Grabber.desktop</id>
 	</provides>
 
 	<categories>
