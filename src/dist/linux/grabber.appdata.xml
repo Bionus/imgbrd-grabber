@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Bionus <bio.nus@hotmail.fr> -->
 <component type="desktop-application">
-	<id>com.bionus.grabber</id>
+	<id>org.bionus.grabber</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>Apache-2.0</project_license>
 

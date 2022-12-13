@@ -1,4 +1,4 @@
-package com.bionus.grabber;
+package org.bionus.grabber;
 
 import org.qtproject.qt5.android.QtNative;
 
@@ -12,7 +12,7 @@ import android.support.v4.content.FileProvider;
 
 public class ShareUtils
 {
-	private static String AUTHORITY = "com.bionus.grabber.fileprovider";
+	private static String AUTHORITY = "org.bionus.grabber.fileprovider";
 
 	protected ShareUtils()
 	{}
@@ -44,10 +44,10 @@ public class ShareUtils
         try {
             uri = FileProvider.getUriForFile(QtNative.activity(), AUTHORITY, imageFileToShare);
         } catch (IllegalArgumentException e) {
-            Log.d("com.bionus.grabber.ShareUtils.sendFile", "Cannot share file: " + e.toString());
+            Log.d("org.bionus.grabber.ShareUtils.sendFile", "Cannot share file: " + e.toString());
             return false;
         }
-		Log.d("com.bionus.grabber.ShareUtils.sendFile", uri.toString());
+		Log.d("org.bionus.grabber.ShareUtils.sendFile", uri.toString());
 
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);

@@ -56,7 +56,7 @@ set(USE_SSL 1)
 set(ANDROID_APP_NAME ${PROJECT_NAME})
 set(ANDROID_APP_VERSION_NAME ${VERSION})
 set(ANDROID_APP_VERSION_CODE 1)
-set(ANDROID_APP_PACKAGE_NAME "com.bionus.grabber")
+set(ANDROID_APP_PACKAGE_NAME "org.bionus.grabber")
 
 message(STATUS "Configuring for version '${VERSION}'")
 message(STATUS "Configuring for platform '${VERSION_PLATFORM}' (${CMAKE_SYSTEM_PROCESSOR})")
