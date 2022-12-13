@@ -35,7 +35,7 @@
 
 
 Site::Site(QString url, Source *source, Profile *profile)
-	: Site(url, source->getEngine(), source->getPath().readWritePath(url), profile)
+	: Site(url, source->getEngine(), source->getPath().readWritePath(QString(url).replace(':', '_')), profile)
 {}
 
 Site::Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile)
