@@ -23,7 +23,7 @@ class SourceEngine;
 /**
  * Represents a Grabber source, an engine and the associated settings.
  *
- * @see https://bionus.github.io/imgbrd-grabber/docs/sites/source.html
+ * @see https://www.bionus.org/imgbrd-grabber/docs/sites/source.html
  */
 class Source : public QObject
 {
@@ -37,7 +37,7 @@ class Source : public QObject
 		 * active sites using that source, `supported.txt`, containing a semi-exhaustive list of sites that this source
 		 * supports, and `icon.png`, an icon for this source.
 		 *
-		 * @see https://bionus.github.io/imgbrd-grabber/docs/sites/source.html
+		 * @see https://www.bionus.org/imgbrd-grabber/docs/sites/source.html
 		 *
 		 * @param dir The directory to load the source from.
 		 */

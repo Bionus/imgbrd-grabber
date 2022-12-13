@@ -8,7 +8,7 @@ Hey everyone!
 
 &nbsp;
 
-Tag databases, while documented [on this very website](https://bionus.github.io/imgbrd-grabber/docs/tools/tag-loader.html), is a little-known feature of Grabber.
+Tag databases, while documented [on this very website](https://www.bionus.org/imgbrd-grabber/docs/tools/tag-loader.html), is a little-known feature of Grabber.
 However, they are very useful, and as such there is ongoing work to make them more easy to use.
 
 <!--more-->

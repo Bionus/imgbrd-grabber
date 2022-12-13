@@ -17,26 +17,26 @@
 	<screenshots>
 		<screenshot type="default">
 			<caption>Search results</caption>
-			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/search-basic.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Batch download window</caption>
-			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/download.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/download.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Source settings</caption>
-			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/sources.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/sources.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Filename settings</caption>
-			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/filename.png</image>
 		</screenshot>
 	</screenshots>
 
-	<url type="homepage">https://bionus.github.io/imgbrd-grabber/</url>
+	<url type="homepage">https://www.bionus.org/imgbrd-grabber/</url>
 	<url type="bugtracker">https://github.com/Bionus/imgbrd-grabber/issues</url>
-	<url type="faq">https://bionus.github.io/imgbrd-grabber/docs/faq.html</url>
-	<url type="help">https://bionus.github.io/imgbrd-grabber/docs/</url>
+	<url type="faq">https://www.bionus.org/imgbrd-grabber/docs/faq.html</url>
+	<url type="help">https://www.bionus.org/imgbrd-grabber/docs/</url>
 	<url type="donation">https://www.patreon.com/bionus</url>
 	<url type="translate">https://crowdin.com/project/imgbrd-grabber</url>
 	<url type="vcs-browser">https://github.com/Bionus/imgbrd-grabber</url>

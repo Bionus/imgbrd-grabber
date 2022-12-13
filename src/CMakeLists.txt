@@ -63,7 +63,7 @@ message(STATUS "Configuring for platform '${VERSION_PLATFORM}' (${CMAKE_SYSTEM_P
 
 add_definitions(-DVERSION="${VERSION}")
 add_definitions(-DVERSION_PLATFORM="${VERSION_PLATFORM}")
-add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber")
+add_definitions(-DPROJECT_WEBSITE_URL="https://www.bionus.org/imgbrd-grabber")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DPROJECT_DONATE_PAYPAL_URL="https://www.paypal.me/jvasti")
 add_definitions(-DPROJECT_DONATE_PATREON_URL="https://www.patreon.com/bionus")

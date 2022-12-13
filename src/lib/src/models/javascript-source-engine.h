@@ -20,7 +20,7 @@ class QMutex;
 /**
  * Represents a JavaScript engine for a source, usually stored in a "model.js" file.
  *
- * @see https://bionus.github.io/imgbrd-grabber/docs/sites/source.html
+ * @see https://www.bionus.org/imgbrd-grabber/docs/sites/source.html
  */
 class JavaScriptSourceEngine : public SourceEngine
 {
