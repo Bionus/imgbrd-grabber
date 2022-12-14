@@ -19,6 +19,7 @@ class ImageContextMenu : public QMenu
 		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, MainWindow *mw, QWidget *parent = nullptr);
 
 	protected slots:
+		void copyAllTagsToClipboard();
 		void openInBrowser();
 		void searchMd5();
 		void reverseImageSearch(int i);
