@@ -26,7 +26,7 @@ export const source: ISource = {
                 },
                 parse: (src: string, statusCode: number): IParsedSearch | IError => {
                     return {
-                        images: Grabber.regexToImages('<figure id="sid-(?<id>\\d+)" class="r-(?<rating>[^"]+) t-image u-(?<author>[^"]+)">.+?<img.+?src="(?<preview_url>[^"]+)"\\s*data-width="(?<preview_width>[0-9.]+)"\\s*data-height="(?<preview_height>[0-9.]+)"', src),
+                        images: Grabber.regexToImages('<figure id="sid-(?<id>\\d+)" class="r-(?<rating>[^"]+) t-image u-(?<author>[^" ]+)[^"]*"[^>]*>.+?<img.+?src="(?<preview_url>[^"]+)"\\s*data-width="(?<preview_width>[0-9.]+)"\\s*data-height="(?<preview_height>[0-9.]+)"', src),
                         imageCount: Grabber.regexToConst("count", "\\(\\d+ - \\d+ of (?<count>\\d+)\\)", src),
                     };
                 },
