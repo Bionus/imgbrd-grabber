@@ -33,8 +33,8 @@ StartWindow::StartWindow(Profile *profile, QWidget *parent)
 	// Sources
 	QStringList sources = profile->getSites().keys();
 	ui->comboSource->addItems(sources);
-	if (sources.contains("danbooru.donmai.us")) {
-		ui->comboSource->setCurrentText("danbooru.donmai.us");
+	if (sources.contains("safebooru.org")) {
+		ui->comboSource->setCurrentText("safebooru.org");
 	}
 
 	// Default values
