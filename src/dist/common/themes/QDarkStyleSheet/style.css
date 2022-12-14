@@ -1096,7 +1096,7 @@ QPushButton::menu-indicator  {
     left: 8px;
 }
 
-QTableView
+QTableView, QTableWidget
 {
     border: 1px solid #76797C;
     gridline-color: #31363b;
@@ -1104,17 +1104,17 @@ QTableView
 }
 
 
-QTableView, QHeaderView
+QTableView, QTableWidget, QHeaderView
 {
     border-radius: 0px;
 }
 
-QTableView::item:pressed, QListView::item:pressed, QTreeView::item:pressed  {
+QTableView::item:pressed, QTableWidget::item:pressed, QListView::item:pressed, QTreeView::item:pressed  {
     background: #18465d;
     color: #eff0f1;
 }
 
-QTableView::item:selected:active, QTreeView::item:selected:active, QListView::item:selected:active  {
+QTableView::item:selected:active, QTableWidget::item:selected:active, QTreeView::item:selected:active, QListView::item:selected:active  {
     background: #287399;
     color: #eff0f1;
 }
