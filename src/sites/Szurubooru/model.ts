@@ -63,6 +63,7 @@ export const source: ISource = {
         json: {
             name: "JSON",
             auth: ["basic", "token"],
+            maxLimit: 100,
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): IRequest => {
                     const offset = (query.page - 1) * opts.limit;
