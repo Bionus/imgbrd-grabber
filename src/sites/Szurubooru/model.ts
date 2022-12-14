@@ -123,7 +123,7 @@ export const source: ISource = {
                     }
                     const offset = (query.page - 1) * opts.limit;
                     return {
-                        url: "/api/tags?offset=" + offset + "&limit=" + opts.limit + "&query=" + orderMap[query.order],
+                        url: "/api/tags?offset=" + offset + "&limit=" + opts.limit + "&query=sort:" + orderMap[query.order],
                         headers: {
                             "Accept": "application/json",
                         },
