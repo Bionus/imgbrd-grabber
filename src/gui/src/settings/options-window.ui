@@ -1752,14 +1752,14 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
          <widget class="QLabel" name="labelGetUnloadedPages">
           <property name="font">
            <font>
@@ -1774,14 +1774,14 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkInvertToggle">
           <property name="text">
            <string>Invert Click and Ctrl+Click actions</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QLabel" name="labelInvertToggle">
           <property name="font">
            <font>
@@ -1792,6 +1792,16 @@
            <string>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</string>
           </property>
           <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkShowFilteredImagesCount">
+          <property name="text">
+           <string>Show filtered images count</string>
+          </property>
+          <property name="checked">
            <bool>true</bool>
           </property>
          </widget>

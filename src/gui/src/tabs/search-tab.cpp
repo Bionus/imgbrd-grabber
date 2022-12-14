@@ -814,10 +814,16 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	const QString imageCountStr = imageCount > 0
 		? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount)
 		: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
-	const QString filteredCountStr = filteredImages > 0 ? " - " + tr("%1 filtered").arg(filteredImages) : "";
 
 	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr);
-	txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel + filteredCountStr);
+	QString label = "<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel;
+
+	// Filtered images count
+	if (filteredImages > 0 && m_settings->value("showFilteredImagesCount", true).toBool()) {
+		label += " - " + tr("%1 filtered").arg(filteredImages);
+	}
+
+	txt->setText(label);
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool()) {
 		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", Qt::SkipEmptyParts);
