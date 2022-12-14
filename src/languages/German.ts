@@ -16,12 +16,12 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation type="unfinished"/>
+      <translation>Besonderen Dank an alle Mitwirkenden, die dabei geholfen haben, das Programm über die Jahre zu verbessern. Sei es durch Hilfe beim Code, Übersetzungen oder melden von Fehlern und vorschlagen von neuen Features.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
-      <translation type="unfinished"/>
+      <translation>&lt;u&gt;Mitwirkende:&lt;/u&gt; {contributors}</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded files</source>
-      <translation type="unfinished"/>
+      <translation>Heruntergeladenen Dateien folgen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -518,12 +518,12 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="49"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Elemente auf der Blacklist holen</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="50"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"/>
+      <translation>Galerien als eins zählen</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="51"/>
@@ -601,12 +601,12 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
       <source>File size</source>
-      <translation type="unfinished"/>
+      <translation>Dateigröße</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="46"/>
       <source>Dimensions</source>
-      <translation type="unfinished"/>
+      <translation>Größen</translation>
     </message>
   </context>
   <context>
@@ -630,7 +630,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="119"/>
       <source>Single files</source>
-      <translation type="unfinished"/>
+      <translation>Einzelne Dateien</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="186"/>
@@ -676,12 +676,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Move to top</source>
-      <translation type="unfinished"/>
+      <translation>Nach oben bewegen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="125"/>
       <source>Move to bottom</source>
-      <translation type="unfinished"/>
+      <translation>Nach unten bewegen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="128"/>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="553"/>
       <source>Some downloads were started but not finished. Do you want to continue from where you left off?</source>
-      <translation type="unfinished"/>
+      <translation>Einige Downloads wurden angefangen, aber nicht fertiggestellt. Möchtet du weitermachen, wo du aufgehört hast?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="573"/>
@@ -1012,7 +1012,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="138"/>
       <source>Edit sources</source>
-      <translation type="unfinished"/>
+      <translation>Quellen bearbeiten</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="146"/>
@@ -1042,7 +1042,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="50"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>Priorität</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="194"/>
@@ -1095,7 +1095,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="44"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>Priorität</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="49"/>
@@ -1130,7 +1130,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="85"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>Priorität</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="90"/>
@@ -1210,7 +1210,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
       <source>You don't have any favorite yet.</source>
-      <translation type="unfinished"/>
+      <translation>Du hast noch keine Favoriten.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="149"/>
@@ -1226,7 +1226,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="424"/>
       <source>Mark as last viewed</source>
-      <translation type="unfinished"/>
+      <translation>Als zuletzt gesehen markieren</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="431"/>
@@ -1297,7 +1297,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Beobachten</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -1530,7 +1530,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/language-loader.cpp" line="93"/>
       <source>en_US</source>
-      <translation type="unfinished"/>
+      <translation>en_US</translation>
     </message>
   </context>
   <context>
@@ -1553,7 +1553,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open settings directory</source>
-      <translation type="unfinished"/>
+      <translation>Einstellungs-Verzeichnis öffnen</translation>
     </message>
   </context>
   <context>
@@ -1775,32 +1775,32 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="450"/>
       <source>Save downloads list</source>
-      <translation type="unfinished"/>
+      <translation>Download-Liste speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="459"/>
       <source>Load downloads list</source>
-      <translation type="unfinished"/>
+      <translation>Download-Liste laden</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="464"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>MD5 Datenbankkonverter</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="473"/>
       <source>Donate with PayPal</source>
-      <translation type="unfinished"/>
+      <translation>Spenden über PayPal</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="482"/>
       <source>Donate with Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Spenden über Patreon</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="487"/>
       <source>Prune sources</source>
-      <translation type="unfinished"/>
+      <translation>Quellen löschen</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="157"/>
@@ -1835,12 +1835,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="914"/>
       <source>Unlock tab</source>
-      <translation type="unfinished"/>
+      <translation>Tab entriegeln</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="919"/>
       <source>Lock tab</source>
-      <translation type="unfinished"/>
+      <translation>Tab verriegeln</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="758"/>
@@ -1853,12 +1853,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>MD5 Datenbankkonverter</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
       <source>Generate a SQLite MD5 database using an existing TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>Eine SQLite MD5-Datenbank durch eine vorhandene TXT MD5-Datenbank generieren.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
@@ -1873,7 +1873,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
       <source>You are not using a TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>Du verwendest keine TXT MD5-Datenbank.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
@@ -1883,7 +1883,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation type="unfinished"/>
+      <translation>%n md5(s) konvertiert (von %1)</translation>
     </message>
   </context>
   <context>
@@ -1896,7 +1896,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
       <source>This tool will add the MD5 of all the files found in the folder set below to your MD5 list.</source>
-      <translation type="unfinished"/>
+      <translation>Dieses Tool wird die MD5 von allen Dateien hinzufügen, die im Ordner unter deiner MD5-Liste gefunden worden.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="37"/>
@@ -1977,12 +1977,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="47"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Intervall</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="48"/>
       <source>Action</source>
-      <translation type="unfinished"/>
+      <translation>Aktion</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
@@ -1992,27 +1992,27 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="50"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>Letzte Überprüfung</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
       <source>Next check</source>
-      <translation type="unfinished"/>
+      <translation>Nächste Überprüfung</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="52"/>
       <source>Last state</source>
-      <translation type="unfinished"/>
+      <translation>Letzter Status</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="53"/>
       <source>Last state count</source>
-      <translation type="unfinished"/>
+      <translation>Letzte Zustandsanzahl</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="54"/>
       <source>Last state since</source>
-      <translation type="unfinished"/>
+      <translation>Letzter Status seit</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
@@ -2025,7 +2025,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="20"/>
       <source>Edit a monitor</source>
-      <translation type="unfinished"/>
+      <translation>Überwachung bearbeiten</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
@@ -2050,7 +2050,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>Letzte Überprüfung</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
@@ -2060,7 +2060,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="83"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Intervall</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
@@ -2076,23 +2076,23 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="113"/>
       <source>Edit sources</source>
-      <translation type="unfinished"/>
+      <translation>Quellen bearbeiten</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="120"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Verzögerung</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="138"/>
       <source>Notification</source>
-      <translation type="unfinished"/>
+      <translation>Benachrichtigung</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="144"/>
       <location filename="../gui/src/monitor-window.ui" line="161"/>
       <source>Enabled</source>
-      <translation type="unfinished"/>
+      <translation>Aktiviert</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="155"/>
@@ -2117,12 +2117,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="197"/>
       <source>Download blacklisted images</source>
-      <translation type="unfinished"/>
+      <translation>Bilder auf der Blacklist herunterladen</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="42"/>
       <source>You need to enable the system tray icon to use notifications.</source>
-      <translation type="unfinished"/>
+      <translation>Du musst das Systemablage-Icon aktivieren, um Benachrichtigungen zu verwenden.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="53"/>
@@ -2170,12 +2170,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="104"/>
       <source>Stop</source>
-      <translation type="unfinished"/>
+      <translation>Stopp</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
       <source>Start now</source>
-      <translation type="unfinished"/>
+      <translation>Jetzt starten</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="74"/>
@@ -2406,17 +2406,17 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="58"/>
       <source>Registries</source>
-      <translation type="unfinished"/>
+      <translation>Registrierungen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="127"/>
       <source>Buttons</source>
-      <translation type="unfinished"/>
+      <translation>Knöpfe</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="189"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>Sichern</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
@@ -2503,12 +2503,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="642"/>
       <source>New sources and sites can be supported by adding third-party source registries.</source>
-      <translation type="unfinished"/>
+      <translation>Neue Quellen und Seiten können durch Hinzufügen der Drittanbieter-Quellenregistrierungen unterstützt werden.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="655"/>
       <source>Add a new source registry</source>
-      <translation type="unfinished"/>
+      <translation>Neue Quellenregistrierung hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="682"/>
@@ -2656,7 +2656,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1113"/>
       <source>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</source>
-      <translation type="unfinished"/>
+      <translation>Bedingte Dateinamen werden von oben nach unten ausgewertet, wobei jede die Vorherige überschreibt. Dies bedeutet, dass der letzte Dateiname Priorität vor dem Ersten hat.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1123"/>
@@ -2676,34 +2676,34 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1244"/>
       <source>Windows Property System</source>
-      <translation type="unfinished"/>
+      <translation>Windows-Eigenschaftssystem</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1253"/>
       <location filename="../gui/src/settings/options-window.ui" line="1292"/>
       <source>Add new property</source>
-      <translation type="unfinished"/>
+      <translation>Neue Eigenschaft hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1260"/>
       <location filename="../gui/src/settings/options-window.ui" line="1279"/>
       <source>Extensions</source>
-      <translation type="unfinished"/>
+      <translation>Erweiterungen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1273"/>
       <source>Exiftool</source>
-      <translation type="unfinished"/>
+      <translation>Exiftool</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1299"/>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>Version</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1306"/>
       <source>Loading...</source>
-      <translation type="unfinished"/>
+      <translation>Lade...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1320"/>
@@ -2713,22 +2713,22 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1332"/>
       <source>Resize</source>
-      <translation type="unfinished"/>
+      <translation>Größe anpassen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1338"/>
       <source>Max width</source>
-      <translation type="unfinished"/>
+      <translation>Breite (max.)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1358"/>
       <source>Max height</source>
-      <translation type="unfinished"/>
+      <translation>Höhe (max.)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1383"/>
       <source>Images bigger than the max width and/or height will be resized to fit.</source>
-      <translation type="unfinished"/>
+      <translation>Bilder, größer, als die maximale Breite und/oder Höhe werden entsprechend angepasst.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1416"/>
@@ -2850,37 +2850,37 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1634"/>
       <source>Decline dialogue</source>
-      <translation type="unfinished"/>
+      <translation>Dialog ablehnen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2007"/>
       <source>Go to first page</source>
-      <translation type="unfinished"/>
+      <translation>Zur ersten Seite gehen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2025"/>
       <source>Go to previous page</source>
-      <translation type="unfinished"/>
+      <translation>Zur vorherigen Seite gehen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2043"/>
       <source>Go to next page</source>
-      <translation type="unfinished"/>
+      <translation>Zur nächsten Seite gehen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2061"/>
       <source>Go to last page</source>
-      <translation type="unfinished"/>
+      <translation>Zur letzten Seite gehen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5463"/>
       <source>Generate a backup</source>
-      <translation type="unfinished"/>
+      <translation>Backup erstellen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5473"/>
       <source>Restore a backup</source>
-      <translation type="unfinished"/>
+      <translation>Backup wiederherstellen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1627"/>
@@ -2891,7 +2891,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1620"/>
       <source>Accept dialogue</source>
-      <translation type="unfinished"/>
+      <translation>Dialog akzeptieren</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1665"/>
@@ -2971,7 +2971,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1842"/>
       <source>Quit application</source>
-      <translation type="unfinished"/>
+      <translation>Programm beenden</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1857"/>
@@ -2981,13 +2981,13 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1873"/>
       <source>Focus search field</source>
-      <translation type="unfinished"/>
+      <translation>Suchfeld fokussieren</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1885"/>
       <location filename="../gui/src/settings/options-window.ui" line="4154"/>
       <source>S</source>
-      <translation type="unfinished"/>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1901"/>
@@ -3012,7 +3012,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1957"/>
       <source>Open previous tab</source>
-      <translation type="unfinished"/>
+      <translation>Vorherigen Tab öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1969"/>
@@ -3022,7 +3022,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1985"/>
       <source>Open next tab</source>
-      <translation type="unfinished"/>
+      <translation>Nächsten Tab öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1997"/>
@@ -3032,7 +3032,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2085"/>
       <source>Call external application to browse save directory</source>
-      <translation type="unfinished"/>
+      <translation>Externe Anwendung aufrufen, um das Speicherverzeichnis des Browsers zu durchsuchen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2097"/>
@@ -3204,53 +3204,53 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="83"/>
       <source>Metadata</source>
-      <translation type="unfinished"/>
+      <translation>Metadaten</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="98"/>
       <source>Image size</source>
-      <translation type="unfinished"/>
+      <translation>Bildgröße</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="108"/>
       <source>Main window</source>
-      <translation type="unfinished"/>
+      <translation>Hauptfenster</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="117"/>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
       <source>Shortcuts</source>
-      <translation type="unfinished"/>
+      <translation>Tastenkombinationen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="375"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
-      <translation type="unfinished"/>
+      <translation>Globalen Beitragsfilter ausdrücklich zum Tab des Beitragsfilter-Feldes hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="396"/>
       <source>Use system locale for dates and numbers</source>
-      <translation type="unfinished"/>
+      <translation>Systemeinstellungen für Datum und Zahlen verwenden</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="907"/>
       <source>Temporary directory</source>
-      <translation type="unfinished"/>
+      <translation>Temporäres Verzeichnis</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="919"/>
       <source>Leave empty to use the default temporary directory.</source>
-      <translation type="unfinished"/>
+      <translation>Für die Nutzung des Standardverzeichnis leer lassen.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="943"/>
       <source>If it's in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>Wenn es sich im selben Verzeichnis befindet</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1094"/>
       <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
-      <translation type="unfinished"/>
+      <translation>Wenn der Dateiname länger, als diese Zahl ist, wird es gekürzt. Wert auf 0 lassen, um das Standardlimit zu verwenden. Unter Windows-Systemen nicht auf über 260 setzen, es sei denn, du weißt, was du tust.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2226"/>
@@ -3260,22 +3260,22 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2452"/>
       <source>Scale up small images to fit window</source>
-      <translation type="unfinished"/>
+      <translation>Kleine Bilder an das Fenster anpassen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2459"/>
       <source>Use built-in video player</source>
-      <translation type="unfinished"/>
+      <translation>Internen Videoplayer verwenden</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2489"/>
       <source>Show video player controls</source>
-      <translation type="unfinished"/>
+      <translation>Videoplayer-Steuerung anzeigen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2499"/>
       <source>Show GIF player controls</source>
-      <translation type="unfinished"/>
+      <translation>GIF-Player-Steuerung anzeigen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4002"/>
@@ -3285,19 +3285,19 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4014"/>
       <source>Esc</source>
-      <translation type="unfinished"/>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2555"/>
       <location filename="../gui/src/settings/options-window.ui" line="4030"/>
       <source>Prev</source>
-      <translation type="unfinished"/>
+      <translation>Zur</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2700"/>
       <location filename="../gui/src/settings/options-window.ui" line="4058"/>
       <source>Next</source>
-      <translation type="unfinished"/>
+      <translation>Vor</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2836"/>
@@ -3308,7 +3308,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4098"/>
       <source>D</source>
-      <translation type="unfinished"/>
+      <translation>D</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4114"/>
@@ -3318,7 +3318,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4126"/>
       <source>Shift+S</source>
-      <translation type="unfinished"/>
+      <translation>Shift+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3253"/>
@@ -3329,7 +3329,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4182"/>
       <source>W</source>
-      <translation type="unfinished"/>
+      <translation>W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4198"/>
@@ -3339,7 +3339,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4210"/>
       <source>O</source>
-      <translation type="unfinished"/>
+      <translation>O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3531"/>
@@ -3350,7 +3350,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4238"/>
       <source>Alt+S</source>
-      <translation type="unfinished"/>
+      <translation>Alt+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3670"/>
@@ -3361,32 +3361,32 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1426"/>
       <source>Thumbnail scaling</source>
-      <translation type="unfinished"/>
+      <translation>Vorschaubild-Skalierung</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1648"/>
       <source>Scale font size</source>
-      <translation type="unfinished"/>
+      <translation>Schriftgröße skalieren</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2107"/>
       <source>Back out from favorites results</source>
-      <translation type="unfinished"/>
+      <translation>Aus den Favoritenergebnissen entfernen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2469"/>
       <source>Remember button drawer state</source>
-      <translation type="unfinished"/>
+      <translation>Schaltflächenstatus merken</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2479"/>
       <source>Remember window geometry</source>
-      <translation type="unfinished"/>
+      <translation>Fenstergeometrie merken</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2552"/>
       <source>Previous media entry</source>
-      <translation type="unfinished"/>
+      <translation>Vorheriger Medieneintrag</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2567"/>
@@ -3400,7 +3400,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3682"/>
       <location filename="../gui/src/settings/options-window.ui" line="3821"/>
       <source>Partial checks are stored in collapsable drawer</source>
-      <translation type="unfinished"/>
+      <translation>Teilweise Überprüfungen werden im einklappbaren Fenster gespeichert</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2570"/>
@@ -3414,7 +3414,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3685"/>
       <location filename="../gui/src/settings/options-window.ui" line="3824"/>
       <source>Enable</source>
-      <translation type="unfinished"/>
+      <translation>Aktivieren</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2602"/>
@@ -3428,7 +3428,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3717"/>
       <location filename="../gui/src/settings/options-window.ui" line="3856"/>
       <source>Ascending from left to right</source>
-      <translation type="unfinished"/>
+      <translation>Aufsteigend von links nach rechts</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2617"/>
@@ -3442,7 +3442,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3726"/>
       <location filename="../gui/src/settings/options-window.ui" line="3865"/>
       <source>Position: </source>
-      <translation type="unfinished"/>
+      <translation>Position: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2646"/>
@@ -3456,7 +3456,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3758"/>
       <location filename="../gui/src/settings/options-window.ui" line="3897"/>
       <source>Button display text</source>
-      <translation type="unfinished"/>
+      <translation>Schaltflächenanzeige</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2678"/>
@@ -3470,7 +3470,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3784"/>
       <location filename="../gui/src/settings/options-window.ui" line="3923"/>
       <source>Smaller numbers make for smaller buttons</source>
-      <translation type="unfinished"/>
+      <translation>Kleinere Zahlen erzeugen kleinere Schaltflächen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2681"/>
@@ -3484,72 +3484,72 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="3787"/>
       <location filename="../gui/src/settings/options-window.ui" line="3926"/>
       <source>Width: </source>
-      <translation type="unfinished"/>
+      <translation>Breite: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2697"/>
       <source>Next media entry</source>
-      <translation type="unfinished"/>
+      <translation>Nächster Medieneintrag</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2833"/>
       <source>View media details</source>
-      <translation type="unfinished"/>
+      <translation>Mediendetails anzeigen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2972"/>
       <source>Save file with specified path</source>
-      <translation type="unfinished"/>
+      <translation>Datei mit dem angegebenen Pfad speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2975"/>
       <source>Save As...</source>
-      <translation type="unfinished"/>
+      <translation>Speichern unter...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3111"/>
       <source>Save file to usual path</source>
-      <translation type="unfinished"/>
+      <translation>Datei im üblichen Pfad speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3250"/>
       <source>Save file to usual path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>Datei im üblichen Pfad speichern und das Anzeigefenster schließen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3389"/>
       <source>Open usual save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>Üblichen Speicherpfad im Dateiexplorer anzeigen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3392"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>Öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3528"/>
       <source>Save file to favourite path</source>
-      <translation type="unfinished"/>
+      <translation>Datei im favorisierten Verzeichnis speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3667"/>
       <source>Save file to favourite path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>Datei in Favoriten speichern und das Anzeigefenster schließen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3806"/>
       <source>Open favourite save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>Favoriten-Dateipfad in Datei-Explorer öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3809"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Öffnen (Fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4266"/>
       <source>Alt+W</source>
-      <translation type="unfinished"/>
+      <translation>Alt+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4282"/>
@@ -3559,22 +3559,22 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4294"/>
       <source>Alt+O</source>
-      <translation type="unfinished"/>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4310"/>
       <source>Toggle full-screen</source>
-      <translation type="unfinished"/>
+      <translation>Vollbild ein-/ausschalten</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4322"/>
       <source>F11</source>
-      <translation type="unfinished"/>
+      <translation>F11</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4338"/>
       <source>Toggle slideshow</source>
-      <translation type="unfinished"/>
+      <translation>Diashow ein-/ausschalten</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4350"/>
@@ -3584,12 +3584,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4366"/>
       <source>Copy raw media data to clipboard</source>
-      <translation type="unfinished"/>
+      <translation>Rohdaten in die Zwischenablage kopieren</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4378"/>
       <source>C</source>
-      <translation type="unfinished"/>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4388"/>
@@ -3722,17 +3722,17 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4989"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Entfernte Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5004"/>
       <source>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</source>
-      <translation type="unfinished"/>
+      <translation>Diese Tags werden beim Speichern des Bildes nicht berücksichtigt. Sie erscheinen nicht in Token, wie %copyright% oder %all%.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5029"/>
       <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
-      <translation type="unfinished"/>
+      <translation>Ein Tag pro Zeile. Ignorierte Tags werden nicht als einen bestimmten Typ behandelt und erscheinen daher beispielsweise nicht in %copyright%. Sie werden jedoch immer noch in %all% erscheinen.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5043"/>
@@ -3834,13 +3834,13 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5290"/>
       <source>Timeout</source>
-      <translation type="unfinished"/>
+      <translation>Wartezeit</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5313"/>
       <location filename="../gui/src/settings/options-window.ui" line="5390"/>
       <source>Dry run</source>
-      <translation type="unfinished"/>
+      <translation>Testlauf</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5330"/>
@@ -3865,13 +3865,13 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="153"/>
       <source>exiftool not found</source>
-      <translation type="unfinished"/>
+      <translation>exiftool nicht gefunden</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="220"/>
       <location filename="../gui/src/settings/options-window.cpp" line="1197"/>
       <source>Shortcut</source>
-      <translation type="unfinished"/>
+      <translation>Tastenkürzel</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="220"/>
@@ -3879,13 +3879,13 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.cpp" line="1197"/>
       <location filename="../gui/src/settings/options-window.cpp" line="1200"/>
       <source>Hard link</source>
-      <translation type="unfinished"/>
+      <translation>Hard-Link</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="223"/>
       <location filename="../gui/src/settings/options-window.cpp" line="1200"/>
       <source>Symbolic link</source>
-      <translation type="unfinished"/>
+      <translation>Symbolischer Link</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="464"/>
@@ -3900,7 +3900,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="478"/>
       <source>Choose a temporary folder</source>
-      <translation type="unfinished"/>
+      <translation>Wähle einen temporären Ordner</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="565"/>
@@ -3910,7 +3910,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="586"/>
       <source>Add source registry</source>
-      <translation type="unfinished"/>
+      <translation>Quellregistrierung hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="586"/>
@@ -3933,38 +3933,38 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="870"/>
       <source>Save backup</source>
-      <translation type="unfinished"/>
+      <translation>Sicherungskopie speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="870"/>
       <location filename="../gui/src/settings/options-window.cpp" line="888"/>
       <source>Backup file (*.zip)</source>
-      <translation type="unfinished"/>
+      <translation>Sicherungsdatei (*.zip)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="877"/>
       <source>Backup file created successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Sicherungsdatei erfolgreich erstellt.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="879"/>
       <source>Error saving backup file.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Speichern der Sicherungsdatei.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="888"/>
       <source>Load backup</source>
-      <translation type="unfinished"/>
+      <translation>Sicherungsdatei laden</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="895"/>
       <source>Backup restored successfully.</source>
-      <translation type="unfinished"/>
+      <translation>Sicherungsdatei erfolgreich wiederhergestellt.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="897"/>
       <source>Error restoring backup.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Wiederherstellen der Sicherungsdatei.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="906"/>
@@ -3997,7 +3997,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/page.cpp" line="128"/>
       <source>No available API to perform the request.</source>
-      <translation type="unfinished"/>
+      <translation>Keine verfügbare API, um diese Anfrage auszuführen.</translation>
     </message>
   </context>
   <context>
@@ -4141,7 +4141,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="363"/>
       <source>The %num% token does not play well with simultaneous downloads. Consider another method or downloading images one at a time.</source>
-      <translation type="unfinished"/>
+      <translation>Der %num% Token funktioniert nicht gut mit gleichzeitigen Downloads. Wähle eventuell eine andere Methode oder lade die Bilder einzeln herunter.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="369"/>
@@ -4227,73 +4227,73 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
       <source>h 'h' m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h' m 'm'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
       <source>h 'h'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
       <source>m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>m 'm'</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="877"/>
       <location filename="../gui/src/settings/options-window.cpp" line="895"/>
       <source>Success</source>
-      <translation type="unfinished"/>
+      <translation>Erfolgreich</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>B</source>
-      <translation type="unfinished"/>
+      <translation>B</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>KB</source>
-      <translation type="unfinished"/>
+      <translation>KB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>MB</source>
-      <translation type="unfinished"/>
+      <translation>MB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="27"/>
       <location filename="../lib/src/functions.h" line="31"/>
       <source>GB</source>
-      <translation type="unfinished"/>
+      <translation>GB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>KiB</source>
-      <translation type="unfinished"/>
+      <translation>KiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>MiB</source>
-      <translation type="unfinished"/>
+      <translation>MiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="35"/>
       <source>GiB</source>
-      <translation type="unfinished"/>
+      <translation>GiB</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
       <source>Previous search result</source>
-      <translation type="unfinished"/>
+      <translation>Vorheriges Suchergebnis</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
       <source>Next search result</source>
-      <translation type="unfinished"/>
+      <translation>Nächstes Suchergebnis</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4303,7 +4303,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Media details</source>
-      <translation type="unfinished"/>
+      <translation>Mediendetails</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
@@ -4313,7 +4313,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save to irregular location</source>
-      <translation type="unfinished"/>
+      <translation>An unüblichen Ort speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
@@ -4323,7 +4323,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save to usual location</source>
-      <translation type="unfinished"/>
+      <translation>An standardmäßigen Ort speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4359,7 +4359,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
       <source>Already saved</source>
-      <translation type="unfinished"/>
+      <translation>Bereits gespeichert</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
@@ -4374,7 +4374,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save to usual location and close window</source>
-      <translation type="unfinished"/>
+      <translation>An standardmäßigen Ort speichern und Fenster schließen</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
@@ -4384,12 +4384,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>Öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open usual save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Standardmäßigen Speicherort in neuem Fenster öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
@@ -4399,7 +4399,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save to favourite location</source>
-      <translation type="unfinished"/>
+      <translation>An favorisiertem Ort speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4435,7 +4435,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
       <source>Already saved (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Bereits gespeichert (Fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
@@ -4450,7 +4450,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save to favourite location and close window</source>
-      <translation type="unfinished"/>
+      <translation>In Favoriten speichern und Fenster schließen</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
@@ -4460,12 +4460,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Öffnen (Fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open favourite save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>Favoriten Speicherort in neuem Fenster öffnen</translation>
     </message>
   </context>
   <context>
@@ -4474,7 +4474,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Bereits vorhandene Dateien umbenennen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="24"/>
@@ -4499,7 +4499,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
       <source>Destination filename</source>
-      <translation type="unfinished"/>
+      <translation>Zieldateiname</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -4529,7 +4529,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation type="unfinished"/>
+      <translation>ID im Dateinamen abrufen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
@@ -4544,7 +4544,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="73"/>
       <source>If you want to get the ID from the filename, you have to include the %id% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>Wenn du die ID aus dem Dateinamen holen möchtest, musst du den %id% Token beilegen.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
@@ -4565,7 +4565,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="14"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>Bereits vorhandene Dateien umbenennen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="24"/>
@@ -4588,7 +4588,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="28"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>Vorschaubild</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="29"/>
@@ -4606,7 +4606,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="189"/>
       <source>invalid or missing login information</source>
-      <translation type="unfinished"/>
+      <translation>ungültige oder fehlende Login-Informationen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="195"/>
@@ -4661,7 +4661,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
       <source>Multiple sources</source>
-      <translation type="unfinished"/>
+      <translation>Mehrere Quellen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
@@ -4689,7 +4689,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="817"/>
       <source>%1 filtered</source>
-      <translation type="unfinished"/>
+      <translation>%1 gefiltert</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="866"/>
@@ -4956,12 +4956,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="73"/>
       <source>A source supporting '%1' has been found in the registry '%2': '%3'. Install it?</source>
-      <translation type="unfinished"/>
+      <translation>Eine Quelle, die '%1' unterstützt, wurde in der Registry '%2': '%3' gefunden. Installieren?</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="128"/>
       <source>Error importing source.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Importieren der Datei.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="138"/>
@@ -4974,7 +4974,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="17"/>
       <source>Source registry</source>
-      <translation type="unfinished"/>
+      <translation>Quellen-Registrierung</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
@@ -4989,7 +4989,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
       <source>Homepage</source>
-      <translation type="unfinished"/>
+      <translation>Startseite</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
@@ -5093,7 +5093,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="192"/>
       <source>Added tags</source>
-      <translation type="unfinished"/>
+      <translation>Hinzugefügte Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="213"/>
@@ -5147,7 +5147,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="202"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Entfernte Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="322"/>
@@ -5244,7 +5244,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="89"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP Basic</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
@@ -5301,47 +5301,47 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
       <source>OAuth 2 (password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (Passwort)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 2 (JSON password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (JSON-Passwort)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
       <source>OAuth 2 (client credentials)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (Anmeldeinformationen)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="96"/>
       <source>OAuth 2 (client credentials header)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (Client-Anmeldeinformationen-Header)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
       <source>OAuth 2 (refresh token)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (Token aktualisieren)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
       <source>OAuth 2 (authorization code)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (Autorisierungscode)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="99"/>
       <source>OAuth 2 (PKCE)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (PKCE)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="104"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>Nutzer-ID</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>Salz</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="107"/>
@@ -5361,12 +5361,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="110"/>
       <source>Access token</source>
-      <translation type="unfinished"/>
+      <translation>Zugangstoken</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>Refresh token</source>
-      <translation type="unfinished"/>
+      <translation>Token aktualisieren</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="204"/>
@@ -5594,12 +5594,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="71"/>
       <source>Loading tag types...</source>
-      <translation type="unfinished"/>
+      <translation>Lade Tag-Typen...</translation>
     </message>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="81"/>
       <source>Error loading tag types.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Laden der Tag-Typen.</translation>
     </message>
   </context>
   <context>
@@ -5698,7 +5698,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Beobachten</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
@@ -5718,22 +5718,22 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>Monitoring an empty search</source>
-      <translation type="unfinished"/>
+      <translation>Überwachung einer leeren Suche</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>Du bist dabei, eine Überwachung für eine leere Suche hinzuzufügen, welche zu einer Menge Ergebnisse führen kann. Bist du sicher?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>Monitoring a big search</source>
-      <translation type="unfinished"/>
+      <translation>Überwachung einer großen Suche</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>Du bist dabei, eine Überwachung für eine Suche mit einer Menge Ergebnissen hinzuzufügen (%1). Bist du sicher?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
@@ -5804,7 +5804,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/ui/toggle-columns-table-view.cpp" line="52"/>
       <source>Reset sorting</source>
-      <translation type="unfinished"/>
+      <translation>Sortierung zurücksetzen</translation>
     </message>
   </context>
   <context>
@@ -5904,7 +5904,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
       <source>Expand button drawer</source>
-      <translation type="unfinished"/>
+      <translation>Schaltflächenübersicht erweitern</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="447"/>
@@ -5924,7 +5924,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="455"/>
       <source>Copy link</source>
-      <translation type="unfinished"/>
+      <translation>Link kopieren</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="542"/>
@@ -5952,32 +5952,32 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="801"/>
       <source>File not found.</source>
-      <translation type="unfinished"/>
+      <translation>Datei nicht gefunden.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Video</source>
-      <translation type="unfinished"/>
+      <translation>Video</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1367"/>
       <source>Animation</source>
-      <translation type="unfinished"/>
+      <translation>Animation</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="803"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Laden des Bildes.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="805"/>
       <source>Error loading the image's details.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Laden der Bilddetails.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="807"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Speichern des Bildes.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1012"/>
@@ -6011,7 +6011,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Web service</source>
-      <translation type="unfinished"/>
+      <translation>Webservice</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>

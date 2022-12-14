@@ -21,7 +21,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
-      <translation type="unfinished"/>
+      <translation>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="553"/>
       <source>Some downloads were started but not finished. Do you want to continue from where you left off?</source>
-      <translation type="unfinished"/>
+      <translation>Some downloads were started but not finished. Do you want to continue from where you left off?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="573"/>
@@ -2663,7 +2663,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1113"/>
       <source>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</source>
-      <translation type="unfinished"/>
+      <translation>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1123"/>
