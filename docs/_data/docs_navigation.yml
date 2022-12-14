@@ -1,3 +1,9 @@
+- name: Installation
+  children:
+    - link: /docs/install/windows.html
+    - link: /docs/install/linux.html
+    - link: /docs/install/macos.html
+    - link: /docs/install/android.html
 - name: Basics
   children:
     - link: /docs/
