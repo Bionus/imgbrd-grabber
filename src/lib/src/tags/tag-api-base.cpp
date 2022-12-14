@@ -16,9 +16,10 @@ TagApiBase::~TagApiBase()
 	}
 }
 
-void TagApiBase::setUrl(QUrl url)
+void TagApiBase::setUrl(QUrl url, QMap<QString, QString> headers)
 {
 	m_url = std::move(url);
+	m_headers = std::move(headers);
 }
 
 void TagApiBase::load(bool rateLimit)
@@ -34,7 +35,7 @@ void TagApiBase::load(bool rateLimit)
 	}
 
 	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
-	m_reply = m_site->get(m_url, type);
+	m_reply = m_site->get(m_url, type, {}, "", nullptr, m_headers);
 	connect(m_reply, &NetworkReply::finished, this, &TagApiBase::parseInternal);
 }
 

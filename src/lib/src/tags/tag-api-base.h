@@ -1,6 +1,7 @@
 #ifndef TAG_API_BASE_H
 #define TAG_API_BASE_H
 
+#include <QMap>
 #include <QObject>
 #include <QUrl>
 
@@ -27,7 +28,7 @@ class TagApiBase : public QObject
 		void load(bool rateLimit = false);
 
 	protected:
-		void setUrl(QUrl url);
+		void setUrl(QUrl url, QMap<QString, QString> headers = {});
 		virtual void parse(const QString &source, int statusCode, Site *site) = 0;
 
 	public slots:
@@ -46,6 +47,7 @@ class TagApiBase : public QObject
 
 	private:
 		QUrl m_url;
+		QMap<QString, QString> m_headers;
 		NetworkReply *m_reply;
 };
 
