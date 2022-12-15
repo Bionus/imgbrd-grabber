@@ -33,7 +33,7 @@ jobs:
 
   uncrustify:
     name: Uncrustify
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     needs: gatekeeper
 
     env:
@@ -81,7 +81,7 @@ jobs:
 
   coverage:
     name: Code coverage
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     needs: gatekeeper
 
     env:
