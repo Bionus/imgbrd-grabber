@@ -1883,7 +1883,10 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation>%n md5(s) konvertiert (von %1)</translation>
+      <translation>
+        <numerusform>%n md5 konvertiert (von %1)</numerusform>
+        <numerusform>%n md5s konvertiert (von %1)</numerusform>
+      </translation>
     </message>
   </context>
   <context>
