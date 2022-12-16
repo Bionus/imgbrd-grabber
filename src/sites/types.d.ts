@@ -79,7 +79,7 @@ interface IImage {
     tags?: string[] | ITag[];
     ext?: string;
     created_at?: string;
-    date?: string;
+    date?: string; // same as created_at, but only accepts ISO dates
 
     // Full size
     file_url?: string;
@@ -474,6 +474,11 @@ interface IHttpBasicAuth {
      */
     passwordType?: "password" | "apiKey";
 
+	/**
+	 * The token type to pass in the Authorization header. Defaults to "Basic".
+	 */
+	tokenType?: string;
+
     /**
      * Method to check for successful authentication.
      */
@@ -767,7 +772,12 @@ interface IApi {
          * @see {@link ISearchQuery#parsedSearch}
          */
         parseInput?: boolean;
+
+        /**
+         * Whether to still pass HTTP errors to the parse function.
+         */
         parseErrors?: boolean;
+
         url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IRequest | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };

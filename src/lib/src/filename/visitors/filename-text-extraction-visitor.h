@@ -9,6 +9,10 @@
 struct FilenameNodeRoot;
 struct FilenameNodeText;
 
+/**
+ * Visitor to extract all raw text in a given filename.
+ * Useful to detect invalid characters in a filename.
+ */
 class FilenameTextExtractionVisitor : public FilenameVisitorBase
 {
 	public:

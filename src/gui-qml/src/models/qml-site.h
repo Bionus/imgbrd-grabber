@@ -23,7 +23,7 @@ class QmlSite : public QObject
 		{
 			auto auths = m_site->getSourceEngine()->getAuths();
 			for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
-				m_fields.append(new QmlAuth(it.value(), this));
+				m_fields.append(new QmlAuth(it.key(), it.value(), this));
 			}
 		}
 

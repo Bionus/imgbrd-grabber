@@ -45,7 +45,7 @@ class ImageDownloader : public QObject
 
 	private slots:
 		void loadedSave(Image::LoadTagsResult result);
-		void loadImage();
+		void loadImage(bool rateLimit = false);
 		void downloadProgressImage(qint64 v1, qint64 v2);
 		void writeError();
 		void networkError(NetworkReply::NetworkError error, const QString &msg);

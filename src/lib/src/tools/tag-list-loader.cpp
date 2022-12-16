@@ -107,7 +107,7 @@ void TagListLoader::loadTags()
 
 void TagListLoader::loadNextPage()
 {
-	m_currentTagApi = new TagApi(m_profile, m_site, m_api, m_currentPage, 500, "count", this);
+	m_currentTagApi = new TagApi(m_profile, m_site, m_api, m_currentPage, qMin(500, m_api->maxLimit()), "count", this);
 	connect(m_currentTagApi, &TagApi::finishedLoading, this, &TagListLoader::tagsLoaded);
 	m_currentTagApi->load();
 }

@@ -247,6 +247,7 @@ function parseSearchVal(value: string, meta: MetaField): any | null {
         } else if (value === "false" || value === "no" || value === "0") {
             return false;
         }
+        console.warn(`Unknown boolean value: "${value}"`);
         return Boolean(value);
     }
     return null;

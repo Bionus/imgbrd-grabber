@@ -15,6 +15,15 @@ NetworkReply::NetworkReply(QNetworkRequest request, QByteArray data, CustomNetwo
 	init();
 }
 
+NetworkReply::~NetworkReply()
+{
+	abort();
+
+	m_reply->deleteLater();
+	m_reply = nullptr;
+}
+
+
 void NetworkReply::init()
 {
 	timer.setSingleShot(true);
@@ -59,6 +68,9 @@ QNetworkReply::NetworkError NetworkReply::error() const
 	if (m_reply != nullptr) {
 		return m_reply->error();
 	}
+	if (m_aborted) {
+		return QNetworkReply::NetworkError::OperationCanceledError;
+	}
 	return QNetworkReply::NetworkError::NoError;
 }
 
@@ -86,9 +98,11 @@ QByteArray NetworkReply::rawHeader(const QByteArray &headerName) const
 
 bool NetworkReply::isRunning() const
 {
+	// A reply that hasn't been actually started or aborted yet is considered as running
 	if (!m_started && !m_aborted) {
 		return true;
 	}
+
 	return m_reply != nullptr && m_reply->isRunning();
 }
 
@@ -125,9 +139,16 @@ void NetworkReply::startNow()
 
 void NetworkReply::abort()
 {
+	// Do nothing if we are already aborted or already running
+	if (m_aborted || (m_reply != nullptr && !m_reply->isRunning())) {
+		return;
+	}
+
 	m_aborted = true;
 	if (m_reply != nullptr) {
 		m_reply->abort();
+	} else {
+		emit finished();
 	}
 	if (timer.isActive()) {
 		timer.stop();

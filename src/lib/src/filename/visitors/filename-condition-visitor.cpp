@@ -1,4 +1,4 @@
-#include "filename/filename-condition-visitor.h"
+#include "filename/visitors/filename-condition-visitor.h"
 #include <QJSEngine>
 #include <QJSValue>
 #include <QSettings>

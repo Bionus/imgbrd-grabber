@@ -1103,6 +1103,21 @@
       <widget class="QWidget" name="pageSaveConditionals">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
+         <widget class="QLabel" name="label_20">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="buttonFilenames">
           <property name="text">
            <string>Add a conditional filename</string>
@@ -1138,7 +1153,7 @@
              <x>0</x>
              <y>0</y>
              <width>473</width>
-             <height>505</height>
+             <height>466</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1737,14 +1752,14 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
          <widget class="QLabel" name="labelGetUnloadedPages">
           <property name="font">
            <font>
@@ -1759,14 +1774,14 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkInvertToggle">
           <property name="text">
            <string>Invert Click and Ctrl+Click actions</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QLabel" name="labelInvertToggle">
           <property name="font">
            <font>
@@ -1777,6 +1792,16 @@
            <string>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</string>
           </property>
           <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkShowFilteredImagesCount">
+          <property name="text">
+           <string>Show filtered images count</string>
+          </property>
+          <property name="checked">
            <bool>true</bool>
           </property>
          </widget>
@@ -1810,8 +1835,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>495</width>
-             <height>562</height>
+             <width>323</width>
+             <height>682</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2520,7 +2545,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>474</width>
+             <width>388</width>
              <height>710</height>
             </rect>
            </property>
@@ -3970,7 +3995,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>474</width>
+             <width>235</width>
              <height>840</height>
             </rect>
            </property>

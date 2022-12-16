@@ -172,7 +172,12 @@ bool Commands::execute(const QString &command) const
 
 		// Wait for  the command to finish
 		if (!proc.waitForFinished(m_timeout)) {
-			log(QStringLiteral("Command execution timeout"), Logger::Error);
+			if (proc.error() == QProcess::Timedout) {
+				log(QStringLiteral("Command execution timeout"), Logger::Error);
+			} else {
+				log(QStringLiteral("Error executing command: %1").arg(proc.errorString()), Logger::Error);
+			}
+			return false;
 		}
 
 		// Check the return code for error codes (stderr output does not cause a "false" return)

@@ -154,14 +154,16 @@ export const source: ISource = {
                         }
 
                         // User lookup
-                        const params = [
-                            ...commonParams,
-                            "exclude_replies=" + (!search.replies ? "true" : "false"),
-                            search.user_id
-                                ? "user_id=" + search.user_id
-                                : "screen_name=" + encodeURIComponent(search.query),
-                        ];
-                        return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
+                        else {
+                            const params = [
+                                ...commonParams,
+                                "exclude_replies=" + (!search.replies ? "true" : "false"),
+                                search.user_id
+                                    ? "user_id=" + search.user_id
+                                    : "screen_name=" + encodeURIComponent(search.query),
+                            ];
+                            return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
+                        }
                     } catch (e: any) {
                         return { error: e.message };
                     }

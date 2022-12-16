@@ -198,9 +198,9 @@ void PageApi::parse()
 		return;
 	}
 
-	// Detect HTTP 429 / 509 usage limit reached
+	// Detect HTTP 429 / 503 / 509 usage limit reached
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if (statusCode == 429 || statusCode == 509) {
+	if (statusCode == 429 || statusCode == 503 || statusCode == 509) {
 		log(QStringLiteral("[%1][%2] Limit reached (%3). New try.").arg(m_site->url(), m_format, QString::number(statusCode)), Logger::Warning);
 		load(true, true);
 		return;
@@ -261,17 +261,17 @@ void PageApi::parseActual()
 	}
 
 	// Fill data from parsing result
-	if (page.pageCount >= 0) {
-		setPageCount(page.pageCount, true);
-	}
-	if (page.imageCount >= 0) {
-		setImageCount(page.imageCount, true);
-	}
 	for (const Tag &tag : qAsConst(page.tags)) {
 		m_tags.append(tag);
 	}
 	for (const QSharedPointer<Image> &img : qAsConst(page.images)) {
 		addImage(img);
+	}
+	if (page.pageCount >= 0) {
+		setPageCount(page.pageCount, true);
+	}
+	if (page.imageCount >= 0) {
+		setImageCount(page.imageCount, true);
 	}
 	if (page.urlNextPage.isValid()) {
 		m_urlNextPage = page.urlNextPage;
@@ -543,7 +543,7 @@ void PageApi::setPageCount(int count, bool sure)
 
 		if (sure) {
 			const int forcedLimit = m_api->forcedLimit();
-			const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			const int perPage = forcedLimit > 0 ? forcedLimit : qMax(m_pageImageCount, m_imagesPerPage);
 			setImageCount(count * perPage, false);
 		}
 	}

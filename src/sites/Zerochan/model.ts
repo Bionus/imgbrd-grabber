@@ -6,15 +6,13 @@ function formatSearch(query: string): string {
 
 function completeImage(img: IImage): IImage {
     if (!img.file_url || img.file_url.length < 5) {
-        img.file_url = img.preview_url;
+        img.file_url = (img.sample_url || img.preview_url || "")
+            .replace(/\/s\d+\.zerochan/, "/static.zerochan")
+            .replace(".240.", ".full.")
+            .replace(".600.", ".full.")
+            .replace("/240/", "/full/")
+            .replace("/600/", "/full/");
     }
-
-    img.file_url = img.file_url!
-        .replace(/\/s\d+\.zerochan/, "/static.zerochan")
-        .replace(".240.", ".full.")
-        .replace(".600.", ".full.")
-        .replace("/240/", "/full/")
-        .replace("/600/", "/full/");
 
     if (img.file_size) {
         img.file_size = Grabber.fileSizeToInt(img.file_size);
@@ -88,14 +86,20 @@ export const source: ISource = {
                     for (const image of data) {
                         const img: IImage = {
                             page_url: image["link"]["#text"],
+                            name: image["title"]["#text"],
                             tags: image["media:keywords"]["#text"].trim().split(", "),
                             preview_url: image["media:thumbnail"]["#text"] || image["media:thumbnail"]["@attributes"]["url"],
-                            file_url: image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"],
-                            width: image["media:content"]["@attributes"]["width"],
-                            height: image["media:content"]["@attributes"]["height"],
                         };
                         img.id = Grabber.regexToConst("id", "/(?<id>\\d+)", img.page_url);
-                        img.sample_url = img.file_url;
+                        if (image["media:content"]["@attributes"]["expression"] === "sample") {
+                            img.sample_url = image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"];
+                            img.sample_width = image["media:content"]["@attributes"]["width"];
+                            img.sample_height = image["media:content"]["@attributes"]["height"];
+                        } else {
+                            img.file_url = image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"];
+                            img.width = image["media:content"]["@attributes"]["width"];
+                            img.height = image["media:content"]["@attributes"]["height"];
+                        }
                         images.push(completeImage(img));
                     }
 
@@ -128,7 +132,7 @@ export const source: ISource = {
                     wiki = wiki ? wiki.replace(/href="\/([^"]+)"/g, 'href="$1"') : wiki;
                     return {
                         tags: Grabber.regexToTags("<li[^>]*>\\s*<a [^>]+>(?<name>[^>]+)</a>\\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)</span>|(?<type_2>[^<]*))\\s*</li>", src),
-                        images: Grabber.regexToImages("<a href=['\"]/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?:<b>[^<]*</b>)?[^<]*(?:<span>[^<]*</span>)?[^<]*(?<image><img\\s*src=['\"](?<preview_url>[^'\"]*)['\"][^>]+title=['\"](?<width>\\d+)x(?<height>\\d+) (?<file_size>[^'\"]+)['\"][^>]*/?>)", src).map(completeImage),
+                        images: Grabber.regexToImages("<a href=['\"]/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?:<b>[^<]*</b>)?[^<]*(?:<span>[^<]*</span>)?[^<]*(?<image><img\\s*(?:data-)?src=['\"](?<preview_url>[^'\"]*)['\"][^>]+title=['\"](?<width>\\d+)x(?<height>\\d+) (?<file_size>[^'\"]+)['\"][^>]*/?>)", src).map(completeImage),
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", "page (?:[0-9,]+) of (?<page>[0-9,]+)", src)),
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", src)),
                         wiki,

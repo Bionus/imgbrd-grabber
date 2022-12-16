@@ -136,7 +136,7 @@ Item {
     }
     property Setting activeSource: Setting {
         key: "activeSource"
-        def: "danbooru.donmai.us"
+        def: "safebooru.org"
         obj: root.obj
     }
 

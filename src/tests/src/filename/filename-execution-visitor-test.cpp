@@ -1,7 +1,7 @@
 #include <QSettings>
 #include <QString>
-#include "filename/filename-execution-visitor.h"
 #include "filename/filename-parser.h"
+#include "filename/visitors/filename-execution-visitor.h"
 #include "loader/token.h"
 #include "models/profile.h"
 #include "catch.h"

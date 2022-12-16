@@ -17,6 +17,7 @@ class Blacklist
 		Blacklist() = default;
 		explicit Blacklist(const QStringList &tags);
 
+		bool isEmpty() const;
 		bool contains(const QString &tag) const;
 		void add(const QString &tag);
 		void add(const QStringList &tags);

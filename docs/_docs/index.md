@@ -6,25 +6,10 @@ permalink: /docs/
 
 # Installation
 
-## Windows
-
-1. Download the latest Windows installer [here](https://github.com/Bionus/imgbrd-grabber/releases/latest).
-2. Launch the installer, then follow the instructions. By default, the program will be installed to "C:/Program Files/Grabber" (note that all your settings will be stored in "%USERPROFILE%/AppData/Local/Bionus/Grabber").
-3. If you haven't left the "start Grabber" checked at the end of the installation, go to the installation folder, then launch "Grabber.exe" (or use the shortcut created on the desktop during the installation).
-
-## Arch Linux
-For Arch Linux users, there are packages on the AUR
-* [imgbrd-grabber-bin](https://aur.archlinux.org/packages/imgbrd-grabber-bin) which pulls the latest `tar.gz` release.
-* [imgbrd-grabber-appimage](https://aur.archlinux.org/packages/imgbrd-grabber-appimage) which pulls the latest `appimage` release.
-* [imgbrd-grabber](https://aur.archlinux.org/packages/imgbrd-grabber) which builds the package from source.
-
-Install by issuing the command, substituting the package you want to install: `paru -Sy imgbrd-grabber-bin`
-
-## Linux
-Compile Grabber by following the instructions on the [Compilation]({{ site.baseurl }}{% link _docs/compilation.md %}#linux) page. Upon completion run `make install`.
-
-### Linux Configuration
-After installation you will need to copy the example configuration files from `$INSTALLATIONPREFIX/Grabber/example/` to your local Grabber directory, usually `~/.Grabber/`. Grabber will not run without these files.
+* [Install steps for Windows]({{ site.baseurl }}{% link _docs/install/windows.md %})
+* [Install steps for Linux]({{ site.baseurl }}{% link _docs/install/linux.md %})
+* [Install steps for MacOS]({{ site.baseurl }}{% link _docs/install/macos.md %})
+* [Install steps for Android]({{ site.baseurl }}{% link _docs/install/android.md %})
 
 # Usage
 

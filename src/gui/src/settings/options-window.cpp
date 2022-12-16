@@ -93,6 +93,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkHideBlacklisted->setChecked(settings->value("hideblacklisted", false).toBool());
 	ui->checkShowTagWarning->setChecked(settings->value("showtagwarning", true).toBool());
 	ui->checkShowWarnings->setChecked(settings->value("showwarnings", true).toBool());
+	ui->checkShowFilteredImagesCount->setChecked(settings->value("showFilteredImagesCount", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
 	ui->checkInvertToggle->setChecked(settings->value("invertToggle", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
@@ -110,23 +111,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
 
-	QList<ConditionalFilename> filenames = getFilenames(settings);
+	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
 	for (const auto &fn : filenames) {
-		auto leCondition = new QLineEdit(fn.condition);
-		auto leFilename = new QLineEdit(fn.filename.format());
-		auto leFolder = new QLineEdit(fn.path);
-
-		m_filenamesConditions.append(leCondition);
-		m_filenamesFilenames.append(leFilename);
-		m_filenamesFolders.append(leFolder);
-
-		auto *layout = new QHBoxLayout;
-		layout->addWidget(leCondition);
-		layout->addWidget(leFilename);
-		layout->addWidget(leFolder);
-		ui->layoutConditionals->addLayout(layout);
+		addFilename(fn.condition, fn.filename.format(), fn.path);
 	}
 	const QStringList types { "text", "icon", "both", "hide" };
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
@@ -1092,6 +1081,7 @@ void OptionsWindow::save()
 	settings->setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
 	settings->setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
+	settings->setValue("showFilteredImagesCount", ui->checkShowFilteredImagesCount->isChecked());
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
 	settings->setValue("invertToggle", ui->checkInvertToggle->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());

@@ -8,7 +8,11 @@ function buildSearch(search: string): string {
 function buildImageFromJson(img: any): IImage {
     img.created_at = img.created_at["s"];
     img.score = img.total_score;
-    img.author = img.author.name;
+
+    // Not set for anonymous uploads / deleted users
+    if (img.author) {
+        img.author = img.author.name;
+    }
 
     return completeImage(img, true);
 }
@@ -104,13 +108,14 @@ export const source: ISource = {
                 },
             },
             details: {
+                fullResults: true,
                 url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     return baseUrl + "/posts/" + id;
                 },
-                parse: (src: string): IParsedDetails => {
+                parse: (src: string): IImage => {
                     const data = JSON.parse(src);
                     return buildImageFromJson(data);
                 },

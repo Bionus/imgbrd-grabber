@@ -117,7 +117,7 @@ Page {
             ComboSetting {
                 name: qsTr("Type")
                 options: root.site.authFields.map(f => globals.authTypes[f.type] || f.type)
-                values: root.site.authFields.map(f => f.type)
+                values: root.site.authFields.map(f => f.id)
                 setting: loginTypeSetting
                 Layout.fillWidth: true
             }
@@ -128,7 +128,7 @@ Page {
                 delegate: Item {
                     height: 100
                     width: parent.width
-                    visible: modelData.type === loginTypeSetting.value
+                    visible: modelData.id === loginTypeSetting.value
 
                     Column {
                         spacing: 0

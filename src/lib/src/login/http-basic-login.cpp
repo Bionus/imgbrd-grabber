@@ -52,5 +52,6 @@ void HttpBasicLogin::complementRequest(QNetworkRequest *request) const
 
 	const QString credentials = username + ":" + password;
 	const QByteArray base64Credentials = credentials.toLocal8Bit().toBase64();
-	request->setRawHeader("Authorization", "Basic " + base64Credentials);
+	QString toto = m_auth->tokenType() + " " + base64Credentials;
+	request->setRawHeader("Authorization", (m_auth->tokenType() + " " + base64Credentials).toLatin1());
 }

@@ -12,8 +12,8 @@
 #include "filename/ast-filename.h"
 #include "filename/conditional-filename.h"
 #include "filename/filename-cache.h"
-#include "filename/filename-execution-visitor.h"
-#include "filename/filename-text-extraction-visitor.h"
+#include "filename/visitors/filename-execution-visitor.h"
+#include "filename/visitors/filename-text-extraction-visitor.h"
 #include "functions.h"
 #include "loader/token.h"
 #include "models/api/api.h"
@@ -136,16 +136,20 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 	// Conditional filenames
 	if (flags.testFlag(PathFlag::ConditionalFilenames)) {
-		QList<ConditionalFilename> filenames = getFilenames(settings);
+		const QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
+		Filename filenameOverride;
 		for (const auto &fn : filenames) {
 			if (fn.matches(tokens, settings)) {
 				if (!fn.path.isEmpty()) {
 					folder = fn.path;
 				}
 				if (!fn.filename.format().isEmpty()) {
-					return fn.filename.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
+					filenameOverride = fn.filename;
 				}
 			}
+		}
+		if (!filenameOverride.format().isEmpty()) {
+			return filenameOverride.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
 		}
 	}
 

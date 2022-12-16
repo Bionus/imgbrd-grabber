@@ -7,8 +7,8 @@
 TagTypeApi::TagTypeApi(Profile *profile, Site *site, Api *api, QObject *parent)
 	: TagApiBase(profile, site, api, parent)
 {
-	const QString url = api->tagTypesUrl(site).url;
-	setUrl(site->fixUrl(url));
+	const auto ret = api->tagTypesUrl(site);
+	setUrl(site->fixUrl(ret.url), ret.headers);
 }
 
 void TagTypeApi::parse(const QString &source, int statusCode, Site *site)

@@ -4,13 +4,17 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
-#include "filename/filename-visitor-javascript.h"
+#include "filename/visitors/filename-visitor-javascript.h"
 
 
 struct FilenameNodeCondition;
 class QSettings;
 class Token;
 
+/**
+ * Visitor to check if a condition is true or false given a set of tokens.
+ * Used internally for conditionals, but can also be used to convert filenames to booleans.
+ */
 class FilenameConditionVisitor : public FilenameVisitorJavaScript
 {
 	public:

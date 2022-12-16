@@ -3,7 +3,7 @@
 
 #include <QMap>
 #include <QString>
-#include "filename/filename-visitor-javascript.h"
+#include "filename/visitors/filename-visitor-javascript.h"
 
 
 class QDateTime;
@@ -12,6 +12,9 @@ class QStringList;
 class QVariant;
 class Token;
 
+/**
+ * Visitor to convert a filename to a string, actually rendering the filename.
+ */
 class FilenameExecutionVisitor : public FilenameVisitorJavaScript
 {
 	public:

@@ -28,7 +28,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery): string => {
                     const page: number = query.page - 1;
                     const search = query.search && query.search.length > 0 ? encodeURIComponent(query.search) : "all";
-                    return "/index.php?r=posts/index&q=" + search + (page == 0 ? '' : "&page=" + page);
+                    return "/index.php?r=posts/index&q=" + search + (page === 0 ? '' : "&page=" + page);
                 },
                 parse: (src: string): IParsedSearch => {
                     const pageCount = Grabber.regexToConst("page", '<div class="pagination">\\W*(<a.*>.*<\\/a>\\W*)*(<a href="[^"]+page=(?<page>\\d+)".*>.*<\\/a>\\W*)<\\/div>', src);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
-    <height>283</height>
+    <width>626</width>
+    <height>311</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,14 +31,44 @@
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
-       <item row="4" column="0">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelSiteName">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineSiteName"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Ignore (page 1)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="spinIgnore1"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Ignore (always)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinIgnoreAlways"/>
+       </item>
+       <item row="3" column="0">
         <widget class="QLabel" name="labelReferer">
          <property name="text">
           <string>Referer (default)</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="3" column="1">
         <widget class="QComboBox" name="comboReferer">
          <item>
           <property name="text">
@@ -62,14 +92,14 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="labelRefererPreview">
          <property name="text">
           <string>Referer (preview)</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="4" column="1">
         <widget class="QComboBox" name="comboRefererPreview">
          <item>
           <property name="text">
@@ -98,14 +128,14 @@
          </item>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="labelRefererImage">
          <property name="text">
           <string>Referer (image)</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="5" column="1">
         <widget class="QComboBox" name="comboRefererImage">
          <item>
           <property name="text">
@@ -139,37 +169,7 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelSiteName">
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineSiteName"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Ignore (always)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Ignore (page 1)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QSpinBox" name="spinIgnore1"/>
-       </item>
-       <item row="2" column="1">
-        <widget class="QSpinBox" name="spinIgnoreAlways"/>
-       </item>
-       <item row="7" column="0" colspan="2">
+       <item row="6" column="0" colspan="2">
         <widget class="QCheckBox" name="checkSsl">
          <property name="text">
           <string>Use a secure connection (https)</string>
@@ -179,15 +179,32 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Search</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_6">
+       <item row="0" column="0">
         <widget class="QLabel" name="labelAddedTags">
          <property name="text">
           <string>Added tags</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="0" column="1">
         <widget class="QLineEdit" name="lineAddedTags"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelRemovedTags">
+         <property name="text">
+          <string>Removed tags</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineRemovedTags"/>
        </item>
       </layout>
      </widget>
@@ -664,7 +681,6 @@
   <tabstop>lineSiteName</tabstop>
   <tabstop>spinIgnore1</tabstop>
   <tabstop>spinIgnoreAlways</tabstop>
-  <tabstop>lineAddedTags</tabstop>
   <tabstop>comboReferer</tabstop>
   <tabstop>comboRefererPreview</tabstop>
   <tabstop>comboRefererImage</tabstop>

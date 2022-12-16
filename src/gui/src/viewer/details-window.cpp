@@ -31,10 +31,12 @@ void DetailsWindow::setImage(const QSharedPointer<Image> &image)
 			field->setWordWrap(true);
 			field->setOpenExternalLinks(true);
 			field->setTextInteractionFlags(Qt::TextBrowserInteraction);
+			field->setSizePolicy(QSizePolicy::Ignored, field->sizePolicy().horizontalPolicy());
+			field->setMinimumWidth(200);
 			ui->formLayout->addRow(label, field);
 		}
 	}
 
 	update();
-	resize(sizeHint());
+	resize(500, 0);
 }

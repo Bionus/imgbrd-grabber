@@ -22,6 +22,7 @@ class HtmlNode
 		QStringList path() const;
 		QStringList pathIds() const;
 
+		HtmlNode parent() const;
 		QList<HtmlNode> find(const QString &css) const;
 
 	private:

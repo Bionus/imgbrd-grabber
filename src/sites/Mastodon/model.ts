@@ -11,7 +11,7 @@ function parseImage(raw: any, media?: any): IImage {
     if (medias.length >= 1) {
         img.file_url = medias[0].remote_url || medias[0].url;
         img.preview_url = medias[0].preview_remote_url || medias[0].preview_url;
-        if (medias[0].meta) {
+        if (medias[0].meta && medias[0].type !== "audio") {
             img.width = medias[0].meta.original.width;
             img.height = medias[0].meta.original.height;
             img.preview_width = medias[0].meta.small.width;
@@ -53,8 +53,9 @@ export const source: ISource = {
             auth: [],
             maxLimit: 40,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     const search = Grabber.parseSearchQuery(query.search, meta);
+                    const pagePart = Grabber.pageUrl(query.page, previous, 1, "", "&min_id={max}", "&max_id={min}");
 
                     // Search
                     if (search.query) {
@@ -62,16 +63,16 @@ export const source: ISource = {
                             return { error: "You must be logged in to use search" };
                         }
                         const userId = search.user_id ? "&account_id=" + search.user_id : "";
-                        return "/api/v2/search?type=statuses&q=" + encodeURIComponent(search.query) + userId + "&limit=" + opts.limit;
+                        return "/api/v2/search?type=statuses&q=" + encodeURIComponent(search.query) + userId + "&limit=" + opts.limit + pagePart;
                     }
 
                     // User ID
                     if (search.user_id) {
-                        return "/api/v1/accounts/" + search.user_id + "/statuses?only_media=true&limit=" + opts.limit;
+                        return "/api/v1/accounts/" + search.user_id + "/statuses?only_media=true&limit=" + opts.limit + pagePart;
                     }
 
                     // Public timeline
-                    return "/api/v1/timelines/public?only_media=true&limit=" + opts.limit;
+                    return "/api/v1/timelines/public?only_media=true&limit=" + opts.limit + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
                     const data: any[] = JSON.parse(src);

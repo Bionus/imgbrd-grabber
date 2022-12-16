@@ -18,7 +18,7 @@ class Auth;
  * changing. This is very useful for when an engine is used in many places. For many proprietary sites, each site will
  * have its own source.
  *
- * @see https://bionus.github.io/imgbrd-grabber/docs/sites/source.html
+ * @see https://www.bionus.org/imgbrd-grabber/docs/sites/source.html
  */
 class SourceEngine : public QObject
 {

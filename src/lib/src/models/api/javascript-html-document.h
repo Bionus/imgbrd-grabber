@@ -25,6 +25,7 @@ class JavascriptHtmlDocument : public QObject
 		Q_INVOKABLE QJSValue path() const;
 		Q_INVOKABLE QJSValue pathIds() const;
 
+		Q_INVOKABLE QJSValue parent() const;
 		Q_INVOKABLE QJSValue find(const QString &css) const;
 
 	private:

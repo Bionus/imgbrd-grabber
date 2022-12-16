@@ -11,7 +11,7 @@ bool protocolExists(const QString &protocol)
 
 void protocolInstall(const QString &protocol, const QString &command)
 {
-	log(QStringLiteral("Installing URL protocol '%1'...").arg(protocol));
+	log(QStringLiteral("Installing URL protocol '%1' pointing to '%2'...").arg(protocol, command));
 
 	QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Classes", QSettings::Registry64Format);
 

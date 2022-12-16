@@ -141,6 +141,11 @@ lxb_status_t find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t 
 	return LXB_STATUS_OK;
 }
 
+HtmlNode HtmlNode::parent() const
+{
+	return HtmlNode(m_node->parent);
+}
+
 QList<HtmlNode> HtmlNode::find(const QString &css) const
 {
 	// Create CSS parser
@@ -162,7 +167,7 @@ QList<HtmlNode> HtmlNode::find(const QString &css) const
 	// Parse CSS selectors
 	auto *list = lxb_css_selectors_parse(parser, reinterpret_cast<const lxb_char_t *>(css.toStdString().c_str()), css.length());
 	if (parser->status != LXB_STATUS_OK) {
-		log(QStringLiteral("Error parsing CSS selectors: %1.").arg(selectors_status), Logger::Error);
+		log(QStringLiteral("Error parsing CSS selectors: %1.").arg(parser->status), Logger::Error);
 		return {};
 	}
 

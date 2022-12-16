@@ -1,4 +1,4 @@
-#include "filename/filename-resolution-visitor.h"
+#include "filename/visitors/filename-resolution-visitor.h"
 #include "filename/ast/filename-node-condition-token.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-variable.h"

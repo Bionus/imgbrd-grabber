@@ -8,7 +8,7 @@
 
 
 JavascriptHtmlDocument::JavascriptHtmlDocument(QJSEngine &engine, const HtmlNode &node)
-	: QObject(&engine), m_engine(engine), m_node(node)
+	: QObject(nullptr), m_engine(engine), m_node(node)
 {}
 
 JavascriptHtmlDocument *JavascriptHtmlDocument::fromString(QJSEngine &engine, const QString &html, bool fragment)
@@ -63,6 +63,12 @@ QJSValue JavascriptHtmlDocument::path() const
 QJSValue JavascriptHtmlDocument::pathIds() const
 {
 	return listToJsValue(&m_engine, m_node.pathIds());
+}
+
+QJSValue JavascriptHtmlDocument::parent() const
+{
+	auto *parent = new JavascriptHtmlDocument(m_engine, m_node.parent());
+	return m_engine.newQObject(parent);
 }
 
 QJSValue JavascriptHtmlDocument::find(const QString &css) const

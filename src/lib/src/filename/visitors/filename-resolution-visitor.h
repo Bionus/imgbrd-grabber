@@ -6,6 +6,9 @@
 #include "filename/ast/filename-visitor-base.h"
 
 
+/**
+ * Visitor to extract the names of all variables used in a given filename.
+ */
 class FilenameResolutionVisitor : public FilenameVisitorBase
 {
 	public:

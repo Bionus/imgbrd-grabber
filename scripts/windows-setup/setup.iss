@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.9.1"
+# define MyAppVersion "7.10.0"
 #endif
 
 #ifndef QtApngDll
@@ -115,6 +115,7 @@ Source: "{#QtDir}\Qt5MultimediaWidgets.dll";    DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Network.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5NetworkAuth.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5OpenGL.dll";               DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt5PrintSupport.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Qml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
@@ -246,6 +247,9 @@ Source: "{#SrcDir}\sites\Reddit\www.reddit.com\defaults.ini";              DestD
 Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Szurubooru\icon.png";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Szurubooru\model.js";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Szurubooru\sites.txt";  DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\icon.png";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\model.js";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\sites.txt";  DestDir: "{app}\sites\Twitter"; Flags: ignoreversion

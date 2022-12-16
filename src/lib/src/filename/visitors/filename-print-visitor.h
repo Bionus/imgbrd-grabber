@@ -6,6 +6,10 @@
 #include "filename/ast/filename-visitor-base.h"
 
 
+/**
+ * Visitor used to convert a filename to a human-readable string.
+ * Useful for debugging purposes.
+ */
 class FilenamePrintVisitor : public FilenameVisitorBase
 {
 	public:

@@ -1,4 +1,6 @@
 #include "image-context-menu.h"
+#include <QApplication>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QSignalMapper>
 #include "functions.h"
@@ -14,6 +16,10 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 	// Load reverse search engines
 	ReverseSearchLoader loader(m_settings);
 	m_reverseSearchEngines = loader.getAllReverseSearchEngines();
+
+	// Copy
+	addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
+	addSeparator();
 
 	// Open image in browser
 	addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()), getKeySequence(m_settings, "Viewer/Shortcuts/keyOpenInBrowser"));
@@ -33,6 +39,11 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 	addAction(QIcon(":/images/icons/hash.png"), tr("Search MD5"), this, SLOT(searchMd5()));
 }
 
+
+void ImageContextMenu::copyAllTagsToClipboard()
+{
+	QApplication::clipboard()->setText(m_image->tagsString().join(' '));
+}
 
 void ImageContextMenu::openInBrowser()
 {

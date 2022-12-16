@@ -16,6 +16,11 @@ int NetworkManager::maxConcurrency() const
 	return m_maxConcurrency;
 }
 
+int NetworkManager::activeQueries() const
+{
+	return m_activeQueries;
+}
+
 void NetworkManager::setMaxConcurrency(int maxConcurrency)
 {
 	m_maxConcurrency = maxConcurrency;
@@ -89,9 +94,9 @@ void NetworkManager::next()
 
 	auto pair = m_queue.dequeue();
 	int type = pair.first;
-	NetworkReply *reply = pair.second;
+	QPointer<NetworkReply> reply = pair.second;
 
-	if (reply->isRunning()) {
+	if (!reply.isNull() && reply->isRunning()) {
 		connect(reply, &NetworkReply::finished, this, &NetworkManager::next);
 		m_throttlingManager.start(type, reply);
 	} else {

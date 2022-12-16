@@ -46,7 +46,7 @@ void SiteWindow::accept()
 	}
 
 	// Check URL validity
-	if (!QRegularExpression(R"(^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-?]*)*\/?$)").match(m_url).hasMatch()) {
+	if (!QRegularExpression(R"(^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$)").match(m_url).hasMatch()) {
 		error(this, tr("The url you entered is not valid."));
 		return;
 	}

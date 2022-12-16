@@ -188,7 +188,7 @@ Behoimi
 
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
-* Theme support using CSS. See [Themes](https://bionus.github.io/imgbrd-grabber/docs/plugins/theme.html) for details.
+* Theme support using CSS. See [Themes](https://www.bionus.org/imgbrd-grabber/docs/plugins/theme.html) for details.
 * Lots of options to customize the program's behaviour
 </div>
 
@@ -197,11 +197,11 @@ Behoimi
 
 ## Organize
 
-* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://bionus.github.io/imgbrd-grabber/docs/filename.html) for details.
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://www.bionus.org/imgbrd-grabber/docs/filename.html) for details.
 * Favorite tags to keep track of new images
 * "View it later" tags to save a search for later
-* Support saving images directly to a local booru, such as [Szurubooru](https://bionus.github.io/imgbrd-grabber/docs/commands/szurubooru.html), [MyImouto](https://bionus.github.io/imgbrd-grabber/docs/commands/my-imouto.html), [Gelbooru](https://bionus.github.io/imgbrd-grabber/docs/commands/gelbooru.html), or [Shimmie](https://bionus.github.io/imgbrd-grabber/docs/commands/shimmie.html).
-* Can add entries to a database for each image or tag while downloading. See [Commands](https://bionus.github.io/imgbrd-grabber/docs/commands/) for details.
+* Support saving images directly to a local booru, such as [Szurubooru](https://www.bionus.org/imgbrd-grabber/docs/commands/szurubooru.html), [MyImouto](https://www.bionus.org/imgbrd-grabber/docs/commands/my-imouto.html), [Gelbooru](https://www.bionus.org/imgbrd-grabber/docs/commands/gelbooru.html), or [Shimmie](https://www.bionus.org/imgbrd-grabber/docs/commands/shimmie.html).
+* Can add entries to a database for each image or tag while downloading. See [Commands](https://www.bionus.org/imgbrd-grabber/docs/commands/) for details.
 * Conditional filenames triggered by a tag
 * Rename already downloaded images
 </div>

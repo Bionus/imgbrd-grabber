@@ -95,8 +95,9 @@ void JavaScriptSourceEngine::load()
 			ret = new OAuth1Auth(type, auth);
 		} else if (type == "http_basic") {
 			const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
-			const QString passwordType = auth.property("passwordType").toString();
-			ret = new HttpBasicAuth(type, maxPage, passwordType);
+			const QString passwordType = getPropertyOr(auth, "passwordType", QString());
+			const QString tokenType = getPropertyOr(auth, "tokenType", QString());
+			ret = new HttpBasicAuth(type, maxPage, passwordType, tokenType);
 		} else {
 			QList<AuthField*> fields;
 			const QJSValue &jsFields = auth.property("fields");

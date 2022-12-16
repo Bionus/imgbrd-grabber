@@ -1,4 +1,4 @@
-#include "filename/filename-visitor-javascript.h"
+#include "filename/visitors/filename-visitor-javascript.h"
 #include <QJSEngine>
 #include <QJSValue>
 #include <QSettings>

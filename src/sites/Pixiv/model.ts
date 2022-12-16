@@ -6,44 +6,47 @@ function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
 
+const meta: ISource["meta"] = {
+    mode: {
+        type: "options",
+        options: ["partial", "full",  "tc"],
+        default: "partial",
+    },
+    bookmarks: {
+        type: "input",
+        parser: parseInt,
+    },
+    user: {
+        type: "input",
+        parser: parseInt,
+    },
+    type: {
+        type: "options",
+        options: ["illust", "manga"],
+    },
+};
+
 function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number, startDate?: string, endDate?: string, type?: string } {
-    const modes = {
+    const modes: any = {
         "partial": "partial_match_for_tags",
         "full": "exact_match_for_tags",
         "tc": "title_and_caption",
     };
 
-    let mode = "partial_match_for_tags";
-    let bookmarks = undefined;
-    let user = undefined;
-    let type = undefined;
+    const parsed = Grabber.parseSearchQuery(search, meta);
+    const mode = modes[parsed.mode];
+    const bookmarks = parsed.bookmarks;
+    const user = parsed.user;
+    const type = parsed.type;
+
     const tags = [];
     let startDate = undefined;
     let endDate = undefined;
 
-    const parts = search.split(" ");
+    const parts = parsed.query.split(" ");
     for (const tag of parts) {
         const part = tag.trim();
         if (part.length === 0) {
-            continue;
-        }
-        if (part.indexOf("mode:") === 0) {
-            const tmode = part.substr(5);
-            if (tmode in modes) {
-                mode = (modes as any)[tmode];
-                continue;
-            }
-        }
-        if (part.indexOf("bookmarks:") === 0) {
-            bookmarks = parseInt(part.substr(10), 10);
-            continue;
-        }
-        if (part.indexOf("user:") === 0) {
-            user = parseInt(part.substr(5), 10);
-            continue;
-        }
-        if (part.indexOf("type:") === 0) {
-            type = part.substr(5);
             continue;
         }
 
@@ -136,6 +139,7 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
+    meta,
     auth: {
         oauth2: {
             type: "oauth2",
