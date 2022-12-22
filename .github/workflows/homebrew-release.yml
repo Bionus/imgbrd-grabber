@@ -1,0 +1,33 @@
+name: Homebrew release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  BREW_TAP: Bionus/imgbrd-grabber
+  BREW_CASK: imgbrd-grabber
+  HOMEBREW_GIT_NAME: Bionus
+  HOMEBREW_GIT_EMAIL: bio.nus@hotmail.fr
+  HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TOKEN }}
+
+jobs:
+  homebrew-release:
+    name: Homebrew release
+    runs-on: macos-latest
+
+    steps:
+      - name: Tap repository
+        run: brew tap ${{ env.BREW_TAP }} "https://Bionus:${{ secrets.HOMEBREW_TOKEN }}@github.com/Bionus/homebrew-imgbrd-grabber.git"
+
+      - name: Check new version
+        id: version
+        run: |
+          VERSION=$(brew livecheck --cask --quiet --newer-only --full-name --json --tap=${{ env.BREW_TAP }} ${{ env.BREW_CASK }} | jq -r ".[0].version.latest//empty")
+          echo "Version $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create bump PR
+        if: steps.version.outputs.version != ''
+        run: brew bump-cask-pr --no-fork --no-audit --no-browse --version=${{ steps.version.outputs.version }} ${{ env.BREW_CASK }}
