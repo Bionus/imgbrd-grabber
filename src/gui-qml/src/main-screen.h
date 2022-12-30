@@ -52,6 +52,7 @@ class MainScreen : public QObject
 		bool exportSettings(const QString &dest);
 		bool importSettings(const QString &source);
 		bool removeSite(QmlSite *site);
+		void setClipboardText(const QString &text);
 
 	protected slots:
 		void refreshSites();

@@ -1,6 +1,8 @@
 #include "main-screen.h"
+#include <QClipboard>
 #include <QDir>
 #include <QEventLoop>
+#include <QGuiApplication>
 #include <QMimeDatabase>
 #include <QSettings>
 #include <QSslSocket>
@@ -212,6 +214,11 @@ bool MainScreen::removeSite(QmlSite *site)
 	m_sites.removeAll(site);
 	emit sitesChanged();
 	return true;
+}
+
+void MainScreen::setClipboardText(const QString &text)
+{
+	QGuiApplication::clipboard()->setText(text);
 }
 
 QString MainScreen::toLocalFile(const QString &url)

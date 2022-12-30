@@ -162,18 +162,81 @@ Page {
                         }
                     }
 
-                    ScrollView {
-                        clip: true
-                        padding: 8
+                    Item {
+                        id: tagView
 
-                        Label {
+                        Menu {
+                            id: tagContextMenu
+                            title: tagContextMenu.tag
+
+                            property string tag
+
+                            MenuItem {
+                                text: "Search"
+                                enabled: tagContextMenu.tag !== pageLoader.query
+
+                                onTriggered: {
+                                    root.closed()
+                                    searchTab.load(tagContextMenu.tag)
+                                }
+                            }
+
+                            MenuItem {
+                                text: "Add to search"
+                                enabled: pageLoader.query.split(' ').indexOf(tagContextMenu.tag) === -1
+
+                                onTriggered: {
+                                    root.closed()
+                                    searchTab.load(pageLoader.query + ' ' + tagContextMenu.tag)
+                                }
+                            }
+
+                            MenuItem {
+                                text: "Remove from search"
+                                enabled: pageLoader.query.split(' ').indexOf(tagContextMenu.tag) >= 0
+
+                                onTriggered: {
+                                    root.closed()
+                                    searchTab.load(pageLoader.query.split(' ').filter(t => t !== tagContextMenu.tag).join(' '))
+                                }
+                            }
+
+                            MenuItem {
+                                text: "Copy"
+
+                                onTriggered: {
+                                    backend.setClipboardText(tagContextMenu.tag)
+                                }
+                            }
+                        }
+
+                        ListView {
+                            clip: true
                             anchors.fill: parent
-                            text: (Material.theme == Material.Dark ? modelData.tagsDark : modelData.tags).join("<br/>")
-                            textFormat: Text.RichText
+                            anchors.margins: 8
 
-                            onLinkActivated: {
-                                root.closed()
-                                searchTab.load(decodeURIComponent(link))
+                            model: Material.theme == Material.Dark ? modelData.tagsDark : modelData.tags
+
+                            delegate: Label {
+                                text: modelData
+                                textFormat: Text.RichText
+
+                                function getRawTag(html) {
+                                    return html.match(/href="(.+?)"/)[1]
+                                }
+
+                                MouseArea {
+                                    anchors.fill: parent
+
+                                    onClicked: {
+                                        root.closed()
+                                        searchTab.load(getRawTag(modelData))
+                                    }
+                                    onPressAndHold: {
+                                        tagContextMenu.tag = getRawTag(modelData)
+                                        tagContextMenu.popup()
+                                    }
+                                }
                             }
                         }
                     }
