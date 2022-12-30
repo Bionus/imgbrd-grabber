@@ -121,7 +121,6 @@ ApplicationWindow {
                 id: logScreen
                 visible: currentPage == "log"
                 anchors.fill: parent
-                log: backend.log
             }
 
             Dialog {
