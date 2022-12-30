@@ -9,7 +9,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/issues)
 [![Donate with PayPal](https://img.shields.io/badge/paypal-donate-orange.svg)](https://www.paypal.me/jvasti)
 [![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
-[![Build Status](https://img.shields.io/github/workflow/status/Bionus/imgbrd-grabber/Build)](https://github.com/Bionus/imgbrd-grabber/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Bionus/imgbrd-grabber/build.yml)](https://github.com/Bionus/imgbrd-grabber/actions)
 [![Code Coverage](https://img.shields.io/codecov/c/github/Bionus/imgbrd-grabber.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/044edd1462094c6e8d35cb0bcdd86a2b)](https://www.codacy.com/app/bionus/imgbrd-grabber)
 [![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
