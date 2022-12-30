@@ -49,5 +49,6 @@
         <file>components/InnerBorder.qml</file>
         <file>components/Badge.qml</file>
         <file>components/Loading.qml</file>
+        <file>components/TagView.qml</file>
     </qresource>
 </RCC>
