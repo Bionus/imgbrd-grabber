@@ -416,7 +416,7 @@
      <item>
       <widget class="QCheckBox" name="checkMergeResults">
        <property name="text">
-        <string>&amp;Merge results</string>
+        <string>Mer&amp;ge results</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -469,7 +469,7 @@
      <item>
       <widget class="QPushButton" name="buttonMonitor">
        <property name="text">
-        <string>Monitor</string>
+        <string>&amp;Monitor</string>
        </property>
       </widget>
      </item>
