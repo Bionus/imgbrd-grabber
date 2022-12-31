@@ -17,7 +17,9 @@ Item {
 
         MenuItem {
             property bool isFavorited: Array.prototype.indexOf.call(backend.favorites, tagContextMenu.tag) >= 0
+
             text: isFavorited ? qsTr("Remove from favorites") : qsTr("Add to favorites")
+            icon.source: "/images/icons/" + (isFavorited ? "favorites_filled" : "favorites") + ".png"
 
             onTriggered: {
                 if (isFavorited) {
@@ -30,6 +32,7 @@ Item {
 
         MenuItem {
             text: qsTr("Copy tag")
+            icon.source: "/images/icons/copy.png"
 
             onTriggered: {
                 backend.setClipboardText(tagContextMenu.tag)
