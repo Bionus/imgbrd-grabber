@@ -32,11 +32,10 @@ FocusScope {
             property string fakeText
             property bool blockTextChanges: false
             onFakeTextChanged: {
-                if (blockTextChanges) {
-                    blockTextChanges = false
-                    return
+                if (!blockTextChanges) {
+                    textInput.setText(fakeText)
                 }
-                textInput.setText(fakeText)
+                blockTextChanges = false
             }
             onTextChanged: {
                 blockTextChanges = true
