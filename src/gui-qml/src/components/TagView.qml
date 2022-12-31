@@ -52,6 +52,7 @@ Item {
 
             width: parent.width
             height: 34
+            spacing: 0
 
             Label {
                 text: modelData
@@ -75,16 +76,35 @@ Item {
             }
 
             ToolButton {
-                icon.source: "/images/icons/" + (pageLoader.query.split(' ').indexOf(tag) === -1 ? "add" : "remove") + ".png"
+                property bool isInQuery: pageLoader.query.split(' ').indexOf(tag) >= 0
+
+                icon.source: "/images/icons/" + (!isInQuery ? "add" : "remove") + ".png"
                 Layout.fillHeight: true
                 Layout.preferredWidth: 34
 
                 onClicked: {
                     root.closed()
-                    if (pageLoader.query.split(' ').indexOf(tag) === -1) {
+                    if (!isInQuery) {
                         searchTab.load(pageLoader.query + ' ' + tag)
                     } else {
                         searchTab.load(pageLoader.query.split(' ').filter(t => t !== tag).join(' '))
+                    }
+                }
+            }
+
+            ToolButton {
+                property bool isInQuery: pageLoader.query.split(' ').indexOf('-' + tag) >= 0
+
+                icon.source: "/images/icons/" + (!isInQuery ? "remove" : "add") + ".png"
+                Layout.fillHeight: true
+                Layout.preferredWidth: 34
+
+                onClicked: {
+                    root.closed()
+                    if (!isInQuery) {
+                        searchTab.load(pageLoader.query + ' -' + tag)
+                    } else {
+                        searchTab.load(pageLoader.query.split(' ').filter(t => t !== '-' + tag).join(' '))
                     }
                 }
             }
