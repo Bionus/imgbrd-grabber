@@ -35,6 +35,12 @@ endif()
 if(NOT IOS)
 	listFilterRegex(SOURCES "ios/")
 endif()
+if(NOT WIN32)
+	listFilterRegex(SOURCES "windows/")
+else()
+	list(APPEND LIBS "WindowsApp.lib")
+endif()
+
 
 if(ANDROID)
 	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
