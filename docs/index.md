@@ -59,10 +59,16 @@ Grabber works on Windows, Mac, and Linux.
 [Linux (tar.gz)]({{ asset.browser_download_url }})
 {% endif %}
 {% endfor %}
+
+[Linux (Flathub)](https://flathub.org/apps/details/org.bionus.Grabber)
+
+[Arch Linux (AUR)]({{ site.baseurl }}{% link _docs/install/linux.md %}#via-the-aur-arch-linux)
 </div>
 
 <div class="download" markdown="1">
 ![MacOS](assets/img/downloads/macos.png)
+
+[MacOS (homebrew)]({{ site.baseurl }}{% link _docs/install/macos.md %}#via-homebrew)
 
 {% for asset in site.github.latest_release.assets %}
 {% if asset.name contains '.dmg' %}
