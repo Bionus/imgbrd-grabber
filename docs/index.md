@@ -48,7 +48,9 @@ Grabber works on Windows, Mac, and Linux.
 
 {% for asset in site.github.latest_release.assets %}
 {% if asset.name contains '.AppImage' %}
+{% unless asset.name contains '.AppImage.zsync' %}
 [Linux (AppImage)]({{ asset.browser_download_url }})
+{% endunless %}
 {% endif %}
 {% endfor %}
 
