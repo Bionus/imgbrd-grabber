@@ -31,10 +31,9 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 	parser.addHelpOption();
 	parser.addVersionOption();
 
-	QCommandLineOption *cliOption = nullptr;
+	const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 	if (defaultToGui) {
-		cliOption = new QCommandLineOption(QStringList() << "c" << "cli", "Disable the GUI.");
-		parser.addOption(*cliOption);
+		parser.addOption(cliOption);
 	}
 
 	const QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
@@ -96,7 +95,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 
 	parser.process(*app);
 
-	const bool gui = defaultToGui && !parser.isSet(*cliOption);
+	const bool gui = defaultToGui && !parser.isSet(cliOption);
 
 	// Log messages output and level
 	const bool verbose = parser.isSet(verboseOption);
