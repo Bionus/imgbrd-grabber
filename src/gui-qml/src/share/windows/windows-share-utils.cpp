@@ -42,7 +42,6 @@ bool createComUri(const QUrl &url, IUriRuntimeClass **instance)
 	if (FAILED(hr)) {
 		return false;
 	}
-	//HStringUniquePtr url(rawUrl);
 
 	// Get the IUri constructor
 	ComPtr<IUriRuntimeClassFactory> uriFactory;
@@ -77,7 +76,6 @@ bool windowsShare(const QString &text, const QUrl &url, const QString &title = "
 			return false;
 		}
 	}
-	//HStringUniquePtr text(hText);
 
 	// Convert the url to share to an IUri COM instance
 	ComPtr<IUriRuntimeClass> uri;
@@ -94,7 +92,6 @@ bool windowsShare(const QString &text, const QUrl &url, const QString &title = "
 	if (FAILED(hr)) {
 		return false;
 	}
-	//HStringUniquePtr shareTitle(hTitle);
 
 	HWND hwnd = GetForegroundWindow();
 	if (!hwnd) {
