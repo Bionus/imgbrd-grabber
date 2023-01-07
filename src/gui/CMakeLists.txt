@@ -92,7 +92,7 @@ file(GLOB SOURCES
 	"resources/*.rc"
 	"resources/*.qrc")
 file(GLOB_RECURSE FORMS "src/*.ui")
-include_directories("src/" "../lib/src/" "..")
+include_directories("src/" "../lib/src/" "../lib/" "..")
 
 # Breakpad files
 if(USE_BREAKPAD)
