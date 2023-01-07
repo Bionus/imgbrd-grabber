@@ -5,7 +5,7 @@
 #include <QStringList>
 #include "functions.h"
 #include "models/profile.h"
-#include "cli/cli.h"
+#include "cli.h"
 
 
 int main(int argc, char *argv[])

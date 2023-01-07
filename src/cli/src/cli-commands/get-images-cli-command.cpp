@@ -1,7 +1,7 @@
 #include "get-images-cli-command.h"
 #include <QList>
 #include <utility>
-#include "downloader/printers/printer.h"
+#include "printers/printer.h"
 #include "logger.h"
 #include "models/page.h"
 

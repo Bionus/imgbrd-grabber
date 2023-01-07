@@ -36,7 +36,7 @@
 #include <QString>
 #include <QStringList>
 #include "analytics.h"
-#include "cli/cli.h"
+#include "cli.h"
 #include "functions.h"
 #include "main-window.h"
 #include "models/page-api.h"

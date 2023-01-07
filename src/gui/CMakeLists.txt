@@ -92,7 +92,7 @@ file(GLOB SOURCES
 	"resources/*.rc"
 	"resources/*.qrc")
 file(GLOB_RECURSE FORMS "src/*.ui")
-include_directories("src/" "../lib/src/" "../lib/" "..")
+include_directories("src/" "../lib/src/" "../lib/" "../cli/src/" "..")
 
 # Breakpad files
 if(USE_BREAKPAD)
@@ -129,7 +129,7 @@ else()
 	add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib "cli-lib")
 
 if(ANDROID)
 	# SSL
