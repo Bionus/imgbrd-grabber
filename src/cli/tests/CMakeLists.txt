@@ -1,4 +1,4 @@
-project(gui-tests)
+project(cli-tests)
 
 # General
 enable_testing()
@@ -6,6 +6,10 @@ add_definitions(-DTEST=1)
 if(DEFINED HEADLESS)
 	add_definitions(-DHEADLESS=1)
 endif()
+
+# Qt libs
+find_package(Qt5 COMPONENTS Test Widgets REQUIRED)
+list(APPEND QT_LIBRARIES Qt5::Test Qt5::Widgets)
 
 # Sources
 include(ListFilterRegex)

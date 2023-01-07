@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "cli/commands/download-images-cli-command.h"
+#include "cli-commands/download-images-cli-command.h"
 
 
 TEST_CASE("DownloadImagesCliCommand")

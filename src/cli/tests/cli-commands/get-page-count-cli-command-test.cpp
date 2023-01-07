@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "cli/commands/get-page-count-cli-command.h"
+#include "cli-commands/get-page-count-cli-command.h"
 
 
 TEST_CASE("GetPageCountCliCommand")
