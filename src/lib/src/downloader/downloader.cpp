@@ -8,7 +8,6 @@
 #include <utility>
 #include "downloader/download-query-group.h"
 #include "downloader/image-downloader.h"
-#include "downloader/printers/printer.h"
 #include "functions.h"
 #include "loader/pack-loader.h"
 #include "logger.h"
@@ -44,14 +43,9 @@ void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
 }
 
 
-Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, bool login)
-	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_quit(false), m_login(login)
+Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, bool login)
+	: m_profile(profile), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_login(login)
 {}
-
-void Downloader::setQuit(bool quit)
-{
-	m_quit = quit;
-}
 
 
 QList<Page*> Downloader::getAllPagesTags()
@@ -88,12 +82,7 @@ void Downloader::getPageCount()
 
 	qDeleteAll(pages);
 
-	if (m_quit) {
-		m_printer->print(total);
-		emit quit();
-	} else {
-		emit finishedPageCount(total);
-	}
+	emit finishedPageCount(total);
 }
 
 void Downloader::getPageTags()
@@ -131,12 +120,7 @@ void Downloader::getPageTags()
 		}
 	}
 
-	if (m_quit) {
-		m_printer->print(list, nullptr);
-		emit quit();
-	} else {
-		emit finishedTags(list);
-	}
+	emit finishedTags(list);
 }
 
 void Downloader::getTags()
@@ -183,12 +167,7 @@ void Downloader::getTags()
 		}
 	}
 
-	if (m_quit) {
-		m_printer->print(results, nullptr);
-		emit quit();
-	} else {
-		emit finishedTags(results);
-	}
+	emit finishedTags(results);
 }
 
 QList<QSharedPointer<Image>> Downloader::getAllImages()
@@ -242,15 +221,10 @@ void Downloader::getImages()
 		dwl.save();
 		loop.exec();
 
-		if (!m_quit) {
-			emit finishedImage(image);
-		}
+		emit finishedImage(image);
 	}
 
-	if (m_quit) {
-		m_printer->print(QStringLiteral("Downloaded images successfully."));
-		emit quit();
-	}
+	emit finishedImages(images);
 }
 
 void Downloader::getUrls()
@@ -266,10 +240,5 @@ void Downloader::getUrls()
 		loadMoreDetails(images);
 	}
 
-	if (m_quit) {
-		m_printer->print(images);
-		emit quit();
-	} else {
-		emit finishedImages(images);
-	}
+	emit finishedImages(images);
 }

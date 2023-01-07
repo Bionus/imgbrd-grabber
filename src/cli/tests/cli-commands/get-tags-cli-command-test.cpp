@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "cli/commands/get-tags-cli-command.h"
+#include "cli-commands/get-tags-cli-command.h"
 
 
 TEST_CASE("GetTagsCliCommand")

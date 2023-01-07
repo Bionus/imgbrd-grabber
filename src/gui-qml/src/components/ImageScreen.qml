@@ -162,20 +162,8 @@ Page {
                         }
                     }
 
-                    ScrollView {
-                        clip: true
-                        padding: 8
-
-                        Label {
-                            anchors.fill: parent
-                            text: (Material.theme == Material.Dark ? modelData.tagsDark : modelData.tags).join("<br/>")
-                            textFormat: Text.RichText
-
-                            onLinkActivated: {
-                                root.closed()
-                                searchTab.load(decodeURIComponent(link))
-                            }
-                        }
+                    TagView {
+                        image: modelData
                     }
 
                     Component.onCompleted: modelData.loadTags()

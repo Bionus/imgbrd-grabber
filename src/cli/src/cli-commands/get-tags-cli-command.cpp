@@ -3,7 +3,7 @@
 #include <QList>
 #include <QtMath>
 #include "cli-command.h"
-#include "downloader/printers/printer.h"
+#include "printers/printer.h"
 #include "logger.h"
 #include "models/site.h"
 #include "tags/tag-api.h"

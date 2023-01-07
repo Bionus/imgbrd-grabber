@@ -5,16 +5,16 @@
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
-#include "cli/cli.h"
-#include "cli/commands/download-images-cli-command.h"
-#include "cli/commands/get-details-cli-command.h"
-#include "cli/commands/get-images-cli-command.h"
-#include "cli/commands/get-page-count-cli-command.h"
-#include "cli/commands/get-page-tags-cli-command.h"
-#include "cli/commands/get-tags-cli-command.h"
-#include "cli/commands/load-tag-database-cli-command.h"
-#include "downloader/printers/json-printer.h"
-#include "downloader/printers/simple-printer.h"
+#include "cli.h"
+#include "cli-commands/download-images-cli-command.h"
+#include "cli-commands/get-details-cli-command.h"
+#include "cli-commands/get-images-cli-command.h"
+#include "cli-commands/get-page-count-cli-command.h"
+#include "cli-commands/get-page-tags-cli-command.h"
+#include "cli-commands/get-tags-cli-command.h"
+#include "cli-commands/load-tag-database-cli-command.h"
+#include "printers/json-printer.h"
+#include "printers/simple-printer.h"
 #include "logger.h"
 #include "models/filtering/blacklist.h"
 #include "models/profile.h"
@@ -31,10 +31,9 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 	parser.addHelpOption();
 	parser.addVersionOption();
 
-	QCommandLineOption *cliOption = nullptr;
+	const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 	if (defaultToGui) {
-		cliOption = new QCommandLineOption(QStringList() << "c" << "cli", "Disable the GUI.");
-		parser.addOption(*cliOption);
+		parser.addOption(cliOption);
 	}
 
 	const QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
@@ -96,7 +95,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 
 	parser.process(*app);
 
-	const bool gui = defaultToGui && !parser.isSet(*cliOption);
+	const bool gui = defaultToGui && !parser.isSet(cliOption);
 
 	// Log messages output and level
 	const bool verbose = parser.isSet(verboseOption);

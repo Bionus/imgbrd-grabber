@@ -1,5 +1,6 @@
 # Grabber
 *.qm
+src/cmake/android_openssl/
 src/e2e/viewer/result.json
 src/sites/helper.js
 src/sites/*/model.js

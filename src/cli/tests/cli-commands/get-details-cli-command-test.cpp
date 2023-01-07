@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "cli/commands/get-details-cli-command.h"
+#include "cli-commands/get-details-cli-command.h"
 
 
 TEST_CASE("GetDetailsCliCommand")

@@ -3,7 +3,7 @@
 #include "cli-command.h"
 #include "logger.h"
 #include "models/image.h"
-#include "downloader/printers/printer.h"
+#include "printers/printer.h"
 
 
 GetDetailsCliCommand::GetDetailsCliCommand(Profile *profile, Printer *printer, const QList<Site*> &sites, const QString &pageUrl, QObject *parent)

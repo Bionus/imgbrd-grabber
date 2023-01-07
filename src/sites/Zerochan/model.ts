@@ -145,7 +145,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
-                        tags: Grabber.regexToTags('<li[^>]*>\\s*(?:<img src="[^"]*/(?<type_3>[^"]+)\\.svg"/?>\\s*)?<a [^>]+>(?<name>[^>]+)</a>\\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)</span>|(?<type_2>[^<]*))\\s*</li>', src),
+                        tags: Grabber.regexToTags('<li[^>]*>\\s*<a[^>]+>\\s*(?:<img src="[^"]*/(?<type_3>[^"]+)\\.svg"[^>]*>\\s*)?(?<name>[^>]+?)\\s*</a>\\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)</span>|(?<type_2>[^<]*))\\s*</li>', src),
                         imageUrl: Grabber.regexToConst("url", '<div id="large">\\s*<a href="(?<url>[^"]+)"[^>]* tabindex="1">', src),
                         createdAt: Grabber.regexToConst("date", 'Entry by <a href="[^"]+">[^<]+</a>\\s*<span title="(?<date>[^"]+)">', src),
                     };

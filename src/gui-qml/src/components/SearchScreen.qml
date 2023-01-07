@@ -32,7 +32,7 @@ Page {
 
     function load(tag) {
         if (tag) {
-            textFieldSearch.text = tag
+            textFieldSearch.text = tag.trim()
             queryChanged = true
         }
         if (queryChanged) {

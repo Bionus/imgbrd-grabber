@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "cli/commands/load-tag-database-cli-command.h"
+#include "cli-commands/load-tag-database-cli-command.h"
 
 
 TEST_CASE("LoadTagDatabaseCliCommand")

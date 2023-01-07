@@ -3,7 +3,7 @@
 #include <QList>
 #include <utility>
 #include "downloader/image-downloader.h"
-#include "downloader/printers/printer.h"
+#include "printers/printer.h"
 #include "logger.h"
 
 

@@ -42,14 +42,18 @@ TEST_CASE("FilenameConditionVisitor")
 		QMap<QString, Token> tokensWithToken = {
 			{ "my_token", Token("not_empty") },
 		};
-		QMap<QString, Token> tokensWithEmptyToken = {
+		QMap<QString, Token> tokensWithEmptyStringToken = {
 			{ "my_token", Token("") },
+		};
+		QMap<QString, Token> tokensWithEmptyListToken = {
+			{ "my_token", Token(QStringList()) },
 		};
 		QMap<QString, Token> tokensWithoutToken;
 
 		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 		REQUIRE(FilenameConditionVisitor(tokensWithToken, &settings).run(condition));
-		REQUIRE(!FilenameConditionVisitor(tokensWithEmptyToken, &settings).run(condition));
+		REQUIRE(!FilenameConditionVisitor(tokensWithEmptyStringToken, &settings).run(condition));
+		REQUIRE(!FilenameConditionVisitor(tokensWithEmptyListToken, &settings).run(condition));
 		REQUIRE(!FilenameConditionVisitor(tokensWithoutToken, &settings).run(condition));
 	}
 

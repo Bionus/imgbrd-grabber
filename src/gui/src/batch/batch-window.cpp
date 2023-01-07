@@ -55,6 +55,9 @@ BatchWindow::~BatchWindow()
 {
 	delete ui;
 
+	delete m_time;
+	delete m_start;
+
 	#ifdef Q_OS_WIN
 		m_taskBarButton->deleteLater();
 		m_taskBarProgress->deleteLater();

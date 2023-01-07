@@ -50,7 +50,6 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 	QList<QSharedPointer<Image>> result;
 	Downloader downloader(
 		profile,
-		nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -68,7 +67,6 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 		false,
 		false
 	);
-	downloader.setQuit(false);
 
 	// Wait for downloader
 	QSignalSpy spy(&downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
@@ -124,7 +122,6 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	QList<Tag> result;
 	Downloader downloader(
 		profile,
-		nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -140,7 +137,6 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 		false,
 		0
 	);
-	downloader.setQuit(false);
 
 	// Wait for downloader
 	QSignalSpy spy(&downloader, SIGNAL(finishedTags(QList<Tag>)));

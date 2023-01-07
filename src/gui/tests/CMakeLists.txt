@@ -11,7 +11,7 @@ endif()
 include(ListFilterRegex)
 listFilterRegex(SOURCES "main.cpp")
 file(GLOB_RECURSE SOURCES_TESTS "./*.cpp" "../../tests/src/common/*.cpp")
-include_directories(${PROJECT_NAME} PUBLIC "." "../../tests/src/" "../../tests/src/common/")
+include_directories(${PROJECT_NAME} PUBLIC "." "../../tests/" "../../tests/src/" "../../tests/src/common/")
 
 # Executable
 add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES} ${SOURCES_TESTS})

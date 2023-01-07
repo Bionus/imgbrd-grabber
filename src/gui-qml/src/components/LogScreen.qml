@@ -3,7 +3,11 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
 Page {
-    property string log
+    onVisibleChanged: {
+        if (visible) {
+            logLabel.text = backend.log
+        }
+    }
 
     header: ToolBar {
         RowLayout {
@@ -29,8 +33,9 @@ Page {
         padding: 6
 
         Label {
+            id: logLabel
             anchors.fill: parent
-            text: log
+            text: ""
             textFormat: Text.RichText
         }
     }

@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "cli/commands/get-page-tags-cli-command.h"
+#include "cli-commands/get-page-tags-cli-command.h"
 
 
 TEST_CASE("GetPageTagsCliCommand")

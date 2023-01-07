@@ -5,7 +5,7 @@
 	path = src/cmake/cotire
 	url = https://github.com/sakra/cotire.git
 [submodule "tests/src/vendor/catch"]
-	path = src/tests/src/vendor/catch
+	path = src/tests/vendor/catch
 	url = https://github.com/catchorg/Catch2.git
 	branch = v2.x
 [submodule "lib/vendor/lexbor"]

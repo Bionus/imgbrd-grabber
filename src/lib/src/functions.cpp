@@ -1086,7 +1086,9 @@ QString decodeHtmlEntities(const QString &html)
 	const char *src = data.constData();
 	auto *dest = new char[strlen(src) + 1];
 	decode_html_entities_utf8(dest, src);
-	return QString::fromUtf8(dest);
+	QString ret = QString::fromUtf8(dest);
+	delete[] dest;
+	return ret;
 }
 
 bool canCreateLinkType(const QString &type, const QString &dir)
