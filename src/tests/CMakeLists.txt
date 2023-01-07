@@ -13,7 +13,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 include_directories("src/" "src/common/" "." "../lib/src/" "../lib/vendor/lexbor/source/")
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-add_test(${PROJECT_NAME} ${PROJECT_NAME})
+add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib)
 
 add_subdirectory(languages)
