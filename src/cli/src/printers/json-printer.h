@@ -10,13 +10,14 @@ class Image;
 class Profile;
 class QJsonArray;
 class QJsonObject;
+class QTextStream;
 class Site;
 class Tag;
 
 class JsonPrinter : public Printer
 {
 	public:
-		explicit JsonPrinter(Profile *profile);
+		explicit JsonPrinter(QTextStream *stream, Profile *profile);
 
 		void print(int val) const override;
 		void print(const QString &val) const override;
@@ -32,6 +33,7 @@ class JsonPrinter : public Printer
 		QJsonObject serializeImage(const Image &image) const;
 
 	private:
+		QTextStream *m_stream;
 		Profile *m_profile;
 };
 

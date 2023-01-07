@@ -11,19 +11,19 @@
 #include "tags/tag.h"
 
 
-JsonPrinter::JsonPrinter(Profile *profile)
-	: m_profile(profile)
+JsonPrinter::JsonPrinter(QTextStream *stream, Profile *profile)
+	: m_stream(stream), m_profile(profile)
 {}
 
 
 void JsonPrinter::print(int val) const
 {
-	print(QString::number(val));
+	*m_stream << val << Qt::endl;
 }
 
 void JsonPrinter::print(const QString &val) const
 {
-	QTextStream(stdout) << qPrintable(val);
+	*m_stream << val << Qt::endl;
 }
 
 
@@ -71,7 +71,7 @@ void JsonPrinter::printArray(const QJsonArray &array) const
 	jsonDoc.setArray(array);
 
 	const QByteArray jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
-	QTextStream(stdout) << qPrintable(jsonResult);
+	*m_stream << jsonResult;
 }
 
 void JsonPrinter::printObject(const QJsonObject &object) const
@@ -80,7 +80,7 @@ void JsonPrinter::printObject(const QJsonObject &object) const
 	jsonDoc.setObject(object);
 
 	const QByteArray jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
-	QTextStream(stdout) << qPrintable(jsonResult);
+	*m_stream << jsonResult;
 }
 
 
