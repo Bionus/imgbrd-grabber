@@ -11,4 +11,7 @@ for FILENAME in *.ts; do
     rm "$FORMATTED"
 
     grep '<translation type="unfinished">\w' "$FILENAME"
+
+    # sed -E 's/<translation type="unfinished">([^<]*)<\/translation>/<translation>\1<\/translation>/g' "$FILENAME" > "$FIXED"
+    # mv "$FIXED" "$FILENAME"
 done
