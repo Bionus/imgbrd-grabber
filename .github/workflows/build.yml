@@ -117,7 +117,9 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: src
-          run: ../build/tests/tests
+          run: |
+            ../build/tests/tests
+            ../build/cli/tests/cli-tests
 
       - name: Test GUI
         uses: GabrielBB/xvfb-action@v1
@@ -236,7 +238,9 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: src
-          run: ../build/tests/tests
+          run: |
+            ../build/tests/tests
+            ../build/cli/tests/cli-tests
 
       - name: Test GUI
         uses: GabrielBB/xvfb-action@v1
@@ -338,7 +342,9 @@ jobs:
 
       - name: Test
         working-directory: src
-        run: ../build/tests/tests
+        run: |
+          ../build/tests/tests
+          ../build/cli/tests/cli-tests
 
       - name: Test GUI
         working-directory: src
