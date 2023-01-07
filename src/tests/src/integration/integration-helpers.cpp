@@ -50,7 +50,6 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 	QList<QSharedPointer<Image>> result;
 	Downloader downloader(
 		profile,
-		nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -123,7 +122,6 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	QList<Tag> result;
 	Downloader downloader(
 		profile,
-		nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,

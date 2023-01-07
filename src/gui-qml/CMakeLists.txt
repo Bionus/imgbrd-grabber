@@ -15,7 +15,7 @@ endif()
 
 # Input
 file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
-include_directories("src/" "../lib/src/" "..")
+include_directories("src/" "../lib/src/" "../lib/" "..")
 
 # StatusBar
 set(STATUSBAR_ROOT "${CMAKE_CURRENT_LIST_DIR}/vendor/qtstatusbar/src")
