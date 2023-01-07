@@ -218,6 +218,7 @@ Profile::~Profile()
 
 	qDeleteAll(m_sources);
 	delete m_commands;
+	delete m_md5s;
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
 	delete m_urlDownloaderManager;

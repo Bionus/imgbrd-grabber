@@ -22,11 +22,7 @@ UrlDownloaderManager::UrlDownloaderManager(const ReadWritePath &root, QObject *p
 
 UrlDownloaderManager::~UrlDownloaderManager()
 {
-	for (auto *downloader : m_downloaders) {
-		downloader->deleteLater();
-	}
-	m_downloaders.clear();
-
+	qDeleteAll(m_downloaders);
 	m_engine->deleteLater();
 }
 

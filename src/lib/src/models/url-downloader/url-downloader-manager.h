@@ -16,7 +16,7 @@ class UrlDownloaderManager : public QObject
 
 	public:
 		explicit UrlDownloaderManager(const ReadWritePath &root, QObject *parent = nullptr);
-		~UrlDownloaderManager();
+		~UrlDownloaderManager() override;
 
 		bool load(const QString &file);
 		UrlDownloader *canDownload(const QUrl &url) const;
