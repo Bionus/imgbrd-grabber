@@ -5,7 +5,6 @@
 #include <QRect>
 #include <QString>
 #include <QKeySequence>
-#include "backports/backports.h"
 #include "utils/file-utils.h"
 
 
