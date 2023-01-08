@@ -4,7 +4,7 @@
 #include <QString>
 #include <QUrl>
 #include <string>
-#include "vendor/catch/single_include/catch2/catch.hpp"
+#include "vendor/catch/src/catch2/catch_all.hpp"
 
 
 namespace Catch

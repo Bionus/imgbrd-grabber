@@ -14,9 +14,10 @@ include_directories("src/" "src/common/" "." "../lib/src/" "../lib/vendor/lexbor
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib)
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib Catch2::Catch2)
 
 add_subdirectory(languages)
+add_subdirectory(vendor/catch)
 
 # Pre-compiled header
 if(USE_PCH)

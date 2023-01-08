@@ -1,12 +1,10 @@
-#define CATCH_CONFIG_RUNNER
-
 #ifdef HEADLESS
 	#include <QCoreApplication>
 #else
 	#include <QApplication>
 #endif
 #include "functions.h"
-#include "vendor/catch/single_include/catch2/catch.hpp"
+#include "vendor/catch/src/catch2/catch_all.hpp"
 
 
 int main(int argc, char* argv[])

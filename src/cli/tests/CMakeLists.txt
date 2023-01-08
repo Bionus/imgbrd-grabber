@@ -20,7 +20,7 @@ include_directories(${PROJECT_NAME} PUBLIC "." "../../tests/" "../../tests/src/"
 # Executable
 add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES} ${SOURCES_TESTS})
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib Catch2::Catch2)
 
 # Pre-compiled header
 if(USE_PCH)
