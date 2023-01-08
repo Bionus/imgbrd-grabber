@@ -6,11 +6,11 @@
 #include <QStringList>
 #include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
+#include "filename/filename.h"
 #include "functions.h"
 #include "helpers.h"
 #include "logger.h"
 #include "models/api/api.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"

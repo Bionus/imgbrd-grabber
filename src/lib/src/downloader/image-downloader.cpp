@@ -8,10 +8,10 @@
 #include <utility>
 #include "extension-rotator.h"
 #include "file-downloader.h"
+#include "filename/filename.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/profile.h"
 #include "models/site.h"

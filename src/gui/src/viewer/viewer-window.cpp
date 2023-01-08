@@ -24,12 +24,12 @@
 #include <ui_viewer-window.h>
 #include "custom-buttons.h"
 #include "downloader/image-downloader.h"
+#include "filename/filename.h"
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"
 #include "logger.h"
 #include "main-window.h"
-#include "models/filename.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
 #include "models/pool.h"

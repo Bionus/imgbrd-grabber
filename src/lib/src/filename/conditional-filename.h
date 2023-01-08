@@ -3,7 +3,7 @@
 
 #include <QMap>
 #include <QString>
-#include "models/filename.h"
+#include "filename/filename.h"
 
 
 struct FilenameNodeCondition;

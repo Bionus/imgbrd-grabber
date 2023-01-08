@@ -2,8 +2,8 @@
 #include <QUuid>
 #include <utility>
 #include "downloader/image-downloader.h"
+#include "filename/filename.h"
 #include "logger.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/profile.h"
 

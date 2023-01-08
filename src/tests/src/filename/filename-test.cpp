@@ -3,8 +3,8 @@
 #include <QScopedPointer>
 #include <QSettings>
 #include <QStringList>
+#include "filename/filename.h"
 #include "loader/token.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/image-factory.h"
 #include "models/profile.h"

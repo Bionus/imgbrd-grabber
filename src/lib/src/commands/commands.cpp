@@ -3,9 +3,9 @@
 #include <QProcess>
 #include <QSettings>
 #include "commands/sql-worker.h"
+#include "filename/filename.h"
 #include "functions.h"
 #include "logger.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/profile.h"
 #include "tags/tag.h"

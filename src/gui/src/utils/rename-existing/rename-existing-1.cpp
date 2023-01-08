@@ -6,12 +6,12 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <ui_rename-existing-1.h>
+#include "filename/filename.h"
 #include "functions.h"
 #include "helpers.h"
 #include "loader/token.h"
 #include "logger.h"
 #include "models/api/api.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"

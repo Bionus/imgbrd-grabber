@@ -4,7 +4,7 @@
 #include <QRegExp>
 #include <QRegularExpression>
 #include <ui_filename-window.h>
-#include "models/filename.h"
+#include "filename/filename.h"
 #include "models/image.h"
 #include "models/profile.h"
 #include "models/site.h"

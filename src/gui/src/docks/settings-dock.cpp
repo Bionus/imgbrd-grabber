@@ -7,8 +7,8 @@
 #include <QSettings>
 #include <QString>
 #include <ui_settings-dock.h>
+#include "filename/filename.h"
 #include "functions.h"
-#include "models/filename.h"
 #include "models/profile.h"
 
 

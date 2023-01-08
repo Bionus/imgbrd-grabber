@@ -2,9 +2,9 @@
 #include <QFile>
 #include <QSettings>
 #include <QStringList>
+#include "filename/filename.h"
 #include "functions.h"
 #include "loader/token.h"
-#include "models/filename.h"
 #include "models/profile.h"
 #include "tags/tag.h"
 

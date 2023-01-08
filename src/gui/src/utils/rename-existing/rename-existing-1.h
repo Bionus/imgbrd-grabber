@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QMap>
-#include "models/filename.h"
+#include "filename/filename.h"
 #include "rename-existing-file.h"
 
 
