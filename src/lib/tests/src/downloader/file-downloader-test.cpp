@@ -29,7 +29,7 @@ TEST_CASE("FileDownloader")
 
 	SECTION("Success")
 	{
-		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
+		CustomNetworkAccessManager::NextFiles.enqueue("../gui/resources/images/icon.png");
 
 		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl(successUrl)));
 		QString dest = "single.png";

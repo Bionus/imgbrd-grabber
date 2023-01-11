@@ -33,3 +33,6 @@ target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS})
 if(USE_PCH)
 	cotire(${PROJECT_NAME})
 endif()
+
+# Tests
+add_subdirectory(tests)

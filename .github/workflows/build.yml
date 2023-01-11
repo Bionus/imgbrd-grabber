@@ -118,7 +118,7 @@ jobs:
         with:
           working-directory: src
           run: |
-            ../build/tests/tests
+            ../build/lib/tests/lib-tests
             ../build/cli/tests/cli-tests
 
       - name: Test GUI
@@ -239,7 +239,7 @@ jobs:
         with:
           working-directory: src
           run: |
-            ../build/tests/tests
+            ../build/lib/tests/lib-tests
             ../build/cli/tests/cli-tests
 
       - name: Test GUI
@@ -343,7 +343,7 @@ jobs:
       - name: Test
         working-directory: src
         run: |
-          ../build/tests/tests
+          ../build/lib/tests/lib-tests
           ../build/cli/tests/cli-tests
 
       - name: Test GUI

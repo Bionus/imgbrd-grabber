@@ -261,7 +261,7 @@ TEST_CASE("ImageDownloader")
 		settings->setValue("ImageSize/maxWidthEnabled", true);
 		settings->setValue("ImageSize/maxWidth", 50);
 
-		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/colors/original.jpg"); // 256x256
+		CustomNetworkAccessManager::NextFiles.enqueue("../gui/resources/images/colors/original.jpg"); // 256x256
 		QString path = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
 
 		auto img = createImage(profile, site);
@@ -284,7 +284,7 @@ TEST_CASE("ImageDownloader")
 		settings->setValue("ImageSize/maxWidthEnabled", true);
 		settings->setValue("ImageSize/maxWidth", 500);
 
-		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/colors/original.jpg"); // 256x256
+		CustomNetworkAccessManager::NextFiles.enqueue("../gui/resources/images/colors/original.jpg"); // 256x256
 		QString path = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
 
 		auto img = createImage(profile, site);
