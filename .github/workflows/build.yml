@@ -116,18 +116,18 @@ jobs:
       - name: Test
         uses: GabrielBB/xvfb-action@v1
         with:
-          working-directory: src
+          working-directory: src/lib
           run: |
-            ../build/lib/tests/lib-tests
-            ../build/cli/tests/cli-tests
+            ../../build/lib/tests/lib-tests
+            ../../build/cli/tests/cli-tests
 
       - name: Test GUI
         uses: GabrielBB/xvfb-action@v1
         with:
-          working-directory: src
+          working-directory: src/lib
           run: |
-            ../build/gui/tests/gui-tests
-            ../build/crash-reporter/tests/crash-reporter-tests
+            ../../build/gui/tests/gui-tests
+            ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Test sites
         working-directory: src/sites
@@ -237,18 +237,18 @@ jobs:
       - name: Test
         uses: GabrielBB/xvfb-action@v1
         with:
-          working-directory: src
+          working-directory: src/lib
           run: |
-            ../build/lib/tests/lib-tests
-            ../build/cli/tests/cli-tests
+            ../../build/lib/tests/lib-tests
+            ../../build/cli/tests/cli-tests
 
       - name: Test GUI
         uses: GabrielBB/xvfb-action@v1
         with:
-          working-directory: src
+          working-directory: src/lib
           run: |
-            ../build/gui/tests/gui-tests
-            ../build/crash-reporter/tests/crash-reporter-tests
+            ../../build/gui/tests/gui-tests
+            ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate AppImage
         run: |
@@ -341,16 +341,16 @@ jobs:
           cmake --build . --config Release
 
       - name: Test
-        working-directory: src
+        working-directory: src/lib
         run: |
-          ../build/lib/tests/lib-tests
-          ../build/cli/tests/cli-tests
+          ../../build/lib/tests/lib-tests
+          ../../build/cli/tests/cli-tests
 
       - name: Test GUI
-        working-directory: src
+        working-directory: src/lib
         run: |
-          ../build/gui/tests/gui-tests
-          ../build/crash-reporter/tests/crash-reporter-tests
+          ../../build/gui/tests/gui-tests
+          ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate package
         run: ./scripts/package-mac.sh
@@ -487,8 +487,10 @@ jobs:
 
       - name: Test
         shell: cmd
-        working-directory: src
-        run: ..\build\tests\%BUILD_TYPE%\tests.exe
+        working-directory: src/lib
+        run: |
+          ..\..\build\lib\tests\%BUILD_TYPE%\lib-tests.exe
+          ..\..\build\cli\tests\%BUILD_TYPE%\cli-tests.exe
         env:
           QTDIR: ${{ env.Qt5_Dir }}
           QT_PLUGIN_PATH: ${{ env.Qt5_Dir }}\plugins
