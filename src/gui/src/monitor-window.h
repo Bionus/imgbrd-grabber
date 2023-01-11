@@ -2,7 +2,7 @@
 #define MONITOR_WINDOW_H
 
 #include <QDialog>
-#include "models/monitor.h"
+#include "monitoring/monitor.h"
 
 
 namespace Ui

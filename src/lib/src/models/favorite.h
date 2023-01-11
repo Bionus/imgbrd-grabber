@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include <QList>
 #include <QString>
-#include "models/monitor.h"
+#include "monitoring/monitor.h"
 
 
 class QPixmap;

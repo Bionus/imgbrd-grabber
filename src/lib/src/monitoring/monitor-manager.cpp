@@ -1,11 +1,11 @@
-#include "models/monitor-manager.h"
+#include "monitoring/monitor-manager.h"
 #include <QByteArray>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <utility>
-#include "models/monitor.h"
+#include "monitoring/monitor.h"
 
 
 MonitorManager::MonitorManager(QString file, Profile *profile)

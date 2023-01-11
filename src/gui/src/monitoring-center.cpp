@@ -10,11 +10,11 @@
 #include "logger.h"
 #include "models/favorite.h"
 #include "models/image.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/profile.h"
 #include "models/search-query/tag-search-query.h"
 #include "models/site.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 
 #define MONITOR_CHECK_LIMIT 20
 #define MONITOR_CHECK_TOTAL 1000

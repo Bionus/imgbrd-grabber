@@ -1,4 +1,4 @@
-#include "models/monitor.h"
+#include "monitoring/monitor.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMap>

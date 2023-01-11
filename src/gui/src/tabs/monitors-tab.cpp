@@ -9,12 +9,12 @@
 #include <algorithm>
 #include "logger.h"
 #include "main-window.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "monitor-table-model.h"
 #include "monitor-window.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 
 
 MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)

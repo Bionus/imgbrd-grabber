@@ -18,11 +18,11 @@
 #include "models/favorite.h"
 #include "models/md5-database/md5-database-sqlite.h"
 #include "models/md5-database/md5-database-text.h"
-#include "models/monitor-manager.h"
 #include "models/site.h"
 #include "models/source.h"
 #include "models/source-registry.h"
 #include "models/url-downloader/url-downloader-manager.h"
+#include "monitoring/monitor-manager.h"
 #include "utils/file-utils.h"
 #include "utils/read-write-path.h"
 

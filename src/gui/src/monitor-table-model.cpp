@@ -4,10 +4,10 @@
 #include <QtMath>
 #include <QVariant>
 #include <utility>
-#include "monitoring-center.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/site.h"
+#include "monitoring-center.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 
 
 MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QObject *parent)

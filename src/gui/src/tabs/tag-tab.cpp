@@ -7,11 +7,11 @@
 #include <QSettings>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 #include "search-window.h"
 #include "ui/text-edit.h"
 

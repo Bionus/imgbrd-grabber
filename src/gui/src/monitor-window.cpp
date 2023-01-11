@@ -2,9 +2,9 @@
 #include <QFileDialog>
 #include <QtMath>
 #include <ui_monitor-window.h>
-#include "models/monitor-manager.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "monitoring/monitor-manager.h"
 #include "sources/sources-window.h"
 
 

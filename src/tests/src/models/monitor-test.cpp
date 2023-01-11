@@ -1,9 +1,9 @@
 #include <QJsonObject>
 #include <QScopedPointer>
-#include "models/monitor.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "monitoring/monitor.h"
 #include "catch.h"
 #include "source-helpers.h"
 
