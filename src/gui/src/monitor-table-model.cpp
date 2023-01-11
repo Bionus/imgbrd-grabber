@@ -5,7 +5,7 @@
 #include <QVariant>
 #include <utility>
 #include "models/site.h"
-#include "monitoring-center.h"
+#include "monitoring/monitoring-center.h"
 #include "monitoring/monitor.h"
 #include "monitoring/monitor-manager.h"
 

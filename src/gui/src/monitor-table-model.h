@@ -5,7 +5,7 @@
 #include <QList>
 #include <QMap>
 #include <QTimer>
-#include "monitoring-center.h"
+#include "monitoring/monitoring-center.h"
 
 
 class MonitorManager;

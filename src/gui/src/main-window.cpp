@@ -41,7 +41,7 @@
 #include "models/favorite.h"
 #include "models/filtering/post-filter.h"
 #include "models/profile.h"
-#include "monitoring-center.h"
+#include "monitoring/monitoring-center.h"
 #include "network/network-reply.h"
 #include "settings/options-window.h"
 #include "settings/start-window.h"
@@ -270,7 +270,13 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
 
 	// Monitors tab
-	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, m_trayIcon, this);
+	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, this);
+	connect(m_monitoringCenter, &MonitoringCenter::notify, [this](const Monitor &monitor, const QString &msg) {
+		Q_UNUSED(monitor);
+		if (m_trayIcon != nullptr && m_trayIcon->isVisible()) {
+			m_trayIcon->showMessage(tr("Grabber monitoring"), msg, QSystemTrayIcon::Information);
+		}
+	});
 	m_monitorsTab = new MonitorsTab(m_profile, m_profile->monitorManager(), m_monitoringCenter, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_monitorsTab, m_monitorsTab->windowTitle());
 	connect(m_monitorsTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);

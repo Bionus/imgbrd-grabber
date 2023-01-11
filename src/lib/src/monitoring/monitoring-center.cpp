@@ -1,7 +1,5 @@
-#include "monitoring-center.h"
-#include <QEventLoop>
+#include "monitoring/monitoring-center.h"
 #include <QSettings>
-#include <QSystemTrayIcon>
 #include <QTimer>
 #include "downloader/download-query-group.h"
 #include "downloader/download-queue.h"
@@ -20,8 +18,8 @@
 #define MONITOR_CHECK_TOTAL 1000
 
 
-MonitoringCenter::MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent)
-	: QObject(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_trayIcon(trayIcon)
+MonitoringCenter::MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QObject *parent)
+	: QObject(parent), m_profile(profile), m_downloadQueue(downloadQueue)
 {
 	connect(m_downloadQueue, &DownloadQueue::finished, this, &MonitoringCenter::queueEmpty);
 }
@@ -99,7 +97,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	emit statusChanged(monitor, MonitoringStatus::Performing);
 
 	// Send notification
-	if (monitor.notify() && newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
+	if (monitor.notify() && newImages > 0) {
 		QString msg;
 		if (count == 1) {
 			msg = tr("New images found for tag '%1' on '%2'");
@@ -108,7 +106,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 		} else {
 			msg = tr("More than %n new image(s) found for tag '%1' on '%2'", "", newImages);
 		}
-		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(search.toString(), siteNames.join(", ")), QSystemTrayIcon::Information);
+		emit notify(monitor, msg.arg(search.toString(), siteNames.join(", ")));
 	}
 
 	// Add images to download queue

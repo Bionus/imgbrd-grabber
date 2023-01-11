@@ -2,7 +2,7 @@
 #define MONITORS_TAB_H
 
 #include <QWidget>
-#include "monitoring-center.h"
+#include "monitoring/monitoring-center.h"
 
 
 namespace Ui

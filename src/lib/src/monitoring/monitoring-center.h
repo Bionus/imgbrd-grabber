@@ -9,7 +9,6 @@ class Favorite;
 class ImageDownloader;
 class Monitor;
 class Profile;
-class QSystemTrayIcon;
 class SearchQuery;
 
 class MonitoringCenter : public QObject
@@ -25,7 +24,7 @@ class MonitoringCenter : public QObject
 			Performing,
 		};
 
-		explicit MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
+		explicit MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QObject *parent = nullptr);
 		bool isRunning() const;
 
 	public slots:
@@ -43,11 +42,11 @@ class MonitoringCenter : public QObject
 
 	signals:
 		void statusChanged(const Monitor &monitor, MonitoringCenter::MonitoringStatus status);
+		void notify(const Monitor &monitor, const QString &message);
 
 	private:
 		Profile *m_profile;
 		DownloadQueue *m_downloadQueue;
-		QSystemTrayIcon *m_trayIcon;
 		bool m_waitingForQueue = false;
 		bool m_changed = false;
 		bool m_stop = false;
