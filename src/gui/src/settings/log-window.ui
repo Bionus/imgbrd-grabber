@@ -284,10 +284,63 @@
      <y>51</y>
     </hint>
     <hint type="destinationlabel">
-     <x>145</x>
-     <y>69</y>
+     <x>156</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPath</sender>
+   <signal>clicked()</signal>
+   <receiver>LogWindow</receiver>
+   <slot>choosePath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonFilename</sender>
+   <signal>clicked()</signal>
+   <receiver>LogWindow</receiver>
+   <slot>chooseFilename()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>376</x>
+     <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>395</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonUniquePath</sender>
+   <signal>clicked()</signal>
+   <receiver>LogWindow</receiver>
+   <slot>chooseUniquePath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>393</x>
+     <y>154</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>choosePath()</slot>
+  <slot>chooseFilename()</slot>
+  <slot>chooseUniquePath()</slot>
+ </slots>
 </ui>
