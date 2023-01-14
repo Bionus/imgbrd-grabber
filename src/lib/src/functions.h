@@ -81,6 +81,7 @@ QString getFilenameMd5(const QString &fileName, const QString &format);
 QString getFilenameId(const QString &fileName, const QString &format);
 
 QString parseMarkdown(QString str);
+QString parseGithubLinks(QString str);
 QString decodeHtmlEntities(const QString &html);
 
 QString qFontToCss(const QFont &font);

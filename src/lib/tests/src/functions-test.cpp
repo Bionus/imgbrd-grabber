@@ -339,8 +339,8 @@ TEST_CASE("Functions")
 	}
 	SECTION("ParseMarkdownIssueLinks")
 	{
-		REQUIRE(parseMarkdown("issue #123") == QString("<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>issue #123</a>"));
-		REQUIRE(parseMarkdown("fix #123") == QString("<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>fix #123</a>"));
+		REQUIRE(parseMarkdown("issue #123") == QString("issue <a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>#123</a>"));
+		REQUIRE(parseMarkdown("fix #123") == QString("fix <a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>#123</a>"));
 		REQUIRE(parseMarkdown("issue 123") == QString("issue 123"));
 	}
 

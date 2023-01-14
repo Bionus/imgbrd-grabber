@@ -1,6 +1,7 @@
 #include "update-checker.h"
 #include <QDateTime>
 #include <QSettings>
+#include "functions.h"
 
 
 UpdateChecker::UpdateChecker(QSettings *settings, QObject *parent)
@@ -35,7 +36,7 @@ void UpdateChecker::checkFinished(const QString &latestVersion, bool updateAvail
 	}
 
 	if (m_changelog != changelog) {
-		m_changelog = changelog;
+		m_changelog = parseGithubLinks(changelog);
 		emit changelogChanged();
 	}
 }

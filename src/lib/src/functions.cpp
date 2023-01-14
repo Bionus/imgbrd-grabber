@@ -955,12 +955,23 @@ QString parseMarkdown(QString str)
 		str.replace(match.captured(0), result);
 	}
 
-	// Issue links
-	static const QRegularExpression issueLinks("(issue|fix) #(\\d+)");
-	str.replace(issueLinks, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/issues/\2'>\1 #\2</a>)");
+	str = parseGithubLinks(str);
 
 	// Line breaks to HTML
 	str.replace("\n", "<br/>");
+
+	return str;
+}
+
+QString parseGithubLinks(QString str)
+{
+	// Issue links
+	static const QRegularExpression issueLinks("(issue|fix) #(\\d+)");
+	str.replace(issueLinks, "\\1 <a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/issues/\2'>#\2</a>)");
+
+	// Commit hashes
+	static const QRegularExpression commitHashes("([0-9a-f]{8})([0-9a-f]{32})");
+	str.replace(commitHashes, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/commit/\1\2'>\1</a>)");
 
 	return str;
 }

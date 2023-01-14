@@ -77,13 +77,18 @@ ApplicationWindow {
         title: qsTr("Update available")
         anchors.centerIn: Overlay.overlay
         modal: true
+        width: 360
         visible: updateChecker.updateAvailable
         standardButtons: Dialog.Cancel | Dialog.Ok
 
         onAccepted: Qt.openUrlExternally(updateChecker.latestUrl)
 
         Text {
+            anchors.fill: parent
             text: updateChecker.changelog
+            wrapMode: Text.WordWrap
+            textFormat: TextEdit.MarkdownText
+            onLinkActivated: Qt.openUrlExternally(link)
         }
     }
 
