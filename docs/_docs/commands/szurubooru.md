@@ -17,6 +17,8 @@ Note that you'll need to have [Docker](https://docs.docker.com/get-docker/) inst
 
 Don't forget to update the `MOUNT_` variables in the `.env` file.
 
+If you're having issues setting it up (for example with filesystem permissions), there is a [Common errors](https://github.com/rr-/szurubooru/wiki/Common-errors) page in their wiki that might be of help for troubleshooting.
+
 
 ## Configuration
 
