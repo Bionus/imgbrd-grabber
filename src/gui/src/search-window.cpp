@@ -117,14 +117,18 @@ void SearchWindow::accept()
 
 void SearchWindow::on_buttonImage_clicked()
 {
-	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
-	QFile f(path);
-	QString md5;
-	if (f.exists()) {
-		f.open(QFile::ReadOnly);
-		md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
+	const QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
+	if (path.isEmpty()) {
+		return;
 	}
 
-	emit accepted(generateSearch(!md5.isEmpty() ? "md5:" + md5 : QString()));
+	QFile f(path);
+	if (!f.exists() || !f.open(QFile::ReadOnly)) {
+		return;
+	}
+	const QString md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
+	f.close();
+
+	emit accepted(generateSearch("md5:" + md5));
 	QDialog::accept();
 }
