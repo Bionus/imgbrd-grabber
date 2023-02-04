@@ -104,6 +104,7 @@ class DownloadsTab : public QWidget
 		QIcon &getIcon(const QString &path);
 		bool isDownloading() const;
 		void batchDownloadsTableContextMenu(const QPoint &pos);
+		void batchConvert();
 
 	protected:
 		void changeEvent(QEvent *event) override;

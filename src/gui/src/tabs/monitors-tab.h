@@ -11,6 +11,7 @@ namespace Ui
 }
 
 
+class DownloadQueryGroup;
 class MainWindow;
 class Monitor;
 class MonitorManager;
@@ -41,6 +42,10 @@ class MonitorsTab : public QWidget
 	protected slots:
 		void monitorsTableContextMenu(const QPoint &pos);
 		void removeSelected();
+		void convertSelected();
+
+	signals:
+		void batchAddGroup(const DownloadQueryGroup &);
 
 	private:
 		Profile *m_profile;

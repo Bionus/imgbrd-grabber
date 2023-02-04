@@ -286,6 +286,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_downloadsTab = new DownloadsTab(m_profile, m_downloadQueue, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
 	connect(m_downloadsTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);
+	connect(m_monitorsTab, &MonitorsTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
 	ui->tabWidget->setCurrentIndex(0);
 
 	// "File" actions to load/save downloads list

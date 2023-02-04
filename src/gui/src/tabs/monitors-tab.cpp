@@ -7,6 +7,7 @@
 #include <QShortcut>
 #include <ui_monitors-tab.h>
 #include <algorithm>
+#include "downloader/download-query-group.h"
 #include "logger.h"
 #include "main-window.h"
 #include "models/profile.h"
@@ -72,6 +73,8 @@ void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
 
 	auto *menu = new QMenu(this);
 	menu->addAction(QIcon(":/images/icons/edit.png"), tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
+	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy to downloads"), [this]() { convertSelected(); });
+	menu->addSeparator();
 	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this]() { removeSelected(); });
 	menu->exec(QCursor::pos());
 }
@@ -90,6 +93,21 @@ void MonitorsTab::removeSelected()
 
 	for (int i : qAsConst(rows)) {
 		m_monitorTableModel->removeRow(i);
+	}
+}
+
+void MonitorsTab::convertSelected()
+{
+	QSet<int> rows;
+	for (const QModelIndex &index : ui->tableMonitors->selectionModel()->selection().indexes()) {
+		rows.insert(index.row());
+	}
+
+	for (const int row : rows) {
+		const Monitor &monitor = m_monitorManager->monitors()[row];
+		for (Site *site : monitor.sites()) {
+			emit batchAddGroup(DownloadQueryGroup(m_settings, monitor.query(), 1, 200, -1, monitor.postFilters(), site));
+		}
 	}
 }
 

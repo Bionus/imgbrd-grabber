@@ -35,6 +35,7 @@
 #include "main-window.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "monitoring/monitor-manager.h"
 #include "progress-bar-delegate.h"
 
 
@@ -118,6 +119,7 @@ void DownloadsTab::batchDownloadsTableContextMenu(const QPoint &pos)
 
 	auto *menu = new QMenu(this);
 	menu->addAction(QIcon(":/images/icons/save.png"), tr("Download"), this, SLOT(batchSel()));
+	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy to monitors"), [this]() { batchConvert(); });
 	menu->addSeparator();
 	menu->addAction(QIcon(":/images/icons/arrow-top.png"), tr("Move to top"), this, SLOT(batchMoveToTop()));
 	menu->addAction(QIcon(":/images/icons/arrow-up.png"), tr("Move up"), this, SLOT(batchMoveUp()));
@@ -442,6 +444,17 @@ QIcon &DownloadsTab::getIcon(const QString &path)
 bool DownloadsTab::isDownloading() const
 {
 	return m_getAll;
+}
+
+void DownloadsTab::batchConvert()
+{
+	QSet<int> rows = selectedRows(ui->tableBatchGroups);
+	for (const int row : rows) {
+		const DownloadQueryGroup &group = m_groupBatchs[row];
+		const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
+		Monitor monitor({ group.site }, 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, group.query, group.postFiltering, notify);
+		m_profile->monitorManager()->add(monitor);
+	}
 }
 
 
