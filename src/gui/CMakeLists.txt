@@ -1,5 +1,5 @@
 # General
-project(gui)
+project(gui VERSION ${VERSION})
 add_definitions(-DGUI=1)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	set(USE_BREAKPAD 1)

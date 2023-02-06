@@ -1,4 +1,4 @@
-project(cli)
+project(cli VERSION ${VERSION})
 
 add_definitions(-DCLI=1)
 
