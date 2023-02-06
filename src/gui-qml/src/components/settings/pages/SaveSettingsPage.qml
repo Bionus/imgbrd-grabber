@@ -68,11 +68,20 @@ ColumnLayout {
     Repeater {
         model: ListModel {
             ListElement {
+                name: qsTr("General")
+                key: "general"
+                enableShorter: false
+                defaultEmpty: ""
+                defaultMultiple: ""
+                defaultSeparator: " "
+            }
+            ListElement {
                 name: qsTr("Artist")
                 key: "artist"
                 enableShorter: false
                 defaultEmpty: "anonymous"
                 defaultMultiple: "multiple artists"
+                defaultSeparator: "+"
             }
             ListElement {
                 name: qsTr("Copyright")
@@ -80,6 +89,7 @@ ColumnLayout {
                 enableShorter: true
                 defaultEmpty: "misc"
                 defaultMultiple: "crossover"
+                defaultSeparator: "+"
             }
             ListElement {
                 name: qsTr("Character")
@@ -87,6 +97,7 @@ ColumnLayout {
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "group"
+                defaultSeparator: "+"
             }
             ListElement {
                 name: qsTr("Model")
@@ -94,6 +105,7 @@ ColumnLayout {
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
             ListElement {
                 name: qsTr("Photo set")
@@ -101,6 +113,7 @@ ColumnLayout {
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
             ListElement {
                 name: qsTr("Species")
@@ -108,6 +121,7 @@ ColumnLayout {
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
             ListElement {
                 name: qsTr("Meta")
@@ -115,6 +129,7 @@ ColumnLayout {
                 enableShorter: false
                 defaultEmpty: "none"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
         }
         delegate: SettingItem {
@@ -126,7 +141,8 @@ ColumnLayout {
                 key: model.key,
                 enableShorter: model.enableShorter,
                 defaultEmpty: model.defaultEmpty,
-                defaultMultiple: model.defaultMultiple
+                defaultMultiple: model.defaultMultiple,
+                defaultSeparator: model.defaultSeparator
             })
         }
     }

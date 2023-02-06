@@ -2,7 +2,7 @@
 #include <QSettings>
 #include "ui_token-settings-widget.h"
 
-TokenSettingsWidget::TokenSettingsWidget(QSettings *settings, QString name, bool enableShorter, const QString &defaultEmpty, const QString &defaultMultiple, QWidget *parent)
+TokenSettingsWidget::TokenSettingsWidget(QSettings *settings, QString name, bool enableShorter, const QString &defaultEmpty, const QString &defaultMultiple, const QString &defaultSeparator, QWidget *parent)
 	: QWidget(parent), ui(new Ui::TokenSettingsWidget), m_settings(settings), m_name(std::move(name)), m_enableShorter(enableShorter)
 {
 	ui->setupUi(this);
@@ -15,7 +15,7 @@ TokenSettingsWidget::TokenSettingsWidget(QSettings *settings, QString name, bool
 	ui->spinKeepN->setValue(m_settings->value(m_name + "_multiple_keepN", 1).toInt());
 	ui->spinKeepNThenAdd->setValue(m_settings->value(m_name + "_multiple_keepNThenAdd_keep", 1).toInt());
 	ui->lineKeepNThenAdd->setText(m_settings->value(m_name + "_multiple_keepNThenAdd_add", " (+ %count%)").toString());
-	ui->lineSeparator->setText(m_settings->value(m_name + "_sep", "+").toString());
+	ui->lineSeparator->setText(m_settings->value(m_name + "_sep", defaultSeparator).toString());
 	ui->lineReplaceAll->setText(m_settings->value(m_name + "_value", defaultMultiple).toString());
 
 	const QString multiple = m_settings->value(m_name + "_multiple", "keepAll").toString();
