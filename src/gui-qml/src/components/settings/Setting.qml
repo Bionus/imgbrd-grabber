@@ -9,6 +9,7 @@ Item {
     property var def
     property var obj: settings
     property var parser: null
+    property var writer: null
     property var _parser: parser !== null ? parser : (typeof def === "boolean" ? ((v) => v === true || v === "true") : (typeof def === "number" ? ((v) => Number(v)) : null))
 
     property var value: _parser !== null ? _parser(rawValue) : rawValue
@@ -17,8 +18,12 @@ Item {
         : root.def
 
     function setValue(val) {
+        if (root.writer !== null) {
+            val = root.writer(val)
+        }
+
         root.obj.setValue(root.key, val, root.def)
-        root.value = val
+        root.rawValue = val
 
         root.changed(val)
     }

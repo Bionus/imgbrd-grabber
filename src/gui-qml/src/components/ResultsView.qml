@@ -13,6 +13,7 @@ ScrollView {
 
     signal openImage(int index)
     signal refresh()
+    signal appendNext()
 
     property var results
     property double thumbnailHeightToWidthRatio: 0
@@ -33,13 +34,19 @@ ScrollView {
     onThumbnailFillModeChanged: resultsRefresher.restart()
 
     Flickable {
+        // Pull to refresh and infinite scroll
         property bool atBeginningStart: false
+        property bool atEndStart: false
         onFlickStarted: {
             atBeginningStart = atYBeginning
+            atEndStart = atYEnd
         }
         onFlickEnded: {
             if (atYBeginning && atBeginningStart) {
                 refresh()
+            }
+            if (atYEnd && atEndStart) {
+                appendNext()
             }
         }
 
