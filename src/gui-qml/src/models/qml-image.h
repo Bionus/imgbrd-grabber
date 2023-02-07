@@ -9,6 +9,7 @@
 #include "functions.h"
 #include "models/image.h"
 #include "models/site.h"
+#include "tag-list-model.h"
 #include "tags/tag-stylist.h"
 
 
@@ -24,8 +25,7 @@ class QmlImage : public QObject
 	Q_PROPERTY(QString sampleUrl READ sampleUrl CONSTANT)
 	Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
 	Q_PROPERTY(QString siteUrl READ siteUrl CONSTANT)
-	Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
-	Q_PROPERTY(QStringList tagsDark READ tagsDark NOTIFY tagsChanged)
+	Q_PROPERTY(TagListModel *tags READ tags CONSTANT)
 	Q_PROPERTY(QString badge READ badge CONSTANT)
 	Q_PROPERTY(QColor color READ color CONSTANT)
 	Q_PROPERTY(QSharedPointer<Image> image READ image CONSTANT)
@@ -37,7 +37,7 @@ class QmlImage : public QObject
 		QmlImage(QSharedPointer<Image> image, Profile *profile, QObject *parent = nullptr)
 			: QObject(parent), m_image(std::move(image)), m_profile(profile)
 		{
-			connect(m_image.data(), &Image::finishedLoadingTags, this, &QmlImage::tagsChanged);
+			m_tags = new TagListModel(m_image);
 		}
 
 		QSharedPointer<Image> image() const { return m_image; }
@@ -46,8 +46,7 @@ class QmlImage : public QObject
 		QString sampleUrl() const { return m_image->url(Image::Size::Sample).toString(); }
 		QString fileUrl() const { return m_image->url(Image::Size::Full).toString(); }
 		QString siteUrl() const { return m_image->parentSite()->url(); }
-		QStringList tags() const { return TagStylist(m_profile).stylished(m_image->tags(), true, false, "type", false); }
-		QStringList tagsDark() const { return TagStylist(m_profile).stylished(m_image->tags(), true, false, "type", true); }
+		TagListModel *tags() const { return m_tags; }
 		QString badge() const { return m_image->counter(); }
 		QColor color() const { return m_image->color().isValid() ? m_image->color() : QColor(0, 0, 0, 0); }
 		bool isAnimated() const { return !m_image->isAnimated().isEmpty(); }
@@ -57,12 +56,10 @@ class QmlImage : public QObject
 	public slots:
 		void loadTags() { m_image->loadDetails(); };
 
-	signals:
-		void tagsChanged();
-
 	private:
 		QSharedPointer<Image> m_image;
 		Profile *m_profile;
+		TagListModel *m_tags;
 };
 
 #endif // QML_IMAGE_H
