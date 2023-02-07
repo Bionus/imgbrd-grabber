@@ -35,8 +35,12 @@ int TagListModel::rowCount(const QModelIndex &parent) const
 QVariant TagListModel::data(const QModelIndex &index, int role) const
 {
 	const Tag &tag = m_tags.at(index.row());
-	if (role == NameRole) return tag.text();
-	if (role == TypeRole) return tag.type().name();
+	if (role == NameRole) {
+		return tag.text();
+	}
+	if (role == TypeRole) {
+		return tag.type().name();
+	}
 	return {};
 }
 

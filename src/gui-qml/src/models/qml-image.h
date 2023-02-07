@@ -25,7 +25,7 @@ class QmlImage : public QObject
 	Q_PROPERTY(QString sampleUrl READ sampleUrl CONSTANT)
 	Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
 	Q_PROPERTY(QString siteUrl READ siteUrl CONSTANT)
-	Q_PROPERTY(TagListModel *tags READ tags CONSTANT)
+	Q_PROPERTY(TagListModel * tags READ tags CONSTANT)
 	Q_PROPERTY(QString badge READ badge CONSTANT)
 	Q_PROPERTY(QColor color READ color CONSTANT)
 	Q_PROPERTY(QSharedPointer<Image> image READ image CONSTANT)

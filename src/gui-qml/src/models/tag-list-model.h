@@ -13,7 +13,8 @@ class TagListModel : public QAbstractListModel
 	Q_OBJECT
 
 	public:
-		enum MyRoles {
+		enum MyRoles
+		{
 			NameRole = Qt::UserRole + 1,
 			TypeRole
 		};
