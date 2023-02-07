@@ -1,6 +1,7 @@
 #include "tags/tag-type.h"
 #include <QMap>
 #include "models/site.h"
+#include "tags/tag.h"
 #include "tags/tag-database.h"
 
 
@@ -14,7 +15,7 @@ TagType::TagType(const QString &name)
 	if (!m_isUnknown) {
 		const int typeSpace = m_name.indexOf(' ');
 		if (typeSpace != -1) {
-			m_name = m_name.left(typeSpace);
+			m_name = Tag::GetType(m_name.left(typeSpace));
 		}
 	}
 }
