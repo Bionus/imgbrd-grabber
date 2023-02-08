@@ -179,7 +179,7 @@ Profile::Profile(QString path)
 	m_urlDownloaderManager = new UrlDownloaderManager(ReadWritePath(defaultPath, customPath), this);
 
 	// Complete auto-complete
-	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
+	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "grabber:monitored" };
 	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
 	m_autoComplete.append(m_customAutoComplete);
 	for (const Favorite &fav : qAsConst(m_favorites)) {

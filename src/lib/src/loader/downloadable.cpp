@@ -7,6 +7,7 @@
 #include "functions.h"
 #include "loader/token.h"
 #include "models/profile.h"
+#include "monitoring/monitor-manager.h"
 #include "tags/tag.h"
 
 
@@ -89,6 +90,15 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 				});
 				if (isFavorited) {
 					metas.append("favorited");
+				}
+
+				// Monitored
+				const auto &monitors = profile->monitorManager()->monitors();
+				bool isMonitored = std::any_of(monitors.constBegin(), monitors.constEnd(), [&tags](const Monitor &monitor) {
+					return tags.contains(monitor.query().toString());
+				});
+				if (isMonitored) {
+					metas.append("monitored");
 				}
 			}
 
