@@ -1,5 +1,6 @@
 #include "loader/downloadable.h"
 #include <QFile>
+#include <QSet>
 #include <QSettings>
 #include <QStringList>
 #include "filename/filename.h"
@@ -74,10 +75,19 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 				metas.append("downloaded");
 			}
 
-			// Favorited
 			if (tokens.contains("tags")) {
-				const QList<Tag> &tags = tokens["tags"].value<QList<Tag>>();
-				if (isFavorited(tags, profile->getFavorites())) {
+				// Convert tags to a set of strings to avoid O(n*m) complxity below
+				QSet<QString> tags;
+				for (const Tag &tag : tokens["tags"].value<QList<Tag>>()) {
+					tags.insert(tag.text());
+				}
+
+				// Favorited
+				const auto &favorites = profile->getFavorites();
+				bool isFavorited = std::any_of(favorites.constBegin(), favorites.constEnd(), [&tags](const Favorite &fav) {
+					return tags.contains(fav.getName());
+				});
+				if (isFavorited) {
 					metas.append("favorited");
 				}
 			}
