@@ -9,8 +9,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay, bool getBlacklisted, QString lastState, QDateTime lastStateSince, int lastStateCount)
-	: m_sites(std::move(sites)), m_interval(interval), m_delay(delay), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(std::move(query)), m_postFilters(std::move(postFilters)), m_notify(notify), m_getBlacklisted(getBlacklisted), m_lastState(std::move(lastState)), m_lastStateSince(std::move(lastStateSince)), m_lastStateCount(lastStateCount)
+Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastSuccess, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay, bool getBlacklisted, QString lastState, QDateTime lastStateSince, int lastStateCount)
+	: m_sites(std::move(sites)), m_interval(interval), m_delay(delay), m_lastSuccess(std::move(lastSuccess)), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(std::move(query)), m_postFilters(std::move(postFilters)), m_notify(notify), m_getBlacklisted(getBlacklisted), m_lastState(std::move(lastState)), m_lastStateSince(std::move(lastStateSince)), m_lastStateCount(lastStateCount)
 {}
 
 qint64 Monitor::secsToNextCheck() const
@@ -38,6 +38,15 @@ int Monitor::interval() const
 int Monitor::delay() const
 {
 	return m_delay;
+}
+
+const QDateTime &Monitor::lastSuccess() const
+{
+	return m_lastSuccess;
+}
+void Monitor::setLastSuccess(const QDateTime &lastSuccess)
+{
+	m_lastSuccess = lastSuccess;
 }
 
 const QDateTime &Monitor::lastCheck() const
@@ -135,6 +144,7 @@ void Monitor::toJson(QJsonObject &json) const
 
 	json["interval"] = m_interval;
 	json["delay"] = m_delay;
+	json["lastSuccess"] = m_lastSuccess.toString(Qt::ISODate);
 	json["lastCheck"] = m_lastCheck.toString(Qt::ISODate);
 	json["cumulated"] = m_cumulated;
 	json["preciseCumulated"] = m_preciseCumulated;
@@ -182,6 +192,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	const int interval = json["interval"].toInt();
 	const int delay = json["delay"].toInt();
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
+	const QDateTime lastSuccess = json.contains("lastSuccess") ? QDateTime::fromString(json["lastSuccess"].toString(), Qt::ISODate) : lastCheck;
 	const int cumulated = json["cumulated"].toInt();
 	const bool preciseCumulated = json["preciseCumulated"].toBool();
 	const bool download = json["download"].toBool();
@@ -208,7 +219,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	SearchQuery query;
 	query.read(json["query"].toObject(), profile);
 
-	return Monitor(sites, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify, delay, getBlacklisted, lastState, lastStateSince, lastStateCount);
+	return Monitor(sites, interval, lastSuccess, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify, delay, getBlacklisted, lastState, lastStateSince, lastStateCount);
 }
 
 
@@ -217,6 +228,7 @@ bool operator==(const Monitor &lhs, const Monitor &rhs)
 	return lhs.sites() == rhs.sites()
 		&& lhs.interval() == rhs.interval()
 		&& lhs.delay() == rhs.delay()
+		&& lhs.lastSuccess() == rhs.lastSuccess()
 		&& lhs.lastCheck() == rhs.lastCheck()
 		&& lhs.cumulated() == rhs.cumulated()
 		&& lhs.preciseCumulated() == rhs.preciseCumulated()

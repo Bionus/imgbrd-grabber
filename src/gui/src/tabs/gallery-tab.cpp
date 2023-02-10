@@ -172,7 +172,7 @@ void GalleryTab::getAll()
 void GalleryTab::monitor()
 {
 	const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
-	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, m_gallery, postFilter(), notify);
+	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, m_gallery, postFilter(), notify);
 	m_profile->monitorManager()->add(monitor);
 }
 

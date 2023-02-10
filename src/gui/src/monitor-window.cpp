@@ -76,7 +76,7 @@ void MonitorWindow::save()
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
 	bool getBlacklisted = ui->checkGetBlacklisted->isChecked();
 
-	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), query, postFilters, notify, delay, getBlacklisted);
+	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastSuccess(), m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), query, postFilters, notify, delay, getBlacklisted);
 	m_monitorManager->add(newMonitor, index);
 }
 

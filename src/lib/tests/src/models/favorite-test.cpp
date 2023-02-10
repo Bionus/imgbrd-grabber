@@ -90,7 +90,7 @@ TEST_CASE("Favorite")
 	SECTION("GetMonitors")
 	{
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Monitor monitor(QList<Site*>(), 60, date, false, "", "");
+		Monitor monitor(QList<Site*>(), 60, date, date, false, "", "");
 		Favorite fav("fate/stay_night", 50, date, QList<Monitor>() << monitor, "test/test.jpg");
 		fav.setImagePath("test/newimage.jpg");
 
@@ -289,7 +289,7 @@ TEST_CASE("Favorite")
 		Site site("danbooru.donmai.us", &source, &profile);
 
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Monitor monitor(QList<Site*> { &site }, 60, date, false, "", "");
+		Monitor monitor(QList<Site*> { &site }, 60, date, date, false, "", "");
 		Favorite original("fate/stay_night", 50, date, QList<Monitor>() << monitor);
 
 		QJsonObject json;

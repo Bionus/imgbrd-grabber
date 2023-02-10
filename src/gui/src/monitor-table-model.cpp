@@ -32,7 +32,7 @@ int MonitorTableModel::rowCount(const QModelIndex &parent) const
 int MonitorTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 11;
+	return 12;
 }
 
 QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -52,6 +52,7 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 				case 8: return tr("Last state");
 				case 9: return tr("Last state count");
 				case 10: return tr("Last state since");
+				case 11: return tr("Last success");
 			}
 		} else {
 			return QString::number(section + 1);
@@ -174,6 +175,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 				return {};
 			}
 			return monitor.lastStateSince();
+
+		case 11:
+			return monitor.lastSuccess();
 	}
 
 	return {};
@@ -196,7 +200,7 @@ bool MonitorTableModel::insertRows(int position, int rows, const QModelIndex &pa
 	beginInsertRows(QModelIndex(), position, position + rows - 1);
 
 	for (int row = 0; row < rows; ++row) {
-		m_monitorManager->add(Monitor(QList<Site*>(), 24 * 60 * 60, QDateTime::currentDateTime(), false, QString(), QString()), position);
+		m_monitorManager->add(Monitor(QList<Site*>(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), QDateTime::currentDateTime(), false, QString(), QString()), position);
 	}
 
 	endInsertRows();

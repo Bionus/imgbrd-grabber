@@ -76,7 +76,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 			// Filter out old images
 			for (const QSharedPointer<Image> &img : allImages) {
-				if (img->createdAt() > monitor.lastCheck() && (delay <= 0 || img->createdAt() <= limit)) {
+				if (img->createdAt() > monitor.lastSuccess() && (delay <= 0 || img->createdAt() <= limit)) {
 					newImagesList.append(img);
 					newImagesRun++;
 				}
@@ -134,6 +134,9 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 	// Update monitor
 	monitor.setLastCheck(limit);
+	if (state == "ok") {
+		monitor.setLastSuccess(limit);
+	}
 	monitor.setLastState(state);
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
 	m_changed = true;
