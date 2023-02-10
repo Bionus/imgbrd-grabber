@@ -57,6 +57,10 @@ QVariant DownloadImageTableModel::data(const QModelIndex &index, int role) const
 	const DownloadQueryImage &download = m_downloads[index.row()];
 	const QSharedPointer<Image> &img = download.image;
 
+	if (role == Qt::InitialSortOrderRole) {
+		return index.row();
+	}
+
 	if (role != Qt::DisplayRole) {
 		return {};
 	}

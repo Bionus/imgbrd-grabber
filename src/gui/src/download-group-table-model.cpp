@@ -77,6 +77,10 @@ QVariant DownloadGroupTableModel::data(const QModelIndex &index, int role) const
 		return s_iconMap[status];
 	}
 
+	if (role == Qt::InitialSortOrderRole) {
+		return index.row();
+	}
+
 	if (role != Qt::DisplayRole && role != Qt::EditRole) {
 		return {};
 	}
