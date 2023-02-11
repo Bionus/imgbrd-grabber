@@ -28,6 +28,7 @@ class QmlImage : public QObject
 	Q_PROPERTY(TagListModel * tags READ tags CONSTANT)
 	Q_PROPERTY(QString badge READ badge CONSTANT)
 	Q_PROPERTY(QColor color READ color CONSTANT)
+	Q_PROPERTY(QString name READ name CONSTANT)
 	Q_PROPERTY(QSharedPointer<Image> image READ image CONSTANT)
 	Q_PROPERTY(bool isAnimated READ isAnimated CONSTANT)
 	Q_PROPERTY(bool isVideo READ isVideo CONSTANT)
@@ -49,6 +50,7 @@ class QmlImage : public QObject
 		TagListModel *tags() const { return m_tags; }
 		QString badge() const { return m_image->counter(); }
 		QColor color() const { return m_image->color().isValid() ? m_image->color() : QColor(0, 0, 0, 0); }
+		QString name() const { return m_image->name(); }
 		bool isAnimated() const { return !m_image->isAnimated().isEmpty(); }
 		bool isVideo() const { return m_image->isVideo(); }
 		bool isGallery() const { return m_image->isGallery(); }

@@ -21,7 +21,7 @@ Page {
         id: galleryLoader
 
         site: root.site
-        gallery: root.gallery
+        gallery: root.gallery.image
         page: root.page
         perPage: 20
         profile: backend.profile
@@ -39,7 +39,7 @@ Page {
             }
 
             Label {
-                text: root.name
+                text: root.gallery.name
                 elide: Label.ElideRight
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
