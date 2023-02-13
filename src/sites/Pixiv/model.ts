@@ -26,7 +26,7 @@ const meta: ISource["meta"] = {
     },
 };
 
-function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number, startDate?: string, endDate?: string, type?: string } {
+function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number, followed: boolean, startDate?: string, endDate?: string, type?: string } {
     const modes: any = {
         "partial": "partial_match_for_tags",
         "full": "exact_match_for_tags",
@@ -40,6 +40,7 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
     const type = parsed.type;
 
     const tags = [];
+    let followed = false;
     let startDate = undefined;
     let endDate = undefined;
 
@@ -66,11 +67,15 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
             }
             continue;
         }
+        if (part === "is:followed") {
+            followed = true;
+            continue;
+        }
 
         tags.push(part);
     }
 
-    return { mode, tags, bookmarks, user, startDate, endDate, type };
+    return { mode, tags, bookmarks, user, followed, startDate, endDate, type };
 }
 
 function parseImage(image: any, fromGallery: boolean): IImage {
@@ -134,7 +139,7 @@ function parseImage(image: any, fromGallery: boolean): IImage {
 
 export const source: ISource = {
     name: "Pixiv",
-    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:", "user:", "date:"],
+    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:", "user:", "date:", "is:followed"],
     forcedTokens: [],
     searchFormat: {
         and: " ",
@@ -201,6 +206,12 @@ export const source: ISource = {
                             illustParams.push("type=" + search.type);
                         }
                         return "https://app-api.pixiv.net/v1/user/illusts?" + illustParams.join("&");
+                    }
+
+                    // User's follows
+                    if (search.followed) {
+                        illustParams.push("restrict=public");
+                        return "https://app-api.pixiv.net/v2/illust/follow?" + illustParams.join("&");
                     }
 
                     // Newest (when no tag is provided)
