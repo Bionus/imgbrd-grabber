@@ -23,6 +23,12 @@ qint64 Monitor::secsToNextCheck() const
 	return now.secsTo(m_lastCheck.addSecs(m_interval));
 }
 
+bool Monitor::equivalentTo(const Monitor &other) const
+{
+	return sites() == other.sites()
+		&& query() == other.query()
+		&& postFilters() == other.postFilters();
+}
 
 
 QList<Site*> Monitor::sites() const

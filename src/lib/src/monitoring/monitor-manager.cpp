@@ -59,6 +59,13 @@ void MonitorManager::save() const
 
 void MonitorManager::add(const Monitor &monitor, int index)
 {
+	// Don't use the equality operator since parts of the monitor (last check, etc.) might differ
+	for (const auto &mon : m_monitors) {
+		if (mon.equivalentTo(monitor)) {
+			return;
+		}
+	}
+
 	if (index < 0) {
 		index = m_monitors.count();
 	}
