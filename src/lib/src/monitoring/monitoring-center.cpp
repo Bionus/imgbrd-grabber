@@ -58,6 +58,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	int newImages = 0;
 	QList<QSharedPointer<Image>> newImagesList;
 	QString state = "";
+	bool success = true;
 
 	for (Site *site : monitor.sites()) {
 		// Create a pack loader
@@ -92,6 +93,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 		const QString newState = countRun == 0 ? "empty" : (newImagesRun == 0 ? "finished" : "ok");
 		state = state.isEmpty() || state == newState ? newState : "mixed";
+		success = success && countRun != 0;
 	}
 
 	emit statusChanged(monitor, MonitoringStatus::Performing);
@@ -134,7 +136,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 	// Update monitor
 	monitor.setLastCheck(limit);
-	if (state == "ok") {
+	if (success) {
 		monitor.setLastSuccess(limit);
 	}
 	monitor.setLastState(state);
