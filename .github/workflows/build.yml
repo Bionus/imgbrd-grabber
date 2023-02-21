@@ -114,20 +114,16 @@ jobs:
           cmake --build . --config Debug
 
       - name: Test
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          working-directory: src/lib
-          run: |
-            ../../build/lib/tests/lib-tests
-            ../../build/cli/tests/cli-tests
+        working-directory: src/lib
+        run: |
+          xvfb-run -a ../../build/lib/tests/lib-tests
+          xvfb-run -a ../../build/cli/tests/cli-tests
 
       - name: Test GUI
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          working-directory: src/lib
-          run: |
-            ../../build/gui/tests/gui-tests
-            ../../build/crash-reporter/tests/crash-reporter-tests
+        working-directory: src/lib
+        run: |
+          xvfb-run -a ../../build/gui/tests/gui-tests
+          xvfb-run -a ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Test sites
         working-directory: src/sites
@@ -182,7 +178,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0 zsync
+          sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0 zsync xvfb
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
@@ -235,20 +231,16 @@ jobs:
           cmake --build . --config Release
 
       - name: Test
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          working-directory: src/lib
-          run: |
-            ../../build/lib/tests/lib-tests
-            ../../build/cli/tests/cli-tests
+        working-directory: src/lib
+        run: |
+          xvfb-run -a ../../build/lib/tests/lib-tests
+          xvfb-run -a ../../build/cli/tests/cli-tests
 
       - name: Test GUI
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          working-directory: src/lib
-          run: |
-            ../../build/gui/tests/gui-tests
-            ../../build/crash-reporter/tests/crash-reporter-tests
+        working-directory: src/lib
+        run: |
+          xvfb-run -a ../../build/gui/tests/gui-tests
+          xvfb-run -a ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate AppImage
         run: |
