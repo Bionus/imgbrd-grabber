@@ -100,7 +100,7 @@ void MonitorsTab::convertSelected()
 {
 	QSet<int> rows;
 	for (const QModelIndex &index : ui->tableMonitors->selectionModel()->selection().indexes()) {
-		rows.insert(index.row());
+		rows.insert(m_monitorTableModel->mapToSource(index).row());
 	}
 
 	for (const int row : rows) {
