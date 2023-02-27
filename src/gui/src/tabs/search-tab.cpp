@@ -1201,6 +1201,19 @@ void SearchTab::openSourcesWindow()
 	adv->show();
 }
 
+QList<Site*> SearchTab::sourcesWithResults(bool eager)
+{
+	if (m_images.isEmpty() && !eager) {
+		return m_selectedSources;
+	}
+
+	QSet<Site*> ret;
+	for (const auto &img : qAsConst(m_images)) {
+		ret.insert(img->parentSite());
+	}
+	return ret.values();
+}
+
 void SearchTab::pruneSources()
 {
 	if (m_images.isEmpty()) {

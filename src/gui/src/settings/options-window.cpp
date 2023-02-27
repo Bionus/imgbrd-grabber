@@ -184,6 +184,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Monitoring
 	settings->beginGroup("Monitoring");
 		ui->spinMonitoringStartupDelay->setValue(settings->value("startupDelay", 0).toInt());
+		ui->checkMonitoringEmptySources->setChecked(settings->value("emptySources", false).toBool());
 		ui->checkMonitoringEnableTray->setChecked(settings->value("enableTray", false).toBool());
 		ui->checkMonitoringMinimizeToTray->setChecked(settings->value("minimizeToTray", false).toBool());
 		ui->checkMonitoringCloseToTray->setChecked(settings->value("closeToTray", false).toBool());
@@ -1141,6 +1142,7 @@ void OptionsWindow::save()
 	// Monitoring
 	settings->beginGroup("Monitoring");
 		settings->setValue("startupDelay", ui->spinMonitoringStartupDelay->value());
+		settings->setValue("emptySources", ui->checkMonitoringEmptySources->isChecked());
 		settings->setValue("enableTray", ui->checkMonitoringEnableTray->isChecked());
 		settings->setValue("minimizeToTray", ui->checkMonitoringMinimizeToTray->isChecked());
 		settings->setValue("closeToTray", ui->checkMonitoringCloseToTray->isChecked());
