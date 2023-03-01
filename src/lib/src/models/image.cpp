@@ -254,12 +254,6 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	// Remove ? in urls
 	m_url = removeCacheBuster(m_url);
 
-	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
-	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	if (!url(Size::Sample).isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals)) {
-		m_url = url(Size::Sample).toString();
-	}
-
 	init();
 }
 
