@@ -157,9 +157,10 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 25,
             search: {
-                url: (query: ISearchQuery): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const s = parseSearch(query.search);
-                    return "/?page=" + (query.page - 1) + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
+                    const pagePart = Grabber.pageUrl(query.page, previous, 1, "", "prev={max}", "next={min}");
+                    return "/?" + pagePart + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const html = Grabber.parseHTML(src);
