@@ -1,11 +1,24 @@
 function completeImage(img: IImage): IImage {
-    if (img.preview_url && !img.file_url) {
-        const rx = /__rs_l\d+x\d+\//;
-        const after = img.preview_url.replace(rx, "");
-        if (after !== img.preview_url) {
-            img.file_url = after;
+    // Detect galleries
+    if ("additional" in img) {
+        if ((img as any).additional.includes('"漫画"')) {
+            img.type = "gallery";
         }
     }
+
+    // Generate full URL from thumbnail URL and vice-versa
+    if (img.preview_url && !img.file_url) {
+        const url = img.preview_url.replace(new RegExp("/__rs_l\d+x\d+/"), "/");
+        if (url !== img.preview_url) {
+            img.file_url = url;
+        }
+    } else if (img.file_url && !img.preview_url) {
+        const url = img.file_url.replace(new RegExp("/nijie/"), "/__rs_l200x200/nijie/");
+        if (url !== img.file_url) {
+            img.preview_url = url;
+        }
+    }
+
     return img;
 }
 
@@ -70,7 +83,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     return {
-                        images: Grabber.regexToImages('<img class="mozamoza ngtag" illust_id="(?<id>[^"]+)" user_id="(?<author_id>[^"]+)" itemprop="image" src="(?<preview_url>[^"]+)" alt="(?<name>[^"]+)"', src).map(completeImage),
+                        images: Grabber.regexToImages('<div class="nijie[^"]*"[^>]*>(?<additional>.+?)<img class="mozamoza ngtag" illust_id="(?<id>[^"]+)" user_id="(?<author_id>[^"]+)" itemprop="image" src="(?<preview_url>[^"]+)" alt="(?<name>[^"]+)"', src).map(completeImage),
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", '<p class="mem-indent float-left">.*?<em>(?<count>[\\d,.]+)', src)),
                     };
                 },
