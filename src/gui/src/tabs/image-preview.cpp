@@ -32,7 +32,7 @@ ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Prof
 {
 	m_thumbnailUrl = image->url(Image::Size::Thumbnail);
 	m_name = image->name();
-	m_childrenCount = image->counter().toInt();
+	m_counter = image->counter();
 
 	auto *layout = new QVBoxLayout();
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -194,8 +194,8 @@ void ImagePreview::finishedLoading()
 		} else {
 			l->scale(thumbnail, QSize(imageSize, imageSize));
 		}
-		if (m_childrenCount > 0) {
-			l->setCounter(QString::number(m_childrenCount));
+		if (!m_counter.isEmpty()) {
+			l->setCounter(m_counter);
 		}
 
 		connect(l, SIGNAL(appui(int)), this, SIGNAL(clicked()));

@@ -938,7 +938,7 @@ QString Image::tooltip() const
 
 QString Image::counter() const
 {
-	return m_galleryCount > 0 ? QString::number(m_galleryCount) : QString();
+	return m_galleryCount > 0 ? QString::number(m_galleryCount) : (m_isGallery ? "?" : QString());
 }
 
 QList<QStrP> Image::detailsData() const
