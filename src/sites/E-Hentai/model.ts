@@ -237,19 +237,19 @@ export const source: ISource = {
                         matches = Grabber.regexMatches('<div class="gdtl"[^>]*><a href="(?<page_url>[^"]+)"><img[^>]*src="(?<preview_url>[^"]+)"[^>]*></a></div>', src);
                     }
                     for (const match of matches) {
-						if ("div_style" in match) {
-							const styles = cssToObject(match["div_style"]);
-							delete match["div_style"];
+                        if ("div_style" in match) {
+                            const styles = cssToObject(match["div_style"]);
+                            delete match["div_style"];
 
-							const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
-							match["preview_url"] = background[1];
-							match["preview_rect"] = [
-								-sizeToInt(background[2]),
-								-sizeToInt(background[3]),
-								sizeToInt(styles["width"]),
-								sizeToInt(styles["height"]),
-							].join(";"); // x;y;w;h
-						}
+                            const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
+                            match["preview_url"] = background[1];
+                            match["preview_rect"] = [
+                                -sizeToInt(background[2]),
+                                -sizeToInt(background[3]),
+                                sizeToInt(styles["width"]),
+                                sizeToInt(styles["height"]),
+                            ].join(";"); // x;y;w;h
+                        }
 
                         match["created_at"] = posted;
                         match["author"] = author;
