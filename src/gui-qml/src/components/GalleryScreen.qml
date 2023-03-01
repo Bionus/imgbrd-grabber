@@ -89,9 +89,11 @@ Page {
                 onOpenImage: mainStackView.push(imageScreen, { index: index })
                 onRefresh: galleryLoader.load()
                 onAppendNext: {
-                    root.appendResults = true
-                    root.page++
-                    galleryLoader.load()
+                    if (galleryLoader.hasNext) {
+                        root.appendResults = true
+                        root.page++
+                        galleryLoader.load()
+                    }
                 }
             }
 

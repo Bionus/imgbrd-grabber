@@ -162,9 +162,11 @@ Page {
                 onOpenImage: mainStackView.push(imageScreen, { index: index })
                 onRefresh: load()
                 onAppendNext: {
-                    searchTab.appendResults = true
-                    searchTab.page++
-                    searchTab.load()
+                    if (pageLoader.hasNext) {
+                        searchTab.appendResults = true
+                        searchTab.page++
+                        searchTab.load()
+                    }
                 }
             }
 
