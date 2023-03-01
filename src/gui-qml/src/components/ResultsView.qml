@@ -34,18 +34,20 @@ ScrollView {
     onThumbnailFillModeChanged: resultsRefresher.restart()
 
     Flickable {
-        // Pull to refresh and infinite scroll
+        // Pull to refresh
         property bool atBeginningStart: false
-        property bool atEndStart: false
         onFlickStarted: {
             atBeginningStart = atYBeginning
-            atEndStart = atYEnd
         }
         onFlickEnded: {
             if (atYBeginning && atBeginningStart) {
                 refresh()
             }
-            if (atYEnd && atEndStart) {
+        }
+
+        // Infinite scroll
+        onAtYEndChanged: {
+            if (atYEnd) {
                 appendNext()
             }
         }
