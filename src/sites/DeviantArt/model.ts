@@ -127,10 +127,16 @@ export const source: ISource = {
                 url: (id: string, md5: string): IError => {
                     return { error: "Not supported (page_url)" };
                 },
-                parse: (src: string): IParsedDetails => {
+                parse: (src: string): IParsedDetails | IError => {
+                    if (src.indexOf('aria-label="Log in to download"') >= 0) {
+                        return { error: "You must login to download this file" };
+                    }
+                    const imageUrl =
+                        Grabber.regexToConst("url", '<a [^>]*href="(?<url>[^"]+)" [^>]*aria-label="Free download"', src).replace(/&amp;/g, "&") || // Download link (SWF...)
+                        Grabber.regexToConst("url", '<img [^>]*aria-hidden="true"[^>]+src="(?<url>[^"]+)"', src); // Full-size image
                     return {
                         tags: Grabber.regexToTags('<a [^>]*href="[^"]*/tag/(?<name>[^"]+)"', src),
-                        imageUrl: Grabber.regexToConst("url", '<img [^>]*aria-hidden="true"[^>]+src="(?<url>[^"]+)"', src),
+                        imageUrl,
                     };
                 },
             },
