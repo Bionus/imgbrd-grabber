@@ -25,6 +25,7 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 
 	auto monitorTableModel = new MonitorTableModel(m_monitorManager, this);
 	m_monitorTableModel = new QSortFilterProxyModel(this);
+	m_monitorTableModel->setSortRole(Qt::UserRole);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);

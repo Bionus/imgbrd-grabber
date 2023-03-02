@@ -119,7 +119,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		return {};
 	}
 
-	if (role != Qt::DisplayRole) {
+	if (role != Qt::DisplayRole && role != Qt::UserRole) {
 		return {};
 	}
 
@@ -138,6 +138,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		}
 
 		case 3:
+			if (role == Qt::UserRole) {
+				return monitor.interval();
+			}
 			return timeToString(monitor.interval());
 
 		case 4:
@@ -167,6 +170,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		case 9:
 			if (monitor.lastState().isEmpty()) {
 				return {};
+			}
+			if (role == Qt::UserRole) {
+				return monitor.lastStateCount();
 			}
 			return tr("%n time(s)", "", monitor.lastStateCount());
 

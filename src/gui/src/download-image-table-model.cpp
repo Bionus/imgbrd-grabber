@@ -61,7 +61,7 @@ QVariant DownloadImageTableModel::data(const QModelIndex &index, int role) const
 		return index.row();
 	}
 
-	if (role != Qt::DisplayRole) {
+	if (role != Qt::DisplayRole && role != Qt::UserRole) {
 		return {};
 	}
 
@@ -72,7 +72,7 @@ QVariant DownloadImageTableModel::data(const QModelIndex &index, int role) const
 		case 2: return img->token<QString>("rating");
 		case 3: return img->tagsString().join(' ');
 		case 4: return img->fileUrl().toString();
-		case 5: return img->createdAt().toString(Qt::ISODate);
+		case 5: return img->createdAt();
 		case 6: return img->search().join(' ');
 		case 7: return download.site->url();
 		case 8: return download.filename;
@@ -80,6 +80,9 @@ QVariant DownloadImageTableModel::data(const QModelIndex &index, int role) const
 
 		case 10: {
 			double size = img->fileSize();
+			if (role == Qt::UserRole) {
+				return size;
+			}
 			const QString unit = getUnit(&size);
 			return size > 0
 				? QStringLiteral("%1 %2").arg(size).arg(unit)

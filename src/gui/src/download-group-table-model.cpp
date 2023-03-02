@@ -89,8 +89,8 @@ QVariant DownloadGroupTableModel::data(const QModelIndex &index, int role) const
 	{
 		case 1: return download.query.toString();
 		case 2: return download.site->url();
-		case 3: return QString::number(download.page);
-		case 4: return QString::number(download.perpage);
+		case 3: return download.page;
+		case 4: return download.perpage;
 		case 5: return download.total == -1 ? "all" : QString::number(download.total);
 		case 6: return download.filename;
 		case 7: return download.path;
