@@ -170,6 +170,7 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: false,
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/api/v1/json/search/tags?per_page=" + opts.limit + "&page=" + query.page + "&q=*";
@@ -222,6 +223,7 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: false,
             tags: {
                 url: (query: ITagsQuery): string => {
                     return "/tags?page=" + query.page;
