@@ -267,7 +267,7 @@ Page {
                 max: 60 * 60
                 setting: Setting {
                     key: "download/throttle_retry"
-                    def: 0
+                    def: 60
                     obj: root.site.settings
                 }
                 Layout.fillWidth: true

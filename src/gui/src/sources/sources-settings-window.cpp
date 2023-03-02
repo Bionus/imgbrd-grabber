@@ -63,7 +63,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->spinThrottleDetails->setValue(site->setting("download/throttle_details", 0).toInt());
 	ui->spinThrottleImage->setValue(site->setting("download/throttle_image", 0).toInt());
 	ui->spinThrottlePage->setValue(site->setting("download/throttle_page", 0).toInt());
-	ui->spinThrottleRetry->setValue(site->setting("download/throttle_retry", 0).toInt());
+	ui->spinThrottleRetry->setValue(site->setting("download/throttle_retry", 60).toInt());
 	ui->spinThrottleThumbnail->setValue(site->setting("download/throttle_thumbnail", 0).toInt());
 
 	// Source order
@@ -290,7 +290,7 @@ void SourcesSettingsWindow::saveSettings()
 	m_site->setSetting("download/throttle_details", ui->spinThrottleDetails->value(), 0);
 	m_site->setSetting("download/throttle_image", ui->spinThrottleImage->value(), 0);
 	m_site->setSetting("download/throttle_page", ui->spinThrottlePage->value(), 0);
-	m_site->setSetting("download/throttle_retry", ui->spinThrottleRetry->value(), 0);
+	m_site->setSetting("download/throttle_retry", ui->spinThrottleRetry->value(), 60);
 	m_site->setSetting("download/throttle_thumbnail", ui->spinThrottleThumbnail->value(), 0);
 
 	const QStringList defs { "xml", "json", "regex", "rss" };
