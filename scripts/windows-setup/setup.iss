@@ -178,6 +178,11 @@ Source: "{#SrcDir}\sites\ArtStation\model.js";      DestDir: "{app}\sites\ArtSta
 Source: "{#SrcDir}\sites\ArtStation\sites.txt";     DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\ArtStation\supported.txt"; DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\ArtStation\www.artstation.com\defaults.ini"; DestDir: "{app}\sites\ArtStation\www.artstation.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\icon.png";      DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\model.js";      DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\sites.txt";     DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\supported.txt"; DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\booru.io\defaults.ini"; DestDir: "{app}\sites\Booru.io\booru.io"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\icon.png";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\model.js";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\sites.txt";          DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
@@ -244,6 +249,9 @@ Source: "{#SrcDir}\sites\Reddit\icon.png";    DestDir: "{app}\sites\Reddit"; Fla
 Source: "{#SrcDir}\sites\Reddit\model.js";    DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Reddit\sites.txt";   DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Reddit\www.reddit.com\defaults.ini";              DestDir: "{app}\sites\Reddit\www.reddit.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Rule34.us Gelbooru\icon.png";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Rule34.us Gelbooru\model.js";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Rule34.us Gelbooru\sites.txt";     DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion

@@ -12,5 +12,7 @@
 \resources\
 \node_modules\
 
+\Gfycat\
 \Sankaku\
+\Slushe\
 \Tumblr\
