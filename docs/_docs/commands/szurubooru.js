@@ -7,7 +7,7 @@ const FormData = require("form-data");
 
 async function getTag(name) {
     try {
-        const res = await axios.get(`/tag/${name}`);
+        const res = await axios.get(`/tag/${encodeURIComponent(name)}`);
         return res.data;
     } catch (e) {
         if (e.response.status === 404) {
