@@ -21,8 +21,9 @@ void MonitorManager::load()
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
 		return;
 	}
-
 	const QByteArray data = file.readAll();
+	file.close();
+
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 

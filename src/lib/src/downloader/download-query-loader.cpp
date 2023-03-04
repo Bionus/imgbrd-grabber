@@ -29,6 +29,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	f.reset();
 
 	const QByteArray data = f.readAll();
+	f.close();
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 

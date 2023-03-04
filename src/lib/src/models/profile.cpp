@@ -66,6 +66,7 @@ Profile::Profile(QString path)
 	QFile fileFavoritesJson(m_path + "/favorites.json");
 	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text)) {
 		const QByteArray data = fileFavoritesJson.readAll();
+		fileFavoritesJson.close();
 		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 		QJsonObject object = loadDoc.object();
 

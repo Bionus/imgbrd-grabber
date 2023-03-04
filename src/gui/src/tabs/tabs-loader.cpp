@@ -71,6 +71,7 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, QVariant 
 
 	// Other versions are JSON-based
 	const QByteArray data = f.readAll();
+	f.close();
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 
