@@ -29,7 +29,7 @@ async function createTag(name, category) {
 async function updateTag(name, version, category) {
     try {
         const data = { version, category };
-        await axios.put(`/tag/${name}`, data);
+        await axios.put(`/tag/${encodeURIComponent(name)}`, data);
         console.log(`Tag "${name}" updated`);
     } catch (e) {
         console.error("Error updating tag: " + e.message);
