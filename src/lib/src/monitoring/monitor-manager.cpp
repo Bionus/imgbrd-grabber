@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <utility>
 #include "monitoring/monitor.h"
+#include "utils/file-utils.h"
 
 
 MonitorManager::MonitorManager(QString file, Profile *profile)
@@ -33,11 +34,6 @@ void MonitorManager::load()
 
 void MonitorManager::save() const
 {
-	QFile file(m_file);
-	if (!file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		return;
-	}
-
 	// Generate JSON array
 	QJsonArray monitorsJson;
 	for (const Monitor &monitor : m_monitors) {
@@ -53,8 +49,7 @@ void MonitorManager::save() const
 
 	// Write result
 	QJsonDocument saveDoc(full);
-	file.write(saveDoc.toJson());
-	file.close();
+	safeWriteFile(m_file, saveDoc.toJson());
 }
 
 void MonitorManager::add(const Monitor &monitor, int index)
