@@ -162,6 +162,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			return monitor.lastCheck();
 
 		case 7:
+			if (role == Qt::UserRole) {
+				return monitor.secsToNextCheck();
+			}
 			return timeToString(monitor.secsToNextCheck());
 
 		case 8:
