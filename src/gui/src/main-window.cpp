@@ -334,6 +334,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		m_tabSelector->setFlat(true);
 		m_tabSelector->markStaticTab(m_favoritesTab);
 		m_tabSelector->markStaticTab(m_downloadsTab);
+		m_tabSelector->markStaticTab(m_monitorsTab);
 		if (m_logTab != nullptr)
 		{ m_tabSelector->markStaticTab(m_logTab); }
 		layout->addWidget(m_tabSelector);
