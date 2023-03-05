@@ -1,4 +1,3 @@
-project(Grabber)
 cmake_minimum_required(VERSION 3.2)
 
 enable_testing()
@@ -37,12 +36,13 @@ if(TRACE)
 	endif()
 endif()
 
-project(Grabber)
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
 	set(VERSION "7.10.1")
 else()
 	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 endif()
+project(Grabber VERSION ${VERSION})
+
 if(NOT DEFINED VERSION_PLATFORM)
 	if(CMAKE_SYSTEM_PROCESSOR MATCHES "[aA][mM][dD]64")
 		set(VERSION_PLATFORM "x64")
