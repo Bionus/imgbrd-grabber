@@ -59,5 +59,8 @@ bool loadBackup(Profile *profile, const QString &filePath)
 		return false;
 	}
 
+	// TODO(Bionus): actually implement loading here
+	Q_UNUSED(profile);
+
 	return true;
 }
