@@ -300,3 +300,23 @@ addHelper("parseSearchQuery", (query: string, metas: Record<string, MetaField>):
     ret.query = tags.join(" ");
     return ret;
 });
+
+// Fix console calls since C++ handlers can't get variadic arguments
+const originalConsole = console
+function argToString(arg: any): string {
+    if (typeof arg === "object") {
+        return JSON.stringify(arg);
+    }
+    return String(arg);
+}
+function argsToString(args: any[]): string {
+    return args.map(argToString).join(' ');
+}
+// @ts-ignore
+console = {
+    debug: (...args: any[]) => originalConsole.debug(argsToString(args)),
+    error: (...args: any[]) => originalConsole.error(argsToString(args)),
+    info: (...args: any[]) => originalConsole.info(argsToString(args)),
+    log: (...args: any[]) => originalConsole.log(argsToString(args)),
+    warn: (...args: any[]) => originalConsole.warn(argsToString(args)),
+}
