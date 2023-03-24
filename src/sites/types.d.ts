@@ -54,6 +54,13 @@ interface ITagType {
 }
 
 /**
+ * The identity of a media object. It should be unique for per media per source.
+ *
+ * On most sources, that would be an ID and/or an MD5, but sometimes a token or generic key is also needed.
+ */
+type IImageIdentity = Record<string, string | number | boolean>;
+
+/**
  * Describes a media object. It can be an image, a video, or a gallery.
  */
 interface IImage {
@@ -101,6 +108,11 @@ interface IImage {
     preview_height?: number;
     preview_file_size?: number;
     preview_rect?: string;
+
+    /**
+     * The identity of this media object. It should be unique for this media on that source.
+     */
+    identity?: IImageIdentity;
 
     /**
      * The media files. At least one is required.

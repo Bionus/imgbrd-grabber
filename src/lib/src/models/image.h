@@ -41,7 +41,7 @@ class Image : public QObject, public Downloadable
 		Image();
 		explicit Image(Profile *profile);
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
-		Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent = nullptr);
+		Image(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
 
 		// Serialization
@@ -152,6 +152,7 @@ class Image : public QObject, public Downloadable
 		int m_position;
 		QStringList m_search;
 		// - Data
+		QVariantMap m_identity;
 		qulonglong m_id;
 		QVariantMap m_data;
 		bool m_isGallery = false;

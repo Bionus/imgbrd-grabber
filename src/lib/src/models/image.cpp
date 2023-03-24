@@ -58,6 +58,7 @@ Image::Image(const Image &other)
 	m_pageUrl = other.m_pageUrl;
 
 	m_sizes = other.m_sizes;
+	m_identity = other.m_identity;
 	m_data = other.m_data;
 
 	m_galleryCount = other.m_galleryCount;
@@ -81,11 +82,11 @@ Image::Image(Profile *profile)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
-	: Image(site, details, QVariantMap(), profile, parent)
+	: Image(site, details, QVariantMap(), QVariantMap(), profile, parent)
 {}
 
-Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
-	: m_profile(profile), m_parent(parent), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_data(std::move(data))
+Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent)
+	: m_profile(profile), m_parent(parent), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_identity(std::move(identity)), m_data(std::move(data))
 {
 	m_settings = m_profile->getSettings();
 
@@ -263,7 +264,7 @@ void Image::init()
 	if (m_pageUrl.isEmpty()) {
 		Api *api = m_parentSite->detailsApi();
 		if (api != nullptr) {
-			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url;
+			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite, m_identity).url;
 		}
 	}
 	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
@@ -330,6 +331,15 @@ void Image::write(QJsonObject &json) const
 		jsonData[key] = (QMetaType::Type) m_data[key].type() == QMetaType::QDateTime
 			? "date:" + m_data[key].toDateTime().toString(Qt::ISODate)
 			: QJsonValue::fromVariant(m_data[key]);
+	}
+	if (!jsonData.isEmpty()) {
+		json["data"] = jsonData;
+	}
+
+	// Identity
+	QJsonObject jsonIdentity;
+	for (const auto &key : m_identity.keys()) {
+		jsonData[key] = QJsonValue::fromVariant(m_data[key]);
 	}
 	if (!jsonData.isEmpty()) {
 		json["data"] = jsonData;
@@ -404,6 +414,14 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 				val = QDateTime::fromString(val.toString().mid(5), Qt::ISODate);
 			}
 			m_data[key] = val;
+		}
+	}
+
+	// Identity
+	if (json.contains("identity")) {
+		const auto &jsonIdentity = json["identity"].toObject();
+		for (const auto &key : jsonIdentity.keys()) {
+			m_data[key] = jsonIdentity[key].toVariant();
 		}
 	}
 

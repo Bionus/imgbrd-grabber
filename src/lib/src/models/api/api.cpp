@@ -16,7 +16,7 @@ Api::Api(QString name)
 QString Api::getName() const { return m_name; }
 
 
-QSharedPointer<Image> Api::parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags) const
+QSharedPointer<Image> Api::parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap identity, QVariantMap data, int position, const QList<Tag> &tags) const
 {
 	d["position"] = QString::number(position + 1);
 
@@ -60,7 +60,7 @@ QSharedPointer<Image> Api::parseImage(Site *site, Page *parentPage, QMap<QString
 	}
 
 	// Generate image
-	auto img = ImageFactory::build(site, d, std::move(data), site->getProfile(), parentPage);
+	auto img = ImageFactory::build(site, d, std::move(identity), std::move(data), site->getProfile(), parentPage);
 	img->moveToThread(this->thread());
 
 	return img;
