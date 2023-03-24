@@ -68,18 +68,36 @@ addHelper("typedXML", (val: any) => {
     return val;
 });
 
+/**
+ * Set a value in an object using the dot ("a.b.c") path notation.
+ */
+function _set(obj: any, path: string, value: any): void {
+    const parts = path.split(".");
+    for (let i = 0; i < parts.length - 1; ++i) {
+        const part = parts[i];
+        if (!(part in obj)) {
+            obj[part] = {};
+        }
+        obj = obj[part];
+    }
+    obj[parts[parts.length - 1]] = value;
+}
+
+/**
+ * Get a value in an object using the dot ("a.b.c") path notation.
+ */
+function _get(obj: any, path: string): any {
+    return path.split(".").reduce((ctx, part) => ctx[part], obj);
+}
+
 addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
     const result: any = {};
     if (typeof data !== "object") {
         return result;
     }
     for (const to in map) {
-        const from = map[to].split(".");
-        let val: any = data;
-        for (const part of from) {
-            val = val && part in val && val[part] !== null ? val[part] : undefined;
-        }
-        result[to] = val !== data ? val : undefined;
+        const from = map[to];
+        _set(result, to, _get(data, from));
     }
     return result;
 });
