@@ -1,5 +1,5 @@
 const map = {
-    "id": "key",
+    "identity.key": "key",
     "width": "attributes.width",
     "height": "attributes.height",
     "related": "related_tags",
@@ -51,8 +51,8 @@ export const source: ISource = {
             },
             details: {
                 fullResults: true,
-                url: (id: string): string | IError => {
-                    return "/api/legacy/entity/" + id;
+                url: (id: string, md5: string, opts: IUrlDetailsOptions, identity?: IImageIdentity): string | IError => {
+                    return "/api/legacy/entity/" + identity!["key"];
                 },
                 parse: (src: string): IImage => {
                     const raw = JSON.parse(src);
