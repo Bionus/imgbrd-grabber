@@ -29,6 +29,7 @@
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
 #include "tags/tag-type.h"
+#include "utils/size-utils.h"
 #ifdef WIN_FILE_PROPS
 	#include "windows-file-property.h"
 #endif
@@ -149,15 +150,15 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		QSharedPointer<ImageSize> preview = m_sizes.value(Image::Thumbnail, nullptr);
 		QSharedPointer<ImageSize> sample = m_sizes.value(Image::Sample, nullptr);
 		QSharedPointer<ImageSize> full = m_sizes.value(Image::Full, nullptr);
-		QMap<Image::Size, int> sizes = {
-			{ Image::Thumbnail, preview ? qMax(preview->size.width(), preview->size.height()) : 0 },
-			{ Image::Sample, sample ? qMax(sample->size.width(), sample->size.height()) : 0 },
-			{ Image::Full, full ? qMax(full->size.width(), full->size.height()) : 0 },
+		QMap<Image::Size, QSize> sizes = {
+			{ Image::Thumbnail, preview ? preview->size : QSize() },
+			{ Image::Sample, sample ? sample->size : QSize() },
+			{ Image::Full, full ? full->size : QSize() },
 		};
 
 		for (const auto &media : medias) {
 			const Image::Size type = media->type;
-			const int size = media->size.width() > 0 ? media->size.width() : media->size.height();
+			const QSize size = media->size;
 
 			// If type is provided, trust it
 			if (type != Image::Unknown) {
@@ -167,19 +168,25 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 			}
 
 			// Preview gets the biggest size between 150 and 300
-			if (sizes[Image::Thumbnail] <= 0 || (size <= 300 && size > sizes[Image::Thumbnail]) || (size >= 150 && sizes[Image::Thumbnail] > 300)) {
+			if (
+				!sizes[Image::Thumbnail].isEmpty() || // Default
+				(isInRange(size, 150, 300) && (
+					isBigger(size, sizes[Image::Thumbnail]) || // Biggest under 300px
+					!isInRange(sizes[Image::Thumbnail], 150, 300)) // If the default was bigger than 300px
+				)
+			) {
 				m_sizes.insert(Image::Thumbnail, media);
 				sizes[Image::Thumbnail] = size;
 			}
 
 			// Sample is optional and takes the biggest size between 500 and 1500
-			if (size >= 500 && size <= 1500 && size > sizes[Image::Sample]) {
+			if (isInRange(size, 500, 1500) && isBigger(size, sizes[Image::Sample])) {
 				m_sizes.insert(Image::Sample, media);
 				sizes[Image::Sample] = size;
 			}
 
 			// Full just takes the biggest size available
-			if (size > sizes[Image::Full]) {
+			if (isBigger(size, sizes[Image::Full])) {
 				m_sizes.insert(Image::Full, media);
 				sizes[Image::Full] = size;
 			}
