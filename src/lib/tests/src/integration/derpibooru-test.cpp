@@ -50,9 +50,11 @@ TEST_CASE("Derpibooru")
 
 		REQUIRE(tags.count() == 250);
 
-		REQUIRE(tags[1].text() == QString("solo"));
-		REQUIRE(tags[1].count() == 599506);
-		REQUIRE(tags[1].type().isUnknown() == true);
+		REQUIRE(tags[1].id() == 27141);
+		REQUIRE(tags[1].text() == QString("female"));
+		REQUIRE(tags[1].count() == 1624152);
+		REQUIRE(tags[1].type().name() == QString("general"));
+		REQUIRE(tags[1].type().isUnknown() == false);
 	}
 
 	SECTION("JsonTags")
@@ -61,9 +63,10 @@ TEST_CASE("Derpibooru")
 
 		REQUIRE(tags.count() == 10);
 
-		REQUIRE(tags[1].id() == 42350);
-		REQUIRE(tags[1].text() == QString("solo"));
-		REQUIRE(tags[1].count() == 938816);
-		REQUIRE(tags[1].type().isUnknown() == true);
+		REQUIRE(tags[1].id() == 27141);
+		REQUIRE(tags[1].text() == QString("female"));
+		REQUIRE(tags[1].count() == 1624153);
+		REQUIRE(tags[1].type().name() == QString("general"));
+		REQUIRE(tags[1].type().isUnknown() == false);
 	}
 }
