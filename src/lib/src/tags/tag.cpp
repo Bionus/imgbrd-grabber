@@ -78,6 +78,9 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	if (type == QLatin1String("mangaka")) {
 		return QStringLiteral("artist");
 	}
+	if (type == QLatin1String("origin")) {
+		return QStringLiteral("artist");
+	}
 	if (type == QLatin1String("game")) {
 		return QStringLiteral("copyright");
 	}
