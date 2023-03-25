@@ -186,8 +186,12 @@ export const source: ISource = {
                     const data = JSON.parse(src);
 
                     const tags: ITag[] = [];
-                    for (const tag of data["tags"]) {
-                        tags.push(Grabber.mapFields(tag, map));
+                    for (const raw of data["tags"]) {
+                        const tag = Grabber.mapFields(raw, map);
+                        if (!tag.type) {
+                            tag.type = "general";
+                        }
+                        tags.push(tag);
                     }
 
                     return { tags };
@@ -219,9 +223,9 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     const tags: ITag[] = Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]*)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<name>[^"]+)" data-tag-slug="[^"]+">', src);
-                    for (const item of tags) {
-                        if (!item.type) {
-                            item.type = "general";
+                    for (const tag of tags) {
+                        if (!tag.type) {
+                            tag.type = "general";
                         }
                     }
                     return { tags };
@@ -233,9 +237,13 @@ export const source: ISource = {
                     return "/tags?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
-                    return {
-                        tags: Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>\\d+)" data-tag-name="(?<name>.+?)".+?<span class="tag__count">\\s*\\((?<count>\\d+)\\)</span>', src),
-                    };
+                    const tags = Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]*)")? data-tag-id="(?<id>\\d+)" data-tag-name="(?<name>.+?)".+?<span class="tag__count">\\s*(?<count>\\d+)\\s*</span>', src);
+                    for (const tag of tags) {
+                        if (!tag.type) {
+                            tag.type = "general";
+                        }
+                    }
+                    return { tags };
                 },
             },
             check: {
