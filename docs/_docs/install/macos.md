@@ -3,9 +3,9 @@ title: MacOS
 ---
 
 
-# Installing Grabber on MacOS
+## Installing Grabber on MacOS
 
-## Via Homebrew
+### Via Homebrew
 1. Install [Homebrew](https://brew.sh/)
 2. Add the Grabber tap using the command:
     ```
@@ -16,7 +16,7 @@ title: MacOS
     brew install imgbrd-grabber
     ```
 
-## Via the DMG
+### Via the DMG
 1. Go to the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 2. Download the `.dmg` file
 3. Open the `.dmg` file

@@ -2,6 +2,6 @@
 title: Sources
 ---
 
-# Sources
+## Sources
 
 {% include source_list.html %}

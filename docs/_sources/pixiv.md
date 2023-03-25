@@ -3,13 +3,13 @@ title: Pixiv
 ---
 
 
-# Pixiv
+## Pixiv
 
 Whatever URL is entered when adding a site with this source, it will be overriden by:
 * <https://app-api.pixiv.net/> (for search / listing)
 * <https://public-api.secure.pixiv.net/> (for galleries / details)
 
-## Search syntax
+### Search syntax
 
 * `tag1 tag2`: basic tag search
 * `mode:{partial,full,tc}`: tag search type (default: `partial`)
@@ -18,7 +18,7 @@ Whatever URL is entered when adding a site with this source, it will be override
 * `is:followed`: show illustrations from artists you follow
 * `type:{illust,manga}`: only load works of a given type (only applies to `user:` and empty searches)
 
-### Date
+#### Date
 The date format is `YYYY-MM-DD`.
 
 * `date:EXACT`: get results from a given date
@@ -26,7 +26,7 @@ The date format is `YYYY-MM-DD`.
 * `date:<=END`: get results before the given date (inclusive)
 * `date:START..END`: get results between the start and end date
 
-## Login
+### Login
 
 Pixiv removed username/password authentication.
 As such, you need to use OAuth access and refresh tokens directly.

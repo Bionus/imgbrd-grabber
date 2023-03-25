@@ -3,12 +3,12 @@ title: DeviantArt
 ---
 
 
-# DeviantArt
+## DeviantArt
 
 Whatever URL is entered when adding a site with this source, it will be overriden by:
 * <https://backend.deviantart.com/>
 
-## Search syntax
+### Search syntax
 
 <https://www.deviantartsupport.com/en/article/are-there-any-tricks-to-narrowing-down-a-search-on-deviantart>
 

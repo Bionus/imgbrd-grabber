@@ -5,7 +5,7 @@ title: Image renamer
 
 
 
-# Introduction
+## Introduction
 
 The image renamer is a tool used to rename existing images when you change your filename.
 
@@ -13,7 +13,7 @@ For example, if you already downloaded a few thousands of images, but decided to
 
 
 
-# Limitations
+## Limitations
 
 There are few limitations for the image renamer:
 

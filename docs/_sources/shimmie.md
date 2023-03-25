@@ -3,9 +3,9 @@ title: Shimmie
 ---
 
 
-# Shimmie
+## Shimmie
 
-## Search syntax
+### Search syntax
 
 <https://shimmie.shishnet.org/ext_doc/index>
 

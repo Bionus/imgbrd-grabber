@@ -5,20 +5,20 @@ title: Keyboard shortcuts
 
 _Note: shortcuts marked with `*` might change depending on your platform._
 
-# Mnemonics
+## Mnemonics
 
 Also called "Access keys", those are the underlined characters you can find in menu titles or buttons around the user interface. The underlined character correspond to the key to open the menu / click the button when in conjunction with the <kbd>Alt</kbd> key.
 
 Sometimes, the underline only appears when pressing the <kbd>Alt</kbd> key.
 
-## Example
+### Example
 ![example](img/mnemonics.png)
 
 In this example, there are two shortcuts available:
 * <kbd>Alt+O</kbd> to open the sources window
 * <kbd>Alt+M</kbd> to toggle the "merge results" feature
 
-# Main window
+## Main window
 
 | Action | Default shortcut | Qt Shortcut |
 |---|---|---|
@@ -31,15 +31,15 @@ In this example, there are two shortcuts available:
 | Go to the next tab | <kbd>Ctrl+PageDown</kbd> | <kbd>Ctrl+Tab</kbd>`*` |
 | Open save directory in file browser | <kbd>Ctrl+O</kbd>`*` |
 
-# Downloads tab
+## Downloads tab
 
 | Action | Default shortcut |
 |---|---|
 | Remove selected downloads | <kbd>Delete</kbd> |
 
-# Viewer window
+## Viewer window
 
-## Normal mode
+### Normal mode
 
 | Action | Default shortcut |
 |---|---|
@@ -58,7 +58,7 @@ In this example, there are two shortcuts available:
 | Toggle slideshow mode | <kbd>Space</kbd>`*` |
 | Copy the image's raw data to the clipboard | <kbd>Ctrl+C</kbd>`*` |
 
-## Full-screen mode
+### Full-screen mode
 
 | Action | Default shortcut |
 |---|---|

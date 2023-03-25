@@ -4,16 +4,16 @@ permalink: /docs/
 ---
 
 
-# Installation
+## Installation
 
 * [Install steps for Windows]({{ site.baseurl }}{% link _docs/install/windows.md %})
 * [Install steps for Linux]({{ site.baseurl }}{% link _docs/install/linux.md %})
 * [Install steps for MacOS]({{ site.baseurl }}{% link _docs/install/macos.md %})
 * [Install steps for Android]({{ site.baseurl }}{% link _docs/install/android.md %})
 
-# Usage
+## Usage
 
-## First launch
+### First launch
 
 When you first start the program, you should be welcomed with this window:
 
@@ -35,7 +35,7 @@ You should now be seeing something like this:
 
 ![startup window](img/start.png)
 
-## Searching
+### Searching
 
 The upper part of the window is "divided" into two sections:
 
@@ -46,9 +46,9 @@ After searching for something, you should see something as:
 
 ![search results](img/search.png)
 
-## Downloading
+### Downloading
 
-### Batch downloads
+#### Batch downloads
 
 To download a lot of pictures at the same time, first search for the tag you want to download (or no tag if that's what you want). You should arrive on the search page. From here, just click "Get this page" to download all the images on the page you are currently seeing (usually around 20 images), or "Get all" to download all the results of your search, including further pages (can go from 1 images to thousands).
 
@@ -66,7 +66,7 @@ It lists all the images that will be or have already been downloaded. Now, you j
 
 Success!
 
-### Single images
+#### Single images
 
 To download single images, you have to "Ctrl + click" the images you want to download in the search window. They should then be marked in blue.
 
@@ -78,9 +78,9 @@ One you have selected all the images you want to download, click the "Get select
 
 Once you are satisfied with your download list, click the "Download" button.
 
-## Sources
+### Sources
 
-### Basic usage
+#### Basic usage
 
 If you want to change the source of the pictures, just click the "Sources button" at the bottom of the window:
 
@@ -88,13 +88,13 @@ If you want to change the source of the pictures, just click the "Sources button
 
 Here, you just have to check the sources you want and then click "Ok".
 
-### Multiple sources
+#### Multiple sources
 
 If you select multiple sources, they will be put in one column by default. You can change this behavior by editing the "Columns" settings in the options.
 
 Note that you can also merge all results to remove duplicates checking the "Merge results" option at the bottom of the window. It is useful if you browse from sites than mirror each others, while still having their own uploaders.
 
-### Logging in
+#### Logging in
 
 Some sources (for example Danbooru or Gelbooru) require to login to enable full API access. Even though it is usually not mandatory thanks to the regex fallback, it is usually strongly advised to do so.
 

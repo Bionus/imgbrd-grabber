@@ -8,7 +8,7 @@ _Thanks a lot to NobodX for his help with the commands system and Gelbooru._
 
 
 
-# Introduction
+## Introduction
 
 First of all, know that using commands can slow down huge batch downloads (a recent computer may need from 100ms to 1s more per image, which is very consequent).
 
@@ -16,7 +16,7 @@ _Note: in this wiki, I'll consider that you're using Windows. But on Linux & oth
 
 
 
-# Installing a local web server
+## Installing a local web server
 
 First, we're going to install WAMP, which contains everything required to have a local web server.
 
@@ -30,7 +30,7 @@ First, we're going to install WAMP, which contains everything required to have a
 
 
 
-# Installing Gelbooru
+## Installing Gelbooru
 
 1. Download the latest version of Gelbooru here (0.1.11 as I am writing this): <http://gelbooru.com/index.php?page=forum&s=view&id=99>
 2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be <http://localhost/subfolder/>, and if you don’t it will only be <http://localhost/>. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "gelbooru".
@@ -72,7 +72,7 @@ ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
 
 
 
-# Grabber
+## Grabber
 
 Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
 
@@ -108,14 +108,14 @@ Now, every time you save an image, a copy will be created in your local booru!
 
 
 
-# Troobleshooting
+## Troobleshooting
 
-## Thumbnails
+### Thumbnails
 
 If you test, you'll see that it doesn't totally work: thumbnails are not generated when doing this. To fix this, just visit <http://localhost/gelbooru/thumbs_fix.php>. Note that you must be logged in as administrator in Gelbooru to do this.
 
 
-## Searches with short tags
+### Searches with short tags
 
 By default, the minimal size for tags is 4. You may want to change this behavior to allow the search of shorter tags (some popular tags, such as "v", are only one character long).
 

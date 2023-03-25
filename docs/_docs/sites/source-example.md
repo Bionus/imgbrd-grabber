@@ -3,14 +3,14 @@ title: Source example
 ---
 
 
-# Introduction
+## Introduction
 
 **⚠️ It is strongly recommended to have read the [Source](source.html) docs first and to have [types.d.ts](https://github.com/Bionus/imgbrd-grabber/blob/develop/src/sites/types.d.ts) open. ⚠️**
 
 The goal of this page is to provide a step-by-step example on how to create a new source, in this case Danbooru.
 
 
-## TypeScript development environment
+### TypeScript development environment
 
 All sources in Grabber are coded in TypeScript. So before going further, it is recommended to set it up first. For that, you'll first need to install [NodeJS](https://nodejs.org/en/).
 
@@ -21,7 +21,7 @@ Once done, run `npm install` in the "src/sites/" directory to install the depend
 VS Code is the recommended light IDE for editing sources, but any other can do the trick.
 
 
-# Structure
+## Structure
 
 First, let's create a new directory in `C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber\sites`, named "Danbooru".
 
@@ -34,7 +34,7 @@ This favicon being a .ico file, we need to convert it to PNG. If you have an ima
 Then, the last step is to create a "model.ts" file that will hold our source code. You can leave it empty for now. Running `npm run build` should generate a corresponding "model.js" file. Open the TS file in an editor, and let's start the actual coding.
 
 
-# Basics
+## Basics
 
 First, we create a basic source, with a name and no API for now.
 
@@ -48,7 +48,7 @@ export const source: ISource = {
 By checking in [types.d.ts](https://github.com/Bionus/imgbrd-grabber/blob/develop/src/sites/types.d.ts), we see that the `ISource` type actually has a lot more fields. We ignore them for now as they're optional. We'll go back to them later on.
 
 
-# API
+## API
 
 A source must have at least one API. For Danbooru, the most straightforward API is the JSON API, accessible by simply adding ".json" to most endpoints (for example, "/posts.json" instead of "/posts", or "/tags.json" instead of "/tags").
 
@@ -96,7 +96,7 @@ We can see a few things here:
 * The `search` object contains two functions, `url()` and `parse()` that we will now discuss in more detail
 
 
-## Search "url" function
+### Search "url" function
 
 This function returns the URL that lists the image on that API. As we saw at the beginning, that would be "/posts.json" for Danbooru.
 
@@ -123,7 +123,7 @@ url(query: ISearchQuery): string {
 Note that we use `encodeURIComponent` for the free input part, as we don't know if the user will enter some special characters that could break the search, such as "&" or "=".
 
 
-## Search "parse" function
+### Search "parse" function
 
 With the URL generated above, Grabber will make an HTTP call. Then, it will pas the output of this call to the "parse" function, whose job is to turn this raw output into a list of images.
 
@@ -168,7 +168,7 @@ parse(src: string): IParsedSearch {
 Of course, there's still more fields we could add, but let's stop here for the scope of this example.
 
 
-# Authentication
+## Authentication
 
 While this particular API does not require authentication, it's pretty common for sources to require being authenticated before being able to access their API. In Danbooru's case, it's also useful to provide authentication because it allows premium users to use their premium features within Grabber (for example to search more than 2 tags at a time).
 
@@ -179,9 +179,9 @@ Grabber supports many types of login, such as OAuth, POST, HTTP Basic, in-url, e
 For this example, there's two ways to authenticate requests to Danbooru. The first is pretty obvious and is the login form. The second can be found in [their documentation](https://danbooru.donmai.us/wiki_pages/help:api), in the "Authentication" part. It says that we can use either HTTP Basic authentication using an API key, or just pass it in the URL.
 
 
-## Login form
+### Login form
 
-### Basics
+#### Basics
 The "login form" authentication type is described in the `IHttpAuth` login type, let's start by writing a basic version:
 
 ```typescript
@@ -208,7 +208,7 @@ Here's the HTML of the `<form>` field for reference:
 
 Now you'll notice we're still missing the `fields` and `check` members.
 
-### Auth fields
+#### Auth fields
 The fields correspond to the different inputs on the login page. In most cases, that would be an username and password. Sometimes, there's also a few hidden fields on the page (`<input type="hidden">`) so be careful with those as well. Those fields are built using the `IAuthField` type.
 
 In this example, there's two inputs on the page: username and password, which gives us those two fields:
@@ -244,7 +244,7 @@ Here's the HTML of those two fields for reference (the most important being the 
 </div>
 ```
 
-### Auth check
+#### Auth check
 Once the HTTP call is done, it can be very useful to check whether the login was successful or not. To do so, there's multiple ways to check, described in the `IAuthCheck` type.
 
 For our example, we can use the simplest one, "cookie". Indeed, when logged in, many websites will generate what is called a user session, whose ID will be stored in a cookie. That means that anonymous users don't have said cookie, but logged-in users have it. As such, if we check that this cookie exists, we can know whether the login was successful or not.
@@ -260,7 +260,7 @@ Doing this kind of check is quite simple, for example for the cookie "password_h
 }
 ```
 
-### Final result
+#### Final result
 
 So here's how our login form auth looks like, now that it's complete (ignored the `api` part for clarity):
 
@@ -294,12 +294,12 @@ export const source: ISource = {
 ```
 
 
-# Going further
+## Going further
 
 Now the source is properly working, but there's a few additional things that are possible to do in Grabber but not supported. Let's go over them one by one to get a fully detailed source.
 
 
-## Tag format
+### Tag format
 
 This describes how the tags are formatted on the source, described by the `ITagFormat` type. For Danbooru, tags look like "some_tag". It's fully lowercase, with an underscore between individual tags.
 
@@ -316,7 +316,7 @@ export const source: ISource = {
 ```
 
 
-## Tag format
+### Tag format
 
 This describes how the searches are built on the source, described by the `SearchFormat` type. For Danbooru, basic searches look quite simple: just separate tags by spaces.
 

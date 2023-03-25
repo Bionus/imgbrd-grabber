@@ -3,9 +3,9 @@ title: Nijie
 ---
 
 
-# Nijie
+## Nijie
 
-## Search syntax
+### Search syntax
 
 * `tag1 tag2`: basic tag search
 * `user:USER_ID`: fetch art from a given user

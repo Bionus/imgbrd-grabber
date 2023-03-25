@@ -22,9 +22,6 @@ exclude:
 - gui/
 - tests/
 
-kramdown:
-  header_offset: 1
-
 collections:
   docs:
     permalink: "/:collection/:path.html"

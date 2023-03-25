@@ -3,7 +3,7 @@ title: Filename
 ---
 
 
-# Introduction
+## Introduction
 
 If you want to download lots of images at the same time and have each of them be downloaded in a different location or having a different filename, you have to first tell the program which filename format to use.
 
@@ -11,7 +11,7 @@ The program has many tokens to use to ensure different and unique filenames, you
 
 The most basic tokens are `md5` (an image unique identifier across all websites), `id` (an image unique identifier on a given website) and `ext` (the image's extension). Each token should be written between percent signs (`%`) to differentiate it from plain text. So if you want to use the `md5` token in your filename, you have to write `%md5%`.
 
-## Examples
+### Examples
 
 The most basic unique filename is:
 ```
@@ -44,7 +44,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
             └── fe2e6eb294f33f455d43b3effcf4ec6c.jpg
 ```
 
-# Available tokens
+## Available tokens
 
 * `ext`: the file extension.
 * `artist`
@@ -82,7 +82,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `old_directory`: when renaming, store the local path for the current file. (useful to rename images, without changing directory structure).
 * `old_filename`: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token keep the extension of the file, therefore, should not be used with %ext%.
 
-## Gallery tokens
+### Gallery tokens
 
 Images can access information on the gallery by using the `gallery.` prefix. Many tokens are present in the gallery object, but the most common are:
 
@@ -90,9 +90,9 @@ Images can access information on the gallery by using the `gallery.` prefix. Man
 * `gallery.name`: the name/title of the gallery.
 
 
-# Options
+## Options
 
-## Introduction
+### Introduction
 Most tokens can have options. To add options to a token, just add `:` after its name, followed by the option name and its value (separated by a `=`). Multiple options can be set, separating them by `,`.
 
 When a same option is set multiple times, only the latest one is taken into account.
@@ -101,8 +101,8 @@ The value can be omitted for boolean options. In this case, `option_name` will b
 
 Example: `%token:option1=value1,option2%`
 
-## Common options
-### Max length (int)
+### Common options
+#### Max length (int)
 If the contents of the token is longer than this value, it will be cut.
 
 Example:
@@ -114,7 +114,7 @@ Example:
 37d49104
 ```
 
-### Unsafe (bool)
+#### Unsafe (bool)
 Disable removal of unsafe characters. Don't use it in normal filenames, as they won't save on Windows if they contain special characters.
 
 Example:
@@ -126,7 +126,7 @@ fate_stay_night
 fate/stay_night
 ```
 
-### Underscores (bool)
+#### Underscores (bool)
 If the "replace spaces by underscores" setting is not enabled globally, you can enable for a given token using this option.
 
 Example:
@@ -138,7 +138,7 @@ fate stay night
 fate_stay_night
 ```
 
-### Spaces (bool)
+#### Spaces (bool)
 If the "replace spaces by underscores" setting is enabled globally, you can disable for a given token using this option.
 
 Example:
@@ -150,7 +150,7 @@ fate_stay_night
 fate stay night
 ```
 
-### SQL escape (bool)
+#### SQL escape (bool)
 Escapes unsafe SQL characters. Useful for SQL commands. Note that it encloses strings in single quotes.
 
 Example:
@@ -162,7 +162,7 @@ let's_try \o/
 'let''s_try \\o/'
 ```
 
-### HTML escape (bool)
+#### HTML escape (bool)
 Escapes unsafe HTML characters.
 
 Example:
@@ -174,8 +174,8 @@ Example:
 &gt;_&lt;
 ```
 
-## Numbers
-### Length (int)
+### Numbers
+#### Length (int)
 Length of the left-pad of the number.
 
 Example:
@@ -187,8 +187,8 @@ Example:
 007.jpg
 ```
 
-## Lists
-### Separator (string)
+### Lists
+#### Separator (string)
 The separator to use in a tag list.
 
 Example:
@@ -200,7 +200,7 @@ character1 character2
 character1---character2
 ```
 
-### Count (boolean)
+#### Count (boolean)
 If enabled, the token will be replace by the number of values in the list.
 
 Example:
@@ -212,7 +212,7 @@ character1 character2
 2
 ```
 
-### Sort (boolean)
+#### Sort (boolean)
 If enabled, the list will be sorted alphabetically.
 
 Example:
@@ -224,7 +224,7 @@ artist1 tag1 character1 tag2
 artist1 character1 tag1 tag2
 ```
 
-### Case (enum)
+#### Case (enum)
 Change the casing (capitalization) of words in that list.
 
 Possible options:
@@ -246,8 +246,8 @@ Test_Tag1 Test_Tag2
 ```
 
 
-## Tag lists
-### Include namespace (boolean)
+### Tag lists
+#### Include namespace (boolean)
 If enabled, the namespace of the tags will be included in the result. Better used with the `usafe` option to keep the `:`.
 
 Example:
@@ -262,7 +262,7 @@ artist_artist1 general_tag1 character_character1 general_tag2
 artist:artist1 general:tag1 character:character1 general:tag2
 ```
 
-### Exclude namespace (string list)
+#### Exclude namespace (string list)
 The list of namespaces you don't want to see when using the "include namespace" option.
 
 Example:
@@ -280,7 +280,7 @@ artist:artist1 tag1 character:character1 tag2
 artist:artist1 tag1 character1 tag2
 ```
 
-### Ignore namespace (string list)
+#### Ignore namespace (string list)
 The list of namespaces you don't want to see in the results.
 
 Example:
@@ -292,8 +292,8 @@ artist1 tag1 character1 tag2
 artist1 tag1 tag2
 ```
 
-## Dates
-### Format
+### Dates
+#### Format
 Beware of not using any character forbidden by your operating system in the format, or images won't save (so you cannot use `:` on Windows for example).
 
 | Expression      | Output      |
@@ -336,7 +336,7 @@ Example:
 2001-05-21
 ```
 
-### Time zone
+#### Time zone
 You can override the date's timezone using the "timezone" option.
 
 Allowed values:
@@ -366,19 +366,19 @@ Example:
 05-18-2021 23.32
 ```
 
-# Custom tokens
+## Custom tokens
 You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".
 
 _Note: custom tokens with an already used name (such as %character%) will be used first._
 
 
-# Conditionals
+## Conditionals
 You can use conditionals in your filename, using strict inequality signs (`<` and `>`).
 
 *Note: there is currently issues with conditionals inside other conditionals, so it is advised to not imbricate conditionals in your filename.*
 
-## Simple conditionals
-### Token conditionals
+### Simple conditionals
+#### Token conditionals
 If any token found in the conditional does not exist or is empty, nothing into it will be displayed.
 
 Since an example is worth a thousand words:
@@ -396,7 +396,7 @@ If the image doesn't have any artist, it will be:
 image -  %md5%.%ext%
 ```
 
-### Tag conditionals
+#### Tag conditionals
 You can also test directly the presence of a tag surrounding him with quotes. For example:
 ```
 image - <image contains the tag "solo"><"group" is one of the image tags> %md5%.%ext%
@@ -422,7 +422,7 @@ If, it does not have solo nor group:
 image -   %md5%.%ext%
 ```
 
-## Inverting conditions
+### Inverting conditions
 You can invert any condition by prefixing it with an exclamation mark `!` symbol.
 
 It works for tokens:
@@ -434,7 +434,7 @@ As well as tags:
 <image does not contain the tag !"tag1"> %md5%.%ext%
 ```
 
-## If-then-else conditions
+### If-then-else conditions
 Sometimes, it can be easier to have explicit "if ... then ... else ..." conditions.
 
 To do so, you should use the `<if?then:else>` syntax:
@@ -458,20 +458,20 @@ You can escape special characters (`?`, `!`...) by prefixing them with `^`. For 
 
 Note that while double quotes are optional for tags, it's recommended to use them, especially in complex conditions or for tags containing special characters.
 
-# JavaScript
+## JavaScript
 You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, that you can open clicking the "..." button near the filename field, or by adding "javascript:" before your script.
 
 For example, if your script is "md5 + '.' + ext", your filename will be "javascript:md5 + '.' + ext".
 
-# Similar tags
+## Similar tags
 Sometimes, you have similar tags in your image, which can be problematic for your filename. For example, if you have an image tagged as both "pokemon" and "pokemon_bw", you might get "crossover" when using `%copyright%`, or "pokemon pokemon_bw", which can become annoying for organization.
 
 In order to fix this, there are a few options.
 
-## The "use shortest if possible" setting
+### The "use shortest if possible" setting
 This setting is specific for copyright tags, and can be found in the option window, in the "Save > Tags > Copyright" category, as a checkbox at the bottom of the window.
 
 This feature takes all tags marked as "copyright", and remove all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "\_bw"..
 
-## Ignored tags
+### Ignored tags
 You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appearing, in our example, in `%copyright%`. It will however still be in `%all%`.
