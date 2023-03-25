@@ -18,7 +18,7 @@ bool TagTypeDatabase::load()
 		return true;
 	}
 
-	QFile f(m_file.readPath());
+	QFile f(m_file.readPath(""));
 	if (!f.open(QFile::ReadOnly | QFile::Text)) {
 		return false;
 	}
