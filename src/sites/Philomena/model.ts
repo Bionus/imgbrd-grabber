@@ -146,7 +146,7 @@ export const source: ISource = {
                     };
                 },
             },
-            details: {
+            /*details: {
                 url: (id: string): string => {
                     return "/api/v1/json/images/" + id;
                 },
@@ -169,7 +169,7 @@ export const source: ISource = {
                         tags: makeTags(data["tags"], data["tag_ids"]),
                     };
                 },
-            },
+            },*/
             tagTypes: false,
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
