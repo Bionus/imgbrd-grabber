@@ -97,7 +97,10 @@ addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
     }
     for (const to in map) {
         const from = map[to];
-        _set(result, to, _get(data, from));
+        const value = _get(data, from);
+        if (value !== null) {
+            _set(result, to, value);
+        }
     }
     return result;
 });
