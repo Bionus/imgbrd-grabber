@@ -10,8 +10,8 @@
 #include "monitoring/monitor-manager.h"
 
 
-MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QObject *parent)
-	: QAbstractTableModel(parent), m_monitorManager(monitorManager)
+MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QSettings *settings, QObject *parent)
+	: QAbstractTableModel(parent), m_monitorManager(monitorManager), m_settings(settings)
 {
 	connect(m_monitorManager, &MonitorManager::inserted, this, &MonitorTableModel::inserted);
 	connect(m_monitorManager, &MonitorManager::removed, this, &MonitorTableModel::removed);
@@ -209,7 +209,7 @@ bool MonitorTableModel::insertRows(int position, int rows, const QModelIndex &pa
 	beginInsertRows(QModelIndex(), position, position + rows - 1);
 
 	for (int row = 0; row < rows; ++row) {
-		m_monitorManager->add(Monitor(QList<Site*>(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), QDateTime::currentDateTime(), false, QString(), QString()), position);
+		m_monitorManager->add(Monitor(m_settings, {}, {}));
 	}
 
 	endInsertRows();

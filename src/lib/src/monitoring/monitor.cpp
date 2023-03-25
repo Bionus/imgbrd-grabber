@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMap>
+#include <QSettings>
 #include <utility>
 #include "logger.h"
 #include "models/profile.h"
@@ -9,9 +10,14 @@
 #include "models/site.h"
 
 
+Monitor::Monitor(QSettings *settings, QList<Site*> sites, SearchQuery query, QStringList postFilters)
+	: Monitor(std::move(sites), settings->value("Monitoring/defaultInterval", 24 * 60 * 60).toInt(), QDateTime::currentDateTimeUtc(), QDateTime::currentDateTimeUtc(), settings->value("Monitoring/defaultDownloadEnabled", true).toBool(), QString(), QString(), 0, true, std::move(query), std::move(postFilters), settings->value("Monitoring/defaultNotificationEnabled", true).toBool(), settings->value("Monitoring/defaultDelay", 0).toInt(), false, QString(), QDateTime(), 0)
+{}
+
 Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastSuccess, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay, bool getBlacklisted, QString lastState, QDateTime lastStateSince, int lastStateCount)
 	: m_sites(std::move(sites)), m_interval(interval), m_delay(delay), m_lastSuccess(std::move(lastSuccess)), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(std::move(query)), m_postFilters(std::move(postFilters)), m_notify(notify), m_getBlacklisted(getBlacklisted), m_lastState(std::move(lastState)), m_lastStateSince(std::move(lastStateSince)), m_lastStateCount(lastStateCount)
 {}
+
 
 qint64 Monitor::secsToNextCheck() const
 {

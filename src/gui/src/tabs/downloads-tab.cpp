@@ -451,8 +451,7 @@ void DownloadsTab::batchConvert()
 	QSet<int> rows = selectedRows(ui->tableBatchGroups);
 	for (const int row : rows) {
 		const DownloadQueryGroup &group = m_groupBatchs[row];
-		const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
-		Monitor monitor({ group.site }, 24 * 60 * 60, QDateTime::currentDateTimeUtc(), QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, group.query, group.postFiltering, notify);
+		Monitor monitor(m_settings, { group.site }, group.query, group.postFiltering);
 		m_profile->monitorManager()->add(monitor);
 	}
 }

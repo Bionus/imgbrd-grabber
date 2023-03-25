@@ -7,12 +7,15 @@
 
 
 class QJsonObject;
+class QSettings;
 class Site;
 
 class Monitor
 {
 	public:
+		Monitor(QSettings *settings, QList<Site*> sites, SearchQuery query, QStringList postFilters = {});
 		Monitor(QList<Site*> sites, int interval, QDateTime lastSuccess, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true, int delay = 0, bool getBlacklisted = false, QString lastState = {}, QDateTime lastStateSince = {}, int lastStateCount = 0);
+
 		qint64 secsToNextCheck() const;
 		bool equivalentTo(const Monitor &other) const;
 

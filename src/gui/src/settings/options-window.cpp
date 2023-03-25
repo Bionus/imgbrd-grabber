@@ -185,6 +185,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	settings->beginGroup("Monitoring");
 		ui->spinMonitoringStartupDelay->setValue(settings->value("startupDelay", 0).toInt());
 		ui->checkMonitoringEmptySources->setChecked(settings->value("emptySources", false).toBool());
+		ui->spinMonitoringDefaultInterval->setValue(qFloor(settings->value("defaultInterval", 24 * 60 * 60).toInt() / 60.0));
+		ui->spinMonitoringDefaultDelay->setValue(qFloor(settings->value("defaultDelay", 0).toInt() / 60.0));
+		ui->checkMonitoringDefaultNotificationEnabled->setChecked(settings->value("defaultNotificationEnabled", true).toBool());
+		ui->checkMonitoringDefaultDownloadEnabled->setChecked(settings->value("defaultDownloadEnabled", true).toBool());
 		ui->checkMonitoringEnableTray->setChecked(settings->value("enableTray", false).toBool());
 		ui->checkMonitoringMinimizeToTray->setChecked(settings->value("minimizeToTray", false).toBool());
 		ui->checkMonitoringCloseToTray->setChecked(settings->value("closeToTray", false).toBool());
@@ -1143,6 +1147,10 @@ void OptionsWindow::save()
 	settings->beginGroup("Monitoring");
 		settings->setValue("startupDelay", ui->spinMonitoringStartupDelay->value());
 		settings->setValue("emptySources", ui->checkMonitoringEmptySources->isChecked());
+		settings->setValue("defaultInterval", ui->spinMonitoringDefaultInterval->value() * 60);
+		settings->setValue("defaultDelay", ui->spinMonitoringDefaultDelay->value() * 60);
+		settings->setValue("defaultNotificationEnabled", ui->checkMonitoringDefaultNotificationEnabled->isChecked());
+		settings->setValue("defaultDownloadEnabled", ui->checkMonitoringDefaultDownloadEnabled->isChecked());
 		settings->setValue("enableTray", ui->checkMonitoringEnableTray->isChecked());
 		settings->setValue("minimizeToTray", ui->checkMonitoringMinimizeToTray->isChecked());
 		settings->setValue("closeToTray", ui->checkMonitoringCloseToTray->isChecked());

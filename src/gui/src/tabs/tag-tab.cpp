@@ -270,9 +270,8 @@ void TagTab::monitor()
 	}
 
 	const QStringList tags = search.split(" ", Qt::SkipEmptyParts);
-	const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
 	QList<Site*> sites = m_settings->value("Monitoring/emptySources", false).toBool() ? loadSites() : sourcesWithResults();
-	Monitor monitor(sites, 24 * 60 * 60, QDateTime::currentDateTimeUtc(), QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, tags, postFilter(), notify);
+	Monitor monitor(m_settings, sites, tags, postFilter());
 	m_profile->monitorManager()->add(monitor);
 }
 

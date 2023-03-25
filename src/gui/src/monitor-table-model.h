@@ -10,13 +10,14 @@
 
 class MonitorManager;
 class QModelIndex;
+class QSettings;
 
 class MonitorTableModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 	public:
-		MonitorTableModel(MonitorManager *monitorManager, QObject *parent = nullptr);
+		MonitorTableModel(MonitorManager *monitorManager, QSettings *settings, QObject *parent = nullptr);
 
 		// Data
 		int rowCount(const QModelIndex &parent = {}) const override;
@@ -38,6 +39,7 @@ class MonitorTableModel : public QAbstractTableModel
 
 	private:
 		MonitorManager *m_monitorManager;
+		QSettings *m_settings;
 		QMap<int, MonitoringCenter::MonitoringStatus> m_statuses;
 		bool m_freeze = false;
 		QTimer m_refreshTimer;
