@@ -20,9 +20,6 @@ Or, if you are using an old version of the program:
 ```
 And the executable files are in:
 ```
-## For 32-bit systems
 "C:/Program Files/Grabber"
-## For 64-bit systems
-"C:/Program Files (x86)/Grabber"
 ```
 To make the application portable, you just have to copy the contents of both of these folders in another directory.
