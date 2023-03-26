@@ -335,7 +335,7 @@ interface IAuthCheckRedirect {
     type: "redirect";
 
     /**
-     * Part of the destiation URL after login to check.
+     * Part of the destination URL after login to check.
      */
     url: string;
 }
