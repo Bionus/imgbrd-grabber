@@ -87,7 +87,7 @@ function _set(obj: any, path: string, value: any): void {
  * Get a value in an object using the dot ("a.b.c") path notation.
  */
 function _get(obj: any, path: string): any {
-    return path.split(".").reduce((ctx, part) => ctx[part], obj);
+    return path.split(".").reduce((ctx, part) => ctx?.[part], obj);
 }
 
 addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
