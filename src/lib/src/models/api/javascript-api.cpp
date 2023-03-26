@@ -272,7 +272,7 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 					size->size.setWidth(media.property("width").toInt());
 				}
 				if (media.hasProperty("height")) {
-					size->size.setWidth(media.property("height").toInt());
+					size->size.setHeight(media.property("height").toInt());
 				}
 				size->bitRate = getPropertyOr(media, "bitrate", 0);
 				size->fileSize = getPropertyOr(media, "file_size", 0);
