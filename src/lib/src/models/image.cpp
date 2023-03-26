@@ -346,10 +346,10 @@ void Image::write(QJsonObject &json) const
 	// Identity
 	QJsonObject jsonIdentity;
 	for (const auto &key : m_identity.keys()) {
-		jsonData[key] = QJsonValue::fromVariant(m_data[key]);
+		jsonIdentity[key] = QJsonValue::fromVariant(m_identity[key]);
 	}
-	if (!jsonData.isEmpty()) {
-		json["data"] = jsonData;
+	if (!jsonIdentity.isEmpty()) {
+		json["identity"] = jsonIdentity;
 	}
 }
 
@@ -428,7 +428,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	if (json.contains("identity")) {
 		const auto &jsonIdentity = json["identity"].toObject();
 		for (const auto &key : jsonIdentity.keys()) {
-			m_data[key] = jsonIdentity[key].toVariant();
+			m_identity[key] = jsonIdentity[key].toVariant();
 		}
 	}
 
