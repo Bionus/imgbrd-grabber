@@ -805,7 +805,7 @@ interface IApi {
     details?: {
         parseErrors?: boolean;
         fullResults?: boolean;
-        url: (id: string, md5: string, opts: IUrlDetailsOptions) => IRequest | IError | string;
+        url: (id: string, md5: string, opts: IUrlDetailsOptions, identity?: IImageIdentity) => IRequest | IError | string;
         parse: (src: string, statusCode: number) => IParsedDetails | IImage | IError;
     };
 
