@@ -58,7 +58,7 @@ function parseTweetMedia(sc: any, original: any, media: any): IImage {
     return d;
 }
 
-function parseTweet(sc: any, gallery: boolean): IImage {
+function parseTweet(sc: any, gallery: boolean): IImage[] | IImage {
     const original = sc;
     if ("retweeted_status" in sc) {
         sc = sc["retweeted_status"];
@@ -72,7 +72,7 @@ function parseTweet(sc: any, gallery: boolean): IImage {
         return { id: original["id_str"] };
     }
 
-    const medias = entities["media"];
+    const medias: any[] = entities["media"];
     if (!medias || medias.length === 0) {
         return { id: original["id_str"] };
     }
@@ -199,9 +199,10 @@ export const source: ISource = {
                 url: (id: string): string => {
                     return "/1.1/statuses/show.json?id=" + id + "&tweet_mode=extended";
                 },
-                parse: (src: string): IParsedDetails => {
+                parse: (src: string): IImage => {
                     const data = JSON.parse(src);
-                    return parseTweet(data, true);
+                    const images = Grabber.makeArray(parseTweet(data, true));
+                    return images[0];
                 },
             },
         },
