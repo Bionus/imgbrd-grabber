@@ -651,6 +651,11 @@ interface IGalleryQuery {
     md5: string;
 
     /**
+     * The gallery's identity.
+     */
+    identity?: IImageIdentity;
+
+    /**
      * The page number of this query.
      */
     page: number;

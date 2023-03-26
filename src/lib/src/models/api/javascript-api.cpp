@@ -391,6 +391,7 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 	QJSValue query = m_engine->newObject();
 	query.setProperty("id", QString::number(gallery->id()));
 	query.setProperty("md5", gallery->md5());
+	query.setProperty("identity", m_engine->toScriptValue(gallery->identity()));
 	query.setProperty("page", page);
 
 	QJSValue opts = m_engine->newObject();
