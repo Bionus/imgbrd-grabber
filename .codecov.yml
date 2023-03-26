@@ -18,7 +18,8 @@ coverage:
     - "src/*/tests/**/*"
     - "src/e2e/**/*"
     - "src/gui-qml/**/*"
-    - "src/**/vendor/***/*"
+    - "src/*/vendor/*"
+    - "src/*/vendor/**/*"
 
 component_management:
   individual_components:
