@@ -169,7 +169,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 
 			// Preview gets the biggest size between 150 and 300
 			if (
-				!sizes[Image::Thumbnail].isEmpty() || // Default
+				sizes[Image::Thumbnail].isEmpty() || // Default
 				(isInRange(size, 150, 300) && (
 					 isBigger(size, sizes[Image::Thumbnail]) || // Biggest under 300px
 					 !isInRange(sizes[Image::Thumbnail], 150, 300)) // If the default was bigger than 300px
