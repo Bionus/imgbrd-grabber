@@ -409,7 +409,16 @@ QString savePath(const QString &file, bool exists, bool writable)
 		}
 	}
 
-	// Install directory
+	// AppImages should read from their embedded filesystem even when running in portable mode
+	#ifdef __linux__
+		if (QCoreApplication::applicationFilePath().endsWith(".AppImage")) {
+			if (validSavePath(qApp->applicationDirPath() + "/../share/Grabber/" + check, writable)) {
+				return QDir::toNativeSeparators(qApp->applicationDirPath() + "/../share/Grabber/" + file);
+			}
+		}
+	#endif
+
+	// Install directory and portable mode
 	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
 	}
