@@ -96,7 +96,7 @@ export const source: ISource = {
                     };
                 },
             },
-            details: {
+            /*details: {
                 fullResults: true,
                 url: (id: string, md5: string, opts: IUrlDetailsOptions, identity?: IImageIdentity): string | IError => {
                     return `/api/${identity!["service"]}/user/${identity!["user"]}/post/${identity!["id"]}`;
@@ -105,7 +105,7 @@ export const source: ISource = {
                     const data = JSON.parse(src)[0];
                     return completeImage(parseJsonImage(data));
                 },
-            },
+            },*/
             check: {
                 url: (): string => {
                     return "/";

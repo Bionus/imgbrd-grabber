@@ -194,7 +194,7 @@ export const source: ISource = {
                     };
                 },
             },
-            details: {
+            /*details: {
                 fullResults: true,
                 url: (id: string): string => {
                     return "/1.1/statuses/show.json?id=" + id + "&tweet_mode=extended";
@@ -204,7 +204,7 @@ export const source: ISource = {
                     const images = Grabber.makeArray(parseTweet(data, true));
                     return images[0];
                 },
-            },
+            },*/
         },
     },
 };
