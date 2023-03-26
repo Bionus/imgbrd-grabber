@@ -233,6 +233,10 @@ Source: "{#SrcDir}\sites\Mastodon\sites.txt"; DestDir: "{app}\sites\Mastodon"; F
 Source: "{#SrcDir}\sites\Moebooru\icon.png";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\model.js";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\sites.txt"; DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\icon.png";      DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\model.js";      DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\sites.txt";     DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\supported.txt"; DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\icon.png";   DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\model.js";   DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\sites.txt";  DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
