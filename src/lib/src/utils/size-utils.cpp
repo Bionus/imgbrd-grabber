@@ -7,12 +7,13 @@
  */
 bool isBigger(QSize a, QSize b)
 {
+	// Invalid sizes are always considered smaller than valid ones
+	if (a.width() > 0 && a.height() > 0 && b.width() <= 0 && b.height() <= 0) {
+		return true;
+	}
+
+	// If images have both width and height, do a basic comparison
 	if (a.width() > 0 && a.height() > 0 && b.width() > 0 && b.height() > 0) {
-		// Images must have the same aspect ratio to be compared by width and height
-		if (abs(a.width() / a.height() - b.width() / b.height()) > 0.005f) {
-			return false;
-		}
-		// If images have both width and height and the same aspect ratio, do a basic comparison
 		return a.width() > b.width() && a.height() > b.height();
 	}
 
