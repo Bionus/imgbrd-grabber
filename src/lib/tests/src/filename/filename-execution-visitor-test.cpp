@@ -48,14 +48,31 @@ TEST_CASE("FilenameExecutionVisitor")
 
 	SECTION("Token")
 	{
-		const QMap<QString, Token> tokens {
-			{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
-			{ "ext", Token("jpg") }
-		};
+		SECTION("String")
+		{
+			const QMap<QString, Token> tokens{
+				{"md5", Token("1bc29b36f623ba82aaf6724fd3b16718")},
+				{"ext", Token("jpg")}
+			};
 
-		const QString result = executeFilename("out/%md5%.%ext%", tokens);
+			const QString result = executeFilename("out/%md5%.%ext%", tokens);
 
-		REQUIRE(result == QString("out/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
+			REQUIRE(result == QString("out/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
+		}
+
+		SECTION("Numbers")
+		{
+			const QMap<QString, Token> tokens{
+				{"ulonglong", Token((qulonglong) 123)},
+				{"longlong", Token((qlonglong) 123)},
+				{"uint", Token((uint) 123)},
+				{"int", Token((int) 123)},
+			};
+
+			const QString result = executeFilename("%ulonglong% %longlong% %uint% %int%", tokens);
+
+			REQUIRE(result == QString("123 123 123 123"));
+		}
 	}
 
 	SECTION("Token list count")

@@ -97,6 +97,19 @@ TEST_CASE("FilenameParser")
 			REQUIRE(txt->text == QString("%md5%"));
 		}
 
+		SECTION("Escape ^ itself")
+		{
+			FilenameParser parser("hello ^^");
+			auto filename = parser.parseRoot();
+			REQUIRE(parser.error() == QString());
+
+			REQUIRE(filename->exprs.count() == 1);
+
+			auto txt = dynamic_cast<FilenameNodeText *>(filename->exprs[0]);
+			REQUIRE(txt != nullptr);
+			REQUIRE(txt->text == QString("hello ^"));
+		}
+
 		SECTION("XML characters")
 		{
 			FilenameParser parser("<<test>>");

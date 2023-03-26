@@ -9,7 +9,7 @@
 class HtmlNode
 {
 	public:
-		HtmlNode(lxb_dom_node_t *node);
+		explicit HtmlNode(lxb_dom_node_t *node);
 		static HtmlNode *fromString(const QString &html, bool fragment = false);
 		~HtmlNode();
 

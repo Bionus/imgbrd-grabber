@@ -13,6 +13,14 @@ TEST_CASE("HTML parsing utils")
 		REQUIRE(node->outerHTML() == QString("<p><span>Hello</span> world!</p>"));
 		REQUIRE(node->innerHTML() == QString("<span>Hello</span> world!"));
 		REQUIRE(node->innerText() == QString("Hello world!"));
+		REQUIRE(node->tag() == QString("p"));
+	}
+
+	SECTION("Invalid HTML fragment")
+	{
+		QScopedPointer<HtmlNode> node(HtmlNode::fromString("<p<", true));
+
+		REQUIRE(node == nullptr);
 	}
 
 	SECTION("HTML attributes")
@@ -24,5 +32,30 @@ TEST_CASE("HTML parsing utils")
 		REQUIRE(node->attr("key2") == QString("val2"));
 		REQUIRE(node->attr("key3") == QString("val3"));
 		REQUIRE(node->attr("key4") == QString());
+	}
+
+	SECTION("find")
+	{
+		QScopedPointer<HtmlNode> node(HtmlNode::fromString("<p><span>Hello</span> world!</p>", true));
+
+		REQUIRE(node != nullptr);
+
+		SECTION("Basic usage")
+		{
+			QList<HtmlNode> found = node->find("span");
+			REQUIRE(found.count() == 1);
+		}
+
+		SECTION("No results")
+		{
+			QList<HtmlNode> found = node->find("h3");
+			REQUIRE(found.count() == 0);
+		}
+
+		SECTION("Invalid selector")
+		{
+			QList<HtmlNode> found = node->find(".#~");
+			REQUIRE(found.count() == 0);
+		}
 	}
 }

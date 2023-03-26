@@ -29,9 +29,12 @@ class FileDeleter
 class DirectoryDeleter
 {
 	public:
-		explicit DirectoryDeleter(QString path, bool create = true)
+		explicit DirectoryDeleter(QString path, bool create = true, bool del = false)
 			: m_path(std::move(path))
 		{
+			if (del) {
+				QDir(m_path).removeRecursively();
+			}
 			if (create) {
 				QDir().mkpath(m_path);
 			}

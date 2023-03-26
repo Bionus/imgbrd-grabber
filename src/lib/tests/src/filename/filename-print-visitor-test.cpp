@@ -23,7 +23,7 @@ TEST_CASE("FilenamePrintVisitor")
 
 	SECTION("Basic")
 	{
-		FilenameParser parser("out/%md5:opt%.%ext%");
+		FilenameParser parser("out/%md5:flag,opt=val%.%ext%");
 		auto *ast = parser.parseRoot();
 		REQUIRE(parser.error() == QString());
 
@@ -31,7 +31,7 @@ TEST_CASE("FilenamePrintVisitor")
 		QString result = printVisitor.run(*ast);
 		delete ast;
 
-		REQUIRE(result == QString("Root(Text('out/');Variable('md5';opt);Text('.');Variable('ext'))"));
+		REQUIRE(result == QString("Root(Text('out/');Variable('md5';flag,opt=val);Text('.');Variable('ext'))"));
 	}
 
 	SECTION("Conditional")
