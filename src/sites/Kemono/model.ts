@@ -58,7 +58,6 @@ export const source: ISource = {
             auth: [],
             maxLimit: 50,
             search: {
-                parseErrors: true,
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     const offset = (query.page - 1) * opts.limit;
                     if (query.search) {
