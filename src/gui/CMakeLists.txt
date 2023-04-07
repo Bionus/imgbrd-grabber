@@ -1,9 +1,15 @@
 # General
 project(gui VERSION ${VERSION})
 add_definitions(-DGUI=1)
+
+# Enable Breakpad and QScintilla in Release mode only
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-	set(USE_BREAKPAD 1)
-	set(USE_QSCINTILLA 1)
+	if(NOT DEFINED USE_BREAKPAD)
+		set(USE_BREAKPAD 1)
+	endif()
+	if(NOT DEFINED USE_QSCINTILLA)
+		set(USE_QSCINTILLA 1)
+	endif()
 endif()
 
 set(CMAKE_CXX_STANDARD 14)
