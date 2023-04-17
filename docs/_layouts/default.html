@@ -12,6 +12,16 @@
 			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		{% seo title=false %}
+
+		{% if site.google_analytics %}
+			<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', '{{ site.google_analytics }}');
+			</script>
+		{% endif %}
 	</head>
 	<body {%- if layout.class %} class="{{ layout.class }}"{% endif %}>
 		{{ content }}
@@ -19,55 +29,5 @@
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js" integrity="sha256-MXT+AJD8HdXQ4nLEbqkMqW3wXXfvjaGQt/Q/iRlBNSU=" crossorigin="anonymous"></script>
 		<script src="{{ '/assets/js/main.js?v=' | append: site.github.build_revision | relative_url }}"></script>
-		{% if site.google_analytics %}
-			<script>
-					(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-					})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-					ga('create', '{{ site.google_analytics }}', 'auto');
-					ga('send', 'pageview');
-
-					var baseURI = window.location.host;
-					$('a').on('click', function(event) {
-						var th = $(this);
-						if (th.hasClass('fancybox')) {
-							return;
-						}
-
-						var name = th.attr('data-label') ? th.data('label') : th.html();
-						var href = th.attr('href');
-
-						if (href.indexOf(baseURI) === -1) {
-							var redir = false;
-							function loadPage() {
-								if (redir) return;
-								redir = true;
-								document.location = href;
-							}
-
-							var targ = th.attr('target');
-							var target = (targ && !targ.match(/^_(self|parent|top)$/i)) ? targ : false;
-							if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
-								target = '_blank';
-							}
-
-							var opts = {
-								'hitType': 'event',
-								'eventCategory': 'Outbound',
-								'eventAction': href,
-								'eventLabel': name ? name.toLowerCase() : href
-							};
-							if (!target) {
-								opts['hitCallback'] = loadPage;
-								setTimeout(loadPage, 1000);
-							}
-
-							ga('send', opts);
-						}
-					});
-			</script>
-		{% endif %}
 	</body>
 </html>
