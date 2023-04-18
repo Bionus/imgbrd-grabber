@@ -92,7 +92,6 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 		{ "v", "2" },
 		{ "tid", m_measurementId },
 		{ "_p", QString::number(QRandomGenerator::global()->generate()) },
-		{ "_dbg", "1" },
 		{ "cid", m_clientId },
 		{ "ul", QLocale::system().name().toLower().replace("_", "-") },
 		#ifdef QT_GUI_LIB
@@ -144,16 +143,6 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 	loop.exec();
 
-	QString uri = url.toString();
-	QString uriq = query.toString();
-	auto err = reply->error();
-	auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-	auto src = reply->readAll();
-
-	if (reply->error() != QNetworkReply::NoError) {
-		QString tes = "test";
-	}
-
 	reply->deleteLater();
 }
 
@@ -173,13 +162,24 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 
 QString GoogleAnalytics4::userAgent() const
 {
-	return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
+	#if false and defined(Q_OS_ANDROID)
+		QAndroidJniObject jsText = QAndroidJniObject::fromString("http.agent");
+		QAndroidJniObject ua = QAndroidJniObject::callStaticMethod<jstring>(
+			"System",
+			"getProperty",
+			"(Ljava/lang/String;)Z",
+			jsText.object<jstring>()
+		);
+		return ua.toString();
+	#endif
+
+	return "";
 
 	const QString appName = QCoreApplication::instance()->applicationName();
 	const QString appVersion = QCoreApplication::instance()->applicationVersion();
-	const QString system = ""; // getSystemInfo();
+	const QString systemInfo = QString("%1 %2").arg(QOperatingSystemVersion::current().name(), userAgentPlatformVersion());
 
-	return QString("%1/%2 (%3; %4) QtGoogleAnalytics4/1.0 (Qt/%5)").arg(appName, appVersion, system, QT_VERSION_STR);
+	return QString("%1/%2 (%3) QtGoogleAnalytics4/1.0 (Qt/%4)").arg(appName, appVersion, systemInfo, QT_VERSION_STR);
 }
 
 QString GoogleAnalytics4::userAgentPlatformVersion() const
