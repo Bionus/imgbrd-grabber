@@ -3,7 +3,6 @@
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QDesktopServices>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
