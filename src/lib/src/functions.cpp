@@ -325,10 +325,10 @@ QDateTime qDateTimeFromString(const QString &str)
 		}
 
 		const QStringList months { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-		const int year = str.midRef(26, 4).toInt();
+		const int year = str.mid(26, 4).toInt();
 		const int month = months.indexOf(str.mid(4, 3)) + 1;
-		const int day = str.midRef(8, 2).toInt();
-		const qreal decay = str.midRef(20, 5).toDouble() / 100;
+		const int day = str.mid(8, 2).toInt();
+		const qreal decay = str.mid(20, 5).toDouble() / 100;
 
 		const QTime time = QTime::fromString(str.mid(11, 8), QStringLiteral("HH:mm:ss"));
 		date.setDate(QDate(year, month, day));
@@ -584,7 +584,7 @@ QString getExtension(const QString &url)
 {
 	const int lastDot = url.lastIndexOf('.');
 	if (lastDot != -1) {
-		const int doubleDot = url.midRef(lastDot + 1).indexOf(':');
+		const int doubleDot = url.mid(lastDot + 1).indexOf(':');
 		if (doubleDot != -1) {
 			return url.mid(lastDot + 1, doubleDot);
 		} else {
@@ -613,9 +613,9 @@ QUrl setExtension(QUrl url, const QString &extension)
 	QString path = url.path();
 
 	const int lastSlash = path.lastIndexOf('/');
-	const int lastDot = path.midRef(lastSlash + 1).lastIndexOf('.');
+	const int lastDot = path.mid(lastSlash + 1).lastIndexOf('.');
 	if (lastDot != -1) {
-		const int doubleDot = path.midRef(lastDot + 1).indexOf(':');
+		const int doubleDot = path.mid(lastDot + 1).indexOf(':');
 		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension + (doubleDot != -1 ? path.mid(lastDot + doubleDot + 1) : ""));
 	}
 
@@ -883,9 +883,9 @@ bool isTestModeEnabled()
 QString fixCloudflareEmail(const QString &a)
 {
 	QString s;
-	int r = a.midRef(0, 2).toInt(nullptr, 16);
+	int r = a.mid(0, 2).toInt(nullptr, 16);
 	for (int j = 2; j < a.length(); j += 2) {
-		int c = a.midRef(j, 2).toInt(nullptr, 16) ^ r;
+		int c = a.mid(j, 2).toInt(nullptr, 16) ^ r;
 		s += QString(QChar(c));
 	}
 	return s;

@@ -43,7 +43,7 @@ QJSValue JavascriptGrabberHelper::regexMatches(const QString &regex, const QStri
 
 			const int underscorePos = group.lastIndexOf('_');
 			bool ok;
-			group.midRef(underscorePos + 1).toInt(&ok);
+			group.mid(underscorePos + 1).toInt(&ok);
 			if (underscorePos != -1 && ok) {
 				group = group.left(underscorePos);
 			}

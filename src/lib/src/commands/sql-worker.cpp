@@ -31,7 +31,7 @@ bool SqlWorker::connect()
 	const int portSeparator = m_host.lastIndexOf(':');
 	if (portSeparator > 0) {
 		m_db.setHostName(m_host.left(portSeparator));
-		m_db.setPort(m_host.midRef(portSeparator + 1).toInt());
+		m_db.setPort(m_host.mid(portSeparator + 1).toInt());
 	} else {
 		m_db.setHostName(m_host);
 	}

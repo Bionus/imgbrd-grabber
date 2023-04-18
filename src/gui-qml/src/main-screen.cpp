@@ -229,7 +229,7 @@ QString MainScreen::toLocalFile(const QString &url)
 			return u.toLocalFile();
 		}
 	} else if (url.startsWith("content://com.android.externalstorage.documents")) {
-		const QString part = QUrl::fromPercentEncoding(url.midRef(47).toLatin1());
+		const QString part = QUrl::fromPercentEncoding(url.mid(47).toLatin1());
 		const int index = part.indexOf(':');
 		if (index != -1) {
 			return "/storage/emulated/0/" + part.mid(index + 1);
