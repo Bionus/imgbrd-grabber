@@ -3,6 +3,7 @@
 
 #include <QVariantMap>
 #include "vendor/ganalytics.h"
+#include "utils/google-analytics-4.h"
 
 
 class QString;
@@ -22,6 +23,7 @@ class Analytics
 
 		// Setters
 		void setTrackingID(const QString& trackingId);
+		void setMeasurementID(const QString& measurementId);
 		void setEnabled(bool enabled);
 
 		// API
@@ -36,6 +38,7 @@ class Analytics
 
 		bool m_enabled = false;
 		GAnalytics m_googleAnalytics;
+		GoogleAnalytics4 m_ga4;
 };
 
 #endif // ANALYTICS_H
