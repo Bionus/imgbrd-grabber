@@ -6,7 +6,6 @@
 #include <QMenu>
 #include <QScrollBar>
 #include <QSettings>
-#include <QStyleOptionFrameV2>
 #include <QTextDocumentFragment>
 #include <QWheelEvent>
 #include "functions.h"

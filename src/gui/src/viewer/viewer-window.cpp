@@ -7,8 +7,6 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>
