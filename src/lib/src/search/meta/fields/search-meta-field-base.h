@@ -6,7 +6,7 @@
 #include <QVariant>
 
 
-template<typename T>
+template <typename T>
 class SearchMetaFieldBase : public SearchMetaField
 {
 	public:

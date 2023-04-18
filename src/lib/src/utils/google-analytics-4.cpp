@@ -83,38 +83,6 @@ QString GoogleAnalytics4::userId() const
 
 void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &parameters)
 {
-	#if 0
-	// Based on https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag;
-
-	QUrl url(MEASUREMENT_ENDPOINT_JSON);
-
-	// See https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#payload_query_parameters
-	QUrlQuery query {
-		{ "api_secret", m_apiSecret },
-		{ "measurement_id", m_measurementId },
-	};
-	url.setQuery(query);
-
-	// See https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#payload_post_body
-	QJsonObject event {
-		{ "name", eventName },
-		{ "params", QJsonValue::fromVariant(parameters) },
-	};
-	QJsonArray events { event };
-	QJsonObject body {
-		{ "client_id", m_clientId },
-		{ "events", events },
-	};
-	if (!m_userId.isEmpty()) {
-		body["user_id"] = m_userId;
-	}
-	// TODO: user_properties
-
-	QNetworkRequest request(url);
-	QByteArray jsonBody = QJsonDocument(body).toJson(QJsonDocument::Compact);
-	m_networkAccessManager->post(request, jsonBody)
-	#endif
-
 	QUrl url(MEASUREMENT_ENDPOINT_WEB);
 
 	QUrlQuery query {
@@ -122,7 +90,6 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 		{ "tid", m_measurementId },
 		{ "_p", QString::number(QRandomGenerator::global()->generate()) },
 		{ "_dbg", "1" },
-		//{ "_ss", "1" },
 		{ "cid", m_clientId },
 		{ "ul", QLocale::system().name().toLower().replace("_", "-") },
 		#ifdef QT_GUI_LIB
@@ -189,16 +156,16 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 
 
 #ifdef QT_GUI_LIB
-QString GoogleAnalytics4::screenResolution() const
-{
-	const QScreen *screen = QGuiApplication::primaryScreen();
-	if (screen == nullptr) {
-		return {};
-	}
+	QString GoogleAnalytics4::screenResolution() const
+	{
+		const QScreen *screen = QGuiApplication::primaryScreen();
+		if (screen == nullptr) {
+			return {};
+		}
 
-	const QSize size = screen->size();
-	return QString("%1x%2").arg(size.width()).arg(size.height());
-}
+		const QSize size = screen->size();
+		return QString("%1x%2").arg(size.width()).arg(size.height());
+	}
 #endif
 
 QString GoogleAnalytics4::userAgent() const

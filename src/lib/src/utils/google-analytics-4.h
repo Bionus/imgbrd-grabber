@@ -9,7 +9,7 @@ class QNetworkAccessManager;
 
 class GoogleAnalytics4 : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	Q_PROPERTY(QString apiSecret READ apiSecret WRITE setApiSecret NOTIFY apiSecretChanged)
 	Q_PROPERTY(QString measurementId READ measurementId WRITE setMeasurementId NOTIFY measurementIdChanged)
@@ -27,10 +27,7 @@ class GoogleAnalytics4 : public QObject
 		QString userId() const;
 
 	public slots:
-		// Generic event
 		void sendEvent(const QString &name, const QVariantMap &parameters = {});
-
-		// Standard event
 
 	signals:
 		void apiSecretChanged();
@@ -38,9 +35,9 @@ class GoogleAnalytics4 : public QObject
 		void userIdChanged();
 
 	protected:
-#ifdef QT_GUI_LIB
-		QString screenResolution() const;
-	#endif
+		#ifdef QT_GUI_LIB
+			QString screenResolution() const;
+		#endif
 		QString userAgent() const;
 		QString userAgentPlatformVersion() const;
 
