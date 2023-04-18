@@ -39,7 +39,7 @@ QSize TextEdit::sizeHint() const
 
 	QStyleOptionFrame opt;
 	opt.initFrom(this);
-	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));
+	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h), this));
 }
 
 /**
