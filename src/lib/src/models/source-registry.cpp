@@ -19,7 +19,7 @@ SourceRegistry::SourceRegistry(QString jsonUrl, QObject *parent)
 void SourceRegistry::load()
 {
 	QNetworkRequest request(m_jsonUrl);
-	request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+	request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
 
 	NetworkReply *reply = m_manager->get(request);
 	connect(reply, &NetworkReply::finished, this, &SourceRegistry::jsonLoaded);
