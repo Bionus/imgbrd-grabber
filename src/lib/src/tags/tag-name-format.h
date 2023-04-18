@@ -3,9 +3,8 @@
 
 #include <QMetaType>
 #include <QString>
+#include <QStringList>
 
-
-class QStringList;
 
 class TagNameFormat
 {

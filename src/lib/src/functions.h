@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QRect>
 #include <QString>
+#include <QStringList>
 #include <QKeySequence>
 #include "utils/file-utils.h"
 
@@ -14,7 +15,6 @@ class QDateTime;
 class QDir;
 class QFont;
 class QJSValue;
-class QStringList;
 class QSettings;
 class QUrl;
 class QVariant;

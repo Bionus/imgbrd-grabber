@@ -2,6 +2,7 @@
 #define EMPTY_DIRS_FIX_1_H
 
 #include <QDialog>
+#include <QStringList>
 
 
 namespace Ui
@@ -12,7 +13,6 @@ namespace Ui
 
 class Profile;
 class QDir;
-class QStringList;
 
 class EmptyDirsFix1 : public QDialog
 {

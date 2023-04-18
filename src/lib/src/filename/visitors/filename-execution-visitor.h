@@ -3,12 +3,12 @@
 
 #include <QMap>
 #include <QString>
+#include <QStringList>
 #include "filename/visitors/filename-visitor-javascript.h"
 
 
 class QDateTime;
 class QSettings;
-class QStringList;
 class QVariant;
 class Token;
 
