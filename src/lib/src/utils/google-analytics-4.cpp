@@ -15,6 +15,9 @@
 	#include <QGuiApplication>
 	#include <QScreen>
 #endif
+#ifdef Q_OS_ANDROID
+	#include <QAndroidJniObject>
+#endif
 
 #define MEASUREMENT_ENDPOINT_JSON "https://www.google-analytics.com/mp/collect"
 #define MEASUREMENT_ENDPOINT_WEB "https://www.google-analytics.com/g/collect"
