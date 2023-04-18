@@ -799,6 +799,7 @@ void GAnalytics::startSession()
 	QVariantMap customValues;
 	customValues.insert("sc", "start");
 	sendEvent("Session", "Start", getPlatform(), QVariant(), customValues);
+	sendEvent("Session", "System", d->getSystemInfo());
 }
 
 /**
