@@ -84,16 +84,16 @@ void SearchTab::init()
 
 	// Navigation keyboard shortcuts
 	if (ui_buttonFirstPage != nullptr) {
-		ui_buttonFirstPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyFirstPage", Qt::CTRL + Qt::Key_Home));
+		ui_buttonFirstPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyFirstPage", Qt::CTRL | Qt::Key_Home));
 	}
 	if (ui_buttonPreviousPage != nullptr) {
-		ui_buttonPreviousPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyPreviousPage", Qt::CTRL + Qt::Key_Left));
+		ui_buttonPreviousPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyPreviousPage", Qt::CTRL | Qt::Key_Left));
 	}
 	if (ui_buttonNextPage != nullptr) {
-		ui_buttonNextPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyNextPage", Qt::CTRL + Qt::Key_Right));
+		ui_buttonNextPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyNextPage", Qt::CTRL | Qt::Key_Right));
 	}
 	if (ui_buttonLastPage != nullptr) {
-		ui_buttonLastPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyLastPage", Qt::CTRL + Qt::Key_End));
+		ui_buttonLastPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyLastPage", Qt::CTRL | Qt::Key_End));
 	}
 }
 

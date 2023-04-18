@@ -127,8 +127,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
 
-	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL + Qt::Key_Y));
-	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL + Qt::Key_N));
+	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL | Qt::Key_Y));
+	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N));
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -319,17 +319,17 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
 
 	settings->beginGroup("Main/Shortcuts");
-		ui->keyMainQuit->setKeySequence(getKeySequence(settings, "keyQuit", QKeySequence::Quit, Qt::CTRL + Qt::Key_Q));
-		ui->keyMainFocusSearch->setKeySequence(getKeySequence(settings, "keyFocusSearch", Qt::CTRL + Qt::Key_L));
-		ui->keyMainCloseTab->setKeySequence(getKeySequence(settings, "keyCloseTab", Qt::CTRL + Qt::Key_W));
-		ui->keyMainNewTab->setKeySequence(getKeySequence(settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
-		ui->keyMainPrevTab->setKeySequence(getKeySequence(settings, "keyPrevTab", Qt::CTRL + Qt::Key_PageDown));
-		ui->keyMainNextTab->setKeySequence(getKeySequence(settings, "keyNextTab", Qt::CTRL + Qt::Key_PageUp));
-		ui->keyMainFirstPage->setKeySequence(getKeySequence(settings, "keyFirstPage", Qt::CTRL + Qt::Key_Home));
-		ui->keyMainPreviousPage->setKeySequence(getKeySequence(settings, "keyPreviousPage", Qt::CTRL + Qt::Key_Left));
-		ui->keyMainNextPage->setKeySequence(getKeySequence(settings, "keyNextPage", Qt::CTRL + Qt::Key_Right));
-		ui->keyMainLastPage->setKeySequence(getKeySequence(settings, "keyLastPage", Qt::CTRL + Qt::Key_End));
-		ui->keyMainBrowseSave->setKeySequence(getKeySequence(settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_O));
+		ui->keyMainQuit->setKeySequence(getKeySequence(settings, "keyQuit", QKeySequence::Quit, Qt::CTRL | Qt::Key_Q));
+		ui->keyMainFocusSearch->setKeySequence(getKeySequence(settings, "keyFocusSearch", Qt::CTRL | Qt::Key_L));
+		ui->keyMainCloseTab->setKeySequence(getKeySequence(settings, "keyCloseTab", Qt::CTRL | Qt::Key_W));
+		ui->keyMainNewTab->setKeySequence(getKeySequence(settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL | Qt::Key_T));
+		ui->keyMainPrevTab->setKeySequence(getKeySequence(settings, "keyPrevTab", Qt::CTRL | Qt::Key_PageDown));
+		ui->keyMainNextTab->setKeySequence(getKeySequence(settings, "keyNextTab", Qt::CTRL | Qt::Key_PageUp));
+		ui->keyMainFirstPage->setKeySequence(getKeySequence(settings, "keyFirstPage", Qt::CTRL | Qt::Key_Home));
+		ui->keyMainPreviousPage->setKeySequence(getKeySequence(settings, "keyPreviousPage", Qt::CTRL | Qt::Key_Left));
+		ui->keyMainNextPage->setKeySequence(getKeySequence(settings, "keyNextPage", Qt::CTRL | Qt::Key_Right));
+		ui->keyMainLastPage->setKeySequence(getKeySequence(settings, "keyLastPage", Qt::CTRL | Qt::Key_End));
+		ui->keyMainBrowseSave->setKeySequence(getKeySequence(settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL | Qt::Key_O));
 		ui->keyMainFavoritesBack->setKeySequence(getKeySequence(settings, "keyFavoritesBack", Qt::Key_Escape));
 	settings->endGroup();
 
@@ -369,16 +369,16 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyViewerPrev->setKeySequence(getKeySequence(settings, "keyPrev", Qt::Key_Left));
 		ui->keyViewerNext->setKeySequence(getKeySequence(settings, "keyNext", Qt::Key_Right));
 		ui->keyViewerDetails->setKeySequence(getKeySequence(settings, "keyDetails", Qt::Key_D));
-		ui->keyViewerSaveAs->setKeySequence(getKeySequence(settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S));
-		ui->keyViewerSave->setKeySequence(getKeySequence(settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S));
-		ui->keyViewerSaveNQuit->setKeySequence(getKeySequence(settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W));
-		ui->keyViewerOpen->setKeySequence(getKeySequence(settings, "keyOpen", Qt::CTRL + Qt::Key_O));
-		ui->keyViewerSaveFav->setKeySequence(getKeySequence(settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S));
-		ui->keyViewerSaveNQuitFav->setKeySequence(getKeySequence(settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W));
-		ui->keyViewerOpenFav->setKeySequence(getKeySequence(settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O));
+		ui->keyViewerSaveAs->setKeySequence(getKeySequence(settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL | Qt::SHIFT | Qt::Key_S));
+		ui->keyViewerSave->setKeySequence(getKeySequence(settings, "keySave", QKeySequence::Save, Qt::CTRL | Qt::Key_S));
+		ui->keyViewerSaveNQuit->setKeySequence(getKeySequence(settings, "keySaveNQuit", Qt::CTRL | Qt::Key_W));
+		ui->keyViewerOpen->setKeySequence(getKeySequence(settings, "keyOpen", Qt::CTRL | Qt::Key_O));
+		ui->keyViewerSaveFav->setKeySequence(getKeySequence(settings, "keySaveFav", Qt::CTRL | Qt::ALT | Qt::Key_S));
+		ui->keyViewerSaveNQuitFav->setKeySequence(getKeySequence(settings, "keySaveNQuitFav", Qt::CTRL | Qt::ALT | Qt::Key_W));
+		ui->keyViewerOpenFav->setKeySequence(getKeySequence(settings, "keyOpenFav", Qt::CTRL | Qt::ALT | Qt::Key_O));
 		ui->keyViewerToggleSlideshow->setKeySequence(getKeySequence(settings, "keyToggleSlideshow", Qt::Key_Space));
 		ui->keyViewerToggleFullscreen->setKeySequence(getKeySequence(settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11));
-		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL | Qt::SHIFT | Qt::Key_C));
 		ui->keyViewerOpenInBrowser->setKeySequence(getKeySequence(settings, "keyOpenInBrowser"));
 	settings->endGroup();
 

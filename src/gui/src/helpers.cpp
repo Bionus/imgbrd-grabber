@@ -85,9 +85,9 @@ void clearLayout(QLayout *layout)
 
 void setupDialogShortcuts(QDialog *dialog, QSettings *settings)
 {
-	auto *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL + Qt::Key_Y), dialog);
+	auto *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL | Qt::Key_Y), dialog);
 	QObject::connect(accept, &QShortcut::activated, dialog, &QDialog::accept);
 
-	auto *reject = new QShortcut(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL + Qt::Key_N), dialog);
+	auto *reject = new QShortcut(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N), dialog);
 	QObject::connect(reject, &QShortcut::activated, dialog, &QDialog::reject);
 }
