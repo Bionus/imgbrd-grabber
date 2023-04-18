@@ -1,6 +1,5 @@
 #include "meta-filter.h"
 #include <QDateTime>
-#include <QRegExp>
 #include <QRegularExpression>
 #include <QStringBuilder>
 #include <QTimeZone>
@@ -217,8 +216,7 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 				return QObject::tr("image is \"%1\"").arg(val);
 			}
 		} else if (m_type == "source") {
-			QRegExp rx(m_val + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
-			const bool cond = rx.exactMatch(token.toString());
+			const bool cond = token.toString().startsWith(m_val, Qt::CaseInsensitive);
 			if (!cond && !invert) {
 				return QObject::tr("image's source does not starts with \"%1\"").arg(m_val);
 			}

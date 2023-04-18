@@ -251,14 +251,12 @@ QStringList removeWildards(const QStringList &elements, const QStringList &remov
 {
 	QStringList tags;
 
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
 	for (const QString &tag : elements) {
 		bool removed = false;
 		for (const QString &rem : remove) {
-			reg.setPattern(rem);
-			if (reg.exactMatch(tag)) {
+			const QString pattern = QRegularExpression::wildcardToRegularExpression(rem);
+			const auto reg = QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption);
+			if (reg.match(tag).hasMatch()) {
 				removed = true;
 				break;
 			}
@@ -916,7 +914,7 @@ QString getFileMd5(const QString &path)
 
 QString getFilenameToken(const QString &fileName, const QString &format, const QString &token, const QString &regex = ".+")
 {
-	QString reg = "^" + QRegExp::escape(format) + "$";
+	QString reg = "^" + QRegularExpression::escape(format) + "$";
 	#ifdef Q_OS_WIN
 		reg.replace("\\\\", "[\\\\/]");
 	#endif

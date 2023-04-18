@@ -7,7 +7,7 @@
 #include "filter.h"
 
 
-class QRegExp;
+class QRegularExpression;
 
 class TagFilter : public Filter
 {
@@ -19,7 +19,7 @@ class TagFilter : public Filter
 
 	private:
 		QString m_tag;
-		QScopedPointer<QRegExp> m_regexp;
+		QScopedPointer<QRegularExpression> m_regexp;
 };
 
 #endif // TAG_FILTER_H

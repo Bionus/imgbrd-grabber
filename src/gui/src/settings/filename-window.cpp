@@ -1,7 +1,6 @@
 #include "settings/filename-window.h"
 #include <QDesktopServices>
 #include <QMessageBox>
-#include <QRegExp>
 #include <QRegularExpression>
 #include <ui_filename-window.h>
 #include "filename/filename.h"
@@ -54,10 +53,11 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 	text = text.replace("\\", "\\\\").replace("'", "\\'");
 
-	static const QRegExp date("%date:format=([^%]+)%");
+	static const QRegularExpression date("%date:format=([^%]+)%");
 	int pos = 0;
-	while ((pos = date.indexIn(text, pos)) != -1) {
-		QString cap = date.cap(1);
+	QRegularExpressionMatch match;
+	while ((pos = text.indexOf(date, pos, &match)) != -1) {
+		QString cap = match.captured(1);
 		QString format;
 		for (const QChar &c : cap) {
 			if (c == 'Y') {
@@ -77,8 +77,8 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 			}
 		}
 
-		text = text.left(pos) + format + text.mid(pos + date.matchedLength());
-		pos += date.matchedLength();
+		text = text.left(pos) + format + text.mid(pos + match.capturedLength());
+		pos += match.capturedLength();
 	}
 
 	QString value = "'" + text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed() + "'";

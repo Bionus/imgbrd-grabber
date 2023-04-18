@@ -5,7 +5,7 @@
 #include <QStringList>
 
 
-class QRegExp;
+class QRegularExpression;
 class QString;
 class Tag;
 
@@ -20,7 +20,7 @@ class TagFilterList
 
 	private:
 		QStringList m_rawTags;
-		QList<QRegExp> m_starTags;
+		QList<QRegularExpression> m_starTags;
 };
 
 #endif // TAG_FILTER_LIST_H
