@@ -50,9 +50,7 @@ void showInGraphicalShell(const QString &pathIn)
 			SHOpenFolderAndSelectItems(pidl, 0, nullptr, 0);
 			ILFree(pidl);
 		} else {
-			LPCTSTR errMsg = _com_error(hr).ErrorMessage();
-			QString msg = QString::fromLatin1(errMsg);
-			log(QString("Error parsing path display name for '%1': %2").arg(pathIn, msg), Logger::Error);
+			log(QString("Error parsing path display name for '%1'").arg(pathIn), Logger::Error);
 		}
 	#elif defined(Q_OS_MAC) && !defined(QT_NO_PROCESS)
 		QStringList scriptArgs;
