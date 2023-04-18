@@ -1,5 +1,6 @@
 #include "text-edit.h"
 #include <QAbstractItemView>
+#include <QActionGroup>
 #include <QApplication>
 #include <QCompleter>
 #include <QMenu>
