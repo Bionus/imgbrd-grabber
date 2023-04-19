@@ -8,6 +8,7 @@
 #include <QSoundEffect>
 #include <QTableWidget>
 #include <QWidget>
+#include "downloader/image-save-result.h"
 #include "models/image.h"
 #include "models/site.h"
 
@@ -26,7 +27,6 @@ class DownloadQueryGroup;
 class DownloadQueryImage;
 class DownloadQueue;
 class ImageDownloader;
-struct ImageSaveResult;
 class PackLoader;
 class Page;
 class Profile;
