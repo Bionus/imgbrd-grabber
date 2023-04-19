@@ -165,10 +165,10 @@ QString GoogleAnalytics4::userAgent() const
 	#if false and defined(Q_OS_ANDROID)
 		QAndroidJniObject jsText = QAndroidJniObject::fromString("http.agent");
 		QAndroidJniObject ua = QAndroidJniObject::callStaticMethod<jstring>(
-			"System",
-			"getProperty",
-			"(Ljava/lang/String;)Z",
-			jsText.object<jstring>()
+		"System",
+		"getProperty",
+		"(Ljava/lang/String;)Z",
+		jsText.object<jstring>()
 		);
 		return ua.toString();
 	#endif
