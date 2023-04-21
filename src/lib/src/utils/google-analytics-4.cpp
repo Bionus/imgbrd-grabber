@@ -139,11 +139,7 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 	request.setHeader(QNetworkRequest::UserAgentHeader, userAgent());
 	QNetworkReply *reply = m_networkAccessManager->get(request);
 
-	QEventLoop loop;
-	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-	loop.exec();
-
-	reply->deleteLater();
+	connect(reply, &QNetworkReply::finished, reply, &QNetworkReply::deleteLater);
 }
 
 
