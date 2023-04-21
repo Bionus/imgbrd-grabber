@@ -919,12 +919,14 @@ QString getFilenameToken(const QString &fileName, const QString &format, const Q
 		reg.replace("\\\\", "[\\\\/]");
 	#endif
 
-	static const QRegularExpression regx("%([^%]*)%");
+	static const QString escapedPercent = QRegularExpression::escape("%");
+	static const QRegularExpression regx(escapedPercent + "([^%]*)" + escapedPercent);
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
 		const auto match = matches.next();
+		const auto cap = QRegularExpression::escape(match.captured(0));
 		const bool isToken = match.captured(1) == token;
-		reg.replace(match.captured(0), isToken ? QString("(?<token>%1)").arg(regex) : QStringLiteral("(.+?)"));
+		reg.replace(cap, isToken ? QString("(?<token>%1)").arg(regex) : QStringLiteral("(.+?)"));
 	}
 
 	const QRegularExpression rx(reg, QRegularExpression::CaseInsensitiveOption);
