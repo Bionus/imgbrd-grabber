@@ -74,7 +74,7 @@ void FileDownloader::replyFinished()
 		m_file.remove();
 		if (failedLastWrite || m_writeError) {
 			emit writeError();
-		} else if (invalidHtml) {
+		} else if (invalidHtml && error == NetworkReply::NetworkError::NoError) {
 			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
 			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Invalid HTML content returned");
 		} else if (emptyFile && error == NetworkReply::NetworkError::NoError) {
