@@ -75,9 +75,24 @@ void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
 	auto *menu = new QMenu(this);
 	menu->addAction(QIcon(":/images/icons/edit.png"), tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
 	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy to downloads"), [this]() { convertSelected(); });
+	menu->addAction(QIcon(":/images/icons/start.png"), tr("Start now"), [this]() { startSelected(); });
 	menu->addSeparator();
 	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this]() { removeSelected(); });
 	menu->exec(QCursor::pos());
+}
+
+void MonitorsTab::startSelected()
+{
+	QSet<int> rows;
+	for (const QModelIndex &index : ui->tableMonitors->selectionModel()->selection().indexes()) {
+		rows.insert(m_monitorTableModel->mapToSource(index).row());
+	}
+
+	for (const int row : rows) {
+		m_monitorManager->monitors()[row].setForceRun();
+	}
+
+	m_monitoringCenter->tick();
 }
 
 void MonitorsTab::removeSelected()

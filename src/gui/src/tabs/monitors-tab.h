@@ -41,6 +41,7 @@ class MonitorsTab : public QWidget
 
 	protected slots:
 		void monitorsTableContextMenu(const QPoint &pos);
+		void startSelected();
 		void removeSelected();
 		void convertSelected();
 
