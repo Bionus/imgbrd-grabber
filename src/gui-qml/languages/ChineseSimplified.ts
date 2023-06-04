@@ -398,7 +398,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="27"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"/>
+      <translation>无限滚动</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
@@ -924,17 +924,17 @@
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Remove from favorites</source>
-      <translation type="unfinished"/>
+      <translation>从收藏移除</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Add to favorites</source>
-      <translation type="unfinished"/>
+      <translation>添加到收藏</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="34"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>复制标签</translation>
     </message>
   </context>
   <context>
@@ -942,27 +942,27 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>全局</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>艺术家</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>系列</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>角色</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>模型</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
@@ -972,12 +972,12 @@
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>物种 (Species)</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>元信息 (Meta)</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
