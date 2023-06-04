@@ -1408,9 +1408,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="995"/>
       <source>Source(s)</source>
-      <translation>
-        <numerusform>ソース</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="996"/>
@@ -1453,7 +1451,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation>すべてのタグをコピー</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="25"/>
@@ -1600,7 +1598,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished">保存フォルダーを選択</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1952,12 +1950,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation>検索</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation>タグ</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2888,7 +2886,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5119"/>
       <source>Interval</source>
-      <translation type="unfinished">間隔</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5126"/>
@@ -2899,7 +2897,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <source>Delay</source>
-      <translation type="unfinished">遅延</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5153"/>
@@ -4085,13 +4083,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
       <source>Get &amp;all</source>
       <translation>すべて取得(&amp;A)</translation>
-    </message>
-  </context>
-  <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">設定:</translation>
     </message>
   </context>
   <context>
@@ -5696,14 +5687,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>&amp;Monitor</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">結果を統合(&amp;M)</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">監視</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
