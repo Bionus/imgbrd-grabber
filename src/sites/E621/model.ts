@@ -5,7 +5,7 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
-const map = {
+const imgMap = {
     "ext": "file.ext",
     "change": "change_seq",
     "creator_id": "uploader_id",
@@ -29,7 +29,7 @@ const map = {
 };
 
 function parseImage(raw: any): IImage | null {
-    const img = Grabber.mapFields(raw, map);
+    const img = Grabber.mapFields(raw, imgMap);
 
     img.created_at = Math.floor(Date.parse(raw.created_at) / 1000);
     img.has_comments = raw.comment_count > 0 ? true : false;

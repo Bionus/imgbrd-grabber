@@ -33,8 +33,8 @@ function GrabberRegexMatches(regex: string, txt: string): any[] {
 }
 
 function syncXml2jsParseString(parser: any, xml: string): any {
-    var error = null;
-    var json = null;
+    let error = null;
+    let json = null;
     parser.parseString(xml, (innerError: any, innerJson: any) => {
         error = innerError;
         json = innerJson;
