@@ -678,7 +678,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Copy to monitors</source>
-      <translation type="unfinished"/>
+      <translation>Copy to monitors</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="127"/>
@@ -1454,7 +1454,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>Copy all tags</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="25"/>
@@ -1601,7 +1601,7 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Choose a save folder</translation>
     </message>
   </context>
   <context>
@@ -1809,7 +1809,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="277"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Grabber monitoring</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="470"/>
@@ -1953,12 +1953,12 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Search</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
   </context>
   <context>
@@ -2016,7 +2016,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="55"/>
       <source>Last success</source>
-      <translation type="unfinished"/>
+      <translation>Last success</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
@@ -2179,7 +2179,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="77"/>
       <source>Copy to downloads</source>
-      <translation type="unfinished"/>
+      <translation>Copy to downloads</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="80"/>
@@ -2854,7 +2854,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1802"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>Show filtered images count</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2017"/>
@@ -2879,38 +2879,38 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5106"/>
       <source>Add sources with no results to monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Add sources with no results to monitoring</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5113"/>
       <source>Default monitor settings</source>
-      <translation type="unfinished"/>
+      <translation>Default monitor settings</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5119"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Interval</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5126"/>
       <location filename="../gui/src/settings/options-window.ui" line="5143"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Delay</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5153"/>
       <source>Notification enabled</source>
-      <translation type="unfinished"/>
+      <translation>Notification enabled</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5163"/>
       <source>Download enabled</source>
-      <translation type="unfinished"/>
+      <translation>Download enabled</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5543"/>
@@ -5444,12 +5444,12 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="14"/>
       <source>Sponsors</source>
-      <translation type="unfinished"/>
+      <translation>Sponsors</translation>
     </message>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
       <source>Note that being shown here is opt-in. If you have donated but can't find your name here, please ping me and I'll add your name !</source>
-      <translation type="unfinished"/>
+      <translation>Note that being shown here is opt-in. If you have donated but can't find your name here, please ping me and I'll add your name !</translation>
     </message>
   </context>
   <context>
@@ -5684,12 +5684,12 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="419"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Mer&amp;ge results</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
+      <translation>&amp;Monitor</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
