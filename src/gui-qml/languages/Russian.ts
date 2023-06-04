@@ -16,7 +16,7 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
       <source>Check for updates</source>
-      <translation>Проверять обновления</translation>
+      <translation>Проверить обновления</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="27"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"/>
+      <translation>Бесконечная прокрутка</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
@@ -474,7 +474,7 @@
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
       <source>Confirm exit</source>
-      <translation>Подтвердите выход</translation>
+      <translation>Подтверждать выход</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
@@ -624,7 +624,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="34"/>
       <source>Replace JPEG by JPG</source>
-      <translation>Заменить JPEG на JPG</translation>
+      <translation>Заменять JPEG на JPG</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
@@ -667,7 +667,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
       <source>Keep deleted files in the MD5 list</source>
-      <translation>Сохранять удаленные файлы в списке MD5</translation>
+      <translation>Сохранять удалённые файлы в списке MD5</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="66"/>
@@ -924,17 +924,17 @@
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Remove from favorites</source>
-      <translation type="unfinished"/>
+      <translation>Убрать из избранного</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Add to favorites</source>
-      <translation type="unfinished"/>
+      <translation>Добавить в избранное</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="34"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>Копировать тег</translation>
     </message>
   </context>
   <context>
@@ -942,42 +942,42 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Общий</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>Автор</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>Авторское право</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>Персонаж</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>Модель</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>Photo set</source>
-      <translation type="unfinished"/>
+      <translation>Фотосет</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>Вид/раса</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>Мета</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
