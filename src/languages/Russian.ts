@@ -350,11 +350,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
-        <numerusform>Вы хотите сохранить %n изображения. Продолжить?</numerusform>
-        <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -738,11 +734,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="421"/>
       <source>Loading %n download(s)</source>
-      <translation>
-        <numerusform>Загружается %n загрузка</numerusform>
-        <numerusform>Загружаются %n загрузки</numerusform>
-        <numerusform>Загружаются %n загрузок</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="473"/>
@@ -824,65 +816,37 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1121"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation>
-        <numerusform>%n файл успешно загружен.</numerusform>
-        <numerusform>%n файла успешно загружено.</numerusform>
-        <numerusform>%n файлов успешно загружено.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1122"/>
       <source>%n file(s) ignored.</source>
-      <translation>
-        <numerusform>%n файл проигнорирован.</numerusform>
-        <numerusform>%n файла проигнорировано.</numerusform>
-        <numerusform>%n файлов проигнорировано.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
       <source>%n file(s) already existing.</source>
-      <translation>
-        <numerusform>%n файл уже существует.</numerusform>
-        <numerusform>%n файла уже существуют.</numerusform>
-        <numerusform>%n файлов уже существуют.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1124"/>
       <source>%n file(s) not found on the server.</source>
-      <translation>
-        <numerusform>%n файл не найден на сервере.</numerusform>
-        <numerusform>%n файла не найдено на сервере.</numerusform>
-        <numerusform>%n файлов не найдено на сервере.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1125"/>
       <source>%n file(s) skipped.</source>
-      <translation>
-        <numerusform>%n файл пропущен.</numerusform>
-        <numerusform>%n файла пропущено.</numerusform>
-        <numerusform>%n файлов пропущено.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1126"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation>
-        <numerusform>%n файл пропущен из предыдущей загрузки.</numerusform>
-        <numerusform>%n файла пропущены из предыдущей загрузки.</numerusform>
-        <numerusform>%n файлов пропущено из предыдущей загрузки.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1127"/>
       <source>%n error(s).</source>
-      <translation>
-        <numerusform>%n ошибка.</numerusform>
-        <numerusform>%n ошибки.</numerusform>
-        <numerusform>%n ошибок.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -946,11 +910,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Вы собираетесь удалить %n папку. Уверены, что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папки. Уверены, что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1451,11 +1411,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="995"/>
       <source>Source(s)</source>
-      <translation>
-        <numerusform>Источник</numerusform>
-        <numerusform>Источники</numerusform>
-        <numerusform>Источники</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="996"/>
@@ -1498,7 +1454,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation>Копировать все теги</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="25"/>
@@ -1645,7 +1601,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished">Выберите папку для сохранения</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1853,7 +1809,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="277"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished">Мониторинг Grabber</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="470"/>
@@ -1916,11 +1872,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation>
-        <numerusform>%n md5 конвертировано (из %1)</numerusform>
-        <numerusform>%n md5 конвертировано (из %1)</numerusform>
-        <numerusform>%n md5 конвертировано (из %1)</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1993,11 +1945,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation>
-        <numerusform>%n MD5(s) загружен</numerusform>
-        <numerusform>%n MD5(s) загружено</numerusform>
-        <numerusform>%n MD5(s) загружено</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2005,12 +1953,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation>Поиск</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation>Теги</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2073,11 +2021,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
       <source>%n time(s)</source>
-      <translation>
-        <numerusform>%n раз</numerusform>
-        <numerusform>%n раза</numerusform>
-        <numerusform>%n раз</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2200,24 +2144,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
-        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
-        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
-        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
-        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
-      </translation>
-    </message>
-    <message>
-      <source>Grabber monitoring</source>
-      <translation type="vanished">Мониторинг Grabber</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2957,18 +2889,18 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5119"/>
       <source>Interval</source>
-      <translation type="unfinished">Интервал</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5126"/>
       <location filename="../gui/src/settings/options-window.ui" line="5143"/>
       <source> min</source>
-      <translation type="unfinished"> мин</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <source>Delay</source>
-      <translation type="unfinished">Задержка</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5153"/>
@@ -4157,49 +4089,6 @@ Please solve the issue before resuming the download.</source>
     </message>
   </context>
   <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Displays version information.</source>
-      <translation type="vanished">Отображает информацию о версии.</translation>
-    </message>
-    <message>
-      <source>Displays this help.</source>
-      <translation type="vanished">Отображает эту справку.</translation>
-    </message>
-    <message>
-      <source>Unknown option '%1'.</source>
-      <translation type="vanished">Неизвестный параметр: %1.</translation>
-    </message>
-    <message>
-      <source>Unknown options: %1.</source>
-      <translation type="vanished">Неизвестные параметры: %1.</translation>
-    </message>
-    <message>
-      <source>Missing value after '%1'.</source>
-      <translation type="vanished">Отсутствует значение после '%1'.</translation>
-    </message>
-    <message>
-      <source>Unexpected value after '%1'.</source>
-      <translation type="vanished">Неожиданное значение после '%1'.</translation>
-    </message>
-    <message>
-      <source>[options]</source>
-      <translation type="vanished">[параметры]</translation>
-    </message>
-    <message>
-      <source>Usage: %1</source>
-      <translation type="vanished">Использование: %1</translation>
-    </message>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">Параметры:</translation>
-    </message>
-    <message>
-      <source>Arguments:</source>
-      <translation type="vanished">Аргументы:</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="302"/>
@@ -4647,11 +4536,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
-        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
-        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4803,11 +4688,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1094"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation>
-        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
-        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
-        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5750,11 +5631,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation>
-        <numerusform>%n тег загружен</numerusform>
-        <numerusform>%n тега загружено</numerusform>
-        <numerusform>%n тегов загружено</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5813,14 +5690,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>&amp;Monitor</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">&amp;Объединить результаты</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">Монитор</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
