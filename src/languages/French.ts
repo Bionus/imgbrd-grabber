@@ -1601,7 +1601,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Choisir un dossier de sauvegarde</translation>
     </message>
   </context>
   <context>
@@ -1809,7 +1809,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.cpp" line="277"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Suivi de Grabber</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="470"/>
@@ -1953,12 +1953,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Recherche</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
   </context>
   <context>
@@ -2016,7 +2016,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="55"/>
       <source>Last success</source>
-      <translation type="unfinished"/>
+      <translation>Dernier succès</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
@@ -2854,7 +2854,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1802"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>Afficher le nombre d'images filtrées</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2017"/>
@@ -2884,33 +2884,33 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5113"/>
       <source>Default monitor settings</source>
-      <translation type="unfinished"/>
+      <translation>Paramètres de suivi par défaut</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5119"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Fréquence</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5126"/>
       <location filename="../gui/src/settings/options-window.ui" line="5143"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Délai</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5153"/>
       <source>Notification enabled</source>
-      <translation type="unfinished"/>
+      <translation>Notifications activées</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5163"/>
       <source>Download enabled</source>
-      <translation type="unfinished"/>
+      <translation>Téléchargement activé</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5543"/>
@@ -5444,7 +5444,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="14"/>
       <source>Sponsors</source>
-      <translation type="unfinished"/>
+      <translation>Sponsors</translation>
     </message>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
@@ -5684,12 +5684,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="419"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Fusionner les résultats</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
+      <translation>&amp;Monitorer</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
