@@ -674,34 +674,6 @@
       <source>Tags</source>
       <translation>Tags</translation>
     </message>
-    <message>
-      <source>Artist</source>
-      <translation type="vanished">Artist</translation>
-    </message>
-    <message>
-      <source>Copyright</source>
-      <translation type="vanished">Copyright</translation>
-    </message>
-    <message>
-      <source>Character</source>
-      <translation type="vanished">Character</translation>
-    </message>
-    <message>
-      <source>Model</source>
-      <translation type="vanished">Model</translation>
-    </message>
-    <message>
-      <source>Photo set</source>
-      <translation type="vanished">Photo set</translation>
-    </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">Species</translation>
-    </message>
-    <message>
-      <source>Meta</source>
-      <translation type="vanished">Meta</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -970,42 +942,42 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">General</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished">Artist</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished">Copyright</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished">Character</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished">Model</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>Photo set</source>
-      <translation type="unfinished">Photo set</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">Species</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished">Meta</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
