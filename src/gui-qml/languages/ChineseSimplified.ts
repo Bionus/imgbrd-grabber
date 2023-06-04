@@ -674,30 +674,6 @@
       <source>Tags</source>
       <translation>标签</translation>
     </message>
-    <message>
-      <source>Artist</source>
-      <translation type="vanished">艺术家</translation>
-    </message>
-    <message>
-      <source>Copyright</source>
-      <translation type="vanished">系列</translation>
-    </message>
-    <message>
-      <source>Character</source>
-      <translation type="vanished">角色</translation>
-    </message>
-    <message>
-      <source>Model</source>
-      <translation type="vanished">模型</translation>
-    </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">物种 (Species)</translation>
-    </message>
-    <message>
-      <source>Meta</source>
-      <translation type="vanished">元信息 (Meta)</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -966,27 +942,27 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">全局</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished">艺术家</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished">系列</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished">角色</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished">模型</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
@@ -996,12 +972,12 @@
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">物种 (Species)</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished">元信息 (Meta)</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
