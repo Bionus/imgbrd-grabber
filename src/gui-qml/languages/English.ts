@@ -398,12 +398,12 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="27"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"/>
+      <translation>Infinite scroll</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
       <source>Automatically load next page of results.</source>
-      <translation type="unfinished"/>
+      <translation>Automatically load next page of results.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
@@ -924,17 +924,17 @@
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Remove from favorites</source>
-      <translation type="unfinished"/>
+      <translation>Remove from favorites</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Add to favorites</source>
-      <translation type="unfinished"/>
+      <translation>Add to favorites</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="34"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>Copy tag</translation>
     </message>
   </context>
   <context>
@@ -942,42 +942,42 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>General</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>Artist</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>Copyright</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>Character</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>Model</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>Photo set</source>
-      <translation type="unfinished"/>
+      <translation>Photo set</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>Species</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>Meta</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
