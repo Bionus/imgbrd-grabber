@@ -132,7 +132,7 @@ export const source: ISource = {
                         return { error: "You must login to download this file" };
                     }
                     const imageUrl =
-                        Grabber.regexToConst("url", '<a [^>]*href="(?<url>[^"]+)" [^>]*aria-label="Free download"', src).replace(/&amp;/g, "&") || // Download link (SWF...)
+                        Grabber.regexToConst("url", '<a [^>]*href="(?<url>[^"]+)" [^>]*aria-label="Free download"', src)?.replace(/&amp;/g, "&") || // Download link (SWF...)
                         Grabber.regexToConst("url", '<img [^>]*aria-hidden="true"[^>]+src="(?<url>[^"]+)"', src); // Full-size image
                     return {
                         tags: Grabber.regexToTags('<a [^>]*href="[^"]*/tag/(?<name>[^"]+)"', src),
