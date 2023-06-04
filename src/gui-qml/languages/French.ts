@@ -381,103 +381,113 @@
   <context>
     <name>InterfaceSettingsPage</name>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="11"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="12"/>
       <source>Interface</source>
       <translation>Interface</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="14"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="15"/>
       <source>Language</source>
       <translation>Langue</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="23"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="24"/>
       <source>Search results</source>
       <translation>Résultats de recherche</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="27"/>
+      <source>Infinite scroll</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
+      <source>Automatically load next page of results.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
       <source>Columns (portrait)</source>
       <translation>Colonnes (portrait)</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="40"/>
       <source>Columns (landscape)</source>
       <translation>Colonnes (paysage)</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="40"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="47"/>
       <source>Layout type</source>
       <translation>Type de mise en page</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="47"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="54"/>
       <source>Grid ratio</source>
       <translation>Ratio de la grille</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="55"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="62"/>
       <source>Thumbnail fill mode</source>
       <translation>Mode de remplissage des miniatures</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="63"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
       <source>Spaced grid</source>
       <translation>Grille espacée</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="77"/>
       <source>Rounded grid</source>
       <translation>Grille arrondie</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="71"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="78"/>
       <source>Slightly round thumbnails.</source>
       <translation>Miniatures légèrement arrondies.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="78"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="85"/>
       <source>Image viewer</source>
       <translation>Visionneuse d'images</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
       <source>Load samples</source>
       <translation>Charger les sample</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="82"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="89"/>
       <source>Load sample-sized versions of the images by default if available.</source>
       <translation>Charger le sample des images par défaut si disponible.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="87"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="94"/>
       <source>Buttons at the bottom</source>
       <translation>Boutons en bas</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
       <source>Move the action buttons to the bottom of the screen.</source>
       <translation>Déplacez les boutons d'action en bas de l'écran.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="98"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
       <source>Confirm exit</source>
       <translation>Confirmation de sortie</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="99"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>Afficher une fenêtre de confirmation avant quitter.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="104"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="111"/>
       <source>Double tap to exit</source>
       <translation>Taper deux fois pour quitter</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
       <source>Tap back button twice to exit.</source>
       <translation>Taper le bouton retour deux fois pour quitter.</translation>
     </message>
@@ -511,7 +521,7 @@
   <context>
     <name>LogScreen</name>
     <message>
-      <location filename="../src/components/LogScreen.qml" line="18"/>
+      <location filename="../src/components/LogScreen.qml" line="22"/>
       <source>Log</source>
       <translation>Log</translation>
     </message>
@@ -665,50 +675,43 @@
       <translation>Tags</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>Artist</source>
-      <translation>Artiste</translation>
+      <translation type="vanished">Artiste</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="78"/>
       <source>Copyright</source>
-      <translation>Copyright</translation>
+      <translation type="vanished">Copyright</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="85"/>
       <source>Character</source>
-      <translation>Personnage</translation>
+      <translation type="vanished">Personnage</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="92"/>
       <source>Model</source>
-      <translation>Modèle</translation>
+      <translation type="vanished">Modèle</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="99"/>
       <source>Photo set</source>
-      <translation>Set de photos</translation>
+      <translation type="vanished">Set de photos</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="106"/>
       <source>Species</source>
-      <translation>Espèces</translation>
+      <translation type="vanished">Espèces</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
       <source>Meta</source>
-      <translation>Méta</translation>
+      <translation type="vanished">Méta</translation>
     </message>
   </context>
   <context>
     <name>SearchScreen</name>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="58"/>
+      <location filename="../src/components/SearchScreen.qml" line="69"/>
       <source>Search...</source>
       <translation>Recherche...</translation>
     </message>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="184"/>
+      <location filename="../src/components/SearchScreen.qml" line="203"/>
       <source>Sources</source>
       <translation>Sources</translation>
     </message>
@@ -898,121 +901,179 @@
   <context>
     <name>TagSaveSettingsPage</name>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="16"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="17"/>
       <source>If empty</source>
       <translation>Si aucun</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="24"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="25"/>
       <source>Separator</source>
       <translation>Séparateur</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="32"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="33"/>
       <source>Sort</source>
       <translation>Tri</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="42"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="43"/>
       <source>If more than n tags</source>
       <translation>Si plus de n tags</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="56"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="57"/>
       <source>Action</source>
       <translation>Action</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="63"/>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="72"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="64"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="73"/>
       <source>Keep n tags</source>
       <translation>Garder n tags</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="82"/>
       <source>Then add</source>
       <translation>Puis ajouter</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="91"/>
       <source>Replace all tags by</source>
       <translation>Remplacer tous les tags par</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="100"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="101"/>
       <source>Use shortest if possible</source>
       <translation>Utiliser le plus court si possible</translation>
+    </message>
+  </context>
+  <context>
+    <name>TagView</name>
+    <message>
+      <location filename="../src/components/TagView.qml" line="21"/>
+      <source>Remove from favorites</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/TagView.qml" line="21"/>
+      <source>Add to favorites</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/TagView.qml" line="34"/>
+      <source>Copy tag</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>main-screen</name>
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
+      <source>General</source>
+      <translation type="unfinished">Général</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="48"/>
+      <source>Artist</source>
+      <translation type="unfinished">Artiste</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="49"/>
+      <source>Copyright</source>
+      <translation type="unfinished">Copyright</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="50"/>
+      <source>Character</source>
+      <translation type="unfinished">Personnage</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="51"/>
+      <source>Model</source>
+      <translation type="unfinished">Modèle</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="52"/>
+      <source>Photo set</source>
+      <translation type="unfinished">Set de photos</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="53"/>
+      <source>Species</source>
+      <translation type="unfinished">Espèces</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="54"/>
+      <source>Meta</source>
+      <translation type="unfinished">Méta</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="57"/>
       <source>Through URL</source>
       <translation>Via l'URL</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="48"/>
+      <location filename="../src/main-screen.qml" line="58"/>
       <source>HTTP Basic</source>
       <translation>HTTP Basic</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="49"/>
+      <location filename="../src/main-screen.qml" line="59"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="50"/>
+      <location filename="../src/main-screen.qml" line="60"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="51"/>
+      <location filename="../src/main-screen.qml" line="61"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="52"/>
+      <location filename="../src/main-screen.qml" line="62"/>
       <source>OAuth 2</source>
       <translation>OAuth 2</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="55"/>
+      <location filename="../src/main-screen.qml" line="65"/>
       <source>Username</source>
       <translation>Nom d'utilisateur</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="56"/>
+      <location filename="../src/main-screen.qml" line="66"/>
       <source>User ID</source>
       <translation>Identifiant</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="57"/>
+      <location filename="../src/main-screen.qml" line="67"/>
       <source>Password</source>
       <translation>Mot de passe</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="58"/>
+      <location filename="../src/main-screen.qml" line="68"/>
       <source>Salt</source>
       <translation>Sel</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="59"/>
+      <location filename="../src/main-screen.qml" line="69"/>
       <source>API key</source>
       <translation>Clé d'API</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="77"/>
+      <location filename="../src/main-screen.qml" line="87"/>
       <source>Update available</source>
       <translation>Mise à jour disponible</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Do you want to exit?</source>
       <translation>Voulez-vous vraiment quitter ?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="144"/>
+      <location filename="../src/main-screen.qml" line="158"/>
       <source>Don't ask again</source>
       <translation>Ne plus demander</translation>
     </message>
