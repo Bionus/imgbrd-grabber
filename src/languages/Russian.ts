@@ -637,7 +637,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="193"/>
       <source>Delete selected</source>
-      <translation>Удалить из списка</translation>
+      <translation>Удалить выбранное</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="200"/>
