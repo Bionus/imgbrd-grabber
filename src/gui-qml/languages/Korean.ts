@@ -676,10 +676,6 @@
       <source>Tags</source>
       <translation>태그</translation>
     </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">종</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -948,7 +944,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">일반</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
@@ -978,7 +974,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">종</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
