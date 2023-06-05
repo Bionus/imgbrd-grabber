@@ -50,9 +50,7 @@ void showInGraphicalShell(const QString &pathIn)
 			SHOpenFolderAndSelectItems(pidl, 0, nullptr, 0);
 			ILFree(pidl);
 		} else {
-			LPCTSTR errMsg = _com_error(hr).ErrorMessage();
-			QString msg = QString::fromLatin1(errMsg);
-			log(QString("Error parsing path display name for '%1': %2").arg(pathIn, msg), Logger::Error);
+			log(QString("Error parsing path display name for '%1'").arg(pathIn), Logger::Error);
 		}
 	#elif defined(Q_OS_MAC) && !defined(QT_NO_PROCESS)
 		QStringList scriptArgs;
@@ -87,9 +85,9 @@ void clearLayout(QLayout *layout)
 
 void setupDialogShortcuts(QDialog *dialog, QSettings *settings)
 {
-	auto *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL + Qt::Key_Y), dialog);
+	auto *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL | Qt::Key_Y), dialog);
 	QObject::connect(accept, &QShortcut::activated, dialog, &QDialog::accept);
 
-	auto *reject = new QShortcut(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL + Qt::Key_N), dialog);
+	auto *reject = new QShortcut(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N), dialog);
 	QObject::connect(reject, &QShortcut::activated, dialog, &QDialog::reject);
 }

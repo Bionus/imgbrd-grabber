@@ -18,14 +18,16 @@ HtmlNode *HtmlNode::fromString(const QString &html, bool fragment)
 		const QString fragmentWrapper = "p";
 		auto *root = lxb_html_document_create_element(document, reinterpret_cast<const lxb_char_t *>(fragmentWrapper.toStdString().c_str()), fragmentWrapper.length(), NULL);
 		auto *node = lxb_html_document_parse_fragment(document, &root->element, reinterpret_cast<const lxb_char_t *>(html.toStdString().c_str()), html.length());
+
+		// Ignore the default-built "html" node if there's only one child
+		if (node != NULL && node->first_child == node->last_child) {
+			node = node->first_child;
+		}
+
+		// If no node is found, that means an error occurred
 		if (node == NULL) {
 			log(QStringLiteral("Error parsing HTML fragment."), Logger::Error);
 			return nullptr;
-		}
-
-		// Ignore the default-built "html" node if there's only one child
-		if (node->first_child == node->last_child) {
-			node = node->first_child;
 		}
 
 		return new HtmlNode(node);

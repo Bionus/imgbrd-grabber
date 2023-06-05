@@ -157,9 +157,10 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 25,
             search: {
-                url: (query: ISearchQuery): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const s = parseSearch(query.search);
-                    return "/?page=" + (query.page - 1) + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
+                    const pagePart = Grabber.pageUrl(query.page, previous, 1, "", "prev={max}", "next={min}");
+                    return "/?" + pagePart + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const html = Grabber.parseHTML(src);
@@ -237,19 +238,19 @@ export const source: ISource = {
                         matches = Grabber.regexMatches('<div class="gdtl"[^>]*><a href="(?<page_url>[^"]+)"><img[^>]*src="(?<preview_url>[^"]+)"[^>]*></a></div>', src);
                     }
                     for (const match of matches) {
-						if ("div_style" in match) {
-							const styles = cssToObject(match["div_style"]);
-							delete match["div_style"];
+                        if ("div_style" in match) {
+                            const styles = cssToObject(match["div_style"]);
+                            delete match["div_style"];
 
-							const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
-							match["preview_url"] = background[1];
-							match["preview_rect"] = [
-								-sizeToInt(background[2]),
-								-sizeToInt(background[3]),
-								sizeToInt(styles["width"]),
-								sizeToInt(styles["height"]),
-							].join(";"); // x;y;w;h
-						}
+                            const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
+                            match["preview_url"] = background[1];
+                            match["preview_rect"] = [
+                                -sizeToInt(background[2]),
+                                -sizeToInt(background[3]),
+                                sizeToInt(styles["width"]),
+                                sizeToInt(styles["height"]),
+                            ].join(";"); // x;y;w;h
+                        }
 
                         match["created_at"] = posted;
                         match["author"] = author;

@@ -1,5 +1,5 @@
 # General
-project(gui-qml)
+project(gui-qml VERSION ${VERSION})
 add_definitions(-DGUI=1)
 add_subdirectory(languages)
 

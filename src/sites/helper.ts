@@ -68,18 +68,39 @@ addHelper("typedXML", (val: any) => {
     return val;
 });
 
+/**
+ * Set a value in an object using the dot ("a.b.c") path notation.
+ */
+function _set(obj: any, path: string, value: any): void {
+    const parts = path.split(".");
+    for (let i = 0; i < parts.length - 1; ++i) {
+        const part = parts[i];
+        if (!(part in obj)) {
+            obj[part] = {};
+        }
+        obj = obj[part];
+    }
+    obj[parts[parts.length - 1]] = value;
+}
+
+/**
+ * Get a value in an object using the dot ("a.b.c") path notation.
+ */
+function _get(obj: any, path: string): any {
+    return path.split(".").reduce((ctx, part) => ctx?.[part], obj);
+}
+
 addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
     const result: any = {};
     if (typeof data !== "object") {
         return result;
     }
     for (const to in map) {
-        const from = map[to].split(".");
-        let val: any = data;
-        for (const part of from) {
-            val = val && part in val && val[part] !== null ? val[part] : undefined;
+        const from = map[to];
+        const value = _get(data, from);
+        if (value !== null) {
+            _set(result, to, value);
         }
-        result[to] = val !== data ? val : undefined;
     }
     return result;
 });
@@ -282,3 +303,23 @@ addHelper("parseSearchQuery", (query: string, metas: Record<string, MetaField>):
     ret.query = tags.join(" ");
     return ret;
 });
+
+// Fix console calls since C++ handlers can't get variadic arguments
+const originalConsole = console
+function argToString(arg: any): string {
+    if (typeof arg === "object") {
+        return JSON.stringify(arg);
+    }
+    return String(arg);
+}
+function argsToString(args: any[]): string {
+    return args.map(argToString).join(' ');
+}
+// @ts-ignore
+console = {
+    debug: (...args: any[]) => originalConsole.debug(argsToString(args)),
+    error: (...args: any[]) => originalConsole.error(argsToString(args)),
+    info: (...args: any[]) => originalConsole.info(argsToString(args)),
+    log: (...args: any[]) => originalConsole.log(argsToString(args)),
+    warn: (...args: any[]) => originalConsole.warn(argsToString(args)),
+}

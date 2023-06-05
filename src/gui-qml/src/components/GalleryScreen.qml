@@ -16,17 +16,28 @@ Page {
     property int page: 1
     property string site
     property var gallery
+    property bool infiniteScroll: gSettings.resultsInfiniteScroll.value
+    property var results
+    property bool appendResults: false
 
     GallerySearchLoader {
         id: galleryLoader
 
         site: root.site
-        gallery: root.gallery
+        gallery: root.gallery.image
         page: root.page
         perPage: 20
         profile: backend.profile
 
         onGalleryChanged: galleryLoader.load()
+        onResultsChanged: {
+            if (appendResults) {
+                appendResults = false
+                root.results = root.results.concat(galleryLoader.results)
+            } else {
+                root.results = galleryLoader.results
+            }
+        }
     }
 
     header: ToolBar {
@@ -39,7 +50,7 @@ Page {
             }
 
             Label {
-                text: root.name
+                text: root.gallery.name
                 elide: Label.ElideRight
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
@@ -51,7 +62,7 @@ Page {
         id: imageScreen
 
         ImageScreen {
-            images: galleryLoader.results
+            images: root.results
             index: 0
 
             onClosed: mainStackView.pop()
@@ -67,7 +78,7 @@ Page {
             Layout.fillWidth: true
 
             ResultsView {
-                results: galleryLoader.results
+                results: root.results
                 thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
                 thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
                 thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
@@ -77,6 +88,13 @@ Page {
 
                 onOpenImage: mainStackView.push(imageScreen, { index: index })
                 onRefresh: galleryLoader.load()
+                onAppendNext: {
+                    if (galleryLoader.hasNext) {
+                        root.appendResults = true
+                        root.page++
+                        galleryLoader.load()
+                    }
+                }
             }
 
             Loading {
@@ -95,6 +113,7 @@ Page {
                 background.anchors.fill: prevButton
                 width: 40
                 icon.source: "/images/icons/previous.png"
+                visible: !infiniteScroll
                 enabled: query !== "" && page > 1
                 Layout.fillHeight: true
                 Material.elevation: 0
@@ -114,6 +133,7 @@ Page {
                 background.anchors.fill: nextButton
                 width: 40
                 icon.source: "/images/icons/next.png"
+                visible: !infiniteScroll
                 enabled: query !== ""
                 Layout.fillHeight: true
                 Material.elevation: 0

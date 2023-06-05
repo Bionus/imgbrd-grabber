@@ -2,12 +2,11 @@
 #define TAG_FILTER_H
 
 #include <QMap>
+#include <QRegularExpression>
 #include <QScopedPointer>
 #include <QString>
 #include "filter.h"
 
-
-class QRegExp;
 
 class TagFilter : public Filter
 {
@@ -19,7 +18,7 @@ class TagFilter : public Filter
 
 	private:
 		QString m_tag;
-		QScopedPointer<QRegExp> m_regexp;
+		QScopedPointer<QRegularExpression> m_regexp;
 };
 
 #endif // TAG_FILTER_H

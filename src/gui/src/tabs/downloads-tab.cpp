@@ -26,15 +26,16 @@
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-loader.h"
 #include "downloader/image-downloader.h"
+#include "filename/filename.h"
 #include "full-width-drop-proxy-style.h"
 #include "functions.h"
 #include "helpers.h"
 #include "loader/pack-loader.h"
 #include "logger.h"
 #include "main-window.h"
-#include "models/filename.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "monitoring/monitor-manager.h"
 #include "progress-bar-delegate.h"
 
 
@@ -118,6 +119,7 @@ void DownloadsTab::batchDownloadsTableContextMenu(const QPoint &pos)
 
 	auto *menu = new QMenu(this);
 	menu->addAction(QIcon(":/images/icons/save.png"), tr("Download"), this, SLOT(batchSel()));
+	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy to monitors"), [this]() { batchConvert(); });
 	menu->addSeparator();
 	menu->addAction(QIcon(":/images/icons/arrow-top.png"), tr("Move to top"), this, SLOT(batchMoveToTop()));
 	menu->addAction(QIcon(":/images/icons/arrow-up.png"), tr("Move up"), this, SLOT(batchMoveUp()));
@@ -442,6 +444,16 @@ QIcon &DownloadsTab::getIcon(const QString &path)
 bool DownloadsTab::isDownloading() const
 {
 	return m_getAll;
+}
+
+void DownloadsTab::batchConvert()
+{
+	QSet<int> rows = selectedRows(ui->tableBatchGroups);
+	for (const int row : rows) {
+		const DownloadQueryGroup &group = m_groupBatchs[row];
+		Monitor monitor(m_settings, { group.site }, group.query, group.postFiltering);
+		m_profile->monitorManager()->add(monitor);
+	}
 }
 
 

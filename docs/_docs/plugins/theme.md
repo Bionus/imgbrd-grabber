@@ -3,7 +3,7 @@ title: Themes
 ---
 
 
-# Themes
+## Themes
 
 You can add Qt themes to Grabber, using [CSS](https://en.wikipedia.org/wiki/CSS) to customize all parts of the UI.
 

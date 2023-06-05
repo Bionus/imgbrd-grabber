@@ -5,6 +5,60 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+const imgMap = {
+    "ext": "file.ext",
+    "change": "change_seq",
+    "creator_id": "uploader_id",
+    "id": "id",
+    "rating": "rating",
+    "file_url": "file.url",
+    "width": "file.width",
+    "height": "file.height",
+    "file_size": "file.size",
+    "preview_url": "preview.url",
+    "preview_width": "preview.width",
+    "preview_height": "preview.height",
+    "sample_url": "sample.url",
+    "sample_height": "sample.height",
+    "sample_width": "sample.width",
+    "md5": "file.md5",
+    "has_children": "relationships.has_children",
+    "parent_id": "relationships.parent_id",
+    "score": "score.total",
+    "sources": "sources",
+};
+
+function parseImage(raw: any): IImage | null {
+    const img = Grabber.mapFields(raw, imgMap);
+
+    img.created_at = Math.floor(Date.parse(raw.created_at) / 1000);
+    img.has_comments = raw.comment_count > 0 ? true : false;
+
+    // Determine flags
+    img.status = "active";
+    if (raw.flags.pending === true) {
+        img.status = "pending";
+    } else if (raw.flags.flagged === true) {
+        img.status = "flagged";
+    } else if (raw.flags.deleted === true) {
+        img.status = "deleted";
+    }
+
+    const tags: ITag[] = [];
+    for (const type in raw.tags) {
+        for (const name of raw.tags[type]) {
+            tags.push({ name, type });
+        }
+    }
+    img.tags = tags;
+
+    if (!img.md5 || img.md5.length === 0) {
+        return null;
+    }
+
+    return completeImage(img);
+}
+
 export const source: ISource = {
     name: "E621",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "rating:s", "rating:q", "rating:e", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "status:any", "status:deleted", "status:active", "status:flagged", "status:pending", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "parent:none", "unlocked:rating"],
@@ -52,29 +106,6 @@ export const source: ISource = {
                     }
                 },
                 parse: (src: string): IParsedSearch | IError => {
-                    const map = {
-                        "ext": "file.ext",
-                        "change": "change_seq",
-                        "creator_id": "uploader_id",
-                        "id": "id",
-                        "rating": "rating",
-                        "file_url": "file.url",
-                        "width": "file.width",
-                        "height": "file.height",
-                        "file_size": "file.size",
-                        "preview_url": "preview.url",
-                        "preview_width": "preview.width",
-                        "preview_height": "preview.height",
-                        "sample_url": "sample.url",
-                        "sample_height": "sample.height",
-                        "sample_width": "sample.width",
-                        "md5": "file.md5",
-                        "has_children": "relationships.has_children",
-                        "parent_id": "relationships.parent_id",
-                        "score": "score.total",
-                        "sources": "sources",
-                    };
-
                     const data = JSON.parse(src);
 
                     if ("success" in data && data["success"] === false && "message" in data) {
@@ -84,36 +115,13 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     let invalid = 0;
                     for (const image of data["posts"]) {
-                        const img = Grabber.mapFields(image, map);
-
-                        img.created_at = Math.floor(Date.parse(image.created_at) / 1000);
-                        img.has_comments = image.comment_count > 0 ? true : false;
-
-                        // Determine flags
-                        img.status = "active";
-                        if (image.flags.pending === true) {
-                            img.status = "pending";
-                        } else if (image.flags.flagged === true) {
-                            img.status = "flagged";
-                        } else if (image.flags.deleted === true) {
-                            img.status = "deleted";
-                        }
-
-                        const tags: ITag[] = [];
-                        for (const type in image.tags) {
-                            for (const name of image.tags[type]) {
-                                tags.push({ name, type });
-                            }
-                        }
-                        img.tags = tags;
-
-                        if (!img.md5 || img.md5.length === 0) {
+                        const img = parseImage(image);
+                        if (!img) {
                             continue;
                         }
                         if (img.md5 && !img.file_url) {
                             invalid++;
                         }
-
                         images.push(completeImage(img));
                     }
 
@@ -122,6 +130,16 @@ export const source: ISource = {
                     }
 
                     return { images };
+                },
+            },
+            details: {
+                fullResults: true,
+                url: (id: string, md5: string): string => {
+                    return "/posts/" + id + ".json";
+                },
+                parse: (src: string): IImage => {
+                    const data = JSON.parse(src);
+                    return parseImage(data["post"])!;
                 },
             },
             tags: {
@@ -194,7 +212,7 @@ export const source: ISource = {
                 parse: (src: string): IParsedDetails => {
                     return {
                         pools: Grabber.regexToPools('<div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\\d+" class="pool-\\w+-\\w+ pool-\\w+-\\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?</a>|<span class="first">.*?</span>)[^<]*(?:<a rel="prev" class="prev" title="to page \\d+" href="/posts/(?<previous>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="prev">.*?</span>)?[^<]*<span class="pool-name">[^<]*<a title="page \\d+/\\d+" href="/pools/(?<id>\\d+)">Pool: (?<name>[^<]+)</a>[^<]*</span>[^<]*(?:<a rel="next" class="next" title="to page \\d+" href="/posts/(?<next>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="next">.*?</span>)?[^<]*(?:<a class="last" title="to page \\d+" href=".*?">.*?</a>|<span class="last">.*?</span>)[^<]*</li>[^<]*</ul>[^<]*</div>', src),
-                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span[^>]* class="[^"]*post-count[^"]*">(?<count>[^<]+)</span>\\s*</li>', src),
+                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>.*?*<span[^>]* class="[^"]*post-count[^"]*">(?<count>[^<]+)</span>\\s*</li>', src),
                         imageUrl: Grabber.regexToConst("url", 'Size: <a href="(?<url>[^"]+?)(?:\\?download=1[^"]*)?"', src),
                     };
                 },

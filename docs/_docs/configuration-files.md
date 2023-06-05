@@ -3,16 +3,16 @@ title: Configuration files
 ---
 
 
-# Configuration files
+## Configuration files
 
-## Windows
+### Windows
 
 ```
 C:/Users/%USERNAME%/AppData/Local/Bionus/Grabber
 ```
 
 
-# Files
+## Files
 
 _The list below is **not** sorted by "priority" but alphabetically. All might not exist depending on your specific configuration._
 

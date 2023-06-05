@@ -1,8 +1,8 @@
 #include "theme-loader.h"
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
+#include <QScreen>
 #include <QSettings>
 
 
@@ -25,7 +25,7 @@ bool ThemeLoader::setTheme(const QString &name)
 	#ifdef Q_OS_WIN
 		if (m_settings->value("Interface/scaleFontSize", true).toBool()) {
 			// Use a minimum font-size of 9pt for all elements on scaled screens
-			double screenRatio = (qApp->desktop()->logicalDpiX() * qApp->devicePixelRatio()) / 96.0;
+			double screenRatio = (qApp->primaryScreen()->logicalDotsPerInchX() * qApp->devicePixelRatio()) / 96.0;
 			if (screenRatio > 1.0) {
 				defaultStyleSheet = "* { font-size: 9pt; }";
 			}

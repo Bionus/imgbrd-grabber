@@ -5,7 +5,7 @@ title: Tag loader
 
 
 
-# Introduction
+## Introduction
 
 Most sources do not provide detailed tags information when listing results. So all the program knows from the results is that some image has tags such as "tag1 tag2 tag3". However, if your filename contains a token such as `%character%`, Grabber will not be able to generate the filename with this information, because it doesn't know what types are all those tags: is "tag1" a character, an artist, some general tag or something else? Since the API doesn't provide this information, Grabber doesn't know.
 
@@ -14,7 +14,7 @@ By default, if there is missing tag type information, the program will have to l
 The goal of the tag loader is to generate a local database to store all tags from a given source, along with their type. This way, even with incomplete tag type information, as long as the program knows the name of the tag, it can match it to its type in the tag database. This way, Grabber will be able to make less requests to the server, saving both download times and reducing the load on the servers.
 
 
-## Logs
+### Logs
 
 The following log can be a hint that the source you're using would work more efficiently were you to load their tag database first:
 
@@ -31,7 +31,7 @@ You'll notice three parts in this line:
 Note that only in the `from filename tags: 1/1` case would a  tag database help. In other cases, even with a tag database, the details would still need to be loaded.
 
 
-## Pre-generated databases
+### Pre-generated databases
 
 You can find some already generated databases directly on Github:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag-databases>
@@ -39,7 +39,7 @@ You can find some already generated databases directly on Github:
 Note that they are only generated for a handful of sources and might not be totally up to date. However, they can be useful to get started quickly without having to generate one yourselves.
 
 
-## Command-line interface
+### Command-line interface
 
 Tag databases can also be loaded by CLI, using the `--load-tag-database` switch.  
 See [Command-line interface]({{ site.baseurl }}{% link _docs/cli.md %}) for more details.

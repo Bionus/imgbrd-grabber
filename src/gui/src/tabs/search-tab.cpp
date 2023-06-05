@@ -11,6 +11,7 @@
 #include "downloader/download-query-image.h"
 #include "downloader/download-queue.h"
 #include "downloader/image-downloader.h"
+#include "filename/filename.h"
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"
@@ -18,7 +19,6 @@
 #include "main-window.h"
 #include "models/api/api.h"
 #include "models/favorite.h"
-#include "models/filename.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -84,16 +84,16 @@ void SearchTab::init()
 
 	// Navigation keyboard shortcuts
 	if (ui_buttonFirstPage != nullptr) {
-		ui_buttonFirstPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyFirstPage", Qt::CTRL + Qt::Key_Home));
+		ui_buttonFirstPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyFirstPage", Qt::CTRL | Qt::Key_Home));
 	}
 	if (ui_buttonPreviousPage != nullptr) {
-		ui_buttonPreviousPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyPreviousPage", Qt::CTRL + Qt::Key_Left));
+		ui_buttonPreviousPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyPreviousPage", Qt::CTRL | Qt::Key_Left));
 	}
 	if (ui_buttonNextPage != nullptr) {
-		ui_buttonNextPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyNextPage", Qt::CTRL + Qt::Key_Right));
+		ui_buttonNextPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyNextPage", Qt::CTRL | Qt::Key_Right));
 	}
 	if (ui_buttonLastPage != nullptr) {
-		ui_buttonLastPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyLastPage", Qt::CTRL + Qt::Key_End));
+		ui_buttonLastPage->setShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyLastPage", Qt::CTRL | Qt::Key_End));
 	}
 }
 
@@ -1199,6 +1199,19 @@ void SearchTab::openSourcesWindow()
 	auto adv = new SourcesWindow(m_profile, m_selectedSources, this);
 	connect(adv, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
 	adv->show();
+}
+
+QList<Site*> SearchTab::sourcesWithResults(bool eager)
+{
+	if (m_images.isEmpty() && !eager) {
+		return m_selectedSources;
+	}
+
+	QSet<Site*> ret;
+	for (const auto &img : qAsConst(m_images)) {
+		ret.insert(img->parentSite());
+	}
+	return ret.values();
 }
 
 void SearchTab::pruneSources()

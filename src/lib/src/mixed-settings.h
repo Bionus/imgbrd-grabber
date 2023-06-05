@@ -3,11 +3,11 @@
 
 #include <QList>
 #include <QVariant>
+#include <QStringList>
 
 
 class QSettings;
 class QString;
-class QStringList;
 
 class MixedSettings : public QObject
 {

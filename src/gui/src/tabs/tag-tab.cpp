@@ -7,11 +7,11 @@
 #include <QSettings>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 #include "search-window.h"
 #include "ui/text-edit.h"
 
@@ -270,8 +270,8 @@ void TagTab::monitor()
 	}
 
 	const QStringList tags = search.split(" ", Qt::SkipEmptyParts);
-	const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
-	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, tags, postFilter(), notify);
+	QList<Site*> sites = m_settings->value("Monitoring/emptySources", false).toBool() ? loadSites() : sourcesWithResults();
+	Monitor monitor(m_settings, sites, tags, postFilter());
 	m_profile->monitorManager()->add(monitor);
 }
 

@@ -68,53 +68,68 @@ ColumnLayout {
     Repeater {
         model: ListModel {
             ListElement {
-                name: qsTr("Artist")
+                name: globals.tagTypes["general"]
+                key: "general"
+                enableShorter: false
+                defaultEmpty: ""
+                defaultMultiple: ""
+                defaultSeparator: " "
+            }
+            ListElement {
+                name: globals.tagTypes["artist"]
                 key: "artist"
                 enableShorter: false
                 defaultEmpty: "anonymous"
                 defaultMultiple: "multiple artists"
+                defaultSeparator: "+"
             }
             ListElement {
-                name: qsTr("Copyright")
+                name: globals.tagTypes["copyright"]
                 key: "copyright"
                 enableShorter: true
                 defaultEmpty: "misc"
                 defaultMultiple: "crossover"
+                defaultSeparator: "+"
             }
             ListElement {
-                name: qsTr("Character")
+                name: globals.tagTypes["character"]
                 key: "character"
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "group"
+                defaultSeparator: "+"
             }
             ListElement {
-                name: qsTr("Model")
+                name: globals.tagTypes["model"]
                 key: "model"
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
             ListElement {
-                name: qsTr("Photo set")
+                name: globals.tagTypes["photo_set"]
                 key: "photo_set"
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
             ListElement {
-                name: qsTr("Species")
+                name: globals.tagTypes["species"]
                 key: "species"
                 enableShorter: false
                 defaultEmpty: "unknown"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
             ListElement {
-                name: qsTr("Meta")
+                name: globals.tagTypes["meta"]
                 key: "meta"
                 enableShorter: false
                 defaultEmpty: "none"
                 defaultMultiple: "multiple"
+                defaultSeparator: "+"
             }
         }
         delegate: SettingItem {
@@ -126,7 +141,8 @@ ColumnLayout {
                 key: model.key,
                 enableShorter: model.enableShorter,
                 defaultEmpty: model.defaultEmpty,
-                defaultMultiple: model.defaultMultiple
+                defaultMultiple: model.defaultMultiple,
+                defaultSeparator: model.defaultSeparator
             })
         }
     }

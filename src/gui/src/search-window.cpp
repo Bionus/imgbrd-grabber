@@ -81,22 +81,27 @@ QString SearchWindow::generateSearch(const QString &additional) const
 	const QStringList ratings { "rating:general", "-rating:general", "rating:safe", "-rating:safe", "rating:questionable", "-rating:questionable", "rating:explicit", "-rating:explicit" };
 	const QStringList status = { "deleted", "active", "flagged", "pending", "any" };
 
-	QString prefix = !additional.isEmpty() ? additional + " " : QString();
-	QString search = prefix + m_tags->toPlainText();
+	QStringList parts;
+	if (!additional.isEmpty()) {
+		parts.append(additional);
+	}
+	if (!m_tags->toPlainText().isEmpty()) {
+		parts.append(m_tags->toPlainText());
+	}
 	if (ui->comboStatus->currentIndex() != 0) {
-		search += " status:" + status.at(ui->comboStatus->currentIndex() - 1);
+		parts.append("status:" + status.at(ui->comboStatus->currentIndex() - 1));
 	}
 	if (ui->comboOrder->currentIndex() != 0) {
-		search += " order:" + orders.at(ui->comboOrder->currentIndex() - 1);
+		parts.append("order:" + orders.at(ui->comboOrder->currentIndex() - 1));
 	}
 	if (ui->comboRating->currentIndex() != 0) {
-		search += " " + ratings.at(ui->comboRating->currentIndex() - 1);
+		parts.append(ratings.at(ui->comboRating->currentIndex() - 1));
 	}
 	if (!ui->lineDate->text().isEmpty()) {
-		search += " date:" + ui->lineDate->text();
+		parts.append("date:" + ui->lineDate->text());
 	}
 
-	return search.trimmed();
+	return parts.join(' ');
 }
 
 void SearchWindow::setDate(QDate d)
@@ -112,14 +117,18 @@ void SearchWindow::accept()
 
 void SearchWindow::on_buttonImage_clicked()
 {
-	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
-	QFile f(path);
-	QString md5;
-	if (f.exists()) {
-		f.open(QFile::ReadOnly);
-		md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
+	const QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
+	if (path.isEmpty()) {
+		return;
 	}
 
-	emit accepted(generateSearch(!md5.isEmpty() ? "md5:" + md5 : QString()));
+	QFile f(path);
+	if (!f.exists() || !f.open(QFile::ReadOnly)) {
+		return;
+	}
+	const QString md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
+	f.close();
+
+	emit accepted(generateSearch("md5:" + md5));
 	QDialog::accept();
 }

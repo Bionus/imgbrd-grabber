@@ -1,11 +1,11 @@
 #include "text-edit.h"
 #include <QAbstractItemView>
+#include <QActionGroup>
 #include <QApplication>
 #include <QCompleter>
 #include <QMenu>
 #include <QScrollBar>
 #include <QSettings>
-#include <QStyleOptionFrameV2>
 #include <QTextDocumentFragment>
 #include <QWheelEvent>
 #include "functions.h"
@@ -38,7 +38,7 @@ QSize TextEdit::sizeHint() const
 
 	QStyleOptionFrame opt;
 	opt.initFrom(this);
-	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));
+	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h), this));
 }
 
 /**

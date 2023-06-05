@@ -9,16 +9,18 @@ title: Szurubooru
 
 
 
-# Szurubooru
+## Szurubooru
 
-## Install
+### Install
 Follow the official [INSTALL.md](https://github.com/rr-/szurubooru/blob/master/doc/INSTALL.md) documentation from the Szurubooru repository.
 Note that you'll need to have [Docker](https://docs.docker.com/get-docker/) installed.
 
 Don't forget to update the `MOUNT_` variables in the `.env` file.
 
+If you're having issues setting it up (for example with filesystem permissions), there is a [Common errors](https://github.com/rr-/szurubooru/wiki/Common-errors) page in their wiki that might be of help for troubleshooting.
 
-## Configuration
+
+### Configuration
 
 * Create an account on the [registration page](http://localhost:8080/register), you should automatically be an administrator
 * Create tag categories in the [tag categories page](http://localhost:8080/tag-categories), it is recommended to at least add the "character", "copyright", "artist", and "meta" categories, as well as renaming "default" to "general"
@@ -27,22 +29,22 @@ Don't forget to update the `MOUNT_` variables in the `.env` file.
 
 
 
-# Grabber
+## Grabber
 
-## Install NodeJS
+### Install NodeJS
 
 You need NodeJS to be installed on your machine to use the upload script used by Grabber.
 You can download it from [their website](https://nodejs.org/en/download/), or from a package manager [here](https://nodejs.org/en/download/package-manager/).
 
 
-## Download the upload script
+### Download the upload script
 
 Download the [szurubooru.js](szurubooru.js) file into Grabber's installation folder.
 
 ℹ️ If your Szurubooru instance is not on the same machine as Grabber, or simply not accessible at `http://localhost:8080/`, make sure to update the URL in the script.
 
 
-## Install NodeJS global packages
+### Install NodeJS global packages
 
 This script uses the NodeJS "axios" and "form-data" plugins, so you can install them with:
 ```
@@ -60,7 +62,7 @@ npm root -g
 ```
 
 
-## Configuration
+### Configuration
 
 Open Grabber, then go to "Options > Commands", and set the "Image" field to:
 ```

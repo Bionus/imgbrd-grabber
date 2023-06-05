@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QString>
 #include <QStringList>
+#include <QTextStream>
 #include <QTimer>
 #include <QUrl>
 #include "cli.h"
@@ -163,9 +164,10 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 		}
 	}
 
+	QTextStream stream(stdout);
 	Printer *printer = parser.isSet(jsonOption)
-		? (Printer*) new JsonPrinter(profile)
-		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
+		? (Printer*) new JsonPrinter(&stream, profile)
+		: (Printer*) new SimplePrinter(&stream, parser.value(tagsFormatOption));
 
 	CliCommand *cmd = nullptr;
 

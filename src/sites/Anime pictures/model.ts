@@ -15,7 +15,10 @@ function completeImage(img: IImage): IImage {
 
     img.sample_url = noWebp(img.sample_url || "");
     img.preview_url = noWebp(img.preview_url || "");
-    img.file_url = img.sample_url.replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
+    img.file_url = img.sample_url
+        .replace(/\/cdn\./, "/images.")
+        .replace(/\/previews\//, "/")
+        .replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
 
     return img;
 }

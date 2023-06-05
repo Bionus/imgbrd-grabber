@@ -31,6 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QDataStream>
+#include <QIODevice>
 #include <QRandomGenerator>
 
 SimpleCrypt::SimpleCrypt():

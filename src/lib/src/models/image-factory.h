@@ -19,7 +19,7 @@ class ImageFactory
 {
 	public:
 		static QSharedPointer<Image> build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
-		static QSharedPointer<Image> build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent = nullptr);
+		static QSharedPointer<Image> build(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent = nullptr);
 
 	private:
 		static vTransformToken parseString(const QString &key);

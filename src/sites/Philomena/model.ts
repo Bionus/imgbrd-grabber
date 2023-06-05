@@ -146,7 +146,7 @@ export const source: ISource = {
                     };
                 },
             },
-            details: {
+            /*details: {
                 url: (id: string): string => {
                     return "/api/v1/json/images/" + id;
                 },
@@ -169,7 +169,8 @@ export const source: ISource = {
                         tags: makeTags(data["tags"], data["tag_ids"]),
                     };
                 },
-            },
+            },*/
+            tagTypes: false,
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/api/v1/json/search/tags?per_page=" + opts.limit + "&page=" + query.page + "&q=*";
@@ -185,8 +186,12 @@ export const source: ISource = {
                     const data = JSON.parse(src);
 
                     const tags: ITag[] = [];
-                    for (const tag of data["tags"]) {
-                        tags.push(Grabber.mapFields(tag, map));
+                    for (const raw of data["tags"]) {
+                        const tag = Grabber.mapFields(raw, map);
+                        if (!tag.type) {
+                            tag.type = "general";
+                        }
+                        tags.push(tag);
                     }
 
                     return { tags };
@@ -198,17 +203,17 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 15,
             search: {
-                url: (query: ISearchQuery): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions): string => {
                     if (!query.search || query.search.length === 0) {
                         return "/images/page/" + query.page;
                     }
-                    return "/search?page=" + query.page + "&sbq=" + searchToArg(query.search);
+                    return "/search?per_page=" + opts.limit + "&page=" + query.page + "&q=" + searchToArg(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
-                        images: Grabber.regexToImages('<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-score="(?<score>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="(?<json_uris>[^"]*)" data-width="(?<width>[^"]*)">.*?<a[^>]*><picture><img[^>]* src="(?<preview_url>[^"]*)"[^>]*>', src).map(completeImage),
-                        pageCount: Grabber.regexToConst("page", '<a href="(?:/images/page/|/tags/[^\\?]*\\?[^"]*page=|/search/index\\?[^"]*page=)(?<image>\\d+)[^"]*">Last', src),
-                        imageCount: Grabber.regexToConst("count", "of <strong>(?<count>[^<]+)</strong> total", src),
+                        images: Grabber.regexToImages('<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-score="(?<score>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)"(?: data-tag-count="[^"]*")? data-upvotes="[^"]*" data-uris="(?<json_uris>[^"]*)" data-width="(?<width>[^"]*)">.*?<a[^>]*><picture><img[^>]* src="(?<preview_url>[^"]*)"[^>]*>', src).map(completeImage),
+                        pageCount: Grabber.regexToConst("page", '<a href="(?:/images|/tags/[^\\?]*|/search)\\?[^"]*page=(?<page>\\d+)[^"]*">Last', src),
+                        imageCount: Grabber.regexToConst("count", "of\\s*<strong>\\s*(?<count>[^<]+?)\\s*</strong>\\s*total", src),
                     };
                 },
             },
@@ -217,19 +222,28 @@ export const source: ISource = {
                     return "/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
-                    return {
-                        tags: Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]*)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<name>[^"]+)" data-tag-slug="[^"]+">', src),
-                    };
+                    const tags: ITag[] = Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]*)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<name>[^"]+)" data-tag-slug="[^"]+">', src);
+                    for (const tag of tags) {
+                        if (!tag.type) {
+                            tag.type = "general";
+                        }
+                    }
+                    return { tags };
                 },
             },
+            tagTypes: false,
             tags: {
                 url: (query: ITagsQuery): string => {
                     return "/tags?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
-                    return {
-                        tags: Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>\\d+)" data-tag-name="(?<name>.+?)".+?<span class="tag__count">\\s*\\((?<count>\\d+)\\)</span>', src),
-                    };
+                    const tags = Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]*)")? data-tag-id="(?<id>\\d+)" data-tag-name="(?<name>.+?)".+?<span class="tag__count">\\s*(?<count>\\d+)\\s*</span>', src);
+                    for (const tag of tags) {
+                        if (!tag.type) {
+                            tag.type = "general";
+                        }
+                    }
+                    return { tags };
                 },
             },
             check: {

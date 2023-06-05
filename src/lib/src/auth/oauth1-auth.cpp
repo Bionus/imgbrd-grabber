@@ -3,8 +3,8 @@
 #include "js-helpers.h"
 
 
-OAuth1Auth::OAuth1Auth(QString type, QString temporaryCredentialsUrl, QString authorizationUrl, QString tokenCredentialsUrl)
-	: Auth(std::move(type)), m_temporaryCredentialsUrl(std::move(temporaryCredentialsUrl)), m_authorizationUrl(std::move(authorizationUrl)), m_tokenCredentialsUrl(std::move(tokenCredentialsUrl))
+OAuth1Auth::OAuth1Auth(QString type, QString temporaryCredentialsUrl, QString authorizationUrl, QString tokenCredentialsUrl, QString signatureMethod)
+	: Auth(std::move(type)), m_temporaryCredentialsUrl(std::move(temporaryCredentialsUrl)), m_authorizationUrl(std::move(authorizationUrl)), m_tokenCredentialsUrl(std::move(tokenCredentialsUrl)), m_signatureMethod(std::move(signatureMethod))
 {}
 
 OAuth1Auth::OAuth1Auth(QString type, const QJSValue &value)

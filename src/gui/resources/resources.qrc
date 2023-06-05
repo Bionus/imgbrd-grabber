@@ -74,5 +74,6 @@
         <file>images/icons/paypal.png</file>
         <file>images/icons/lock.png</file>
         <file>images/icons/unlock.png</file>
+        <file>images/icons/start.png</file>
     </qresource>
 </RCC>

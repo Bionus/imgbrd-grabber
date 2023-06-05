@@ -3,12 +3,12 @@ title: Command-line interface
 ---
 
 
-# Introduction
+## Introduction
 
 Starting 4.0.0 version, Grabber can be totally run through the command line.
 
 
-# Compilation
+## Compilation
 
 There is two ways to use the command line.
 
@@ -17,23 +17,23 @@ When compiling Grabber, just uncomment "CONFIG += use\_cli" to set the CLI to be
 If you keep it commented or just use the precompiled version, Grabber will start with its GUI by default, which can be disabled with the "-c" or "--cli" commands.
 
 
-# Commands
+## Commands
 
 In this part I'll consider that you are using the precompiled version, which has "CONFIG += use\_cli" commented.
 
-## Help
+### Help
 You can find help with the "-?", "-h", or "--help" commands.
 
-## Sources
+### Sources
 You can set a source using the "-s" or "--sources" parameter, followed by the list of hosts to connect, separated by spaces. For example:
 ```
 ./grabber -c -s "danbooru.donmai.us gelbooru.com"
 ```
 
 
-# Usage
+## Usage
 
-## Count the number of images
+### Count the number of images
 Prints the result followed by a new line to stdout.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" --return-count
@@ -46,7 +46,7 @@ Prints the result followed by a new line to stdout.
 585
 ```
 
-## Get tags
+### Get tags
 Prints each result separated by a new line. Each part is separated by a tabulation character.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" --return-tags
@@ -66,8 +66,8 @@ thighhighs      613879  general
 ...
 ```
 
-## Get images
-### Basis
+### Get images
+#### Basis
 Prints each result separated by a new line.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 5 -p 3 --return-images
@@ -97,7 +97,7 @@ http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
 http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
 ```
 
-### Duplicates
+#### Duplicates
 You can use the "-n" or "--no-duplicates" option to remove duplicate results when downloading from several sources based on MD5.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" -i 5 -p 3 --return-images --no-duplicates
@@ -110,7 +110,7 @@ http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
 http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
 ```
 
-### Images per page
+#### Images per page
 You can use the "-i" or "--perpage" option to choose how many images per page the program should return. Default value is 20.
 
 You can use the "-m" or "--max" option to choose how many images you want to return. By default, the program returns everything it finds on the requested pages.
@@ -142,8 +142,8 @@ http://danbooru.donmai.us/data/100cd43adb60f390309d14c1ce8bb853.jpg
 http://danbooru.donmai.us/data/7a3fa58e9e669c2fdc2fb6596e13ed40.jpg
 ```
 
-## Get tags list
-### Basis
+### Get tags list
+#### Basis
 Prints each result separated by a new line.
 ```
 ./grabber -c -s "danbooru.donmai.us" -i 5 --return-pure-tags
@@ -154,7 +154,7 @@ ksnatc-t_am     1       artist
 joyacuson       1       artist
 ```
 
-### Count filter
+#### Count filter
 You can use the "--tm" or "--tags-min" to return only tags with a count superior or equal to this option.
 ```
 ./grabber -c -s "danbooru.donmai.us" -i 100 --tags-min 10 --return-pure-tags
@@ -164,7 +164,7 @@ hitomi_(pokemon_ranger) 11      character
 seneo   41      artist
 ```
 
-### Tags format
+#### Tags format
 You can use the "--tf" or "--tags-format" to change the format tags are returned.
 
 Available replacements are "%tag", "%count", "%type" and "%stype".
@@ -178,9 +178,9 @@ Default value is "%tag\t%count\t%type"
 1 seneo (41)
 ```
 
-# Examples
+## Examples
 
-## Update the auto-completion list manually
+### Update the auto-completion list manually
 Note that this is long and very constraining for the server. So please don't overdo it. The software already automatically updates the tag list as they arrive. This is just if you notice that many of your searched tags are not in the list.
 
 It can take a while (250 pages of 500ko each), so you might want to turn debugging on to see the current download status.

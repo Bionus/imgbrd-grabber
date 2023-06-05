@@ -18,11 +18,11 @@
 #include "models/favorite.h"
 #include "models/md5-database/md5-database-sqlite.h"
 #include "models/md5-database/md5-database-text.h"
-#include "models/monitor-manager.h"
 #include "models/site.h"
 #include "models/source.h"
 #include "models/source-registry.h"
 #include "models/url-downloader/url-downloader-manager.h"
+#include "monitoring/monitor-manager.h"
 #include "utils/file-utils.h"
 #include "utils/read-write-path.h"
 
@@ -66,6 +66,7 @@ Profile::Profile(QString path)
 	QFile fileFavoritesJson(m_path + "/favorites.json");
 	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text)) {
 		const QByteArray data = fileFavoritesJson.readAll();
+		fileFavoritesJson.close();
 		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 		QJsonObject object = loadDoc.object();
 
@@ -179,7 +180,7 @@ Profile::Profile(QString path)
 	m_urlDownloaderManager = new UrlDownloaderManager(ReadWritePath(defaultPath, customPath), this);
 
 	// Complete auto-complete
-	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
+	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "grabber:monitored" };
 	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
 	m_autoComplete.append(m_customAutoComplete);
 	for (const Favorite &fav : qAsConst(m_favorites)) {

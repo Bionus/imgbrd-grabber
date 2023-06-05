@@ -109,9 +109,9 @@ void FavoriteWindow::save()
 	if (interval == 0) {
 		monitors.clear();
 	} else if (monitors.isEmpty()) {
-		monitors.append(Monitor(QList<Site*> { site }, interval, QDateTime::currentDateTimeUtc(), download, pathOverride, filenameOverride));
+		monitors.append(Monitor(QList<Site*> { site }, interval, QDateTime::currentDateTimeUtc(), QDateTime::currentDateTimeUtc(), download, pathOverride, filenameOverride));
 	} else {
-		Monitor rep(QList<Site*> { site }, interval, monitors[0].lastCheck(), download, pathOverride, filenameOverride);
+		Monitor rep(QList<Site*> { site }, interval, monitors[0].lastSuccess(), monitors[0].lastCheck(), download, pathOverride, filenameOverride);
 		monitors[0] = rep;
 	}
 

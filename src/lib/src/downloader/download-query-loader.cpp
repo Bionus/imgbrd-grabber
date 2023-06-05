@@ -6,6 +6,7 @@
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "logger.h"
+#include "utils/file-utils.h"
 
 
 bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, Profile *profile)
@@ -28,6 +29,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	f.reset();
 
 	const QByteArray data = f.readAll();
+	f.close();
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 
@@ -62,11 +64,6 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 
 bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups, bool saveProgress)
 {
-	QFile saveFile(path);
-	if (!saveFile.open(QFile::WriteOnly)) {
-		return false;
-	}
-
 	// Batch downloads
 	QJsonArray groupsJson;
 	for (const auto &b : groups) {
@@ -91,8 +88,5 @@ bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryIma
 
 	// Write result
 	QJsonDocument saveDoc(full);
-	saveFile.write(saveDoc.toJson());
-	saveFile.close();
-
-	return true;
+	return safeWriteFile(path, saveDoc.toJson());
 }

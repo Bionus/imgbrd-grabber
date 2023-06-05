@@ -17,7 +17,7 @@ class TokenSettingsWidget : public QWidget
 	Q_OBJECT
 
 	public:
-		explicit TokenSettingsWidget(QSettings *settings, QString name, bool enableShorter, const QString &defaultEmpty = "unknown", const QString &defaultMultiple = "multiple", QWidget *parent = nullptr);
+		explicit TokenSettingsWidget(QSettings *settings, QString name, bool enableShorter, const QString &defaultEmpty = "unknown", const QString &defaultMultiple = "multiple", const QString &defaultSeparator = "+", QWidget *parent = nullptr);
 		~TokenSettingsWidget() override;
 
 	public slots:

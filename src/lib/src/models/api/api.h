@@ -101,7 +101,7 @@ class Api : public QObject
 		virtual ParsedTags parseTags(const QString &source, int statusCode, Site *site) const = 0;
 
 		// Image details
-		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const = 0;
+		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site, QVariantMap identity = {}) const = 0;
 		virtual bool parseDetailsErrors() const = 0;
 		virtual ParsedDetails parseDetails(const QString &source, int statusCode, Site *site) const = 0;
 
@@ -122,7 +122,7 @@ class Api : public QObject
 		virtual QStringList forcedTokens() const = 0;
 
 	protected:
-		QSharedPointer<Image> parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags = QList<Tag>()) const;
+		QSharedPointer<Image> parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap identity, QVariantMap data, int position, const QList<Tag> &tags = QList<Tag>()) const;
 
 	private:
 		QString m_name;

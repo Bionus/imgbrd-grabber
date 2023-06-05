@@ -61,7 +61,7 @@ QString TagStylist::stylished(const Tag &tag, const QMap<QString, QString> &styl
 	const QString &txt = tag.text();
 
 	// Guess the correct tag family
-	const QString plural = tag.type().name() + "s";
+	const QString plural = tag.type().name() + (!tag.type().name().endsWith('s') ? "s" : "");
 	QString key = styles.contains(plural) ? plural : "generals";
 	if (m_profile->getBlacklist().contains(txt)) {
 		key = "blacklisteds";

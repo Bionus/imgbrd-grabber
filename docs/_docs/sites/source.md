@@ -3,7 +3,7 @@ title: Sources
 ---
 
 
-# Introduction
+## Introduction
 
 If your site is not based on Danbooru, Gelbooru, Shimmie, or another already-included source file, it gets more complicated to add it.
 
@@ -19,7 +19,7 @@ This page is more about providing actual examples and explaining the flow of cre
 To have a tutorial following the step-by-step creation of a real source as an example, see [Source example](source-example.html).
 
 
-# Structure
+## Structure
 
 Sources can be found in your settings folder. On Windows, by default, it is `C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber\sites`.
 
@@ -30,7 +30,7 @@ A source is defined by a folder containing three files:
 * `sites.txt`: the list of default sites to add when installing this source, separated by a new line. This file can be ignored and will be created when adding a new site using this source in Grabber
 
 
-# Utils
+## Utils
 
 The JS environment used by Grabber is not fully fledged. Therefore, there is an helper to help do a few things that are not easily possible otherwise: [JavaScript model helper](javascript-helper.html).
 
@@ -42,7 +42,7 @@ Also, note that you can use the `console` commands as in JavaScript to generate 
 * `console.error` (error level)
 
 
-# Basics
+## Basics
 
 A basic source file simply exports a `source` object, defined by the `ISource` type. It must have a name and at least one API. All other fields are optional.
 
@@ -56,7 +56,7 @@ export const source: ISource = {
 };
 ```
 
-# API
+## API
 
 A source can have one or more APIs, defined by the `IApi` type. It must have a name, an `auth` array (which can be empty), and the `search` endpoint description.
 
@@ -75,7 +75,7 @@ const api = {
 }
 ```
 
-## Search "url" function
+### Search "url" function
 
 
 The goal of this function is to return the URL that lists the images for a given search on that source.
@@ -91,14 +91,14 @@ function(query) {
 }
 ```
 
-## Search "parse" function
+### Search "parse" function
 
 **Parameters:**
 * src (`string`)
 
 **Returns:** `{ images: {}[], tags?: { id?: number, name: string, count?: number, type?: string, typeId?: number }[], error?: string }`
 
-## Tags "url" function
+### Tags "url" function
 
 **Parameters:**
 * query (`{ search: string, page: number }`)
@@ -109,30 +109,30 @@ function(query) {
 * `{ url: string, headers?: { [key: string]: string }`: an URL and headers
 * `{ error?: string }`: an error
 
-### Description
+#### Description
 Builds a tag listing API url from a search query.
 
-### Example
+#### Example
 ```javascript
 function(query, opts) {
     return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
 }
 ```
 
-## Tags "parse" function
+### Tags "parse" function
 
 **Parameters:**
 * src (`string`)
 
 **Returns:** `{ tags?: { id?: number, name: string, count?: number, type?: string, typeId?: number }[], error?: string }`
 
-# Auth
+## Auth
 
-## URL auth
+### URL auth
 
 The credentials are passed directly in the URL of each request.
 
-### Example
+#### Example
 ```javascript
 {
     type: "url",
@@ -151,11 +151,11 @@ The credentials are passed directly in the URL of each request.
 }
 ```
 
-## GET and POST auth
+### GET and POST auth
 
 The credentials are sent to a given URL on the website to login before doing any request.
 
-### Example
+#### Example
 ```javascript
 {
     type: "post", // Either "get" or "post"
@@ -177,9 +177,9 @@ The credentials are sent to a given URL on the website to login before doing any
 }
 ```
 
-## OAuth 2 auth
+### OAuth 2 auth
 
-### Example
+#### Example
 ```javascript
 {
     type: "oauth2",
@@ -191,7 +191,7 @@ The credentials are sent to a given URL on the website to login before doing any
 }
 ```
 
-# Tag format
+## Tag format
 A tag format is defined by two fields:
 * `case`: the word casing:
   * `lower`: some tag
@@ -200,7 +200,7 @@ A tag format is defined by two fields:
   * `caps`: SOME TAG
 * `wordSeparator`: the separator to add between each word
 
-### Example
+#### Example
 ```typescript
 {
     case: "lower",
@@ -209,7 +209,7 @@ A tag format is defined by two fields:
 ```
 Will have tags looking like "some_tag".
 
-# Search format
+## Search format
 A search format must define at least a `and` operator. An operator is either:
 * A string such as ` && `
 * An object of type `{ separator: string, prefix?: string }`, where the separator is what should be added between both operands, and the prefix what should be added before each operand
@@ -219,7 +219,7 @@ If the search also support the OR operator, you must then define `or`, `parenthe
 * `parenthesis`: a boolean to say whether this source supports parenthesis
 * `precedence`: which operator has precedence over the other, either `or` or `and`
 
-### Example
+#### Example
 ```typescript
 {
     and: " ",

@@ -54,6 +54,13 @@ interface ITagType {
 }
 
 /**
+ * The identity of a media object. It should be unique for per media per source.
+ *
+ * On most sources, that would be an ID and/or an MD5, but sometimes a token or generic key is also needed.
+ */
+type IImageIdentity = Record<string, string | number | boolean>;
+
+/**
  * Describes a media object. It can be an image, a video, or a gallery.
  */
 interface IImage {
@@ -101,6 +108,11 @@ interface IImage {
     preview_height?: number;
     preview_file_size?: number;
     preview_rect?: string;
+
+    /**
+     * The identity of this media object. It should be unique for this media on that source.
+     */
+    identity?: IImageIdentity;
 
     /**
      * The media files. At least one is required.
@@ -323,7 +335,7 @@ interface IAuthCheckRedirect {
     type: "redirect";
 
     /**
-     * Part of the destiation URL after login to check.
+     * Part of the destination URL after login to check.
      */
     url: string;
 }
@@ -639,6 +651,11 @@ interface IGalleryQuery {
     md5: string;
 
     /**
+     * The gallery's identity.
+     */
+    identity?: IImageIdentity;
+
+    /**
      * The page number of this query.
      */
     page: number;
@@ -788,7 +805,7 @@ interface IApi {
     details?: {
         parseErrors?: boolean;
         fullResults?: boolean;
-        url: (id: string, md5: string, opts: IUrlDetailsOptions) => IRequest | IError | string;
+        url: (id: string, md5: string, opts: IUrlDetailsOptions, identity?: IImageIdentity) => IRequest | IError | string;
         parse: (src: string, statusCode: number) => IParsedDetails | IImage | IError;
     };
 

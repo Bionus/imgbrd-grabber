@@ -64,7 +64,7 @@ bool safeCopyFile(const QString &from, const QString &filePath, bool backup)
 
 	// Try to copy the file, otherwise restore the backup
 	if (!QFile::copy(from, filePath)) {
-		QFile::copy(backupFilePath, filePath);
+		QFile::rename(backupFilePath, filePath);
 		return false;
 	}
 

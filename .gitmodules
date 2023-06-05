@@ -7,7 +7,7 @@
 [submodule "tests/src/vendor/catch"]
 	path = src/tests/vendor/catch
 	url = https://github.com/catchorg/Catch2.git
-	branch = v2.x
+	branch = devel
 [submodule "lib/vendor/lexbor"]
 	path = src/lib/vendor/lexbor
 	url = https://github.com/lexbor/lexbor.git

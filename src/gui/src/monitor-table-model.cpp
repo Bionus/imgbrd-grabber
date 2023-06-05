@@ -4,14 +4,14 @@
 #include <QtMath>
 #include <QVariant>
 #include <utility>
-#include "monitoring-center.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/site.h"
+#include "monitoring/monitoring-center.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 
 
-MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QObject *parent)
-	: QAbstractTableModel(parent), m_monitorManager(monitorManager)
+MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QSettings *settings, QObject *parent)
+	: QAbstractTableModel(parent), m_monitorManager(monitorManager), m_settings(settings)
 {
 	connect(m_monitorManager, &MonitorManager::inserted, this, &MonitorTableModel::inserted);
 	connect(m_monitorManager, &MonitorManager::removed, this, &MonitorTableModel::removed);
@@ -32,7 +32,7 @@ int MonitorTableModel::rowCount(const QModelIndex &parent) const
 int MonitorTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 11;
+	return 12;
 }
 
 QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -52,6 +52,7 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 				case 8: return tr("Last state");
 				case 9: return tr("Last state count");
 				case 10: return tr("Last state since");
+				case 11: return tr("Last success");
 			}
 		} else {
 			return QString::number(section + 1);
@@ -118,7 +119,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		return {};
 	}
 
-	if (role != Qt::DisplayRole) {
+	if (role != Qt::DisplayRole && role != Qt::UserRole) {
 		return {};
 	}
 
@@ -137,6 +138,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		}
 
 		case 3:
+			if (role == Qt::UserRole) {
+				return monitor.interval();
+			}
 			return timeToString(monitor.interval());
 
 		case 4:
@@ -158,6 +162,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			return monitor.lastCheck();
 
 		case 7:
+			if (role == Qt::UserRole) {
+				return monitor.secsToNextCheck();
+			}
 			return timeToString(monitor.secsToNextCheck());
 
 		case 8:
@@ -167,6 +174,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			if (monitor.lastState().isEmpty()) {
 				return {};
 			}
+			if (role == Qt::UserRole) {
+				return monitor.lastStateCount();
+			}
 			return tr("%n time(s)", "", monitor.lastStateCount());
 
 		case 10:
@@ -174,6 +184,9 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 				return {};
 			}
 			return monitor.lastStateSince();
+
+		case 11:
+			return monitor.lastSuccess();
 	}
 
 	return {};
@@ -196,7 +209,7 @@ bool MonitorTableModel::insertRows(int position, int rows, const QModelIndex &pa
 	beginInsertRows(QModelIndex(), position, position + rows - 1);
 
 	for (int row = 0; row < rows; ++row) {
-		m_monitorManager->add(Monitor(QList<Site*>(), 24 * 60 * 60, QDateTime::currentDateTime(), false, QString(), QString()), position);
+		m_monitorManager->add(Monitor(m_settings, {}, {}));
 	}
 
 	endInsertRows();

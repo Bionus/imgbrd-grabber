@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.10.1"
+# define MyAppVersion "7.11.0"
 #endif
 
 #ifndef QtApngDll
@@ -178,6 +178,11 @@ Source: "{#SrcDir}\sites\ArtStation\model.js";      DestDir: "{app}\sites\ArtSta
 Source: "{#SrcDir}\sites\ArtStation\sites.txt";     DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\ArtStation\supported.txt"; DestDir: "{app}\sites\ArtStation"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\ArtStation\www.artstation.com\defaults.ini"; DestDir: "{app}\sites\ArtStation\www.artstation.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\icon.png";      DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\model.js";      DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\sites.txt";     DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\supported.txt"; DestDir: "{app}\sites\Booru.io"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Booru.io\booru.io\defaults.ini"; DestDir: "{app}\sites\Booru.io\booru.io"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\icon.png";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\model.js";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\sites.txt";          DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
@@ -218,12 +223,20 @@ Source: "{#SrcDir}\sites\Gelbooru (0.2)\icon.png";     DestDir: "{app}\sites\Gel
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\model.js";     DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{app}\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Kemono\icon.png";      DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Kemono\model.js";      DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Kemono\sites.txt";     DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Kemono\supported.txt"; DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Mastodon\icon.png";  DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Mastodon\model.js";  DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Mastodon\sites.txt"; DestDir: "{app}\sites\Mastodon"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\icon.png";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\model.js";  DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Moebooru\sites.txt"; DestDir: "{app}\sites\Moebooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\icon.png";      DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\model.js";      DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\sites.txt";     DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Newgrounds Art\supported.txt"; DestDir: "{app}\sites\Newgrounds Art"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\icon.png";   DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\model.js";   DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\sites.txt";  DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
@@ -244,6 +257,9 @@ Source: "{#SrcDir}\sites\Reddit\icon.png";    DestDir: "{app}\sites\Reddit"; Fla
 Source: "{#SrcDir}\sites\Reddit\model.js";    DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Reddit\sites.txt";   DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Reddit\www.reddit.com\defaults.ini";              DestDir: "{app}\sites\Reddit\www.reddit.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Rule34.us Gelbooru\icon.png";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Rule34.us Gelbooru\model.js";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Rule34.us Gelbooru\sites.txt";     DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion

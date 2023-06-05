@@ -20,7 +20,7 @@ SourceImporter::SourceImporter(Profile *profile, QObject *parent)
 void SourceImporter::load(const QUrl &url) const
 {
 	QNetworkRequest request(url);
-	request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+	request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
 
 	m_manager->get(request);
 }

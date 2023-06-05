@@ -15,7 +15,10 @@ Page {
 
     property int page: 1
     property string site
+    property bool infiniteScroll: gSettings.resultsInfiniteScroll.value
+    property var results
     property bool queryChanged: false
+    property bool appendResults: false
 
     TagSearchLoader {
         id: pageLoader
@@ -28,6 +31,14 @@ Page {
         profile: backend.profile
 
         onQueryChanged: searchTab.queryChanged = true
+        onResultsChanged: {
+            if (appendResults) {
+                appendResults = false
+                searchTab.results = searchTab.results.concat(pageLoader.results)
+            } else {
+                searchTab.results = pageLoader.results
+            }
+        }
     }
 
     function load(tag) {
@@ -73,7 +84,7 @@ Page {
         id: imageScreen
 
         ImageScreen {
-            images: pageLoader.results
+            images: searchTab.results
             index: 0
 
             onClosed: mainStackView.pop()
@@ -140,7 +151,7 @@ Page {
             Layout.fillWidth: true
 
             ResultsView {
-                results: pageLoader.results
+                results: searchTab.results
                 thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
                 thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
                 thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
@@ -150,6 +161,13 @@ Page {
 
                 onOpenImage: mainStackView.push(imageScreen, { index: index })
                 onRefresh: load()
+                onAppendNext: {
+                    if (pageLoader.hasNext) {
+                        searchTab.appendResults = true
+                        searchTab.page++
+                        searchTab.load()
+                    }
+                }
             }
 
             Loading {
@@ -168,6 +186,7 @@ Page {
                 background.anchors.fill: prevButton
                 width: 40
                 icon.source: "/images/icons/previous.png"
+                visible: !infiniteScroll
                 enabled: pageLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
@@ -194,6 +213,7 @@ Page {
                 background.anchors.fill: nextButton
                 width: 40
                 icon.source: "/images/icons/next.png"
+                visible: !infiniteScroll
                 enabled: pageLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0

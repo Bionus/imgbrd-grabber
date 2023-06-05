@@ -10,7 +10,7 @@ class QJSValue;
 class OAuth1Auth : public Auth
 {
 	public:
-		OAuth1Auth(QString type, QString temporaryCredentialsUrl, QString authorizationUrl, QString tokenCredentialsUrl);
+		OAuth1Auth(QString type, QString temporaryCredentialsUrl, QString authorizationUrl, QString tokenCredentialsUrl, QString signatureMethod);
 		OAuth1Auth(QString type, const QJSValue &value);
 
 		QString temporaryCredentialsUrl() const;

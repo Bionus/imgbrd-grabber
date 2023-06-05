@@ -1,7 +1,10 @@
 #include "settings/log-window.h"
+#include <QFileDialog>
 #include <ui_log-window.h>
 #include "functions.h"
 #include "models/profile.h"
+#include "settings/filename-window.h"
+#include "helpers.h"
 
 
 LogWindow::LogWindow(int index, Profile *profile, QWidget *parent)
@@ -29,6 +32,32 @@ LogWindow::~LogWindow()
 {
 	delete ui;
 }
+
+
+void LogWindow::choosePath()
+{
+	const QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->linePath->text());
+	if (!folder.isEmpty()) {
+		ui->linePath->setText(folder);
+	}
+}
+
+void LogWindow::chooseFilename()
+{
+	auto *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
+	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
+	setupDialogShortcuts(fw, m_profile->getSettings());
+	fw->show();
+}
+
+void LogWindow::chooseUniquePath()
+{
+	const QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineUniquePath->text());
+	if (!folder.isEmpty()) {
+		ui->lineUniquePath->setText(folder);
+	}
+}
+
 
 void LogWindow::save()
 {

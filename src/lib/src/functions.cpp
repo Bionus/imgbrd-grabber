@@ -251,14 +251,12 @@ QStringList removeWildards(const QStringList &elements, const QStringList &remov
 {
 	QStringList tags;
 
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
 	for (const QString &tag : elements) {
 		bool removed = false;
 		for (const QString &rem : remove) {
-			reg.setPattern(rem);
-			if (reg.exactMatch(tag)) {
+			const QString pattern = QRegularExpression::wildcardToRegularExpression(rem);
+			const auto reg = QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption);
+			if (reg.match(tag).hasMatch()) {
 				removed = true;
 				break;
 			}
@@ -327,10 +325,10 @@ QDateTime qDateTimeFromString(const QString &str)
 		}
 
 		const QStringList months { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-		const int year = str.midRef(26, 4).toInt();
+		const int year = str.mid(26, 4).toInt();
 		const int month = months.indexOf(str.mid(4, 3)) + 1;
-		const int day = str.midRef(8, 2).toInt();
-		const qreal decay = str.midRef(20, 5).toDouble() / 100;
+		const int day = str.mid(8, 2).toInt();
+		const qreal decay = str.mid(20, 5).toDouble() / 100;
 
 		const QTime time = QTime::fromString(str.mid(11, 8), QStringLiteral("HH:mm:ss"));
 		date.setDate(QDate(year, month, day));
@@ -409,7 +407,16 @@ QString savePath(const QString &file, bool exists, bool writable)
 		}
 	}
 
-	// Install directory
+	// AppImages should read from their embedded filesystem even when running in portable mode
+	#ifdef __linux__
+		if (QCoreApplication::applicationFilePath().endsWith(".AppImage")) {
+			if (validSavePath(qApp->applicationDirPath() + "/../share/Grabber/" + check, writable)) {
+				return QDir::toNativeSeparators(qApp->applicationDirPath() + "/../share/Grabber/" + file);
+			}
+		}
+	#endif
+
+	// Install directory and portable mode
 	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
 	}
@@ -577,7 +584,7 @@ QString getExtension(const QString &url)
 {
 	const int lastDot = url.lastIndexOf('.');
 	if (lastDot != -1) {
-		const int doubleDot = url.midRef(lastDot + 1).indexOf(':');
+		const int doubleDot = url.mid(lastDot + 1).indexOf(':');
 		if (doubleDot != -1) {
 			return url.mid(lastDot + 1, doubleDot);
 		} else {
@@ -606,9 +613,9 @@ QUrl setExtension(QUrl url, const QString &extension)
 	QString path = url.path();
 
 	const int lastSlash = path.lastIndexOf('/');
-	const int lastDot = path.midRef(lastSlash + 1).lastIndexOf('.');
+	const int lastDot = path.mid(lastSlash + 1).lastIndexOf('.');
 	if (lastDot != -1) {
-		const int doubleDot = path.midRef(lastDot + 1).indexOf(':');
+		const int doubleDot = path.mid(lastDot + 1).indexOf(':');
 		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension + (doubleDot != -1 ? path.mid(lastDot + doubleDot + 1) : ""));
 	}
 
@@ -876,9 +883,9 @@ bool isTestModeEnabled()
 QString fixCloudflareEmail(const QString &a)
 {
 	QString s;
-	int r = a.midRef(0, 2).toInt(nullptr, 16);
+	int r = a.mid(0, 2).toInt(nullptr, 16);
 	for (int j = 2; j < a.length(); j += 2) {
-		int c = a.midRef(j, 2).toInt(nullptr, 16) ^ r;
+		int c = a.mid(j, 2).toInt(nullptr, 16) ^ r;
 		s += QString(QChar(c));
 	}
 	return s;
@@ -907,17 +914,19 @@ QString getFileMd5(const QString &path)
 
 QString getFilenameToken(const QString &fileName, const QString &format, const QString &token, const QString &regex = ".+")
 {
-	QString reg = "^" + QRegExp::escape(format) + "$";
+	QString reg = "^" + QRegularExpression::escape(format) + "$";
 	#ifdef Q_OS_WIN
 		reg.replace("\\\\", "[\\\\/]");
 	#endif
 
-	static const QRegularExpression regx("%([^%]*)%");
+	static const QString escapedPercent = QRegularExpression::escape("%");
+	static const QRegularExpression regx(escapedPercent + "([^%]*)" + escapedPercent);
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
 		const auto match = matches.next();
+		const auto cap = QRegularExpression::escape(match.captured(0));
 		const bool isToken = match.captured(1) == token;
-		reg.replace(match.captured(0), isToken ? QString("(?<token>%1)").arg(regex) : QStringLiteral("(.+?)"));
+		reg.replace(cap, isToken ? QString("(?<token>%1)").arg(regex) : QStringLiteral("(.+?)"));
 	}
 
 	const QRegularExpression rx(reg, QRegularExpression::CaseInsensitiveOption);
@@ -955,12 +964,23 @@ QString parseMarkdown(QString str)
 		str.replace(match.captured(0), result);
 	}
 
-	// Issue links
-	static const QRegularExpression issueLinks("(issue|fix) #(\\d+)");
-	str.replace(issueLinks, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/issues/\2'>\1 #\2</a>)");
+	str = parseGithubLinks(str);
 
 	// Line breaks to HTML
 	str.replace("\n", "<br/>");
+
+	return str;
+}
+
+QString parseGithubLinks(QString str)
+{
+	// Issue links
+	static const QRegularExpression issueLinks("(issue|fix) #(\\d+)");
+	str.replace(issueLinks, "\\1 <a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/issues/\2'>#\2</a>)");
+
+	// Commit hashes
+	static const QRegularExpression commitHashes("([0-9a-f]{8})([0-9a-f]{32})");
+	str.replace(commitHashes, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/commit/\1\2'>\1</a>)");
 
 	return str;
 }

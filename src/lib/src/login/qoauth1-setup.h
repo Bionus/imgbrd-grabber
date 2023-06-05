@@ -7,6 +7,9 @@
 
 class QNetworkAccessManager;
 
+/**
+ * Used to make QOAuth1::setup public instead of protected.
+ */
 class QOAuth1Setup : public QOAuth1
 {
 	public:

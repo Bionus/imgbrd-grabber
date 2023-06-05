@@ -8,15 +8,15 @@ _Thanks a lot to [Siegen](https://github.com/Siegen) for his integration of Shim
 
 
 
-# Introduction
+## Introduction
 
 First of all, know that using commands can slow down huge batch downloads (a recent computer may need from 100ms to 1s more per image, which is very consequent).
 
 
 
-# Installation
+## Installation
 
-## Local web server
+### Local web server
 
 First, we're going to install WAMP, which contains everything required to have a local web server.
 
@@ -29,7 +29,7 @@ First, we're going to install WAMP, which contains everything required to have a
 5. Congratulations! You can visit your local server by going to [here](http://localhost/)!
 
 
-## Shimmie
+### Shimmie
 
 1. Download the latest version of Shimmie [here](https://github.com/shish/shimmie2).
 2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be <http://localhost/subfolder/>, and if you don’t it will only be <http://localhost/>. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "shimmie".
@@ -41,9 +41,9 @@ First, we're going to install WAMP, which contains everything required to have a
 8. From there, register a new user with the `admin` username to have your admin account.
 
 
-# Configuration
+## Configuration
 
-## Max upload size
+### Max upload size
 
 The default max upload size is around 1MB. With these steps, it will increase to around 12MB.
 
@@ -58,9 +58,9 @@ INSERT INTO `shimmie`.`config` (`name`, `value`) VALUES ('upload_size', '1048576
 
 This will allow you to upload bigger files to Shimmie.
 
-## Grabber
+### Grabber
 
-### Basic settings
+#### Basic settings
 
 Enable the "Replace spaces by underscores" setting.
 
@@ -73,7 +73,7 @@ Set the `Commands > Image` setting to
 If you are using MAMP on a Mac, your PHP path will look something like this. Again, remember to change the version number.
 `/Applications/MAMP/bin/php/php5.6.19/bin/php`
 
-### Upload script
+#### Upload script
 
 1. Download the [UploadToShimmie.php](UploadToShimmie.php) file.
 2. Edit the contents accordingly if you did not follow the default settings of this tutorial (especially `shimmieUser` and `shimmiePassword`).

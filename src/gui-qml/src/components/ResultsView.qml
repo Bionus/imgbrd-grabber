@@ -13,6 +13,7 @@ ScrollView {
 
     signal openImage(int index)
     signal refresh()
+    signal appendNext()
 
     property var results
     property double thumbnailHeightToWidthRatio: 0
@@ -33,6 +34,7 @@ ScrollView {
     onThumbnailFillModeChanged: resultsRefresher.restart()
 
     Flickable {
+        // Pull to refresh
         property bool atBeginningStart: false
         onFlickStarted: {
             atBeginningStart = atYBeginning
@@ -40,6 +42,13 @@ ScrollView {
         onFlickEnded: {
             if (atYBeginning && atBeginningStart) {
                 refresh()
+            }
+        }
+
+        // Infinite scroll
+        onAtYEndChanged: {
+            if (atYEnd) {
+                appendNext()
             }
         }
 
@@ -94,7 +103,7 @@ ScrollView {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: modelData.isGallery
-                        ? mainStackView.push(galleryScreen, { gallery: modelData.image })
+                        ? mainStackView.push(galleryScreen, { gallery: modelData })
                         : mainStackView.push(imageScreen, { index: index })
                 }
             }

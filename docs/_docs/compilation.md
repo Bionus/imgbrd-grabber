@@ -3,14 +3,14 @@ title: Compilation
 ---
 
 
-# Introduction
+## Introduction
 
 Tired of waiting for the next update? Want to get the latest developer version? Want to help on the program's development? You'll have to compile the program yourself.
 
 
-# Windows
+## Windows
 
-## Dependencies
+### Dependencies
 
 Bullets with '`*`' are mandatory, other are optional. Note that the compiler used for official builds is Visual Studio 2019. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one used to push releases and updates.
 
@@ -21,25 +21,25 @@ Bullets with '`*`' are mandatory, other are optional. Note that the compiler use
   * QScintilla2 (for syntax highlighting in JavaScript filename window)
   * Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
 
-## Instructions
+### Instructions
 
-### Qt
+#### Qt
 You can find the Qt installer here:  
 <https://www.qt.io/download-qt-installer>
 
 Just download and install.
 
-### Compiler
+#### Compiler
 You can use the free Visual Studio Community version to compile (note that only the compiler is required). You can find it here: <https://www.visualstudio.com/downloads/>
 
 Just download and install.
 
-### NodeJS
+#### NodeJS
 You can find it here: <https://nodejs.org/en/download/>
 
 Just download and install.
 
-### QScintilla
+#### QScintilla
 If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
 
 Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
@@ -54,7 +54,7 @@ Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintil
   1. Type "nmake install" (without quotes)
   1. The dlls should now have been installed and the headers added to Qt
 
-### Google Breakpad
+#### Google Breakpad
 If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
 
 If you want to use it, I won't explain here how to configure it to work with Qt. Beware that it's a real pain to have it work with Qt on Windows.
@@ -62,11 +62,11 @@ If you want to use it, I won't explain here how to configure it to work with Qt.
   1. Open "gui/CMakeLists.txt"
   1. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
 
-# Linux
+## Linux
 
 Shortcut: just run `./build.sh` at the root of the repository, and it will build everything for you.
 
-## Dependencies
+### Dependencies
 
 Bullets with '`*`' are mandatory, other are optional.
 
@@ -78,9 +78,9 @@ Bullets with '`*`' are mandatory, other are optional.
   * QScintilla2 (for syntax highlighting in JavaScript filename window)
   * Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
 
-## Instructions
+### Instructions
 
-### Qt
+#### Qt
 Most Linux package managers do not provide up-to-date Qt packages. As such, it is recommended to either use [aqtinstall](https://github.com/miurahr/aqtinstall), or a third-party repository.
 
 For example using `apt` and the [beineri](https://launchpad.net/~beineri) repository:
@@ -101,7 +101,7 @@ Or if you're using Fedora:
 sudo dnf install -y "qt5-qtbase" "qt5-qtbase-devel" "qt5-qtmultimedia-devel" "qt5-qtscript-devel" "qscintilla-qt5-devel" "qt5-linguist" --best
 ```
 
-### Compiler
+#### Compiler
 You can use the g++ compiler to compile the program. If it's not already installed, the process may vary depending on your Linux distribution. Note that you can also replace g++ with clang if you want.
 
 You'll also need `cmake` for the makefile generation, and `make` for executing it.
@@ -116,17 +116,17 @@ Or if you're using Fedora:
 sudo dnf install -y "gcc-c++" "cmake" "make" --best
 ```
 
-### NodeJS
+#### NodeJS
 Usually found in packages managers by the name `node` or `nodejs`. You can refer to the official docs:
 
 https://nodejs.org/en/download/package-manager/
 
-### OpenSSL
+#### OpenSSL
 If you want to access HTTPS websites, you'll need the OpenSSL libraries.
 
 They're usually found in packages managers by the name `libssl-dev`.
 
-### QScintilla
+#### QScintilla
 If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
 
 Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
@@ -139,7 +139,7 @@ Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintil
   1. Type "make install" (without quotes)
   1. The shared libraries should now have been installed and the headers added to Qt
 
-### Google Breakpad
+#### Google Breakpad
 If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
 
 If you want to use it, I won't explain here how to configure it to work with Qt, as it's a pretty complicated task.
@@ -147,7 +147,7 @@ If you want to use it, I won't explain here how to configure it to work with Qt,
   1. Open "gui/CMakeLists.txt"
   1. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
 
-### Building
+#### Building
 ```bash
 mkdir build
 cd build
@@ -159,7 +159,7 @@ mv "build/gui/Grabber" "release/"
 touch "release/settings.ini"
 ```
 
-### Troubleshooting
+#### Troubleshooting
 If you compile the program and run it as-is, it may say something like "no sources found". The program requires to have a few files located at a specific place to run. Since this location depends on your system (usually ~/.Grabber), you can also just make the program portable by putting the binary alongside the following files/folders, all found in the "release" folder :
 
 * sites/
@@ -169,14 +169,14 @@ If you compile the program and run it as-is, it may say something like "no sourc
 
 Another option would be to simply move the binary to the release folder after the compilation.
 
-# Raspberry Pi (Raspbian)
+## Raspberry Pi (Raspbian)
 
-## Preparations
+### Preparations
 Make sure that you are running Raspbian Stretch or newer on a Raspberry Pi 2 or Raspberry Pi 3. The compilation requires a lot of memory so make sure that you stop all unnecessary processes (i. e. Apache, MySQL, php-fpm) before starting the compilation. You may need to set memory-split to 16MB in _raspi-config_ or increase your swap partition size. You only need to do this for the compilation and can switch back to the old values.
 
 You can choose between two different versions of Grabber. One is the release version, the other one the developer version. Simply download the one that suits your taste best.
 
-## Download files
+### Download files
 Release version:
 ```bash
 git clone https://github.com/Bionus/imgbrd-grabber.git
@@ -187,7 +187,7 @@ Developer version:
 git clone https://github.com/Bionus/imgbrd-grabber.git --single-branch -b develop
 ```
 
-## Compilation
+### Compilation
 ```bash
 cd imgbrd-grabber
 ./build.sh
@@ -203,11 +203,11 @@ sudo apt-get install libqt5sql5-odbc
 sudo apt-get install libqt5sql5-psql
 ```
 
-# macOS
+## macOS
 
-## Instructions
+### Instructions
 
-### Qt
+#### Qt
 1. Install Xcode (https://itunes.apple.com/us/app/xcode/id497799835?mt=12).
 1. Open Terminal and run this code to install Homebrew, a package manager:
 
@@ -228,12 +228,12 @@ sudo apt-get install libqt5sql5-psql
     ```
     This is the default path to your QT installation. **Be sure to update the version number or it won't work!**
 
-### Compiler
+#### Compiler
 You can use the g++ compiler to compile the program. If it's not already installed, you can easily do so using the Homebrew package manager.
 
 1. `brew install gcc`
 
-### Running
+#### Running
 
 If you compile the program and run it as-is, it may say something like "no sources found". The program requires to have a few files located at a specific place to run. You can make the program portable by moving the following files/folders to `Grabber.app/contents/MacOS/`. Each of these items can be found in the "release" folder:
 
@@ -242,7 +242,7 @@ If you compile the program and run it as-is, it may say something like "no sourc
 * words.txt (not required, used for tag autocompletion)
 * settings.ini (if it doesn't exist, create it using `touch settings.ini`
 
-### All commands
+#### All commands
 
 ```bash
 appDir=./gui/build/release/Grabber.app/Contents/MacOS

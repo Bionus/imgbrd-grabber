@@ -1,4 +1,4 @@
-project(lib)
+project(lib VERSION ${VERSION})
 
 find_package(Qt5 COMPONENTS Concurrent Gui Network NetworkAuth Qml Sql Xml REQUIRED) # Qt5::Gui required for some classes such as QPixmap
 set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Network Qt5::NetworkAuth Qt5::Qml Qt5::Sql Qt5::Xml)
@@ -33,3 +33,6 @@ target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS})
 if(USE_PCH)
 	cotire(${PROJECT_NAME})
 endif()
+
+# Tests
+add_subdirectory(tests)

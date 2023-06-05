@@ -165,6 +165,7 @@ void OAuth2Login::loginAuthorizationCode()
 	auto *manager = new SiteNetworkAccessManager(m_site, this);
 	auto *flow = new QOAuth2AuthorizationCodeFlow(manager, this);
 	flow->setClientIdentifier(consumerKey);
+	flow->setClientIdentifierSharedKey(consumerSecret);
 	flow->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
 	flow->setAccessTokenUrl(m_site->fixUrl(m_auth->tokenUrl()));
 
@@ -219,28 +220,28 @@ void OAuth2Login::loginAuthorizationCode()
 	const QString codeVerifier = toUrlBase64(byteVerifier);
 
 	// PKCE challenge
-	flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QVariantMap *parameters) {
-		if (stage == QAbstractOAuth::Stage::RequestingAuthorization) {
-			const QString codeChallenge = toUrlBase64(QCryptographicHash::hash(codeVerifier.toLatin1(), QCryptographicHash::Sha256));
+	if (m_auth->authType() == "pkce") {
+		flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QVariantMap *parameters) {
+			if (stage == QAbstractOAuth::Stage::RequestingAuthorization) {
+				const QString codeChallenge = toUrlBase64(QCryptographicHash::hash(codeVerifier.toLatin1(), QCryptographicHash::Sha256));
 
-			parameters->insert("code_challenge", codeChallenge);
-			parameters->insert("code_challenge_method", "S256");
+				parameters->insert("code_challenge", codeChallenge);
+				parameters->insert("code_challenge_method", "S256");
 
-			// TODO(Bionus): do this correctly in the JS file
-			parameters->insert("client", "pixiv-android");
-		}
-		if (stage == QAbstractOAuth::Stage::RequestingAccessToken) {
-			parameters->insert("client_id", consumerKey);
-			parameters->insert("client_secret", consumerSecret);
-			parameters->insert("code_verifier", codeVerifier);
-			parameters->insert("include_policy", true);
-
-			const QString redirectUrl = m_auth->redirectUrl();
-			if (!redirectUrl.isEmpty()) {
-				parameters->insert("redirect_uri", m_site->fixUrl(redirectUrl).toString(QUrl::FullyEncoded));
+				// TODO(Bionus): do this correctly in the JS file
+				parameters->insert("client", "pixiv-android");
 			}
-		}
-	});
+			if (stage == QAbstractOAuth::Stage::RequestingAccessToken) {
+				parameters->insert("code_verifier", codeVerifier);
+				parameters->insert("include_policy", true);
+
+				const QString redirectUrl = m_auth->redirectUrl();
+				if (!redirectUrl.isEmpty()) {
+					parameters->insert("redirect_uri", m_site->fixUrl(redirectUrl).toString(QUrl::FullyEncoded));
+				}
+			}
+		});
+	}
 
 	// Open browser when necessary
 	connect(flow, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, [=](const QUrl &url) {

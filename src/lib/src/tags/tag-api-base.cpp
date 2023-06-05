@@ -60,6 +60,14 @@ void TagApiBase::parseInternal()
 		return;
 	}
 
+	// Detect HTTP 429 usage limit reached
+	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (statusCode == 429) {
+		log(QStringLiteral("[%1][%2] Limit reached (%3). New try.").arg(m_site->url(), m_api->getName(), QString::number(statusCode)), Logger::Warning);
+		load(true);
+		return;
+	}
+
 	// Try to read the reply
 	QString source = m_reply->readAll();
 	if (source.isEmpty()) {
@@ -71,6 +79,5 @@ void TagApiBase::parseInternal()
 	}
 
 	// Parse source
-	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	parse(source, statusCode, m_site);
 }

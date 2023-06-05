@@ -41,7 +41,7 @@ class JavascriptApi : public Api
 		ParsedTags parseTags(const QString &source, int statusCode, Site *site) const override;
 
 		// Image details
-		PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const override;
+		PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site, QVariantMap identity = {}) const override;
 		bool parseDetailsErrors() const override;
 		ParsedDetails parseDetails(const QString &source, int statusCode, Site *site) const override;
 

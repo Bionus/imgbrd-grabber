@@ -3,9 +3,9 @@ title: Website login
 ---
 
 
-# Logging into a source
+## Logging into a source
 
-## Credentials
+### Credentials
 
 To log into a source, all you have to do is to open the settings of the source you want to log into and enter your credentials there.
 
@@ -23,15 +23,15 @@ For security reasons, some sources require you to hash your password.
 
 Click "Confirm" at the bottom of the site settings window, and you're done! Further requests on that website will use your credentials.
 
-## Login methods
+### Login methods
 
 For some sources, simply adding the credentials is not enough. You may have to go to the "Login" tab of the site options and input more settings there. There are two main login methods: "Through URL" and "POST".
 
-### Through URL
+#### Through URL
 
 With the "Through URL" method, your credentials (often hashed) are passed directly in the URL of the request. This way, for every request sent, the site can check your identity. For this mode, you don't need to fill anything in this tab.
 
-### POST
+#### POST
 
 With the "POST" method, Grabber will first login to the website just like a real user would do: it will fill a form and send the data to the site. It will then check your identity, and on success save a "session cookie" that will identify you until you close the program.
 

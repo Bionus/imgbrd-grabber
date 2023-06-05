@@ -5,7 +5,7 @@ title: Blacklist fixer
 
 
 
-# Introduction
+## Introduction
 
 The blacklist fixer is a tool used to retro-actively apply a blacklist to already downloaded images.
 
@@ -13,7 +13,7 @@ For example, if you already downloaded a few thousands of images, but forgot to 
 
 
 
-# Limitations
+## Limitations
 
 There are few limitations for the blacklist fixer:
 

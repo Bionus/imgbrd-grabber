@@ -14,6 +14,12 @@ Item {
 
         onChanged: languageLoader.setLanguage(value)
     }
+    property Setting resultsInfiniteScroll: Setting {
+        key: "infiniteScroll"
+        def: "disabled"
+        parser: (val) => val === "scroll"
+        writer: (val) => val ? "scroll" : "disabled"
+    }
     property Setting resultsColumnCountPortrait: Setting {
         key: "resultsColumnCountPortrait"
         def: 3

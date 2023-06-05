@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 
+import ".."
 import "../items"
 
 ColumnLayout {
@@ -21,6 +22,12 @@ ColumnLayout {
     SettingTitle {
         Layout.fillWidth: true
         text: qsTr("Search results")
+    }
+    CheckBoxSetting {
+        name: qsTr("Infinite scroll")
+        subtitle: qsTr("Automatically load next page of results.")
+        setting: gSettings.resultsInfiniteScroll
+        Layout.fillWidth: true
     }
     SpinBoxSetting {
         name: qsTr("Columns (portrait)")

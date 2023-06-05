@@ -13,12 +13,36 @@ coverage:
 
   ignore:
     - "build/**/*"
-    - "src/crash-reporter/tests/**/*"
-    - "src/e2e/**/*"
-    - "src/gui/tests/**/*"
-    - "src/gui-qml/**/*"
-    - "src/lib/src/vendor/*"
     - "src/tests/**/*"
+    - "src/*/tests/*"
+    - "src/*/tests/**/*"
+    - "src/e2e/**/*"
+    - "src/gui-qml/**/*"
+    - "src/*/vendor/*"
+    - "src/*/vendor/**/*"
+
+component_management:
+  individual_components:
+    - component_id: cli
+      name: CLI
+      paths:
+        - src/cli/*
+    - component_id: crash_reporter
+      name: Crash Reporter
+      paths:
+        - src/crash-reporter/*
+    - component_id: gui
+      name: GUI
+      paths:
+        - src/gui/*
+    - component_id: lib
+      name: Library
+      paths:
+        - src/lib/*
+    - component_id: sources
+      name: Sources
+      paths:
+        - src/sites/*
 
 comment:
   layout: "header, diff"

@@ -9,16 +9,16 @@ title: Danbooru
 
 
 
-# Danbooru
+## Danbooru
 
-## Install
+### Install
 Follow the quickstart in the official [README.md](https://github.com/danbooru/danbooru/blob/master/README.md) documentation from the Danbooru repository.
 Note that you'll need to have [Docker](https://docs.docker.com/get-docker/) installed.
 
 It pretty much only amounts to downloading the `docker-compose.yaml` file and doing `docker-compose up`.
 
 
-## Configuration
+### Configuration
 
 * Create an account on the [registration page](http://localhost:3000/users/new), you should automatically be an owner
 * Create an API key in "Account > API key"
@@ -26,20 +26,20 @@ It pretty much only amounts to downloading the `docker-compose.yaml` file and do
 
 
 
-# Grabber
+## Grabber
 
-## Install NodeJS
+### Install NodeJS
 
 You need NodeJS to be installed on your machine to use the upload script used by Grabber.
 You can download it from [their website](https://nodejs.org/en/download/), or from a package manager [here](https://nodejs.org/en/download/package-manager/).
 
 
-## Download the upload script
+### Download the upload script
 
 Download the [danbooru.js](danbooru.js) file into Grabber's installation folder.
 
 
-## Install NodeJS global packages
+### Install NodeJS global packages
 
 This script uses the NodeJS [axios](https://www.npmjs.com/package/axios) and [form-data](https://www.npmjs.com/package/form-data) packages, so you can install them with:
 ```
@@ -57,7 +57,7 @@ npm root -g
 ```
 
 
-## Configuration
+### Configuration
 
 Open Grabber, then go to "Options > Commands", and set the "Image" field to:
 ```
@@ -66,7 +66,7 @@ node danbooru.js "YOUR_USERNAME" "YOUR_API_KEY" "%all:includenamespace,unsafe,un
 
 Make sure to replace `YOUR_USERNAME` by your Danbooru username, and `YOUR_API_KEY` by the API key created earlier.
 
-### Open new images in browser
+#### Open new images in browser
 
 If you want to open newly added images in your browser, you need to edit the `danbooru.js` file, and change `OPEN_BROWSER` from `false` to `true`.
 

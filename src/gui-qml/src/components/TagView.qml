@@ -45,18 +45,29 @@ Item {
         anchors.fill: parent
         anchors.margins: 8
 
-        model: Material.theme == Material.Dark ? image.tagsDark : image.tags
+        model: image.tags
+
+        section.property: "type"
+        section.criteria: ViewSection.FullString
+        section.delegate: Text {
+            text: section in globals.tagTypes ? globals.tagTypes[section] : section
+            height: 34
+            topPadding: 10
+            font.bold: true
+            font.pixelSize: 14
+        }
 
         delegate: RowLayout {
-            property string tag: decodeURIComponent(modelData.match(/href="(.+?)"/)[1])
+            property string tag: model.name
+            property string tagColor: settings.value("Coloring/Colors/" + model.type + "s", null)
 
             width: parent.width
             height: 34
             spacing: 0
 
             Label {
-                text: modelData
-                textFormat: Text.RichText
+                text: tag
+                color: tagColor
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 topPadding: 5

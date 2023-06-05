@@ -3,15 +3,15 @@ title: JavaScript helper
 ---
 
 
-# Introduction
+## Introduction
 
 In a JavaScript model file, you have access to a global `Grabber` helper object, which contains a handful of functions useful in models.
 
 Some of them are simply JavaScript functions, and others are bindings to C++ code, when the JavaScript API is not sufficient, or when Qt can do the job easily.
 
-# C++
+## C++
 
-## regexMatches
+### regexMatches
 
 **Parameters:**
 * regex (string)
@@ -19,10 +19,10 @@ Some of them are simply JavaScript functions, and others are bindings to C++ cod
 
 **Returns:** object[]
 
-### Description
+#### Description
 Global match a PCRE regex in a string.
 
-### Example
+#### Example
 ```
 \d+ (\d+) (?<third>\d+)
 ```
@@ -52,17 +52,17 @@ Global match a PCRE regex in a string.
 ]
 ```
 
-## parseXML
+### parseXML
 
 **Parameters:**
 * str (string)
 
 **Returns:** object
 
-### Description
+#### Description
 Parses the string passed and return the parsed XML tree.
 
-### Example
+#### Example
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <posts type="array">
@@ -107,7 +107,7 @@ Parses the string passed and return the parsed XML tree.
 }
 ```
 
-## parseHTML
+### parseHTML
 
 **Parameters:**
 * html (string)
@@ -115,66 +115,66 @@ Parses the string passed and return the parsed XML tree.
 
 **Returns:** object (JavascriptHtmlDocument)
 
-### Description
+#### Description
 Parses the string passed and return a parsed HTML node object.
 
 Set `fragment` to true if the HTML to parse is not a whole HTML document but only a part of it.
 
-### Example
+#### Example
 ```ts
 const parsed = Grabber.parseHTML(src);
 const images = parsed.find("#images-list img");
 const inner = images.map((img) => img.innerHTML());
 ```
 
-## JavascriptHtmlDocument::find
+### JavascriptHtmlDocument::find
 
 **Parameters:**
 * css (string)
 
 **Returns:** object[] (JavascriptHtmlDocument[])
 
-### Description
+#### Description
 Returns a list of nodes matching the passed CSS selectors.
 
-## JavascriptHtmlDocument::tag
+### JavascriptHtmlDocument::tag
 
 **Returns:** string
 
-### Description
+#### Description
 Returns the tag name of the node.
 
-## JavascriptHtmlDocument::outerHTML
+### JavascriptHtmlDocument::outerHTML
 
 **Returns:** string
 
-### Description
+#### Description
 Returns the serialized HTML of the element and its descendants.
 
-## JavascriptHtmlDocument::innerHTML
+### JavascriptHtmlDocument::innerHTML
 
 **Returns:** string
 
-### Description
+#### Description
 Returns the serialized HTML of the element's descendants.
 
-## JavascriptHtmlDocument::innerText
+### JavascriptHtmlDocument::innerText
 
 **Returns:** string
 
-### Description
+#### Description
 Returns the rendered text content of an element.
 
-## JavascriptHtmlDocument::path
+### JavascriptHtmlDocument::path
 
 **Returns:** string[]
 
-### Description
+#### Description
 Returns the list of the tags of the parent nodes.
 
-## JavascriptHtmlDocument::pathIds
+### JavascriptHtmlDocument::pathIds
 
 **Returns:** string[]
 
-### Description
+#### Description
 Returns the list of the IDs of the parent nodes.

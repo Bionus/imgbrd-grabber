@@ -4,7 +4,7 @@ permalink: /docs/sites/
 ---
 
 
-# Based on an existing source type
+## Based on an existing source type
 
 1. Start the program.
 2. Click on the "Sources" button at the bottom of a search tab
@@ -15,7 +15,7 @@ permalink: /docs/sites/
 **⚠️ If Shimmie-based boards are currently supported, a lot of them are still buggy, so beware when using them**
 
 
-# Create a new source type
+## Create a new source type
 
 If none of the available sources types match the website you want to add, you'll have to create one yourself.
 

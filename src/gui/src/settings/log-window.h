@@ -22,6 +22,9 @@ class LogWindow : public QDialog
 		~LogWindow() override;
 
 	protected slots:
+		void choosePath();
+		void chooseFilename();
+		void chooseUniquePath();
 		void save();
 
 	signals:

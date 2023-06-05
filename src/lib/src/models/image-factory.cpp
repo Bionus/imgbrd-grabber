@@ -19,10 +19,10 @@
 
 QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 {
-	return ImageFactory::build(site, std::move(details), QVariantMap(), profile, parent);
+	return ImageFactory::build(site, std::move(details), QVariantMap(), QVariantMap(), profile, parent);
 }
 
-QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
+QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent)
 {
 	static QList<QPair<QString, vTransformToken>> transforms
 	{
@@ -56,7 +56,7 @@ QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> det
 		}
 	}
 
-	return QSharedPointer<Image>(new Image(site, details, data, profile, parent));
+	return QSharedPointer<Image>(new Image(site, details, identity, data, profile, parent));
 }
 
 

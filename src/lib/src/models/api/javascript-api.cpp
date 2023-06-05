@@ -216,6 +216,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 
 QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, Page *parentPage, int index, int first) const
 {
+	QVariantMap identity;
 	QList<Tag> tags;
 	QVariantMap data;
 
@@ -232,7 +233,13 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 			continue;
 		}
 
-		if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
+		if (key == QLatin1String("identity")) {
+			QJSValueIterator dit(val);
+			while (dit.hasNext()) {
+				dit.next();
+				identity[dit.name()] = dit.value().toVariant();
+			}
+		} else if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
 			tags = makeTags(val, site);
 		} else if (key == QLatin1String("tokens")) {
 			QJSValueIterator dit(val);
@@ -265,7 +272,7 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 					size->size.setWidth(media.property("width").toInt());
 				}
 				if (media.hasProperty("height")) {
-					size->size.setWidth(media.property("height").toInt());
+					size->size.setHeight(media.property("height").toInt());
 				}
 				size->bitRate = getPropertyOr(media, "bitrate", 0);
 				size->fileSize = getPropertyOr(media, "file_size", 0);
@@ -301,7 +308,7 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 
 	if (!d.isEmpty()) {
 		const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(index));
-		QSharedPointer<Image> img = parseImage(site, parentPage, d, data, pos, tags);
+		QSharedPointer<Image> img = parseImage(site, parentPage, d, identity, data, pos, tags);
 		if (!img.isNull()) {
 			return img;
 		}
@@ -384,6 +391,7 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 	QJSValue query = m_engine->newObject();
 	query.setProperty("id", QString::number(gallery->id()));
 	query.setProperty("md5", gallery->md5());
+	query.setProperty("identity", m_engine->toScriptValue(gallery->identity()));
 	query.setProperty("page", page);
 
 	QJSValue opts = m_engine->newObject();
@@ -565,7 +573,7 @@ bool JavascriptApi::canLoadFullDetails() const
 		&& getJsConst("details.fullResults").toBool();
 }
 
-PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site) const
+PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site, QVariantMap identity) const
 {
 	PageUrl ret;
 
@@ -581,7 +589,7 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
-	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5, opts });
+	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5, opts, m_engine->toScriptValue(identity) });
 	fillUrlObject(result, site, ret);
 
 	return ret;

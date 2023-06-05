@@ -9,6 +9,7 @@ ColumnLayout {
     property bool enableShorter: false
     property string defaultEmpty
     property string defaultMultiple
+    property string defaultSeparator: "+"
 
     spacing: 0
 
@@ -24,7 +25,7 @@ ColumnLayout {
         name: qsTr("Separator")
         setting: Setting {
             key: "Save/" + key + "_sep"
-            def: "+"
+            def: defaultSeparator
         }
         Layout.fillWidth: true
     }

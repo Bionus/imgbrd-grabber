@@ -3,12 +3,12 @@ title: Reddit
 ---
 
 
-# Reddit
+## Reddit
 
 The only known working URL for this source is:
 * <https://www.reddit.com>
 
-## Search syntax
+### Search syntax
 
 * `some search`: basic search
 * `subreddit:SUBREDDIT`: load results from a specific subreddit

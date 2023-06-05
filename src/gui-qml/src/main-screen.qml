@@ -43,6 +43,16 @@ ApplicationWindow {
         property var apiTypes: ["XML", "JSON", "Regex", "RSS"]
         property var apiTypesKeys: ["xml", "json", "regex", "rss"]
 
+        property var tagTypes: {
+            "general": qsTr("General"),
+            "artist": qsTr("Artist"),
+            "copyright": qsTr("Copyright"),
+            "character": qsTr("Character"),
+            "model": qsTr("Model"),
+            "photo_set": qsTr("Photo set"),
+            "species": qsTr("Species"),
+            "meta": qsTr("Meta")
+        }
         property var authTypes: {
             "url": qsTr("Through URL"),
             "http_basic": qsTr("HTTP Basic"),
@@ -77,13 +87,18 @@ ApplicationWindow {
         title: qsTr("Update available")
         anchors.centerIn: Overlay.overlay
         modal: true
+        width: 360
         visible: updateChecker.updateAvailable
         standardButtons: Dialog.Cancel | Dialog.Ok
 
         onAccepted: Qt.openUrlExternally(updateChecker.latestUrl)
 
         Text {
+            anchors.fill: parent
             text: updateChecker.changelog
+            wrapMode: Text.WordWrap
+            textFormat: TextEdit.MarkdownText
+            onLinkActivated: Qt.openUrlExternally(link)
         }
     }
 

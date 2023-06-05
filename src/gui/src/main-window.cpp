@@ -33,15 +33,15 @@
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-queue.h"
+#include "filename/filename.h"
 #include "functions.h"
 #include "helpers.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/favorite.h"
-#include "models/filename.h"
 #include "models/filtering/post-filter.h"
 #include "models/profile.h"
-#include "monitoring-center.h"
+#include "monitoring/monitoring-center.h"
 #include "network/network-reply.h"
 #include "settings/options-window.h"
 #include "settings/start-window.h"
@@ -187,19 +187,19 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 
 	m_settings->beginGroup("Main/Shortcuts");
-		ui->actionClosetab->setShortcut(getKeySequence(m_settings, "keyCloseTab", Qt::CTRL + Qt::Key_W));
+		ui->actionClosetab->setShortcut(getKeySequence(m_settings, "keyCloseTab", Qt::CTRL | Qt::Key_W));
 
-		QShortcut *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL + Qt::Key_L), this);
+		QShortcut *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL | Qt::Key_L), this);
 			connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
 
-		QShortcut *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL + Qt::Key_PageDown), this);
+		QShortcut *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL | Qt::Key_PageDown), this);
 			connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
-		QShortcut *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL + Qt::Key_PageUp), this);
+		QShortcut *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL | Qt::Key_PageUp), this);
 			connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
 
-		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
-		ui->actionQuit->setShortcut(getKeySequence(m_settings, "keyQuit", QKeySequence::Quit, Qt::CTRL + Qt::Key_Q));
-		ui->actionFolder->setShortcut(getKeySequence(m_settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_O));
+		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL | Qt::Key_T));
+		ui->actionQuit->setShortcut(getKeySequence(m_settings, "keyQuit", QKeySequence::Quit, Qt::CTRL | Qt::Key_Q));
+		ui->actionFolder->setShortcut(getKeySequence(m_settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL | Qt::Key_O));
 	m_settings->endGroup();
 
 	connect(ui->actionQuit, &QAction::triggered, this, &QMainWindow::close);
@@ -270,7 +270,13 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
 
 	// Monitors tab
-	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, m_trayIcon, this);
+	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, this);
+	connect(m_monitoringCenter, &MonitoringCenter::notify, [this](const Monitor &monitor, const QString &msg) {
+		Q_UNUSED(monitor);
+		if (m_trayIcon != nullptr && m_trayIcon->isVisible()) {
+			m_trayIcon->showMessage(tr("Grabber monitoring"), msg, QSystemTrayIcon::Information);
+		}
+	});
 	m_monitorsTab = new MonitorsTab(m_profile, m_profile->monitorManager(), m_monitoringCenter, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_monitorsTab, m_monitorsTab->windowTitle());
 	connect(m_monitorsTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);
@@ -280,6 +286,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_downloadsTab = new DownloadsTab(m_profile, m_downloadQueue, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
 	connect(m_downloadsTab, &QWidget::windowTitleChanged, this, &MainWindow::tabTitleChanged);
+	connect(m_monitorsTab, &MonitorsTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
 	ui->tabWidget->setCurrentIndex(0);
 
 	// "File" actions to load/save downloads list
@@ -327,6 +334,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		m_tabSelector->setFlat(true);
 		m_tabSelector->markStaticTab(m_favoritesTab);
 		m_tabSelector->markStaticTab(m_downloadsTab);
+		m_tabSelector->markStaticTab(m_monitorsTab);
 		if (m_logTab != nullptr)
 		{ m_tabSelector->markStaticTab(m_logTab); }
 		layout->addWidget(m_tabSelector);

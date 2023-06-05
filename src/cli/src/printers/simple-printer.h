@@ -9,13 +9,14 @@
 
 class Image;
 class Profile;
+class QTextStream;
 class Site;
 class Tag;
 
 class SimplePrinter : public Printer
 {
 	public:
-		explicit SimplePrinter(QString tagsFormat);
+		explicit SimplePrinter(QTextStream *stream, QString tagsFormat);
 
 		void print(int val) const override;
 		void print(const QString &val) const override;
@@ -26,6 +27,7 @@ class SimplePrinter : public Printer
 		void print(const QList<Tag> &tags, Site *site) const override;
 
 	private:
+		QTextStream *m_stream;
 		QString m_tagsFormat;
 };
 

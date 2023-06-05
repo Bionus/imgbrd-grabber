@@ -17,6 +17,7 @@
 #include "tag-tab.h"
 #include "ui_pool-tab.h"
 #include "ui_tag-tab.h"
+#include "utils/file-utils.h"
 
 
 bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, QVariant &currentTab, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
@@ -70,6 +71,7 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, QVariant 
 
 	// Other versions are JSON-based
 	const QByteArray data = f.readAll();
+	f.close();
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 
@@ -127,11 +129,6 @@ SearchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, DownloadQueue
 
 bool TabsLoader::save(const QString &path, QList<SearchTab*> &allTabs, QWidget *currentTab)
 {
-	QFile saveFile(path);
-	if (!saveFile.open(QFile::WriteOnly)) {
-		return false;
-	}
-
 	QJsonArray tabsJson;
 	for (auto tab : allTabs) {
 		QJsonObject tabJson;
@@ -162,8 +159,5 @@ bool TabsLoader::save(const QString &path, QList<SearchTab*> &allTabs, QWidget *
 
 	// Write result
 	QJsonDocument saveDoc(full);
-	saveFile.write(saveDoc.toJson());
-	saveFile.close();
-
-	return true;
+	return safeWriteFile(path, saveDoc.toJson());
 }

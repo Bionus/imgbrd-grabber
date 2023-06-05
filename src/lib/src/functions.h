@@ -4,8 +4,8 @@
 #include <QMap>
 #include <QRect>
 #include <QString>
+#include <QStringList>
 #include <QKeySequence>
-#include "backports/backports.h"
 #include "utils/file-utils.h"
 
 
@@ -15,7 +15,6 @@ class QDateTime;
 class QDir;
 class QFont;
 class QJSValue;
-class QStringList;
 class QSettings;
 class QUrl;
 class QVariant;
@@ -82,6 +81,7 @@ QString getFilenameMd5(const QString &fileName, const QString &format);
 QString getFilenameId(const QString &fileName, const QString &format);
 
 QString parseMarkdown(QString str);
+QString parseGithubLinks(QString str);
 QString decodeHtmlEntities(const QString &html);
 
 QString qFontToCss(const QFont &font);

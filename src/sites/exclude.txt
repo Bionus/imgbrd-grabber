@@ -15,5 +15,7 @@ tslint.json
 node_modules
 
 # Disabled sites
+Gfycat
 Sankaku
+Slushe
 Tumblr

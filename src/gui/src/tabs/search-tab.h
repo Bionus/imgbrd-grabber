@@ -72,6 +72,7 @@ class SearchTab : public QWidget
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		virtual void thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img);
 		QList<QSharedPointer<Page>> getPagesToDownload();
+		QList<Site*> sourcesWithResults(bool eager = false);
 
 	protected slots:
 		void contextSaveSelected();

@@ -6,7 +6,7 @@ permalink: /docs/commands/
 ---
 
 
-# Introduction
+## Introduction
 
 The database commands are executed in this order (for a batch download):
 

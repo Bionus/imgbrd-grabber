@@ -2,6 +2,7 @@
 #include <QList>
 #include <QSharedPointer>
 #include <QString>
+#include <QTextStream>
 #include <iostream>
 #include <utility>
 #include "logger.h"
@@ -10,19 +11,19 @@
 #include "tags/tag.h"
 
 
-SimplePrinter::SimplePrinter(QString tagsFormat)
-	: m_tagsFormat(std::move(tagsFormat))
+SimplePrinter::SimplePrinter(QTextStream *stream, QString tagsFormat)
+	: m_stream(stream), m_tagsFormat(std::move(tagsFormat))
 {}
 
 
 void SimplePrinter::print(int val) const
 {
-	std::cout << val << std::endl;
+	*m_stream << val << Qt::endl;
 }
 
 void SimplePrinter::print(const QString &val) const
 {
-	std::cout << val.toStdString() << std::endl;
+	*m_stream << val << Qt::endl;
 }
 
 

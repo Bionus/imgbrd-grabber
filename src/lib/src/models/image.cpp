@@ -13,12 +13,12 @@
 #include "downloader/extension-rotator.h"
 #include "exiftool.h"
 #include "favorite.h"
+#include "filename/filename.h"
 #include "filtering/tag-filter-list.h"
 #include "functions.h"
 #include "loader/token.h"
 #include "logger.h"
 #include "models/api/api.h"
-#include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/pool.h"
@@ -29,6 +29,7 @@
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
 #include "tags/tag-type.h"
+#include "utils/size-utils.h"
 #ifdef WIN_FILE_PROPS
 	#include "windows-file-property.h"
 #endif
@@ -58,6 +59,7 @@ Image::Image(const Image &other)
 	m_pageUrl = other.m_pageUrl;
 
 	m_sizes = other.m_sizes;
+	m_identity = other.m_identity;
 	m_data = other.m_data;
 
 	m_galleryCount = other.m_galleryCount;
@@ -81,11 +83,11 @@ Image::Image(Profile *profile)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
-	: Image(site, details, QVariantMap(), profile, parent)
+	: Image(site, details, QVariantMap(), QVariantMap(), profile, parent)
 {}
 
-Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
-	: m_profile(profile), m_parent(parent), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_data(std::move(data))
+Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent)
+	: m_profile(profile), m_parent(parent), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_identity(std::move(identity)), m_data(std::move(data))
 {
 	m_settings = m_profile->getSettings();
 
@@ -148,15 +150,15 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		QSharedPointer<ImageSize> preview = m_sizes.value(Image::Thumbnail, nullptr);
 		QSharedPointer<ImageSize> sample = m_sizes.value(Image::Sample, nullptr);
 		QSharedPointer<ImageSize> full = m_sizes.value(Image::Full, nullptr);
-		QMap<Image::Size, int> sizes = {
-			{ Image::Thumbnail, preview ? qMax(preview->size.width(), preview->size.height()) : 0 },
-			{ Image::Sample, sample ? qMax(sample->size.width(), sample->size.height()) : 0 },
-			{ Image::Full, full ? qMax(full->size.width(), full->size.height()) : 0 },
+		QMap<Image::Size, QSize> sizes = {
+			{ Image::Thumbnail, preview ? preview->size : QSize() },
+			{ Image::Sample, sample ? sample->size : QSize() },
+			{ Image::Full, full ? full->size : QSize() },
 		};
 
 		for (const auto &media : medias) {
 			const Image::Size type = media->type;
-			const int size = media->size.width() > 0 ? media->size.width() : media->size.height();
+			const QSize size = media->size;
 
 			// If type is provided, trust it
 			if (type != Image::Unknown) {
@@ -166,19 +168,25 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 			}
 
 			// Preview gets the biggest size between 150 and 300
-			if (sizes[Image::Thumbnail] <= 0 || (size <= 300 && size > sizes[Image::Thumbnail]) || (size >= 150 && sizes[Image::Thumbnail] > 300)) {
+			if (
+				sizes[Image::Thumbnail].isEmpty() || // Default
+				(isInRange(size, 150, 300) && (
+					 isBigger(size, sizes[Image::Thumbnail]) || // Biggest under 300px
+					 !isInRange(sizes[Image::Thumbnail], 150, 300)) // If the default was bigger than 300px
+				)
+			) {
 				m_sizes.insert(Image::Thumbnail, media);
 				sizes[Image::Thumbnail] = size;
 			}
 
 			// Sample is optional and takes the biggest size between 500 and 1500
-			if (size >= 500 && size <= 1500 && size > sizes[Image::Sample]) {
+			if (isInRange(size, 500, 1500) && isBigger(size, sizes[Image::Sample])) {
 				m_sizes.insert(Image::Sample, media);
 				sizes[Image::Sample] = size;
 			}
 
 			// Full just takes the biggest size available
-			if (size > sizes[Image::Full]) {
+			if (isBigger(size, sizes[Image::Full])) {
 				m_sizes.insert(Image::Full, media);
 				sizes[Image::Full] = size;
 			}
@@ -254,12 +262,6 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	// Remove ? in urls
 	m_url = removeCacheBuster(m_url);
 
-	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
-	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	if (!url(Size::Sample).isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals)) {
-		m_url = url(Size::Sample).toString();
-	}
-
 	init();
 }
 
@@ -269,7 +271,7 @@ void Image::init()
 	if (m_pageUrl.isEmpty()) {
 		Api *api = m_parentSite->detailsApi();
 		if (api != nullptr) {
-			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url;
+			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite, m_identity).url;
 		}
 	}
 	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
@@ -339,6 +341,15 @@ void Image::write(QJsonObject &json) const
 	}
 	if (!jsonData.isEmpty()) {
 		json["data"] = jsonData;
+	}
+
+	// Identity
+	QJsonObject jsonIdentity;
+	for (const auto &key : m_identity.keys()) {
+		jsonIdentity[key] = QJsonValue::fromVariant(m_identity[key]);
+	}
+	if (!jsonIdentity.isEmpty()) {
+		json["identity"] = jsonIdentity;
 	}
 }
 
@@ -410,6 +421,14 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 				val = QDateTime::fromString(val.toString().mid(5), Qt::ISODate);
 			}
 			m_data[key] = val;
+		}
+	}
+
+	// Identity
+	if (json.contains("identity")) {
+		const auto &jsonIdentity = json["identity"].toObject();
+		for (const auto &key : jsonIdentity.keys()) {
+			m_identity[key] = jsonIdentity[key].toVariant();
 		}
 	}
 
@@ -785,6 +804,7 @@ Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
 const QList<Pool> &Image::pools() const { return m_pools; }
 qulonglong Image::id() const { return m_id; }
+QVariantMap Image::identity() const { return m_identity; }
 int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
@@ -938,7 +958,7 @@ QString Image::tooltip() const
 
 QString Image::counter() const
 {
-	return m_galleryCount > 0 ? QString::number(m_galleryCount) : QString();
+	return m_galleryCount > 0 ? QString::number(m_galleryCount) : (m_isGallery ? "?" : QString());
 }
 
 QList<QStrP> Image::detailsData() const
@@ -1155,7 +1175,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 
 	// Tags
-	tokens.insert("general", Token(details["general"]));
+	tokens.insert("general", Token(details["general"], "keepAll", "", ""));
 	tokens.insert("artist", Token(details["artist"], "keepAll", "anonymous", "multiple artists"));
 	tokens.insert("copyright", Token(details["copyright"], "keepAll", "misc", "crossover"));
 	tokens.insert("character", Token(details["character"], "keepAll", "unknown", "group"));

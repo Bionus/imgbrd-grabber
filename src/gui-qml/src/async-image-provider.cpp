@@ -16,12 +16,17 @@ QQuickImageResponse *AsyncImageProvider::requestImageResponse(const QString &id,
 {
 	Q_UNUSED(requestedSize);
 
-	const QStringList parts = id.split("¤", Qt::SkipEmptyParts);
+	const QStringList parts = id.split("¤");
 	const QString siteKey = parts[0];
 	const QString url = parts[1];
 
+	if (url.isEmpty()) {
+		auto *ret = new AsyncImageResponse(nullptr, {});
+		return ret;
+	}
+
 	QRect rect;
-	if (parts.size() > 2) {
+	if (parts.size() > 2 && !parts[2].isEmpty()) {
 		rect = stringToRect(parts[2]);
 	}
 

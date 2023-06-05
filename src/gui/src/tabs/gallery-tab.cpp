@@ -8,11 +8,11 @@
 #include "logger.h"
 #include "main-window.h"
 #include "models/image.h"
-#include "models/monitor.h"
-#include "models/monitor-manager.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "monitoring/monitor.h"
+#include "monitoring/monitor-manager.h"
 #include "search-window.h"
 #include "ui/text-edit.h"
 
@@ -171,8 +171,7 @@ void GalleryTab::getAll()
 
 void GalleryTab::monitor()
 {
-	const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
-	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, m_gallery, postFilter(), notify);
+	Monitor monitor(m_settings, loadSites(), m_gallery, postFilter());
 	m_profile->monitorManager()->add(monitor);
 }
 

@@ -3,13 +3,13 @@ title: Metadata
 ---
 
 
-# Introduction
+## Introduction
 
 You might want to store a post's information not in the downloaded file's filename, but instead inside its metadata. This usually allows better searching, and avoid filesystem filename length limits.
 
 
 
-# Windows Property System
+## Windows Property System
 
 Only available on Windows due to the nature of those properties.
 
@@ -29,7 +29,7 @@ Here's a basic example of what is possible to do:
 
 
 
-# Exiftool
+## Exiftool
 
 You first need to download Exiftool and put it in a place where Grabber can find it. Either in your PATH or in the installation folder.
 

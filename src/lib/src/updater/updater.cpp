@@ -19,7 +19,7 @@ int Updater::compareVersions(QString a, QString b)
 	const int aPos = a.indexOf(QRegularExpression("[a-z]"));
 	if (aPos != -1) {
 		aSubType = a[aPos].toLatin1();
-		aSub = a.midRef(aPos + 1).toInt();
+		aSub = a.mid(aPos + 1).toInt();
 		a = a.left(aPos);
 	}
 
@@ -28,7 +28,7 @@ int Updater::compareVersions(QString a, QString b)
 	const int bPos = b.indexOf(QRegularExpression("[a-z]"));
 	if (bPos != -1) {
 		bSubType = b[bPos].toLatin1();
-		bSub = b.midRef(bPos + 1).toInt();
+		bSub = b.mid(bPos + 1).toInt();
 		b = b.left(bPos);
 	}
 
