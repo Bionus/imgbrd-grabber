@@ -43,6 +43,7 @@
 	<url type="contribute">https://github.com/Bionus/imgbrd-grabber/blob/master/CONTRIBUTING.md</url>
 
 	<releases>
+		<release  version="7.11.0" date="2023-06-05" />
 		<release  version="7.10.1" date="2023-01-07" />
 		<release  version="7.10.0" date="2022-12-16" />
 		<release  version="7.9.1" date="2022-07-16" />
