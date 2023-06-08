@@ -136,7 +136,7 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 	url.setQuery(query);
 
 	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::UserAgentHeader, userAgent());
+	request.setHeader(QNetworkRequest::UserAgentHeader, userAgent().toLatin1());
 	QNetworkReply *reply = m_networkAccessManager->get(request);
 
 	connect(reply, &QNetworkReply::finished, reply, &QNetworkReply::deleteLater);
