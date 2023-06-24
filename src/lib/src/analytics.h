@@ -3,7 +3,7 @@
 
 #include <QVariantMap>
 #include "vendor/ganalytics.h"
-#include "utils/google-analytics-4.h"
+#include "vendor/qt-google-analytics/qt-google-analytics.h"
 
 
 class QString;
@@ -38,7 +38,7 @@ class Analytics
 
 		bool m_enabled = false;
 		GAnalytics m_googleAnalytics;
-		GoogleAnalytics4 m_ga4;
+		QtGoogleAnalytics m_ga4;
 };
 
 #endif // ANALYTICS_H
