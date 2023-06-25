@@ -31,10 +31,15 @@ export const source: ISource = {
                     return "/index.php?r=posts/index&q=" + search + (page === 0 ? '' : "&page=" + page);
                 },
                 parse: (src: string): IParsedSearch => {
-                    const pageCount = Grabber.regexToConst("page", '<div class="pagination">\\W*(<a.*>.*<\\/a>\\W*)*(<a href="[^"]+page=(?<page>\\d+)".*>.*<\\/a>\\W*)<\\/div>', src);
+                    const pageMatch = Grabber.regexMatch('<div class="pagination">\\W*(?:<[ab].*>.*<\\/[ab]>\\W*)*(?:<[ab] href="[^"]+page=(?<page_arg>\\d+)".*>.*<\\/[ab]>|<[ab].*>(?<page_real>\\d+)<\\/[ab]>)\\s*<\\/div>', src);
+                    const pageCount = pageMatch && "page_arg" in pageMatch
+                        ? parseInt(pageMatch["page_arg"], 10) + 1
+                        : pageMatch && "page_real" in pageMatch
+                            ? parseInt(pageMatch["page_real"], 10)
+                            : undefined;
                     return {
                         images: Grabber.regexToImages('<a id="(?<id>\\d+)" href="[^"]+"><img +src="(?<preview_url>[^"]*thumbnail_(?<md5>[^.]+)\\.[^"]+)" title=" *(?<tags>[^"]*)" .+?</a></div>', src).map(completeImage),
-                        pageCount: pageCount ? (parseInt(pageCount, 10) + 1) : undefined,
+                        pageCount,
                         tags: Grabber.regexToTags('<li><a[^>]*>\\+</a><a [^>]*>-</a> <span [^>]*>\\? <a href="[^"]*">(?<name>[^<]+)</a> (?<count>\\d+)</span></li>', src),
                     };
                 },
