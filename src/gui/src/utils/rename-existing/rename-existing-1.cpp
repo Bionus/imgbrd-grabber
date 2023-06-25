@@ -222,7 +222,7 @@ void RenameExisting1::loadNext()
 
 		// Try to load the image details from the full details API if available
 		Api *api = site->fullDetailsApi();
-		if (api != nullptr) {
+		if (api != nullptr && m_useIdKey) {
 			QString url = api->detailsUrl(m_useIdKey ? det.key.toLongLong() : 0, !m_useIdKey ? det.key : "", site).url;
 			log(QStringLiteral("Loading full image details from `%1`").arg(url), Logger::Info);
 			NetworkReply *reply = site->get(url, Site::QueryType::Details);
