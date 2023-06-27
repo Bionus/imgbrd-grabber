@@ -9,13 +9,14 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QOperatingSystemVersion>
+#include "chromium-user-agent.h"
 
 #ifdef QT_GUI_LIB
 	#include <QGuiApplication>
 	#include <QScreen>
 #endif
 #ifdef Q_OS_ANDROID
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		#include <QJniObject>
 	#else
 		#include <QAndroidJniObject>
@@ -26,6 +27,7 @@
 #define MEASUREMENT_ENDPOINT_WEB "https://www.google-analytics.com/g/collect"
 #define CLIENT_ID_SETTINGS_KEY "QtGoogleAnalytics/ClientId"
 #define SESSION_START_INTERVAL_SECONDS 1800
+#define USER_AGENT_PRODUCT "Chrome/114.0.0.0"
 
 
 #include "functions.h"
@@ -43,6 +45,8 @@ QtGoogleAnalytics::QtGoogleAnalytics(QObject *parent)
 	} else {
 		m_clientId = settings.value(CLIENT_ID_SETTINGS_KEY).toString();
 	}
+
+	m_userAgent = userAgent();
 }
 
 QtGoogleAnalytics::QtGoogleAnalytics(const QString &measurementId, QObject *parent)
@@ -170,7 +174,7 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 	url.setQuery(query);
 
 	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::UserAgentHeader, userAgent().toLatin1());
+	request.setHeader(QNetworkRequest::UserAgentHeader, m_userAgent.toLatin1());
 	m_uach.setRequestHeaders(request);
 
 	QNetworkReply *reply = m_networkAccessManager->post(request, QByteArray());
@@ -196,22 +200,16 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 
 QString QtGoogleAnalytics::userAgent() const
 {
-	return "";
-
 	#if defined(Q_OS_ANDROID)
 		// On Android, just use System.getProperty("http.agent")
-		QAndroidJniObject ua = QJniObject::callStaticMethod<jstring>(
+		return QJniObject::callStaticObjectMethod(
 			"System",
 			"getProperty",
 			"(Ljava/lang/String;)Z",
 			QJniObject::fromString("http.agent").object<jstring>()
-		);
-		return ua.toString();
+		).toString();
 	#endif
 
-	// On other platforms, use a custom User-Agent
-	const QString appName = QCoreApplication::instance()->applicationName();
-	const QString appVersion = QCoreApplication::instance()->applicationVersion();
-	const QString systemInfo = QString("%1 %2").arg(QOperatingSystemVersion::current().name(), m_uach.platformVersion());
-	return QString("%1/%2 (%3) QtGoogleAnalytics/1.0 (Qt/%4)").arg(appName, appVersion, systemInfo, QT_VERSION_STR);
+	// On other platforms, use a Chrome User-Agent
+	return buildUserAgentForProduct(USER_AGENT_PRODUCT);
 }
