@@ -31,7 +31,6 @@ class OAuth2Login : public Login
 
 	protected slots:
 		void loginFinished();
-		void refreshLoginFinished();
 		void refreshFinished();
 		void basicRefresh();
 
@@ -54,6 +53,8 @@ class OAuth2Login : public Login
 		QString m_accessToken;
 		QString m_refreshToken;
 		QDateTime m_expires;
+		bool m_refreshing = false;
+		bool m_refreshForLogin = false;
 };
 
 #endif // OAUTH2_LOGIN_H
