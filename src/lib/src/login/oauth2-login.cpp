@@ -27,6 +27,7 @@ OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, 
 {
 	m_accessToken = m_settings->value("auth/accessToken").toString();
 	m_refreshToken = m_settings->value("auth/refreshToken").toString();
+	m_expires = m_settings->value("auth/accessTokenExpiration").toDateTime();
 }
 
 bool OAuth2Login::isTestable() const
@@ -200,8 +201,10 @@ void OAuth2Login::loginAuthorizationCode()
 
 			m_accessToken = flow->token();
 			m_refreshToken = flow->refreshToken();
+			m_expires = flow->expirationAt();
 			m_settings->setValue("auth/accessToken", m_accessToken);
 			m_settings->setValue("auth/refreshToken", m_refreshToken);
+			m_settings->setValue("auth/accessTokenExpiration", m_expires);
 
 			emit loggedIn(Result::Success);
 
@@ -310,9 +313,7 @@ void OAuth2Login::refresh(bool login)
 
 	log(QStringLiteral("[%1] Refreshing OAuth2 token...").arg(m_site->url()), Logger::Info);
 
-	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
-	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
-
+	// Without a refresh token, there's nothing to do
 	if (m_refreshToken.isEmpty()) {
 		log(QStringLiteral("[%1] Cannot refresh OAuth2 token without a refresh token").arg(m_site->url()), Logger::Warning);
 		if (login) {
@@ -339,6 +340,8 @@ void OAuth2Login::refresh(bool login)
 		data = jsonDoc.toJson();
 		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	} else {
+		const QString consumerKey = m_settings->value("auth/consumerKey").toString();
+		const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 		const QList<QStrP> body {
 			{ "grant_type", "refresh_token" },
 			{ "client_id", consumerKey },
@@ -379,6 +382,8 @@ void OAuth2Login::refreshFinished()
 		m_settings->remove("auth/accessToken");
 		m_refreshToken.clear();
 		m_settings->remove("auth/refreshToken");
+		m_expires = QDateTime();
+		m_settings->remove("auth/accessTokenExpiration");
 		login();
 	} else {
 		emit loggedIn(Result::Success);
@@ -450,6 +455,7 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 			const int expiresSecond = QDateTime::currentDateTime().secsTo(m_expires);
 			QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
 			log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_expires.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
+			m_settings->setValue("auth/accessTokenExpiration", m_expires);
 		}
 	}
 
