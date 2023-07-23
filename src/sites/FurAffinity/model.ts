@@ -15,6 +15,7 @@ export const source: ISource = {
             name: "Regex",
             auth: [],
             forcedLimit: 24,
+            forcedTokens: ["*"],
             search: {
                 parseErrors: true,
                 url: (query: ISearchQuery): string | IError => {
