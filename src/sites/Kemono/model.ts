@@ -58,7 +58,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 50,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
                     const offset = (query.page - 1) * opts.limit;
                     if (query.search) {
                         return {error: "The JSON API does not support arbitrary search."};
@@ -111,6 +111,58 @@ export const source: ISource = {
                 },
                 parse: (src: string): boolean => {
                     return src.indexOf("https://github.com/OpenYiff") !== -1;
+                },
+            },
+        },
+        html: {
+            name: "Regex",
+            auth: [],
+            forcedLimit: 50,
+            search: {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                    const offset = (query.page - 1) * opts.limit;
+                    return "/posts?o=" + offset + "&q=" + encodeURIComponent(query.search);
+                },
+                parse: (src: string): IParsedSearch | IError => {
+                    const html = Grabber.parseHTML(src);
+                    const articles = html.find("article.post-card");
+
+                    const images: IImage[] = [];
+                    for (const article of articles) {
+                        // Basic attributes
+                        const identity = {
+                            service: article.attr("data-service"),
+                            user: article.attr("data-user"),
+                            id: article.attr("data-id"),
+                        };
+                        const image: IImage = {
+                            identity,
+                            id: identity["id"],
+                            author_id: identity["user"],
+                            name: article.find("header")[0].innerText().trim(),
+                            created_at: article.find("time")[0].attr("datetime"),
+                        };
+
+                        // Not all posts have an image
+                        const img = article.find("img");
+                        if (img.length > 0) {
+                            image.preview_url = img[0].attr("src");
+                        }
+
+                        // Detect galleries with multiple files
+                        const attachmentCount = parseInt(Grabber.regexToConst("count", "(?<count>\\d+) attachments?", article.innerHTML()), 10)
+                        if (attachmentCount > 1) {
+                            image.type = "gallery";
+                            image.gallery_count = attachmentCount;
+                        }
+
+                        images.push(image);
+                    }
+
+                    return {
+                        images,
+                        imageCount: Grabber.regexToConst("count", "Showing \\d+ - \\d+ of (?<count>\\d+)", src),
+                    };
                 },
             },
         },
