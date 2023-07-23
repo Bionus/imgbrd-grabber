@@ -5,7 +5,7 @@
 #include <QSysInfo>
 
 #ifdef Q_OS_ANDROID
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		#include <QJniObject>
 	#else
 		#include <QAndroidJniObject>

@@ -60,7 +60,7 @@ void ImageDownloader::setSize(Image::Size size)
 {
 	if (size == Image::Size::Unknown) {
 		const bool getOriginals = m_profile->getSettings()->value("Save/downloadoriginals", true).toBool();
-		const bool hasSample = m_image->url(Image::Size::Sample).isEmpty();
+		const bool hasSample = !m_image->url(Image::Size::Sample).isEmpty();
 		if (getOriginals || !hasSample) {
 			m_size = Image::Size::Full;
 		} else {

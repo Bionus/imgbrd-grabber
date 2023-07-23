@@ -50,6 +50,7 @@ class QtGoogleAnalytics : public QObject
 	private:
 		QNetworkAccessManager *m_networkAccessManager;
 		UserAgentClientHints m_uach;
+		QString m_userAgent;
 
 		unsigned int m_sessionId;
 		QDateTime m_lastEvent;

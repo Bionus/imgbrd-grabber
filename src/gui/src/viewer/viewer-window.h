@@ -139,7 +139,7 @@ class ViewerWindow : public QWidget
 		bool m_pendingClose;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
-		QTimer *m_resizeTimer;
+		QTimer m_resizeTimer;
 		QElapsedTimer m_imageTime;
 		QString m_link;
 		bool m_finished;

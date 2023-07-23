@@ -1,4 +1,5 @@
 #include "analytics.h"
+#include <QCoreApplication>
 
 class QString;
 class QVariant;
@@ -62,6 +63,8 @@ void Analytics::sendScreenView(const QString& screenName, const QVariantMap& cus
 	QVariantMap eventParams(customValues);
 	eventParams["firebase_screen"] = screenName;
 	eventParams["firebase_screen_class"] = screenName;
+	eventParams["app_name"] = qApp->applicationName();
+	eventParams["app_version"] = qApp->applicationVersion();
 	m_ga4.sendEvent("screen_view", eventParams);
 }
 

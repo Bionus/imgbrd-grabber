@@ -27,6 +27,7 @@ OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, 
 {
 	m_accessToken = m_settings->value("auth/accessToken").toString();
 	m_refreshToken = m_settings->value("auth/refreshToken").toString();
+	m_expires = m_settings->value("auth/accessTokenExpiration").toDateTime();
 }
 
 bool OAuth2Login::isTestable() const
@@ -200,8 +201,10 @@ void OAuth2Login::loginAuthorizationCode()
 
 			m_accessToken = flow->token();
 			m_refreshToken = flow->refreshToken();
+			m_expires = flow->expirationAt();
 			m_settings->setValue("auth/accessToken", m_accessToken);
 			m_settings->setValue("auth/refreshToken", m_refreshToken);
+			m_settings->setValue("auth/accessTokenExpiration", m_expires);
 
 			emit loggedIn(Result::Success);
 
@@ -300,18 +303,29 @@ void OAuth2Login::basicRefresh()
 
 void OAuth2Login::refresh(bool login)
 {
+	// Don't try to refresh while a refresh is already in progress
+	if (m_refreshing) {
+		if (login) {
+			m_refreshForLogin = true;
+		}
+		return;
+	}
+
 	log(QStringLiteral("[%1] Refreshing OAuth2 token...").arg(m_site->url()), Logger::Info);
 
-	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
-	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
-
+	// Without a refresh token, there's nothing to do
 	if (m_refreshToken.isEmpty()) {
 		log(QStringLiteral("[%1] Cannot refresh OAuth2 token without a refresh token").arg(m_site->url()), Logger::Warning);
 		if (login) {
 			emit loggedIn(Result::Failure);
 		}
+		m_refreshing = false;
 		return;
 	}
+
+	// Set the refresh status and block other refresh requests until this one is completed
+	m_refreshing = true;
+	m_refreshForLogin = login;
 
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	m_site->setRequestHeaders(request);
@@ -326,6 +340,8 @@ void OAuth2Login::refresh(bool login)
 		data = jsonDoc.toJson();
 		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	} else {
+		const QString consumerKey = m_settings->value("auth/consumerKey").toString();
+		const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 		const QList<QStrP> body {
 			{ "grant_type", "refresh_token" },
 			{ "client_id", consumerKey },
@@ -344,16 +360,16 @@ void OAuth2Login::refresh(bool login)
 
 	// Post request and wait for a reply
 	m_refreshReply = m_manager->post(request, data);
-	if (login) {
-		connect(m_refreshReply, &NetworkReply::finished, this, &OAuth2Login::refreshLoginFinished);
-	} else {
-		connect(m_refreshReply, &NetworkReply::finished, this, &OAuth2Login::refreshFinished);
-	}
+	connect(m_refreshReply, &NetworkReply::finished, this, &OAuth2Login::refreshFinished);
 }
 
-void OAuth2Login::refreshLoginFinished()
+void OAuth2Login::refreshFinished()
 {
 	const bool ok = readResponse(m_refreshReply);
+	m_refreshing = false;
+	if (!m_refreshForLogin) {
+		return;
+	}
 	if (!ok) {
 		if (m_auth->authType() == "refresh_token") {
 			log(QStringLiteral("[%1] Refresh failed").arg(m_site->url()), Logger::Warning);
@@ -366,14 +382,12 @@ void OAuth2Login::refreshLoginFinished()
 		m_settings->remove("auth/accessToken");
 		m_refreshToken.clear();
 		m_settings->remove("auth/refreshToken");
+		m_expires = QDateTime();
+		m_settings->remove("auth/accessTokenExpiration");
 		login();
 	} else {
 		emit loggedIn(Result::Success);
 	}
-}
-void OAuth2Login::refreshFinished()
-{
-	readResponse(m_refreshReply);
 }
 
 bool OAuth2Login::readResponse(NetworkReply *reply)
@@ -441,6 +455,7 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 			const int expiresSecond = QDateTime::currentDateTime().secsTo(m_expires);
 			QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
 			log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_expires.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
+			m_settings->setValue("auth/accessTokenExpiration", m_expires);
 		}
 	}
 
@@ -449,6 +464,11 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 void OAuth2Login::complementRequest(QNetworkRequest *request) const
 {
+	// Trigger a token refresh in the background if the token is expired
+	if (!m_refreshToken.isEmpty() && (!m_expires.isValid() || m_expires < QDateTime::currentDateTime())) {
+		const_cast<OAuth2Login*>(this)->refresh(false);
+	}
+
 	if (!m_accessToken.isEmpty()) {
 		request->setRawHeader("Authorization", "Bearer " + m_accessToken.toUtf8());
 	}

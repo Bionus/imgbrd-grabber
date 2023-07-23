@@ -175,9 +175,8 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		setStyleSheet("#ViewerWindow { background-color:" + bg + "; }");
 	}
 
-	m_resizeTimer = new QTimer(this);
-		connect(m_resizeTimer, SIGNAL(timeout()), this, SLOT(update()));
-		m_resizeTimer->setSingleShot(true);
+	connect(&m_resizeTimer, SIGNAL(timeout()), this, SLOT(update()));
+	m_resizeTimer.setSingleShot(true);
 
 	load(image);
 }
@@ -1201,11 +1200,11 @@ void ViewerWindow::toggleSlideshow()
 
 void ViewerWindow::resizeEvent(QResizeEvent *e)
 {
-	if (!m_resizeTimer->isActive()) {
+	if (!m_resizeTimer.isActive()) {
 		m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000));
 	}
-	m_resizeTimer->stop();
-	m_resizeTimer->start(m_timeout);
+	m_resizeTimer.stop();
+	m_resizeTimer.start(m_timeout);
 	update(true);
 
 	QWidget::resizeEvent(e);
