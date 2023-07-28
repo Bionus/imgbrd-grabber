@@ -155,6 +155,7 @@ Page {
 
                             sourceComponent: VideoPlayer {
                                 fillMode: VideoOutput.PreserveAspectFit
+                                flushMode: VideoOutput.FirstFrame
                                 source: showHd || !hasSample ? modelData.fileUrl : modelData.sampleUrl
                                 clip: true
                                 autoPlay: index == swipeView.currentIndex
