@@ -38,19 +38,12 @@ if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 endif()
 
 # Qt libraries
-find_package(Qt5 COMPONENTS Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml REQUIRED)
-set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::MultimediaWidgets Qt5::Network Qt5::Sql Qt5::Widgets Qt5::Xml)
-
-# Windows specials
-if(WIN32)
-	find_package(Qt5 COMPONENTS WinExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::WinExtras)
-endif()
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::Widgets Qt6::Xml)
 
 # Android specials
 if(ANDROID)
-	find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
 # QScintilla
@@ -98,7 +91,14 @@ file(GLOB SOURCES
 	"resources/*.rc"
 	"resources/*.qrc")
 file(GLOB_RECURSE FORMS "src/*.ui")
-include_directories("src/" "../lib/src/" "../lib/" "../cli/src/" "..")
+include_directories("src/" "../lib/src/" "../lib/" "../cli/src/" ".." ".")
+
+# Windows specials
+if(WIN32)
+	file(GLOB_RECURSE WINEXTRAS_SOURCES "vendor/winextras/*.cpp")
+	set(SOURCES ${SOURCES} ${WINEXTRAS_SOURCES})
+	list(APPEND LIBS "dwmapi.lib")
+endif()
 
 # Breakpad files
 if(USE_BREAKPAD)
@@ -127,21 +127,21 @@ if(USE_BREAKPAD)
 	include_directories(${BREAKPAD}/src)
 endif()
 
-if(ANDROID)
-	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${FORMS} ${UTILS_SOURCES})
-elseif(WIN32)
-	add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+if(WIN32)
+	qt_add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 else()
-	add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+	qt_add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib "cli-lib")
+target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_LIBRARIES} ${LIBS} lib "cli-lib")
 
 if(ANDROID)
 	# SSL
 	if(USE_SSL)
 		message(STATUS "Compiling with SSL support")
-		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/CMakeLists.txt")
+		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/android_openssl.cmake")
+		add_android_openssl_libraries(${PROJECT_NAME})
+		get_target_property(ANDROID_EXTRA_LIBS ${PROJECT_NAME} QT_ANDROID_EXTRA_LIBS)
 		message(STATUS "Android libs: ${ANDROID_EXTRA_LIBS}")
 	endif()
 
@@ -159,18 +159,26 @@ if(ANDROID)
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${ANDROID_PACKAGE_SOURCES}/assets/sites/node_modules/"
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/../languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
+	add_dependencies(${PROJECT_NAME} android_copy_assets)
 
-	# Add target
-	include("qt-android-cmake/AddQtAndroidApk")
-	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
-		NAME ${ANDROID_APP_NAME}
-		VERSION_CODE ${ANDROID_APP_VERSION_CODE}
-		PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
-		PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
-		KEYSTORE "${CMAKE_CURRENT_LIST_DIR}/../../release.jks" release
-		KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
-		DEPENDS ${ANDROID_EXTRA_LIBS})
-	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
+	# Set Android properties
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		QT_ANDROID_PACKAGE_SOURCE_DIR ${ANDROID_PACKAGE_SOURCES}
+		QT_ANDROID_VERSION_NAME ${ANDROID_APP_VERSION_NAME}
+		QT_ANDROID_VERSION_CODE ${ANDROID_APP_VERSION_CODE}
+	)
+	if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+		set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_DEPLOY_RELEASE ON)
+	endif()
+	# NAME ${ANDROID_APP_NAME}
+	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
+
+	# Sign package if the keystore was provided
+	if(DEFINED ENV{QT_ANDROID_KEYSTORE_PATH})
+		set(QT_ANDROID_SIGN_APK ON)
+	else()
+		message(WARNING "No keystore provided, APK signing disabled")
+	endif()
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
 	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

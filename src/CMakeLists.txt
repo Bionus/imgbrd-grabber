@@ -36,6 +36,9 @@ if(TRACE)
 	endif()
 endif()
 
+# Disable Qt dependency walking warnings
+set(QT_SILENCE_MISSING_DEPENDENCY_TARGET_WARNING ON)
+
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
 	set(VERSION "7.11.2")
 else()
@@ -98,11 +101,7 @@ endif()
 
 # Pre-compiled headers
 if(NOT DEFINED USE_PCH)
-	if(WIN32)
-		set(USE_PCH 1)
-	else()
-		set(USE_PCH 0)
-	endif()
+	set(USE_PCH 0)
 endif()
 if(USE_PCH)
 	include(cotire/CMake/cotire OPTIONAL RESULT_VARIABLE COTIRE_FILE_PATH)
@@ -119,8 +118,8 @@ if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	add_definitions(-DWIN_FILE_PROPS=1)
 endif()
 
-# Load Qt5::Core here as it can only be included once (QTBUG-87863)
-find_package(Qt5 COMPONENTS Core REQUIRED)
+# Necessary to prevent "Target "Qt6::QmlIntegration" not found." errors on targets not using QML
+find_package(Qt6 COMPONENTS Qml REQUIRED)
 
 add_subdirectory(lib)
 add_subdirectory(gui)

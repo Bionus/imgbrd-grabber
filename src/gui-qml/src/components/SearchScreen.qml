@@ -1,7 +1,6 @@
 import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
-import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12

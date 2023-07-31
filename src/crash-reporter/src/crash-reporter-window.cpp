@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QMainWindow>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QTranslator>
 #include "crash-reporter-window.h"
 #include "ui_crash-reporter-window.h"

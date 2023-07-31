@@ -224,7 +224,7 @@ void OAuth2Login::loginAuthorizationCode()
 
 	// PKCE challenge
 	if (m_auth->authType() == "pkce") {
-		flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QVariantMap *parameters) {
+		flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant> *parameters) {
 			if (stage == QAbstractOAuth::Stage::RequestingAuthorization) {
 				const QString codeChallenge = toUrlBase64(QCryptographicHash::hash(codeVerifier.toLatin1(), QCryptographicHash::Sha256));
 

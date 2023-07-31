@@ -1,5 +1,5 @@
 #include "android-share-utils.h"
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QJniObject>
 #include "logger.h"
 
 
@@ -9,14 +9,14 @@ AndroidShareUtils::AndroidShareUtils(QQuickItem* parent)
 
 bool AndroidShareUtils::share(const QString &text)
 {
-	if (!QAndroidJniObject::isClassAvailable("org/bionus/grabber/ShareUtils")) {
+	if (!QJniObject::isClassAvailable("org/bionus/grabber/ShareUtils")) {
 		log("Java class 'org/bionus/grabber/ShareUtils' not available", Logger::Error);
 		return false;
 	}
 
-	QAndroidJniObject jsText = QAndroidJniObject::fromString(text);
+	QJniObject jsText = QJniObject::fromString(text);
 
-	jboolean ok = QAndroidJniObject::callStaticMethod<jboolean>(
+	jboolean ok = QJniObject::callStaticMethod<jboolean>(
 		"org/bionus/grabber/ShareUtils",
 		"share",
 		"(Ljava/lang/String;)Z",
@@ -28,16 +28,16 @@ bool AndroidShareUtils::share(const QString &text)
 
 bool AndroidShareUtils::sendFile(const QString &path, const QString &mimeType, const QString &title)
 {
-	if (!QAndroidJniObject::isClassAvailable("org/bionus/grabber/ShareUtils")) {
+	if (!QJniObject::isClassAvailable("org/bionus/grabber/ShareUtils")) {
 		log("Java class 'org/bionus/grabber/ShareUtils' not available", Logger::Error);
 		return false;
 	}
 
-	QAndroidJniObject jsPath = QAndroidJniObject::fromString(path);
-	QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
-	QAndroidJniObject jsTitle = QAndroidJniObject::fromString(title);
+	QJniObject jsPath = QJniObject::fromString(path);
+	QJniObject jsMimeType = QJniObject::fromString(mimeType);
+	QJniObject jsTitle = QJniObject::fromString(title);
 
-	jboolean ok = QAndroidJniObject::callStaticMethod<jboolean>(
+	jboolean ok = QJniObject::callStaticMethod<jboolean>(
 		"org/bionus/grabber/ShareUtils",
 		"sendFile",
 		"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",

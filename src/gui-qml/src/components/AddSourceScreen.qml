@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import QtQuick.Dialogs 1.3
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.12
 
 Page {
@@ -32,7 +32,7 @@ Page {
     MessageDialog {
         id: errorDialog
         title: qsTr("Error")
-        icon: StandardIcon.Critical
+        // TODO QT6 icon: StandardIcon.Critical
     }
 
     ColumnLayout {

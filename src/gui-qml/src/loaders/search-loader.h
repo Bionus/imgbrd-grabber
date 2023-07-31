@@ -6,6 +6,9 @@
 #include <QString>
 #include "models/search-query/search-query.h"
 
+Q_MOC_INCLUDE("models/profile.h")
+Q_MOC_INCLUDE("models/qml-image.h")
+
 
 class Page;
 class Profile;

@@ -6,8 +6,7 @@
 void TagFilterList::add(const QString &word)
 {
 	if (word.contains('*')) {
-		const QString pattern = QRegularExpression::wildcardToRegularExpression(word);
-		m_starTags.append(QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption));
+		m_starTags.append(QRegularExpression::fromWildcard(word, Qt::CaseInsensitive));
 	} else {
 		m_rawTags.append(word);
 	}

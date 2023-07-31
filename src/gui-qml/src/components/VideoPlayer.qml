@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.12
 ColumnLayout {
     property alias source: video.source
     property alias fillMode: video.fillMode
-    property alias autoPlay: video.autoPlay
+    property bool autoPlay // TODO QT6 property alias autoPlay: video.autoPlay
 
     onAutoPlayChanged: {
         if (autoPlay && video.playbackState != MediaPlayer.PlayingState) {
@@ -21,7 +21,7 @@ ColumnLayout {
 
         Layout.fillHeight: true
         Layout.fillWidth: true
-        notifyInterval: 100
+        // TODO QT6 notifyInterval: 100
         loops: MediaPlayer.Infinite
     }
 

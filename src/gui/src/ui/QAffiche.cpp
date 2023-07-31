@@ -53,7 +53,7 @@ void QAffiche::mouseReleaseEvent(QMouseEvent *e)
 	QLabel::mouseReleaseEvent(e);
 }
 
-void QAffiche::enterEvent(QEvent *e)
+void QAffiche::enterEvent(QEnterEvent *e)
 {
 	emit mouseOver();
 	emit mouseOver(m_id.toInt());

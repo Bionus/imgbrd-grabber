@@ -9,8 +9,7 @@ TagFilter::TagFilter(QString tag, bool invert)
 	: Filter(invert), m_tag(std::move(tag))
 {
 	if (m_tag.contains('*')) {
-		const QString pattern = QRegularExpression::wildcardToRegularExpression(m_tag);
-		m_regexp.reset(new QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption));
+		m_regexp.reset(new QRegularExpression(QRegularExpression::fromWildcard(m_tag, Qt::CaseInsensitive)));
 	}
 }
 

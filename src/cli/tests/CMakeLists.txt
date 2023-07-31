@@ -8,8 +8,8 @@ if(DEFINED HEADLESS)
 endif()
 
 # Qt libs
-find_package(Qt5 COMPONENTS Test Widgets REQUIRED)
-list(APPEND QT_LIBRARIES Qt5::Test Qt5::Widgets)
+find_package(Qt6 COMPONENTS Core Test Widgets REQUIRED)
+list(APPEND QT_LIBRARIES Qt6::Core Qt6::Test Qt6::Widgets)
 
 # Sources
 include(ListFilterRegex)

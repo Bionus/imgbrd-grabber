@@ -1,6 +1,6 @@
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM 1) # Don't delete TS files
 
-find_package(Qt5 COMPONENTS LinguistTools REQUIRED)
+find_package(Qt6 COMPONENTS LinguistTools REQUIRED)
 
 # Get two separate lists of TS files: one with only 'YourLanguage', and another with all other translations
 file(GLOB TS_FILES_FOR_TS "*.ts")

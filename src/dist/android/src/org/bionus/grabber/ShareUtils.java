@@ -1,6 +1,6 @@
 package org.bionus.grabber;
 
-import org.qtproject.qt5.android.QtNative;
+import org.qtproject.qt.android.QtNative;
 
 import java.io.File;
 import java.lang.String;

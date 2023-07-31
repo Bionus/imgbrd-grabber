@@ -5,6 +5,9 @@
 #include <QSharedPointer>
 #include <QString>
 
+Q_MOC_INCLUDE("models/profile.h")
+Q_MOC_INCLUDE("models/qml-site.h")
+
 
 class Image;
 class Page;

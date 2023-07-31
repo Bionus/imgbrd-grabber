@@ -11,8 +11,8 @@ namespace Ui
 }
 
 
+class QAudioOutput;
 class QMediaPlayer;
-class QMediaPlaylist;
 class QVideoWidget;
 class QWidget;
 
@@ -39,8 +39,8 @@ class VideoPlayer : public Player
 		Ui::VideoPlayer *ui;
 		QStringList m_supportedFormats;
 		QVideoWidget *m_videoWidget;
+		QAudioOutput *m_audioOutput;
 		QMediaPlayer *m_mediaPlayer;
-		QMediaPlaylist *m_mediaPlaylist;
 		bool m_noSeek = false;
 };
 

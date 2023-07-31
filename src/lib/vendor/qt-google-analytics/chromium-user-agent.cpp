@@ -94,7 +94,6 @@ QString BuildCpuInfo()
 	#elif defined(Q_OS_IOS)
 		return IsTablet() ? "iPad" : "iPhone";
 	#elif defined(Q_OS_WIN)
-
 		if (IsWowX86OnAMD64()) {
 			return "WOW64";
 		} else {

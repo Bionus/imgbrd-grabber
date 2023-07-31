@@ -254,8 +254,7 @@ QStringList removeWildards(const QStringList &elements, const QStringList &remov
 	for (const QString &tag : elements) {
 		bool removed = false;
 		for (const QString &rem : remove) {
-			const QString pattern = QRegularExpression::wildcardToRegularExpression(rem);
-			const auto reg = QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption);
+			const auto reg = QRegularExpression::fromWildcard(rem, Qt::CaseInsensitive);
 			if (reg.match(tag).hasMatch()) {
 				removed = true;
 				break;
@@ -1008,8 +1007,8 @@ QString qFontToCss(const QFont &font)
 		size = QString::number(font.pixelSize()) + "px";
 	}
 
-	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
-	const QString weight = QString::number(font.weight() * 8);
+	// Should be "font.weight() + 100", but linux doesn't handle weight the same way windows do
+	const QString weight = QString::number(font.weight());
 
 	QStringList decorations;
 	if (font.strikeOut()) {

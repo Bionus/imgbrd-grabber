@@ -15,7 +15,7 @@ class ThreadSafeEngine
 		QJSEngine *engine;
 
 	private:
-		QMutexLocker m_mutexLocker;
+		QMutexLocker<QMutex> m_mutexLocker;
 };
 
 #endif // THREAD_SAFE_ENGINE_H

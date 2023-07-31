@@ -56,7 +56,7 @@ static QByteArray readFile(const QString &path)
 	return f.readAll();
 }
 
-static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
+static QFont makeFont(const QString &name, int size, bool usePixels, QFont::Weight weight, QFont::Style style)
 {
 	QFont font(name);
 	if (usePixels) {
@@ -147,7 +147,7 @@ TEST_CASE("Functions")
 	{
 		REQUIRE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleNormal)) == QString("font-family:'Arial'; font-size:12pt; font-style:normal; font-weight:400; text-decoration:none;"));
 		REQUIRE(qFontToCss(makeFont("Arial", 12, true, QFont::Normal, QFont::StyleNormal)) == QString("font-family:'Arial'; font-size:12px; font-style:normal; font-weight:400; text-decoration:none;"));
-		REQUIRE(qFontToCss(makeFont("Arial", 12, false, QFont::Bold, QFont::StyleNormal)) == QString("font-family:'Arial'; font-size:12pt; font-style:normal; font-weight:600; text-decoration:none;"));
+		REQUIRE(qFontToCss(makeFont("Arial", 12, false, QFont::Bold, QFont::StyleNormal)) == QString("font-family:'Arial'; font-size:12pt; font-style:normal; font-weight:700; text-decoration:none;"));
 		REQUIRE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleItalic)) == QString("font-family:'Arial'; font-size:12pt; font-style:italic; font-weight:400; text-decoration:none;"));
 		REQUIRE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleOblique)) == QString("font-family:'Arial'; font-size:12pt; font-style:oblique; font-weight:400; text-decoration:none;"));
 	}

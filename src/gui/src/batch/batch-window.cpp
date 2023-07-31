@@ -6,8 +6,8 @@
 #include <QStringList>
 #include <QTime>
 #ifdef Q_OS_WIN
-	#include <QWinTaskbarButton>
-	#include <QWinTaskbarProgress>
+    #include "vendor/winextras/qwintaskbarbutton.h"
+    #include "vendor/winextras/qwintaskbarprogress.h"
 #endif
 #include <ui_batch-window.h>
 #include "functions.h"

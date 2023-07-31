@@ -45,7 +45,7 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 	headerView->resizeSection(1, 50);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
 
-	QtConcurrent::run(this, &BlacklistFix2::loadThumbnails);
+	QtConcurrent::run(&BlacklistFix2::loadThumbnails, this);
 }
 BlacklistFix2::~BlacklistFix2()
 {

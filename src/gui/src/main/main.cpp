@@ -59,7 +59,9 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	#if defined(Q_OS_WIN)
+		qputenv("QT_MEDIA_BACKEND", "windows");
+	#endif
 
 	#ifdef WIN_FILE_PROPS
 		initializeWindowsProperties();
@@ -86,7 +88,6 @@ int main(int argc, char *argv[])
 	}
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
-	qRegisterMetaTypeStreamOperators<QList<ButtonSettings>>("QList<ButtonSettings>");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY
