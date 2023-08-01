@@ -4,8 +4,8 @@ add_definitions(-DGUI=1)
 add_subdirectory(languages)
 
 # Qt libraries
-find_package(Qt6 COMPONENTS Core Core5Compat Quick Network REQUIRED)
-set(QT_LIBRARIES Qt6::Core Qt6::Core5Compat Qt6::Quick Qt6::Network)
+find_package(Qt6 COMPONENTS Core Quick Network ShaderTools REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Quick Qt6::Network)
 
 # Android specials
 if(ANDROID)
@@ -14,6 +14,7 @@ endif()
 
 # Input
 file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
+file(GLOB_RECURSE SHADERS RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "src/*.frag")
 include_directories("src/" "../lib/src/" "../lib/" "..")
 
 # StatusBar
@@ -42,6 +43,7 @@ endif()
 
 qt_add_executable(${PROJECT_NAME} ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_LIBRARIES} ${LIBS} lib)
+qt6_add_shaders(${PROJECT_NAME} "${PROJECT_NAME}_shaders" SILENT BATCHABLE PRECOMPILE OPTIMIZED PREFIX "/" FILES ${SHADERS})
 
 if(ANDROID)
 	# SSL

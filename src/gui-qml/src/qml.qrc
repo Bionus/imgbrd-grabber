@@ -14,6 +14,7 @@
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>
+        <file>vendor/OpacityMask.qml</file>
         <file>components/settings/SourceSettingsScreen.qml</file>
         <file>components/settings/Settings.qml</file>
         <file>components/VideoPlayer.qml</file>
