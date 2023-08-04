@@ -146,6 +146,49 @@ export const source: ISource = {
                     return { images };
                 },
             },
+            endpoints: {
+                pool_list: {
+                    name: "Pools",
+                    input: {
+                        name: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"name", string>, opts: IUrlOptions): string => {
+                        return "/pools.json?page=" + String(opts.page) + (query.name ? "&search[name_contains]=" + encodeURIComponent(query.name) : "");
+                    },
+                    parse: (src: string): IParsedSearch => {
+                        const data = JSON.parse(src);
+                        const images = data.map((raw: any): IImage => ({
+                            id: raw["id"],
+                            name: raw["name"],
+                            created_at: raw["created_at"],
+                            type: "gallery",
+                            gallery_count: raw["post_count"],
+                            details_endpoint: {
+                                endpoint: "pool_details",
+                                input: { id: raw["id"] },
+                            },
+                        }))
+                        return { images };
+                    },
+                },
+                pool_details: {
+                    input: {
+                        id: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"id", number>): string => {
+                        return "/pools/" + String(query.id) + ".json";
+                    },
+                    parse: (src: string): IParsedGallery => {
+                        const data = JSON.parse(src);
+                        const images = data["post_ids"].map((id: number): IImage => ({ id }));
+                        return { images };
+                    },
+                },
+            },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/tags.json?limit=" + opts.limit + "&search[order]=" + query.order + "&page=" + query.page;

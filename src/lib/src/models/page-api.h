@@ -62,6 +62,7 @@ class PageApi : public QObject
 		const QUrl &nextPage() const;
 		const QUrl &prevPage() const;
 		bool isLoaded() const;
+		Api *api() const { return m_api; }
 
 	public slots:
 		void load(bool rateLimit = false, bool force = false);

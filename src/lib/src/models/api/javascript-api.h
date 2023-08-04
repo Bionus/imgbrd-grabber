@@ -61,8 +61,9 @@ class JavascriptApi : public Api
 		int maxLimit() const override;
 		QStringList modifiers() const override;
 		QStringList forcedTokens() const override;
+		QMap<QString, ApiEndpoint*> endpoints() const override;
 
-	protected:
+		// TODO: make those protected again
 		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;
 		QList<Tag> makeTags(const QJSValue &tags, Site *site) const;
 		QSharedPointer<Image> makeImage(const QJSValue &raw, Site *site, Page *parentPage = nullptr, int index = 0, int first = 1) const;
@@ -74,6 +75,7 @@ class JavascriptApi : public Api
 		const QJSValue &m_source;
 		QString m_key;
 		mutable QMutex *m_engineMutex;
+		QMap<QString, ApiEndpoint*> m_endpoints;
 };
 
 #endif // JAVASCRIPT_API_H

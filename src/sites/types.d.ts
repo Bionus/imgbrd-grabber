@@ -115,6 +115,21 @@ interface IImage {
     identity?: IImageIdentity;
 
     /**
+     * The endpoint to call to load more information about this media.
+     */
+    details_endpoint?: {
+        /**
+         * The key of the endpoint in the "endpoints" object of this API.
+         */
+        endpoint: string;
+
+        /**
+         * The inputs to pass to the endpoint to have it load details about this media.
+         */
+        input: Record<string, any>;
+    }
+
+    /**
      * The media files. At least one is required.
      * It's preferred to have one of each type, otherwise it will be inferred.
      */
@@ -632,6 +647,8 @@ interface ISearchQuery {
 
     /**
      * The page number of this query.
+     *
+     * @deprecated Use `opts.page` instead
      */
     page: number;
 }
@@ -657,6 +674,8 @@ interface IGalleryQuery {
 
     /**
      * The page number of this query.
+     *
+     * @deprecated Use `opts.page` instead.
      */
     page: number;
 }
@@ -667,6 +686,8 @@ interface IGalleryQuery {
 interface ITagsQuery {
     /**
      * The page number of this query.
+     *
+     * @deprecated Use `opts.page` instead.
      */
     page: number;
 
@@ -695,6 +716,11 @@ interface IUrlOptionsBase {
  * Additional information for a query.
  */
 interface IUrlOptions extends IUrlOptionsBase {
+    /**
+     * The page number of this query.
+     */
+    page: number;
+
     /**
      * The number of results per page to return.
      */
@@ -749,6 +775,37 @@ interface IPreviousSearch {
 }
 
 /**
+ * A specific search mode on a source API.
+ */
+interface IEndpoint<T extends string> {
+    /**
+     * The name to show to the end user in the interface.
+     * If left empty, it will not be shown in the list.
+     */
+    name?: string;
+
+    /**
+     * The user input to provide to this endpoint.
+     */
+    input: Record<T, MetaField>;
+
+    /**
+     * Whether to still pass HTTP errors to the parse function.
+     */
+    parseErrors?: boolean;
+
+    /**
+     * The function that will generate the URL to load based on the user input.
+     */
+    url: (query: Record<T, any>, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IRequest | IError | string;
+
+    /**
+     * The function that will parse the response of the URL above.
+     */
+    parse: (src: string, statusCode: number) => IParsedSearch | IError;
+}
+
+/**
  * A source's API, such as JSON or HTML.
  */
 interface IApi {
@@ -798,6 +855,11 @@ interface IApi {
         url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IRequest | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
+
+    /**
+     * Additional endpoints can be added as needed.
+     */
+    endpoints?: Record<string, IEndpoint<any>>;
 
     /**
      * Describes the endpoint for loading a single image's details.

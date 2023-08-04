@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 // #include <QMutexLocker>
 #include "functions.h"
+#include "javascript-api-endpoint.h"
 #include "js-helpers.h"
 #include "logger.h"
 #include "mixed-settings.h"
@@ -27,7 +28,16 @@ QString normalize(QString key)
 
 JavascriptApi::JavascriptApi(QJSEngine *engine, const QJSValue &source, QMutex *jsEngineMutex, const QString &key)
 	: Api(normalize(key)), m_engine(engine), m_source(source), m_key(key), m_engineMutex(jsEngineMutex)
-{}
+{
+	const QJSValue endpoints = m_source.property("apis").property(m_key).property("endpoints");
+	if (!endpoints.isUndefined() && endpoints.isObject()) {
+		QJSValueIterator endpointsIt(endpoints);
+		while (endpointsIt.hasNext()) {
+			endpointsIt.next();
+			m_endpoints[endpointsIt.name()] = new JavascriptApiEndpoint(this, m_engine, endpointsIt.value());
+		}
+	}
+}
 
 
 void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const
@@ -764,3 +774,6 @@ QStringList JavascriptApi::modifiers() const
 { return jsToStringList(getJsConst("modifiers")); }
 QStringList JavascriptApi::forcedTokens() const
 { return jsToStringList(getJsConst("forcedTokens")); }
+
+QMap<QString, ApiEndpoint*> JavascriptApi::endpoints() const
+{ return m_endpoints; }

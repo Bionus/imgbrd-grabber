@@ -68,6 +68,11 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 	m_siteApis = m_site->getLoggedInApis();
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : qAsConst(m_siteApis)) {
+		// Only use APIs supporting the requested endpoint
+		if (!m_query.endpoint.isEmpty() && !api->endpoints().contains(m_query.endpoint)) {
+			continue;
+		}
+
 		auto *pageApi = new PageApi(this, profile, m_site, api, m_query, page, limit, postFilter, smart, parent, pool, lastPageInformation);
 		if (m_pageApis.count() == 0) {
 			connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot);
@@ -93,7 +98,7 @@ void Page::fallback(bool loadIfPossible)
 {
 	m_errors.clear();
 
-	if (m_currentApi >= m_siteApis.count() - 1) {
+	if (m_currentApi >= m_pageApis.count() - 1) {
 		log(QStringLiteral("[%1] No valid source of the site returned result.").arg(m_site->url()), Logger::Warning);
 		m_errors.append(tr("No valid source of the site returned result."));
 		emit failedLoading(this);
@@ -225,8 +230,8 @@ bool Page::isValid() const { return !m_pageApis.isEmpty(); }
 QMap<QString, QUrl> Page::urls() const
 {
 	QMap<QString, QUrl> ret;
-	for (int i = 0; i < m_siteApis.count(); ++i) {
-		auto *siteApi = m_siteApis[i];
+	for (int i = 0; i < m_pageApis.count(); ++i) {
+		auto *siteApi = m_pageApis[i]->api();
 		auto *pageApi = m_pageApis[i];
 		if (!pageApi->url().isEmpty()) {
 			ret[siteApi->getName()] = pageApi->url();

@@ -23,6 +23,7 @@ class TagTab : public SearchTab
 		~TagTab() override;
 		Ui::TagTab *ui;
 		QString tags() const override;
+		void setSources(const QList<Site*> &sources) override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, bool preload = true);
 

@@ -22,7 +22,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1,0">
    <item>
-    <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0">
+    <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0,0">
      <property name="spacing">
       <number>6</number>
      </property>
@@ -96,6 +96,9 @@
         </item>
        </layout>
       </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboEndpoint"/>
      </item>
      <item>
       <widget class="QPushButton" name="buttonSearch">
@@ -227,7 +230,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>762</width>
+           <width>754</width>
            <height>40</height>
           </rect>
          </property>
@@ -325,8 +328,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>780</width>
-        <height>323</height>
+        <width>776</width>
+        <height>291</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">

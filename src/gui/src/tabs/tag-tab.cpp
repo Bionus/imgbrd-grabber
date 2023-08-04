@@ -50,7 +50,7 @@ TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *paren
 	// Search fields
 	m_search = createAutocomplete();
 	m_postFiltering = createAutocomplete();
-	ui->layoutFields->insertWidget(1, m_search, 1);
+	ui->layoutFields->insertWidget(2, m_search, 1);
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 	connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 
@@ -102,12 +102,19 @@ void TagTab::load()
 	}
 
 	const QStringList tags = search.split(" ", Qt::SkipEmptyParts);
-	loadTags(tags);
+	if (ui->comboEndpoint->isVisible()) {
+		const QString endpoint = ui->comboEndpoint->currentData().toString();
+		const QMap<QString, QVariant> input {{ "search", search }};
+		loadTags(SearchQuery(endpoint, input));
+	} else {
+		loadTags(tags);
+	}
 }
 
 void TagTab::write(QJsonObject &json) const
 {
 	json["type"] = QStringLiteral("tag");
+	json["endpoint"] = ui->comboEndpoint->currentData().toString();
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', Qt::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
@@ -179,6 +186,13 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 		}
 	}
 	saveSources(selectedSourcesObj, false);
+
+	// Endpoint
+	const QString endpoint = json["endpoint"].toString();
+	const int endpointIndex = ui->comboEndpoint->findData(endpoint);
+	if (endpointIndex >= 0) {
+		ui->comboEndpoint->setCurrentIndex(endpointIndex);
+	}
 
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
@@ -301,4 +315,58 @@ void TagTab::updateTitle()
 	QString search = m_search->toPlainText().trimmed();
 	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
 	emit titleChanged(this);
+}
+
+#include "models/api/api.h"
+#include "models/api/api-endpoint.h"
+void TagTab::setSources(const QList<Site *> &sources)
+{
+	SearchTab::setSources(sources);
+
+	// Generate the list of all common endpoints across the selected sources
+	bool init = false;
+	QSet<QString> commonEndpoints;
+	QMap<QString, QString> endpointNames;
+	for (const Site *site : m_selectedSources) {
+		// Merge all endpoints for that given source
+		QMap<QString, ApiEndpoint*> sourceEndpoints;
+		for (const Api *api : site->getApis()) {
+			sourceEndpoints.insert(api->endpoints());
+		}
+
+		// Intersect all endpoints among sources
+		const auto &keysList = sourceEndpoints.keys();
+		const auto keys = QSet<QString>(keysList.begin(), keysList.end());
+		if (!init) {
+			commonEndpoints = keys;
+			for (const QString &key : keys) {
+				endpointNames.insert(key, sourceEndpoints[key]->name());
+			}
+			init = true;
+		} else {
+			commonEndpoints = commonEndpoints.intersect(keys);
+		}
+	}
+
+	// Only display endpoints having a name
+	QSet<QString> commonEndpointsWithName;
+	for (const QString &endpoint : commonEndpoints) {
+		if (!endpointNames[endpoint].isEmpty()) {
+			commonEndpointsWithName.insert(endpoint);
+		}
+	}
+
+	// Update the endpoint selector
+	if (commonEndpointsWithName.isEmpty()) {
+		ui->comboEndpoint->hide();
+	} else {
+		ui->comboEndpoint->show();
+		ui->comboEndpoint->clear();
+		if (!commonEndpointsWithName.contains("search")) {
+			ui->comboEndpoint->addItem("Search", "");
+		}
+		for (const QString &key : commonEndpointsWithName) {
+			ui->comboEndpoint->addItem(endpointNames[key], key);
+		}
+	}
 }

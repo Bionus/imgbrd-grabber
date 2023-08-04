@@ -7,6 +7,7 @@
 #include "image.h"
 #include "logger.h"
 #include "models/api/api.h"
+#include "models/api/api-endpoint.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
 #include "models/search-query/search-query.h"
@@ -70,8 +71,12 @@ void PageApi::updateUrls()
 	} else if (!m_url.isEmpty()) {
 		url = m_url.toString();
 	} else {
+		const ApiEndpoint *endpoint = m_api->endpoints().value(m_query.endpoint, nullptr);
+
 		PageUrl ret;
-		if (!m_query.gallery.isNull()) {
+		if (endpoint) {
+			ret = endpoint->url(m_query.input, m_page, m_imagesPerPage, m_lastPageInformation, m_site);
+		} else if (!m_query.gallery.isNull()) {
 			ret = m_api->galleryUrl(m_query.gallery, m_page, m_imagesPerPage, m_site);
 		} else {
 			ret = m_api->pageUrl(m_query.tags.join(' '), m_page, m_imagesPerPage, m_lastPageInformation, m_site);
@@ -212,8 +217,9 @@ void PageApi::parse()
 
 void PageApi::parseActual()
 {
+	const ApiEndpoint *endpoint = m_api->endpoints().value(m_query.endpoint, nullptr);
 	const bool isGallery = !m_query.gallery.isNull();
-	const bool parseErrors = isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors();
+	const bool parseErrors = endpoint ? endpoint->parseErrors() : (isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors());
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	const int offset = (m_page - 1) * m_imagesPerPage;
 
@@ -243,7 +249,9 @@ void PageApi::parseActual()
 
 	// Parse source
 	ParsedPage page;
-	if (isGallery) {
+	if (endpoint) {
+		page = endpoint->parse(m_parentPage, m_source, statusCode, offset);
+	} else if (isGallery) {
 		page = m_api->parseGallery(m_parentPage, m_source, statusCode, offset);
 	} else {
 		page = m_api->parsePage(m_parentPage, m_source, statusCode, offset);

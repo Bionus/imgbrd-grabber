@@ -1261,14 +1261,12 @@ void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 		sav.append(enabled->url());
 	}
 	m_settings->setValue("sites", sav);
-	m_selectedSources = sel;
+	setSources(sel);
 
 	// Log into new sources
 	for (Site *site : sel) {
 		site->login();
 	}
-
-	updateCheckboxes();
 
 	DONE();
 
