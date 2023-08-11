@@ -6,32 +6,32 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="11"/>
       <source>About</source>
-      <translation type="unfinished"/>
+      <translation>Про додаток</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="14"/>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>Версія</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
       <source>Check for updates</source>
-      <translation type="unfinished"/>
+      <translation>Перевірити оновлення</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
       <source>See project on Github</source>
-      <translation type="unfinished"/>
+      <translation>Цей проєкт на Github</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="31"/>
       <source>Report an issue</source>
-      <translation type="unfinished"/>
+      <translation>Повідомити про ваду</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="38"/>
       <source>Author</source>
-      <translation type="unfinished"/>
+      <translation>Творець</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="41"/>
