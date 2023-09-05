@@ -22,6 +22,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "network/network-reply.h"
+#include "ui/QAffiche.h"
 #include "ui/QBouton.h"
 
 
@@ -206,7 +207,10 @@ void ImagePreview::finishedLoading()
 	}
 
 	if (!m_name.isEmpty()) {
-		layout->addWidget(new QLabel(m_name));
+		auto *label = new QAffiche(0);
+		label->setText(m_name);
+		connect(label, SIGNAL(clicked(int)), this, SIGNAL(clicked()));
+		layout->addWidget(label);
 	}
 
 	emit finished();
