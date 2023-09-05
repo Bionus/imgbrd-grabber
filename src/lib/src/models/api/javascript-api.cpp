@@ -244,11 +244,7 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 		}
 
 		if (key == QLatin1String("identity")) {
-			QJSValueIterator dit(val);
-			while (dit.hasNext()) {
-				dit.next();
-				identity[dit.name()] = dit.value().toVariant();
-			}
+			identity = jsToMap(val);
 		} else if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
 			tags = makeTags(val, site);
 		} else if (key == QLatin1String("tokens")) {
