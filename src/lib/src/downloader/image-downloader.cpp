@@ -404,7 +404,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 		}
 		int maxHeight = settings->value("ImageSize/maxHeight", 1000).toInt();
 		if (maxHeightEnabled && resizeBox.height() > maxHeight) {
-			resizeBox.setWidth(maxHeight);
+			resizeBox.setHeight(maxHeight);
 		}
 		if (resizeBox != m_image->size(size)) {
 			QImage img(m_temporaryPath);
