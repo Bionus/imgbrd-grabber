@@ -16,6 +16,7 @@ class QtGoogleAnalytics : public QObject
 	Q_PROPERTY(QString measurementId READ measurementId WRITE setMeasurementId NOTIFY measurementIdChanged)
 	Q_PROPERTY(QString userId READ userId WRITE setUserId NOTIFY userIdChanged)
 	Q_PROPERTY(QVariantMap userProperties READ userProperties WRITE setUserProperties NOTIFY userPropertiesChanged)
+	Q_PROPERTY(QString userAgent READ userAgent WRITE setUserAgent NOTIFY userAgentChanged)
 	Q_PROPERTY(bool debugModeEnabled READ debugModeEnabled WRITE setDebugModeEnabled NOTIFY debugModeEnabledChanged)
 
 	public:
@@ -29,6 +30,8 @@ class QtGoogleAnalytics : public QObject
 		QString userId() const;
 		void setUserProperties(const QVariantMap &userProperties);
 		QVariantMap userProperties() const;
+		void setUserAgent(const QString &userAgent);
+		QString userAgent() const;
 		void setDebugModeEnabled(bool debugModeEnabled);
 		bool debugModeEnabled() const;
 
@@ -39,18 +42,19 @@ class QtGoogleAnalytics : public QObject
 		void measurementIdChanged();
 		void userIdChanged();
 		void userPropertiesChanged();
+		void userAgentChanged();
 		void debugModeEnabledChanged();
 
 	protected:
 		#ifdef QT_GUI_LIB
 			QString screenResolution() const;
 		#endif
-		QString userAgent() const;
+		QString generateUserAgent() const;
 
 	private:
 		QNetworkAccessManager *m_networkAccessManager;
 		UserAgentClientHints m_uach;
-		QString m_userAgent;
+		QString m_generatedUserAgent;
 
 		unsigned int m_sessionId;
 		QDateTime m_lastEvent;
@@ -60,6 +64,7 @@ class QtGoogleAnalytics : public QObject
 		QString m_clientId;
 		QString m_userId;
 		QVariantMap m_userProperties;
+		QString m_userAgent;
 		bool m_debugModeEnabled = false;
 };
 
