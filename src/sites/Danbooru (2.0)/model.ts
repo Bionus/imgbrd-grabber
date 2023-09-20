@@ -140,6 +140,14 @@ export const source: ISource = {
                         if (!img.md5 || img.md5.length === 0) {
                             continue;
                         }
+                        if ("media_asset" in image && "variants" in image["media_asset"]) {
+                            img.medias = image["media_asset"]["variants"].map((variant: any) => ({
+                                type: variant["type"] === "sample" ? "sample" : (variant["type"] === "original" ? "full" : undefined),
+                                url: variant.url,
+                                width: variant.width,
+                                height: variant.height,
+                            }));
+                        }
                         images.push(completeImage(img));
                     }
 
