@@ -22,7 +22,7 @@ Filter *FilterFactory::build(QString filter)
 	}
 
 	// Meta-tags
-	int colonPos = filter.lastIndexOf(':');
+	int colonPos = filter.startsWith('%') ? filter.lastIndexOf(':') : filter.indexOf(':');
 	if (colonPos != -1) {
 		if (colonPos > 0 && colonPos < filter.length() - 1 && filter[colonPos + 1] != ':') {
 			const QString type = filter.mid(0, colonPos).toLower();
