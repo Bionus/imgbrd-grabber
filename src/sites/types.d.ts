@@ -160,7 +160,7 @@ interface IImage {
 
         /**
          * For videos, the bitrate (in bits per second) of this file.
-         * Useful to differentiate multiple videos when they have the same
+         * Useful to differentiate multiple videos when they have the same dimensions.
          */
         bitrate?: number;
 
@@ -171,7 +171,7 @@ interface IImage {
 
         /**
          * If this media is just a smaller part of the file, the rectangle to cut the media before showing it.
-         * Necessary sometimes for example in situations where all thumnails are concatenated into a single file to save bandwidth.
+         * Necessary sometimes for example in situations where all thumbnails are concatenated into a single file to save bandwidth.
          */
         rect?: {
             x: number;
