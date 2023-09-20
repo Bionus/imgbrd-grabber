@@ -18,7 +18,7 @@ QQuickImageResponse *AsyncImageProvider::requestImageResponse(const QString &id,
 
 	const QStringList parts = id.split("¤");
 	const QString siteKey = parts[0];
-	const QString url = parts[1];
+	const QString url = parts[1]; // TODO(Bionus): add support for the "thumbnailSmartSize" setting
 
 	if (url.isEmpty()) {
 		auto *ret = new AsyncImageResponse(nullptr, {});

@@ -196,6 +196,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings->value("resizeInsteadOfCropping", true).toBool());
 	ui->spinThumbnailUpscale->setValue(qRound(settings->value("thumbnailUpscale", 1.0).toDouble() * 100));
+	ui->checkThumbnailSmartSize->setChecked(settings->value("thumbnailSmartSize", true).toBool());
 	ui->checkAutocompletion->setChecked(settings->value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 	QStringList infiniteScroll { "disabled", "button", "scroll" };
@@ -1158,6 +1159,7 @@ void OptionsWindow::save()
 
 	settings->setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
 	settings->setValue("thumbnailUpscale", static_cast<double>(ui->spinThumbnailUpscale->value()) / 100.0);
+	settings->setValue("thumbnailSmartSize", ui->checkThumbnailSmartSize->isChecked());
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	const QStringList infiniteScroll { "disabled", "button", "scroll" };

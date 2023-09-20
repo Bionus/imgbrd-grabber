@@ -140,6 +140,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		}
 
 		m_sizes.insert(it.key(), is);
+		m_allSizes.append(is);
 	}
 
 	// Medias
@@ -159,6 +160,8 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		for (const auto &media : medias) {
 			const Image::Size type = media->type;
 			const QSize size = media->size;
+
+			m_allSizes.append(media);
 
 			// If type is provided, trust it
 			if (type != Image::Unknown) {
@@ -1224,4 +1227,30 @@ bool Image::isValid() const
 {
 	return !url(Image::Size::Thumbnail).isEmpty()
 		|| !m_name.isEmpty();
+}
+
+/**
+ * Find the biggest media available in this image under the given size. Defaults to the thumbnail if none is found.
+ *
+ * @param size The bounding size not to exceed.
+ * @return The biggest media available in this image under this size.
+ */
+const ImageSize &Image::mediaForSize(const QSize &size)
+{
+	QSharedPointer<ImageSize> ret;
+
+	// Find the biggest media smaller than the given size
+	int max = 0;
+	for (const QSharedPointer<ImageSize> &media : m_allSizes) {
+		if (media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
+			ret = media;
+		}
+	}
+
+	// Default to the thumbnail if no media was found
+	if (ret.isNull()) {
+		ret = m_sizes[Image::Thumbnail];
+	}
+
+	return *ret;
 }

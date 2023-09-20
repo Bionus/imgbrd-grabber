@@ -31,7 +31,14 @@ QMovie *ImagePreview::m_loadingMovie = nullptr;
 ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Profile *profile, DownloadQueue *downloadQueue, MainWindow *mainWindow, QObject *parent)
 	: QObject(parent), m_image(image), m_container(container), m_profile(profile), m_downloadQueue(downloadQueue), m_mainWindow(mainWindow)
 {
-	m_thumbnailUrl = image->url(Image::Size::Thumbnail);
+	if (m_profile->getSettings()->value("thumbnailSmartSize", true).toBool()) {
+		const qreal upscale = m_profile->getSettings()->value("thumbnailUpscale", 1.0).toDouble();
+		const int imageSize = qFloor(150 * upscale);
+		m_thumbnailUrl = image->mediaForSize(QSize(imageSize, imageSize)).url;
+	} else {
+		m_thumbnailUrl = image->url(Image::Size::Thumbnail);
+	}
+
 	m_name = image->name();
 	m_counter = image->counter();
 

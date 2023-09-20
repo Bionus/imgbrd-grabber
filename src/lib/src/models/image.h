@@ -89,6 +89,7 @@ class Image : public QObject, public Downloadable
 		void setPromoteDetailParsWarn(bool);
 		bool isValid() const;
 		Profile *getProfile() const { return m_profile; }
+		const ImageSize &mediaForSize(const QSize &size);
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -166,6 +167,7 @@ class Image : public QObject, public Downloadable
 		QString mutable m_md5;
 		QSharedPointer<Image> m_parentGallery;
 		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
+		QList<QSharedPointer<ImageSize>> m_allSizes;
 		QList<Tag> m_tags;
 		QList<Pool> m_pools;
 		QStringList m_sources;
