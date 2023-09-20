@@ -23,14 +23,13 @@ Item {
 
         onClicked: dialog.open()
 
-        FileDialog {
+        FolderDialog {
             id: dialog
 
             title: qsTr("Please choose a directory")
-            folder: setting.value
-            selectFolder: true
+            selectedFolder: setting.value
 
-            onAccepted: setting.setValue(backend.toLocalFile(dialog.fileUrl.toString()))
+            onAccepted: setting.setValue(backend.toLocalFile(dialog.selectedFolder.toString()))
         }
     }
 }
