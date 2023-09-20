@@ -1,9 +1,15 @@
 #include "meta-filter.h"
 #include <QDateTime>
 #include <QRegularExpression>
+#include <QScopedPointer>
+#include <QSettings>
 #include <QStringBuilder>
 #include <QTimeZone>
 #include <utility>
+#include "filename/filename-parser.h"
+#include "filename/visitors/filename-execution-visitor.h"
+#include "filename/ast/filename-node-root.h"
+#include "filename/ast/filename-node-variable.h"
 #include "functions.h"
 #include "loader/token.h"
 
@@ -120,6 +126,23 @@ static bool rangeCheck(T (*converter)(const QString &), T input, const QString &
 	return input == converter(val);
 }
 
+/**
+ * Take a variable expression like "%tags:count%", executes it, then return the result.
+ */
+QString executeVariableExpression(const QString &variable, const QMap<QString, Token> &tokens)
+{
+	// Parse the variable and create a root node to be executed
+	FilenameParser parser(variable);
+	QScopedPointer<FilenameNodeVariable> var(parser.parseVariable());
+	FilenameNodeRoot root({ var.data() });
+
+	// Build the visitor with an empty settings object
+	QScopedPointer<QSettings> settings(new QSettings);
+	FilenameExecutionVisitor visitor(tokens, settings.data());
+
+	return visitor.run(root);
+}
+
 QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 {
 	if (m_invert) {
@@ -157,6 +180,30 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		}
 		if (!cond && invert) {
 			return QObject::tr("image's %1 match").arg(m_type);
+		}
+
+		return QString();
+	}
+
+	// Special case to handle "%var%:check" syntax
+	if (m_type.startsWith('%') && m_type.endsWith('%')) {
+		const QString input = executeVariableExpression(m_type, tokens);
+
+		bool isNumber;
+		int inputNumber = input.toInt(&isNumber);
+
+		bool cond;
+		if (isNumber) {
+			cond = rangeCheck(stringToInt, inputNumber, m_val);
+		} else {
+			cond = input == m_val;
+		}
+
+		if (!cond && !invert) {
+			return QObject::tr("expression '%1' ('%2') does not match").arg(m_type, input);
+		}
+		if (cond && invert) {
+			return QObject::tr("expression '%1' ('%2') match").arg(m_type, input);
 		}
 
 		return QString();

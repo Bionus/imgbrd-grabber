@@ -189,4 +189,15 @@ TEST_CASE("MetaFilter")
 		REQUIRE(MetaFilter("score", "<3.5").match(tokens) == QString());
 		REQUIRE(MetaFilter("score", ">3").match(tokens) == QString("image's score does not match"));
 	}
+
+	SECTION("Match variable expression")
+	{
+		QMap<QString, Token> tokens;
+		tokens.insert("list", Token(QStringList() << "a" << "b" << "c"));
+
+		REQUIRE(MetaFilter("%list:count%", "3").match(tokens) == QString());
+		REQUIRE(MetaFilter("%list:count%", ">=3").match(tokens) == QString());
+		REQUIRE(MetaFilter("%list:count%", "<=3").match(tokens) == QString());
+		REQUIRE(MetaFilter("%list:count%", ">3").match(tokens) == QString("expression '%list:count%' ('3') does not match"));
+	}
 }
