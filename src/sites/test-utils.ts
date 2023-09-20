@@ -3,7 +3,7 @@ import { Parser } from "xml2js";
 export function search(api: IApi, query: string, page: number = 1) {
     return api.search.url(
         { search: query, page },
-        { limit: 10, loggedIn: false, baseUrl: "/" },
+        { page, limit: 10, loggedIn: false, baseUrl: "/" },
         undefined
     );
 }
@@ -11,14 +11,14 @@ export function search(api: IApi, query: string, page: number = 1) {
 export function gallery(api: IApi, id: string) {
     return api.gallery!.url(
         { id, md5: "", page: 1 },
-        { limit: 10, loggedIn: false, baseUrl: "/" },
+        { page: 1, limit: 10, loggedIn: false, baseUrl: "/" },
     );
 }
 
 export function tags(api: IApi, page: number) {
     return api.tags!.url(
         { page, order: "count" },
-        { limit: 10, loggedIn: false, baseUrl: "/" },
+        { page, limit: 10, loggedIn: false, baseUrl: "/" },
     );
 }
 
