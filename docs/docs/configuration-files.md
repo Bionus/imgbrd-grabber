@@ -3,18 +3,20 @@ title: Configuration files
 ---
 
 
-## Configuration files
+## Location
 
 ### Windows
 
 ```
-C:/Users/%USERNAME%/AppData/Local/Bionus/Grabber
+C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber
 ```
 
 
 ## Files
 
-_The list below is **not** sorted by "priority" but alphabetically. All might not exist depending on your specific configuration._
+!!! note
+
+    The list below is **not** sorted by "priority" but alphabetically. Also, some files might not exist depending on your specific configuration.
 
 * `cache/`: temporary files for caching things such as HTTP requests
 * `sites/`: list of sources and sites (see [Sources](sources.md))

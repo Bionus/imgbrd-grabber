@@ -17,9 +17,7 @@ See the [Portable version](portable-version.md) documentation page.
 
 ### Where are the settings, favorites, etc. stored?
 
-```
-C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber
-```
+See the [Configuration files](configuration-files.md#location) documentation page.
 
 
 ### How can I filter images by extension?
