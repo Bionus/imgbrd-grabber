@@ -103,6 +103,7 @@ nav:
         - docs/sources/twitter.md
       - docs/favorites.md
       - docs/website-login.md
+      - docs/duplicate-files.md
       - docs/faq.md
     - Advanced:
       - docs/shortcuts.md
