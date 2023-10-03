@@ -107,6 +107,7 @@ nav:
     - Advanced:
       - docs/shortcuts.md
       - docs/metadata.md
+      - docs/monitors.md
       - Tools:
         - docs/tools/blacklist-fixer.md
         - docs/tools/image-renamer.md
