@@ -13,6 +13,7 @@ TagNameFormat &TagNameFormat::Normalized()
 	return normalized;
 }
 
+
 TagNameFormat::CaseFormat TagNameFormat::caseFormat() const
 {
 	return m_caseFormat;
@@ -22,6 +23,7 @@ QString TagNameFormat::wordSeparator() const
 {
 	return m_wordSeparator;
 }
+
 
 QString TagNameFormat::formatted(const QStringList &words) const
 {
