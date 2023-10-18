@@ -1,0 +1,73 @@
+{% extends "main.html" %}
+
+{% block htmltitle %}
+    <title>Imgbrd-Grabber - Booru browsing made easy</title>
+{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{{ 'assets/css/home.css' | url }}">
+
+    <!-- Custom GLightbox usage -->
+    <link rel="stylesheet" href="{{ 'assets/stylesheets/glightbox.min.css' | url }}">
+    <style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+
+        .gscrollbar-fixer { padding-right: 15px; }
+        .gdesc-inner { font-size: 0.75rem; }
+        body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+        body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+        body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+    </style>
+{% endblock %}
+
+{% block tabs %}
+    {{ super() }}
+
+    <div id="home-hero">
+        <div class="hright">
+            {% if config.theme.grabber.subtitle %}
+                <p class="subtitle">{{ config.theme.grabber.subtitle }}</p>
+            {% endif %}
+            <p class="description">{{ config.theme.grabber.description }}</p>
+
+            <p class="download"><a href="{{ config.repo_url }}/releases/latest" data-label="Download" class="md-button">
+                Free download - {{ site.github.latest_release.name }}
+            </a></p>
+
+            <p class="view"><a href="{{ config.repo_url }}" data-label="GitHub project">
+                View the Project on GitHub
+            </a></p>
+        </div>
+
+        <div class="image">
+            <a href="{{ 'assets/img/screenshots/search-basic.png' | url }}">
+                <img src="{{ 'assets/img/screenshots/search-basic.png' | url }}" class="glightbox" data-gallery="hero" alt="" />
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {{ page.content }}
+
+    <!-- Custom GLightbox usage -->
+    <script src="{{ 'assets/javascripts/glightbox.min.js' | url }}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var feature = 1;
+            $(".features > .feature").each(function() {
+                $(this).find("a > img").each(function() {
+                    var p = $(this).parent();
+                    p.addClass("glightbox");
+                    p.attr('data-gallery', 'feature' + feature);
+                });
+                feature++;
+            });
+            const lightbox = GLightbox({ selector: ".glightbox" });
+        });
+    </script>
+{% endblock %}

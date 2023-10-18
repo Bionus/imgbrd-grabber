@@ -1,0 +1,140 @@
+site_name: Imgbrd-Grabber
+site_url: https://www.bionus.org/imgbrd-grabber/
+repo_url: https://github.com/Bionus/imgbrd-grabber
+repo_name: Bionus/imgbrd-grabber
+copyright: This project is maintained by <a href="https://github.com/Bionus" data-label="Owner">Bionus</a>
+use_directory_urls: false
+
+plugins:
+  - search
+  - blog
+  - git-revision-date-localized
+  - glightbox
+  - macros:
+      module_name: docs/theme/hooks/github_metadata
+
+hooks:
+  - docs/theme/hooks/github_metadata.py
+
+theme:
+  name: material
+  custom_dir: docs/theme
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+
+  language: en
+  logo: assets/img/icon.png
+  favicon: assets/favicon.ico
+
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  # Custom
+  grabber:
+    subtitle: Booru browsing made easy
+    description: Very customizable imageboard/booru browser and mass downloader, with powerful filenaming features.
+    google_site_verification: HUsU9v5lhoPPeKdafhViSRi1NofQwzQrRwLN1nEzsA8
+
+extra:
+  generator: false
+  analytics:
+    provider: google
+    property: G-MR404DPTE5
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Bionus
+
+extra_css:
+  - assets/css/style.css
+
+markdown_extensions:
+  - attr_list
+  - markdown.extensions.extra
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: '¶'
+
+nav:
+  - Home: index.md
+  - Blog:
+    - blog/index.md
+  - Docs:
+    - Basics:
+      - Installation:
+        - docs/install/windows.md
+        - docs/install/linux.md
+        - docs/install/macos.md
+        - docs/install/android.md
+      - docs/index.md
+      - docs/filename.md
+      - docs/search.md
+      - Sources:  # TODO: use the awesome-pages plugin with "... | flat | docs/sources/*" once compatibility is fixed
+        - docs/sources/danbooru-2.0.md
+        - docs/sources/deviantart.md
+        - docs/sources/e-hentai.md
+        - docs/sources/gelbooru-0.2.md
+        - docs/sources/mastodon.md
+        - docs/sources/newgrounds-art.md
+        - docs/sources/nijie.md
+        - docs/sources/pixiv.md
+        - docs/sources/reddit.md
+        - docs/sources/shimmie.md
+        - docs/sources/twitter.md
+      - docs/favorites.md
+      - docs/website-login.md
+      - docs/faq.md
+    - Advanced:
+      - docs/shortcuts.md
+      - docs/metadata.md
+      - Tools:
+        - docs/tools/blacklist-fixer.md
+        - docs/tools/image-renamer.md
+        - docs/tools/tag-loader.md
+      - Commands:
+        - Introduction: docs/commands/index.md
+        - docs/commands/szurubooru.md
+        - docs/commands/danbooru.md
+        - docs/commands/my-imouto.md
+        - docs/commands/gelbooru.md
+        - docs/commands/shimmie.md
+      - docs/compilation.md
+      - docs/cli.md
+      - docs/portable-version.md
+      - docs/configuration-files.md
+      - docs/telemetry.md
+    - Plugins:
+      - docs/plugins/theme.md
+      - Sources:
+        - docs/sites/index.md
+        - docs/sites/source.md
+        - docs/sites/source-example.md
+        - docs/sites/javascript-helper.md
+      - docs/sites/source-registry.md
+      - docs/plugins/translation.md
+  - Issue tracker: https://github.com/Bionus/imgbrd-grabber/issues
+  - Discord: https://discord.gg/pWnY5eW3rz
+  - Sponsor:
+    - Patreon: https://www.patreon.com/bionus
+    - GitHub: https://github.com/sponsors/Bionus
+    - Paypal: https://www.paypal.me/jvasti

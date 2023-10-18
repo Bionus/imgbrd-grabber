@@ -1,0 +1,47 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - mkdocs.yml
+      - docs/**
+      - .github/workflows/docs.yml
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install Python dependencies
+        run: pip install mkdocs-material==9.2.0b3 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
+
+      - name: Patch blog dates to support datetimes
+        run: sed -i 's|date.fromisoformat|datetime.fromisoformat|' $(pip show mkdocs-material | grep Location | cut -d ' ' -f 2)/material/plugins/blog/plugin.py
+
+      - name: Deploy to Github Pages
+        run: mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
