@@ -74,6 +74,24 @@ void JavaScriptSourceEngine::load()
 		m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
 	}
 
+	// Read search format
+	const QJSValue &searchFormat = m_jsSource.property("searchFormat");
+	if (!searchFormat.isUndefined()) {
+		const QJSValue &andOp = searchFormat.property("and");
+		const auto andFormat = andOp.isString()
+		   ? SearchFormatType{andOp.toString(), ""}
+		   : SearchFormatType{getPropertyOr(andOp, "separator", QString()), getPropertyOr(andOp, "prefix", QString())};
+		const QJSValue &orOp = searchFormat.property("or");
+		const auto orFormat = orOp.isString()
+		   ? SearchFormatType{orOp.toString(), ""}
+		   : SearchFormatType{getPropertyOr(orOp, "separator", QString()), getPropertyOr(orOp, "prefix", QString())};
+		const bool parenthesis = getPropertyOr(searchFormat, "parenthesis", false);
+		const SearchFormat::Precedence precedence = getPropertyOr(searchFormat, "parenthesis", QString("and")) == QString("and")
+			? SearchFormat::Precedence::And
+			: SearchFormat::Precedence::Or;
+		m_searchFormat = SearchFormat(andFormat, orFormat, parenthesis, precedence);
+	}
+
 	// Read auth information
 	const QJSValue auths = m_jsSource.property("auth");
 	QJSValueIterator authIt(auths);
@@ -199,5 +217,7 @@ bool JavaScriptSourceEngine::isValid() const
 
 const QString &JavaScriptSourceEngine::getName() const { return m_name; }
 const QList<Api*> &JavaScriptSourceEngine::getApis() const { return m_apis; }
-const QStringList &JavaScriptSourceEngine::getAdditionalTokens() const { return m_additionalTokens; }
 const QMap<QString, Auth*> &JavaScriptSourceEngine::getAuths() const { return m_auths; }
+const QStringList &JavaScriptSourceEngine::getAdditionalTokens() const { return m_additionalTokens; }
+const TagNameFormat &JavaScriptSourceEngine::getTagNameFormat() const { return m_tagNameFormat; }
+const SearchFormat &JavaScriptSourceEngine::getSearchFormat() const { return m_searchFormat; }
