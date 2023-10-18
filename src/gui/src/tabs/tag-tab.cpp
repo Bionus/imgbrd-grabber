@@ -102,7 +102,7 @@ void TagTab::load()
 	}
 
 	const QStringList tags = search.split(" ", Qt::SkipEmptyParts);
-	if (ui->comboEndpoint->isVisible()) {
+	if (ui->comboEndpoint->isVisible() && !ui->comboEndpoint->currentData().toString().isEmpty()) {
 		const QString endpoint = ui->comboEndpoint->currentData().toString();
 		const QMap<QString, QVariant> input {{ "search", search }};
 		loadTags(SearchQuery(endpoint, input));
