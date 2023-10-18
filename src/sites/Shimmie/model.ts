@@ -138,7 +138,7 @@ function parseDetails(src: string): IParsedDetails {
 
 export const source: ISource = {
     name: "Shimmie",
-    modifiers: [],
+    modifiers: ["score:", "date:", "order:score", "order:score_asc", "order:score_desc", "downvote:", "upvote:"],
     forcedTokens: ["filename", "date"],
     tagFormat: {
         case: "lower",
