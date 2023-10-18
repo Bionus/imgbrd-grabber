@@ -17,4 +17,4 @@ In addition:
 * `downvote:` is transformed to `downvoted_by:`
 * `upvote:` is transformed to `upvoted_by:`
 * `tagcount:` is transformed to `tags:`
-* `fav:` is transformed to `c:` or `favorited_by_userno` depending on whether the second part is a number or not
+* `fav:` is transformed to `favourited_by` or `favorited_by_userno` depending on whether the second part is a number or not

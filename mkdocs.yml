@@ -115,9 +115,9 @@ nav:
         - Introduction: docs/commands/index.md
         - docs/commands/szurubooru.md
         - docs/commands/danbooru.md
+        - docs/commands/shimmie.md
         - docs/commands/my-imouto.md
         - docs/commands/gelbooru.md
-        - docs/commands/shimmie.md
       - docs/compilation.md
       - docs/cli.md
       - docs/portable-version.md
