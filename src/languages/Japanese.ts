@@ -2118,7 +2118,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="197"/>
       <source>Download blacklisted images</source>
-      <translation>ブラックリスト画像をダウンロード</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="42"/>
@@ -2509,12 +2509,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="682"/>
       <source>Download original images</source>
-      <translation>オリジナル画像をダウンロードする</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="692"/>
       <source>Download sample on error</source>
-      <translation>エラー時にサンプルをダウンロードする</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="702"/>
