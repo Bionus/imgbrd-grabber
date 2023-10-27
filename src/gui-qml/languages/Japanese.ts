@@ -479,7 +479,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
       <source>Show a confirmation dialog before exiting.</source>
-      <translation>アプリを終了する前に確認ダイアログを表示する</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="111"/>
@@ -604,7 +604,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="14"/>
       <source>Folder</source>
-      <translation>フォルダー</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="19"/>
@@ -624,7 +624,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="34"/>
       <source>Replace JPEG by JPG</source>
-      <translation>JPEGをJPGで置換</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
@@ -1032,7 +1032,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="69"/>
       <source>API key</source>
-      <translation>APIキー</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="87"/>
