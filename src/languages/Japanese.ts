@@ -31,7 +31,7 @@
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
       <source>Grabber is up to date</source>
-      <translation>Grabberは最新の状態です</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation>ファイル名のmd5を取得する</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
@@ -1897,7 +1897,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="54"/>
       <source>Get md5 in filename</source>
-      <translation>ファイル名のmd5を取得する</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="64"/>
@@ -2617,7 +2617,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="884"/>
       <source>Keep deleted files in the MD5 list</source>
-      <translation>削除されたファイルをMD5リストに保持する</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="891"/>
