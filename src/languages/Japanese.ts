@@ -4135,7 +4135,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="373"/>
       <source>Valid filename!</source>
-      <translation>ファイル名が利用できます!</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/helpers.cpp" line="31"/>
