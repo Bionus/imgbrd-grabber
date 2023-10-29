@@ -11,6 +11,11 @@ title: Configuration files
 C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber
 ```
 
+### Linux
+
+```
+$HOME/.config/Bionus/Grabber
+```
 
 ## Files
 
