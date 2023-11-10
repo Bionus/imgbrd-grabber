@@ -84,7 +84,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `num`: a counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
 * `position`: the position of the image in the results list or gallery (starts at 1).
 * `old_directory`: when renaming, store the local path for the current file. (useful to rename images, without changing directory structure).
-* `old_filename`: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token supports the extension of the file, therefore, should not be used with %ext%.
+* `old_filename`: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token contains the extension of the file, therefore, should not be used with %ext%.
 
 ### Gallery tokens
 
