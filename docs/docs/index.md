@@ -42,7 +42,7 @@ You should now be seeing something like this:
 The upper part of the window is "divided" into two sections:
 
 * The search form: to make searches using tags. To insert a date, or access advanced features, you can click the "Plus" button. You can also browse other pages by changing the page value on the right.
-* Hidden form: you can show it by clicking the "+" button. Here, you have some fields to quickly change the settings (images per page and columns), the sources, and "Post-filtering". Post-filtering allows you, for example, to bypass the two-tags limitation of Danbooru by adding additional tags or meta (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit, so if you want to change the number of images per page or columns for example, you should change them directly in the options.
+* Hidden form: you can show it by clicking the "+" button. Here, you have some fields to quickly change the settings (images per page and columns), the sources, and "Post-filtering". Post-filtering allows you, for example, to bypass the two-tags limitation of Danbooru by adding additional tags or meta (source, id, height, etc.) in this field. Note that none of these fields will be saved upon exiting. So if you want Grabber to remember your changes to the number of images per page or columns for example, you should change them directly in the options.
 
 After searching for something, you should see something as:
 
