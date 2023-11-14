@@ -73,7 +73,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `date`: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".
 * `all`: all tags.
 * `allo`: do not use this unless you know what you're doing. It is the same as `%all%`, but without the removal of forbidden characters and any other kind treatment (using it as a filename may cause some images to not save).
-* `source`: the source of this file, usually an URL.
+* `source`: the source of this file, usually a URL.
 * `sources`: all sources for this file, usually a list of URLs.
 * `url_file`: the URL of that file.
 * `url_original`: the URL of that file's original.
@@ -205,7 +205,7 @@ character1---character2
 ```
 
 #### Count (boolean)
-If enabled, the token will be replace by the number of values in the list.
+If enabled, the token will be replaced by the number of values in the list.
 
 Example:
 ```
@@ -301,35 +301,35 @@ artist1 tag1 tag2
 #### Format
 Beware of not using any character forbidden by your operating system in the format, or images won't save (so you cannot use `:` on Windows for example).
 
-| Expression      | Output      |
-| --------------- | ----------- |
-| d | the day as number without a leading zero (1 to 31) |
-| dd | the day as number with a leading zero (01 to 31) |
-| ddd | the abbreviated localized day name |
-| dddd | the long localized day name |
-| M | the month as number without a leading zero (1-12) |
-| MM | the month as number with a leading zero (01-12) |
-| MMM | the abbreviated localized month name |
-| MMMM | the long localized month name |
-| yy | the year as two digit number (00-99) |
-| yyyy | the year as four digit number |
-| h | the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display) |
-| hh | the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display) |
-| m | the minute without a leading zero (0 to 59) |
-| mm | the minute with a leading zero (00 to 59) |
-| s | the second without a leading zero (0 to 59) |
-| ss | the second with a leading zero (00 to 59) |
-| z | the milliseconds without leading zeroes (0 to 999) |
-| zzz | the milliseconds with leading zeroes (000 to 999) |
-| AP | use AM/PM display. AP will be replaced by either "AM" or "PM". |
-| ap | use am/pm display. ap will be replaced by either "am" or "pm". |
+| Expression | Output                                                                |
+|------------|-----------------------------------------------------------------------|
+| d          | the day as number without a leading zero (1 to 31)                    |
+| dd         | the day as number with a leading zero (01 to 31)                      |
+| ddd        | the abbreviated localized day name                                    |
+| dddd       | the long localized day name                                           |
+| M          | the month as number without a leading zero (1-12)                     |
+| MM         | the month as number with a leading zero (01-12)                       |
+| MMM        | the abbreviated localized month name                                  |
+| MMMM       | the long localized month name                                         |
+| yy         | the year as two digit number (00-99)                                  |
+| yyyy       | the year as four digit number                                         |
+| h          | the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display) |
+| hh         | the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)  |
+| m          | the minute without a leading zero (0 to 59)                           |
+| mm         | the minute with a leading zero (00 to 59)                             |
+| s          | the second without a leading zero (0 to 59)                           |
+| ss         | the second with a leading zero (00 to 59)                             |
+| z          | the milliseconds without leading zeroes (0 to 999)                    |
+| zzz        | the milliseconds with leading zeroes (000 to 999)                     |
+| AP         | use AM/PM display. AP will be replaced by either "AM" or "PM".        |
+| ap         | use am/pm display. ap will be replaced by either "am" or "pm".        |
 
 All other input characters will be ignored. Any sequence of characters that are enclosed in singlequotes will be treated as text and not be used as an expression. Two consecutive singlequotes `''` are replaced by a singlequote in the output.
 
 Some examples, assumed that the date is 21 May 2001 at 14:13:09:
 
 | Format          | Result        |
-| --------------- | ------------- |
+|-----------------|---------------|
 | `dd.MM.yyyy`    | 21.05.2001    |
 | `ddd MMMM d yy` | Tue May 21 01 |
 | `hh:mm:ss.zzz`  | 14:13:09.042  |
@@ -482,7 +482,7 @@ In order to fix this, there are a few options.
 ### The "use shortest if possible" setting
 This setting is specific for copyright tags, and can be found in the option window, in the "Save > Tags > Copyright" category, as a checkbox at the bottom of the window.
 
-This feature takes all tags marked as "copyright", and remove all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "\_bw"..
+This feature takes all tags marked as "copyright", and remove all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "_bw".
 
 ### Ignored tags
 You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appearing, in our example, in `%copyright%`. It will however still be in `%all%`.

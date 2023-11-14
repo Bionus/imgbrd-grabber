@@ -17,7 +17,7 @@ _Thanks a lot to [Siegen](https://github.com/Siegen) for his integration of Shim
 ### Install
 Follow the official [Docker installation](https://github.com/shish/shimmie2/wiki/Docker) documentation from the Shimmie repository.
 Note that you'll need to have [Docker](https://docs.docker.com/get-docker/) installed.
-If you prefer a more on-hands installation without Docker, they also have a [on-disk installation](https://github.com/shish/shimmie2/wiki/Install) documentation you can follow instead.
+If you prefer a more on-hands installation without Docker, they also have an [on-disk installation](https://github.com/shish/shimmie2/wiki/Install) documentation you can follow instead.
 
 
 ### Configuration

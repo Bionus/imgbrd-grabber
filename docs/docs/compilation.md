@@ -12,7 +12,7 @@ Tired of waiting for the next update? Want to get the latest developer version? 
 
 ### Dependencies
 
-Bullets with '`*`' are mandatory, other are optional. Note that the compiler used for official builds is Visual Studio 2019. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one used to push releases and updates.
+Bullets with '`*`' are mandatory, other are optional. Note that the compiler used for official builds is Visual Studio 2019. You can use MinGW or a more recent version of MSVC if it works for you. However, know that this is the one used to push releases and updates.
 
 * `*`Qt 5.14 or higher (MSVC 2019)
 * `*`Visual Studio 2019 C++ compiler
@@ -45,22 +45,22 @@ If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and chan
 Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
 
 1. Download
-1. Open the Qt command prompt (you can find it in the start menu)
-1. Add Visual Studio compiler to the path by typing "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" (with quotes, else it will give you an error message on "C:\Program") in the prompt
-1. Browse to where you extracted QScintilla using the "cd" command (for example, "cd C:\Users\Bionus\Desktop\QScintilla-gpl-2.7.2"). If it's on another hard drive, use the "cd /D" command
-1. Type "cd Qt4Qt5" (without quotes)
-1. Type "qmake qscintilla.pro" (without quotes)
-1. Type "nmake" (without quotes)
-1. Type "nmake install" (without quotes)
-1. The dlls should now have been installed and the headers added to Qt
+2. Open the Qt command prompt (you can find it in the start menu)
+3. Add Visual Studio compiler to the path by typing "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" (with quotes, else it will give you an error message on "C:\Program") in the prompt
+4. Browse to where you extracted QScintilla using the "cd" command (for example, "cd C:\Users\Bionus\Desktop\QScintilla-gpl-2.7.2"). If it's on another hard drive, use the "cd /D" command
+5. Type "cd Qt4Qt5" (without quotes)
+6. Type "qmake qscintilla.pro" (without quotes)
+7. Type "nmake" (without quotes)
+8. Type "nmake install" (without quotes)
+9. The dlls should now have been installed and the headers added to Qt
 
 #### Google Breakpad
 If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
 
 If you want to use it, I won't explain here how to configure it to work with Qt. Beware that it's a real pain to have it work with Qt on Windows.
 
-  1. Open "gui/CMakeLists.txt"
-  1. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
+1. Open "gui/CMakeLists.txt"
+2. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
 
 ## Linux
 
@@ -91,7 +91,7 @@ sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translati
 source /opt/qt515/bin/qt515-env.sh
 ```
 
-If you know your package manager has up-to-date Qt versions, you can use it, for example using using `apt`:
+If you know your package manager has up-to-date Qt versions, you can use it, for example using `apt`:
 ```bash
 sudo apt install -y "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools"
 ```
@@ -132,13 +132,13 @@ If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and chan
 Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
 
 1. Download
-1. Open a terminal
-1. Browse to where you extracted QScintilla using the "cd" command (for example, "cd /home/Bionus/QScintilla-gpl-2.7.2").
-1. Type "cd Qt4Qt5" (without quotes)
-1. Type "qmake qscintilla.pro" (without quotes)
-1. Type "make" (without quotes)
-1. Type "make install" (without quotes)
-1. The shared libraries should now have been installed and the headers added to Qt
+2. Open a terminal
+3. Browse to where you extracted QScintilla using the "cd" command (for example, "cd /home/Bionus/QScintilla-gpl-2.7.2").
+4. Type "cd Qt4Qt5" (without quotes)
+5. Type "qmake qscintilla.pro" (without quotes)
+6. Type "make" (without quotes)
+7. Type "make install" (without quotes)
+8. The shared libraries should now have been installed and the headers added to Qt
 
 #### Google Breakpad
 If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
@@ -146,7 +146,7 @@ If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and
 If you want to use it, I won't explain here how to configure it to work with Qt, as it's a pretty complicated task.
 
 1. Open "gui/CMakeLists.txt"
-1. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
+2. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
 
 #### Building
 ```bash
@@ -173,7 +173,7 @@ Another option would be to simply move the binary to the release folder after th
 ## Raspberry Pi (Raspbian)
 
 ### Preparations
-Make sure that you are running Raspbian Stretch or newer on a Raspberry Pi 2 or Raspberry Pi 3. The compilation requires a lot of memory so make sure that you stop all unnecessary processes (i. e. Apache, MySQL, php-fpm) before starting the compilation. You may need to set memory-split to 16MB in _raspi-config_ or increase your swap partition size. You only need to do this for the compilation and can switch back to the old values.
+Make sure that you are running Raspbian Stretch or newer on a Raspberry Pi 2 or Raspberry Pi 3. The compilation requires a lot of memory so make sure that you stop all unnecessary processes (i.e. Apache, MySQL, php-fpm) before starting the compilation. You may need to set memory-split to 16MB in _raspi-config_ or increase your swap partition size. You only need to do this for the compilation and can switch back to the old values.
 
 You can choose between two different versions of Grabber. One is the release version, the other one the developer version. Simply download the one that suits your taste best.
 
@@ -210,24 +210,24 @@ sudo apt-get install libqt5sql5-psql
 
 #### Qt
 1. Install Xcode (https://itunes.apple.com/us/app/xcode/id497799835?mt=12).
-1. Open Terminal and run this code to install Homebrew, a package manager:
+2. Open Terminal and run this code to install Homebrew, a package manager:
 
     ```bash
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     ```
 
-1. Install QT5 with brew.
+3. Install QT5 with brew.
 
     ```bash
     brew install qt5
     ```
 
-1. Edit `~/.bash_profile` and add the following line: 
+4. Edit `~/.bash_profile` and add the following line: 
 
     ```bash
     export PATH="/usr/local/Cellar/qt5/5.7.0/bin"
     ```
-    This is the default path to your QT installation. **Be sure to update the version number or it won't work!**
+    This is the default path to your QT installation. **Be sure to update the version number, or it won't work!**
 
 #### Compiler
 You can use the g++ compiler to compile the program. If it's not already installed, you can easily do so using the Homebrew package manager.

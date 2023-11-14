@@ -14,7 +14,7 @@ The goal of this page is to provide a step-by-step example on how to create a ne
 
 ### TypeScript development environment
 
-All sources in Grabber are coded in TypeScript. So before going further, it is recommended to set it up first. For that, you'll first need to install [NodeJS](https://nodejs.org/en/).
+All sources in Grabber are coded in TypeScript. So before going further, it is recommended to set it up first. For that, you'll first need to install [Node.js](https://nodejs.org/en/).
 
 Then, download Grabber source code somewhere, either via git or via GitHub "download code as ZIP" feature.
 
@@ -31,7 +31,7 @@ First, let's create a new directory in `C:\Users\%USERNAME%\AppData\Local\Bionus
 
 In there, let's create a `sites.txt` file, containing a single line, "danbooru.donmai.us".
 
-In addition, we download Danbooru's favicon. Most of the times, it can be found in "/favicon.ico" on the server. In other cases, you can find out the correct link by looking for "shortcut icon" in any page's source code.
+In addition, we download Danbooru's favicon. Most of the time, it can be found in "/favicon.ico" on the server. In other cases, you can find out the correct link by looking for "shortcut icon" in any page's source code.
 
 This favicon being a .ico file, we need to convert it to PNG. If you have an image editor that can do that, go ahead. Otherwise, there's lots of tools online providing this service, that can be found by searching "ico to png online" on a search engine. Rename the final file to "icon.png" and you're done.
 
@@ -129,7 +129,7 @@ Note that we use `encodeURIComponent` for the free input part, as we don't know 
 
 ### Search "parse" function
 
-With the URL generated above, Grabber will make an HTTP call. Then, it will pas the output of this call to the "parse" function, whose job is to turn this raw output into a list of images.
+With the URL generated above, Grabber will make an HTTP call. Then, it will pass the output of this call to the "parse" function, whose job is to turn this raw output into a list of images.
 
 In our case, the raw output is made of JSON. JavaScript (and by extension TypeScript) provides a convenient way to parse JSON, namely [JSON.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse).
 
@@ -213,7 +213,7 @@ Here's the HTML of the `<form>` field for reference:
 Now you'll notice we're still missing the `fields` and `check` members.
 
 #### Auth fields
-The fields correspond to the different inputs on the login page. In most cases, that would be an username and password. Sometimes, there's also a few hidden fields on the page (`<input type="hidden">`) so be careful with those as well. Those fields are built using the `IAuthField` type.
+The fields correspond to the different inputs on the login page. In most cases, that would be a username and password. Sometimes, there's also a few hidden fields on the page (`<input type="hidden">`) so be careful with those as well. Those fields are built using the `IAuthField` type.
 
 In this example, there's two inputs on the page: username and password, which gives us those two fields:
 
@@ -253,7 +253,7 @@ Once the HTTP call is done, it can be very useful to check whether the login was
 
 For our example, we can use the simplest one, "cookie". Indeed, when logged in, many websites will generate what is called a user session, whose ID will be stored in a cookie. That means that anonymous users don't have said cookie, but logged-in users have it. As such, if we check that this cookie exists, we can know whether the login was successful or not.
 
-We can also check other various cookies, such as a "remember me" cookie or similar. All cookies can be checked using the browser's "Storage" devtool, so it's quite easy to see which ones are specific to a logged in user or not.
+We can also check other various cookies, such as a "remember me" cookie or similar. All cookies can be checked using the browser's "Storage" devtool, so it's quite easy to see which ones are specific to a logged-in user or not.
 
 Doing this kind of check is quite simple, for example for the cookie "password_hash" on Danbooru:
 

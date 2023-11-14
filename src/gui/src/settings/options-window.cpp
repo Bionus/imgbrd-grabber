@@ -1624,7 +1624,7 @@ QList<ButtonState> buildButtonState(ViewerWindowButtons::SaveState saveState, co
 
 void OptionsWindow::saveButtonSettings(QSettings *settings)
 {
-	/* Note: enums make ButtonState's type more clear to read but it's probably safer to hard code unsigned shorts.	*
+	/* Note: enums make ButtonState's type clearer to read, but it's probably safer to hard code unsigned shorts.	*
 	 * This might eliminate the header dependency and enums should be logically ordered anyway.			*/
 
 	QList<ButtonSettings> buttons;

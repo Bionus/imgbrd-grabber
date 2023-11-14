@@ -35,7 +35,7 @@ You can set a source using the "-s" or "--sources" parameter, followed by the li
 
 ### Count the number of images
 Prints the result followed by a new line to stdout.
-```
+```bash
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" --return-count
 288
 
@@ -71,43 +71,43 @@ thighhighs      613879  general
 Prints each result separated by a new line.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 5 -p 3 --return-images
-http://danbooru.donmai.us/data/10d3ae95f0f5b7ea65cd3f07e541cfdf.jpg
-http://danbooru.donmai.us/data/3612d866e07f13d632132c99f704fc57.jpg
-http://danbooru.donmai.us/data/8766a8dad81082c631fbcb25328029e4.jpg
-http://danbooru.donmai.us/data/a820e3967048b0d7c7a197de748d7505.jpg
-http://danbooru.donmai.us/data/85ba43a3470236f16807d102ebb9befe.jpg
+https://cdn.donmai.us/original/10/d3/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+https://cdn.donmai.us/original/36/12/3612d866e07f13d632132c99f704fc57.png
+https://cdn.donmai.us/original/87/66/8766a8dad81082c631fbcb25328029e4.png
+https://cdn.donmai.us/original/a8/20/a820e3967048b0d7c7a197de748d7505.png
+https://cdn.donmai.us/original/85/ba/85ba43a3470236f16807d102ebb9befe.png
 
 ./grabber -c -t "inugami_kira" -s "gelbooru.com" -i 5 -p 3 --return-images
-http://simg2.gelbooru.com/images/2080/8766a8dad81082c631fbcb25328029e4.png
-http://simg2.gelbooru.com/images/2080/3612d866e07f13d632132c99f704fc57.png
-http://simg2.gelbooru.com/images/2080/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
-http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
-http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
+https://img3.gelbooru.com/images/87/66/8766a8dad81082c631fbcb25328029e4.png
+https://img3.gelbooru.com/images/36/12/3612d866e07f13d632132c99f704fc57.png
+https://img3.gelbooru.com/images/10/d3/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+https://img3.gelbooru.com/images/7a/3f/7a3fa58e9e669c2fdc2fb6596e13ed40.png
+https://img3.gelbooru.com/images/ee/a3/eea3d1e72f2f33521ccf68874b408d38.png
 
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" -i 5 -p 3 --return-images
-http://danbooru.donmai.us/data/10d3ae95f0f5b7ea65cd3f07e541cfdf.jpg
-http://danbooru.donmai.us/data/3612d866e07f13d632132c99f704fc57.jpg
-http://danbooru.donmai.us/data/8766a8dad81082c631fbcb25328029e4.jpg
-http://danbooru.donmai.us/data/a820e3967048b0d7c7a197de748d7505.jpg
-http://danbooru.donmai.us/data/85ba43a3470236f16807d102ebb9befe.jpg
-http://simg2.gelbooru.com/images/2080/8766a8dad81082c631fbcb25328029e4.png
-http://simg2.gelbooru.com/images/2080/3612d866e07f13d632132c99f704fc57.png
-http://simg2.gelbooru.com/images/2080/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
-http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
-http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
+https://cdn.donmai.us/original/10/d3/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+https://cdn.donmai.us/original/36/12/3612d866e07f13d632132c99f704fc57.png
+https://cdn.donmai.us/original/87/66/8766a8dad81082c631fbcb25328029e4.png
+https://cdn.donmai.us/original/a8/20/a820e3967048b0d7c7a197de748d7505.png
+https://cdn.donmai.us/original/85/ba/85ba43a3470236f16807d102ebb9befe.png
+https://img3.gelbooru.com/images/87/66/8766a8dad81082c631fbcb25328029e4.png
+https://img3.gelbooru.com/images/36/12/3612d866e07f13d632132c99f704fc57.png
+https://img3.gelbooru.com/images/10/d3/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+https://img3.gelbooru.com/images/7a/3f/7a3fa58e9e669c2fdc2fb6596e13ed40.png
+https://img3.gelbooru.com/images/ee/a3/eea3d1e72f2f33521ccf68874b408d38.png
 ```
 
 #### Duplicates
 You can use the "-n" or "--no-duplicates" option to remove duplicate results when downloading from several sources based on MD5.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" -i 5 -p 3 --return-images --no-duplicates
-http://danbooru.donmai.us/data/10d3ae95f0f5b7ea65cd3f07e541cfdf.jpg
-http://danbooru.donmai.us/data/3612d866e07f13d632132c99f704fc57.jpg
-http://danbooru.donmai.us/data/8766a8dad81082c631fbcb25328029e4.jpg
-http://danbooru.donmai.us/data/a820e3967048b0d7c7a197de748d7505.jpg
-http://danbooru.donmai.us/data/85ba43a3470236f16807d102ebb9befe.jpg
-http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
-http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
+https://cdn.donmai.us/original/10/d3/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+https://cdn.donmai.us/original/36/12/3612d866e07f13d632132c99f704fc57.png
+https://cdn.donmai.us/original/87/66/8766a8dad81082c631fbcb25328029e4.png
+https://cdn.donmai.us/original/a8/20/a820e3967048b0d7c7a197de748d7505.png
+https://cdn.donmai.us/original/85/ba/85ba43a3470236f16807d102ebb9befe.png
+https://img3.gelbooru.com/images/7a/3f/7a3fa58e9e669c2fdc2fb6596e13ed40.png
+https://img3.gelbooru.com/images/ee/a3/eea3d1e72f2f33521ccf68874b408d38.png
 ```
 
 #### Images per page
@@ -118,28 +118,28 @@ You can use the "-m" or "--max" option to choose how many images you want to ret
 Mixed together, they can allow to get multiple pages for a single request. For example, "-i 2 -m 10" will return the same result as "-i 10", but will use 5 requests to do so.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 10 --return-images
-http://danbooru.donmai.us/data/3fccf5d7c6a0fe066cb0c6d3d584dba4.jpg
-http://danbooru.donmai.us/data/92bde7d2b5b5b045e3d03e2544499f4b.jpg
-http://danbooru.donmai.us/data/27de992712f6bae5c03357cf4e63ea0a.jpg
-http://danbooru.donmai.us/data/3412be9340651fe39c09bc1405d4b9c2.jpg
-http://danbooru.donmai.us/data/861e7414086026f3f1d3dfe11dfe9237.jpg
-http://danbooru.donmai.us/data/eb35c0dee3e05ffeda18eba4917c33ff.jpg
-http://danbooru.donmai.us/data/092d892110825a6cbdf1bde24241c030.jpg
-http://danbooru.donmai.us/data/dacde25c81be108389854c32f1bdeb3d.jpg
-http://danbooru.donmai.us/data/100cd43adb60f390309d14c1ce8bb853.jpg
-http://danbooru.donmai.us/data/7a3fa58e9e669c2fdc2fb6596e13ed40.jpg
+https://cdn.donmai.us/original/3f/cc/3fccf5d7c6a0fe066cb0c6d3d584dba4.png
+https://cdn.donmai.us/original/92/bd/92bde7d2b5b5b045e3d03e2544499f4b.png
+https://cdn.donmai.us/original/27/de/27de992712f6bae5c03357cf4e63ea0a.png
+https://cdn.donmai.us/original/34/12/3412be9340651fe39c09bc1405d4b9c2.png
+https://cdn.donmai.us/original/86/1e/861e7414086026f3f1d3dfe11dfe9237.png
+https://cdn.donmai.us/original/eb/35/eb35c0dee3e05ffeda18eba4917c33ff.png
+https://cdn.donmai.us/original/09/2d/092d892110825a6cbdf1bde24241c030.png
+https://cdn.donmai.us/original/da/cd/dacde25c81be108389854c32f1bdeb3d.png
+https://cdn.donmai.us/original/10/0c/100cd43adb60f390309d14c1ce8bb853.png
+https://cdn.donmai.us/original/7a/3f/7a3fa58e9e669c2fdc2fb6596e13ed40.png
 
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 2 -m 10 --return-images
-http://danbooru.donmai.us/data/3fccf5d7c6a0fe066cb0c6d3d584dba4.jpg
-http://danbooru.donmai.us/data/92bde7d2b5b5b045e3d03e2544499f4b.jpg
-http://danbooru.donmai.us/data/27de992712f6bae5c03357cf4e63ea0a.jpg
-http://danbooru.donmai.us/data/3412be9340651fe39c09bc1405d4b9c2.jpg
-http://danbooru.donmai.us/data/861e7414086026f3f1d3dfe11dfe9237.jpg
-http://danbooru.donmai.us/data/eb35c0dee3e05ffeda18eba4917c33ff.jpg
-http://danbooru.donmai.us/data/092d892110825a6cbdf1bde24241c030.jpg
-http://danbooru.donmai.us/data/dacde25c81be108389854c32f1bdeb3d.jpg
-http://danbooru.donmai.us/data/100cd43adb60f390309d14c1ce8bb853.jpg
-http://danbooru.donmai.us/data/7a3fa58e9e669c2fdc2fb6596e13ed40.jpg
+https://cdn.donmai.us/original/3f/cc/3fccf5d7c6a0fe066cb0c6d3d584dba4.png
+https://cdn.donmai.us/original/92/bd/92bde7d2b5b5b045e3d03e2544499f4b.png
+https://cdn.donmai.us/original/27/de/27de992712f6bae5c03357cf4e63ea0a.png
+https://cdn.donmai.us/original/34/12/3412be9340651fe39c09bc1405d4b9c2.png
+https://cdn.donmai.us/original/86/1e/861e7414086026f3f1d3dfe11dfe9237.png
+https://cdn.donmai.us/original/eb/35/eb35c0dee3e05ffeda18eba4917c33ff.png
+https://cdn.donmai.us/original/09/2d/092d892110825a6cbdf1bde24241c030.png
+https://cdn.donmai.us/original/da/cd/dacde25c81be108389854c32f1bdeb3d.png
+https://cdn.donmai.us/original/10/0c/100cd43adb60f390309d14c1ce8bb853.png
+https://cdn.donmai.us/original/7a/3f/7a3fa58e9e669c2fdc2fb6596e13ed40.png
 ```
 
 ### Get tags list

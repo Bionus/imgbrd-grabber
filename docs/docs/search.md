@@ -29,7 +29,7 @@ In this case, the best solution is to use a post-filter, which loads the results
 ### Syntax
 Post-filtering uses the most popular search syntax in boorus, which is:
 
-* Separate tags by spaces to make a "AND" (ex: `tag1 tag2`)
+* Separate tags by spaces to make an "AND" (ex: `tag1 tag2`)
 * Prefix a tag or a filter by a caret (`-`) to negate it (ex: `-tag`)
 * `field:value` to filter by a token (ex: `rating:safe`), the list of tokens can be found on the [Filename](filename.md) page
 * `field:>value` to filter by a token value using a comparison (ex: `id:>1000`), you can use any of these operators: `>`, `>=`, `<`, `<=`

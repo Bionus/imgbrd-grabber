@@ -12,7 +12,7 @@ Hey everyone!
 
 Some might have already noticed, but the Grabber build is slowly being migrated to [GitHub actions](https://github.com/features/actions).
 
-Until now, it was using [AppVeyor](https://www.appveyor.com/) for Windows builds and [Travis CI](https://travis-ci.org/) for Linux and MacOS builds.
+Until now, it was using [AppVeyor](https://www.appveyor.com/) for Windows builds and [Travis CI](https://travis-ci.org/) for Linux and macOS builds.
 
 <!-- more -->
 

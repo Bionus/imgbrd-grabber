@@ -46,7 +46,7 @@ async function setTagCategory(name, category) {
 }
 
 (async () => {
-    // Szurubooru doesn't use the same ratings as most boorus so we need to map them
+    // Szurubooru doesn't use the same ratings as most boorus, so we need to map them
     const ratingsMap = {
         "": "safe",
         "g": "safe",

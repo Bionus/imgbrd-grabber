@@ -28,7 +28,7 @@ After you've determined that your idea have not already been suggested, create a
 
 ## Reporting Bugs
 
-Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports, which in turn helps fixing the issue you faced.
+Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports, which in turn helps to fix the issue you faced.
 
 Start by [a search](https://github.com/Bionus/imgbrd-grabber/issues?q=is%3Aissue) to see if the problem has already been reported. If so, you add information to it if you feel it could help.
 
@@ -53,14 +53,14 @@ Include details about your configuration and environment:
 * **Which version of Grabber are you using?** You can get the exact version by going in the `About` menu and clicking `About Grabber`.
 * **What's the name and version of the OS you're using**?
 * **Are you running Grabber in a virtual machine?** If so, which VM software are you using and which operating systems and versions are used for the host and the guest?
-* **Provide your `main.log` file** to see if any obvious error occured.
+* **Provide your `main.log` file** to see if any obvious error occurred.
 * **Provide your `settings.ini` file** will greatly help maintainers reproduce your problem if it may be caused by your configuration.
 
 Note that both `main.log` and `settings.ini` files can be found in `C:/Users/%USERNAME%/AppData/Local/Bionus/Grabber` in Windows, and in the installation directory on Linux.
 
 ## Reporting crashes
 
-Start by follwing the [Reporting Bugs](#reporting-bugs) guidelines. Additionally, a few more information will be required:
+Start by following the [Reporting Bugs](#reporting-bugs) guidelines. Additionally, a few more information will be required:
 
 * **Provide the crash dump** that was linked by the Crash Reporter tool.
 * **If the crash occured during a download, make sure to provide said download**. You can simply provide the `.igl` file that Grabber can generate by clicking the `Save` button of the `Downloads` tab.

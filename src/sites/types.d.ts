@@ -41,7 +41,7 @@ interface ITagType {
     /**
      * The tag type ID.
      *
-     * Useful for mapping a type ID to an useful type down the road.
+     * Useful for mapping a type ID to a useful type down the road.
      */
     id: number;
 
@@ -449,7 +449,7 @@ interface IParsedCsrf {
 }
 
 /**
- * Authentication by a HTTP call to a given URL (for example for login forms).
+ * Authentication by an HTTP call to a given URL (for example for login forms).
  */
 interface IHttpAuth {
     /**
@@ -458,7 +458,7 @@ interface IHttpAuth {
     type: "get" | "post";
 
     /**
-     * The URL to call to login.
+     * The URL to call to log in.
      */
     url: string;
 
@@ -501,10 +501,10 @@ interface IHttpBasicAuth {
      */
     passwordType?: "password" | "apiKey";
 
-	/**
-	 * The token type to pass in the Authorization header. Defaults to "Basic".
-	 */
-	tokenType?: string;
+    /**
+     * The token type to pass in the Authorization header. Defaults to "Basic".
+     */
+    tokenType?: string;
 
     /**
      * Method to check for successful authentication.
@@ -826,7 +826,7 @@ interface IApi {
 
     /**
      * @see {@link ISource#forcedTokens}
-    */
+     */
     forcedTokens?: string[];
 
     /**

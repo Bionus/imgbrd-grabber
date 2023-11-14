@@ -17,7 +17,7 @@ For those that might not follow the project closely on GitHub, there's a new And
 
 ![Screenshot](../../assets/img/blog/android-version.png)
 
-You can find more details here, such as screenshots, status, roadmap, etc:  
+You can find more details here, such as screenshots, status, roadmap, etc.:  
 [Bionus/imgbrd-grabber#2147](https://github.com/Bionus/imgbrd-grabber/issues/2147)
 
 Or if you just want to download it, here's the link!  

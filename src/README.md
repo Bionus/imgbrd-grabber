@@ -1,6 +1,6 @@
 # The `src` directory
 
-This directory contains all actual source code for Grabber, to be built using [CMake](https://cmake.org/). Each sub-directory contains a different project.
+This directory contains all actual source code for Grabber, to be built using [CMake](https://cmake.org/). Each subdirectory contains a different project.
 
 Main projects:
 * `lib`: the library containing Grabber's logic

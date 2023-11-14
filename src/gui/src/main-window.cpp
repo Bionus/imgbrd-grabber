@@ -992,7 +992,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 
-	// Drop a text containing an URL
+	// Drop a text containing a URL
 	if (mimeData->hasText()) {
 		QString url = mimeData->text();
 		if (isUrl(url)) {
@@ -1019,7 +1019,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 
-	// Drop a text containing an URL
+	// Drop a text containing a URL
 	if (mimeData->hasText()) {
 		QString url = mimeData->text();
 		if (isUrl(url)) {

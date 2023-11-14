@@ -27,7 +27,7 @@ For users interested, a nightly version is built automatically on every commit o
 
 * [Install steps for Windows](https://www.bionus.org/imgbrd-grabber/docs/install/windows.html)
 * [Install steps for Linux](https://www.bionus.org/imgbrd-grabber/docs/install/linux.html)
-* [Install steps for MacOS](https://www.bionus.org/imgbrd-grabber/docs/install/macos.html)
+* [Install steps for macOS](https://www.bionus.org/imgbrd-grabber/docs/install/macos.html)
 * [Install steps for Android](https://www.bionus.org/imgbrd-grabber/docs/install/android.html)
 
 ## Features

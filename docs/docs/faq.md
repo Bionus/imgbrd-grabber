@@ -45,13 +45,13 @@ In addition to being able to not overwrite existing files, Grabber stores a glob
 You can change this behavior to one of those below, in the "Save" category of the settings:
 
 * **Save**: download and save the image twice (as if it's not a duplicate)
-* **Copy**: save the image twice, but copy it from the original image to prevent an useless download
+* **Copy**: save the image twice, but copy it from the original image to prevent a useless download
 * **Move**: move the original image to the duplicate location (useful for example if you're re-downloading an image that has changed a few tags)
-* **Link**: create a shortcut with the duplicate image's name, pointing to the original image (useful if you often have duplicates in different folders, with each folder having an useful meaning)
+* **Link**: create a shortcut with the duplicate image's name, pointing to the original image (useful if you often have duplicates in different folders, with each folder having a useful meaning)
 * **Don't save**: skip duplicate images
 
 
-### Why do I get an message saying my filename is not unique?
+### Why do I get a message saying my filename is not unique?
 
 This means that different images can end up having the same filename if you are not careful.
 

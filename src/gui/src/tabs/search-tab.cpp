@@ -1405,7 +1405,7 @@ void SearchTab::loadPage()
 		}
 		m_pages[page->website()].append(QSharedPointer<Page>(page));
 
-		// Setup the layout
+		// Set up the layout
 		if (!merged) {
 			FixedSizeGridLayout *pageLayout = createImagesLayout(m_settings);
 			m_layouts.insert(page, pageLayout);

@@ -11,11 +11,11 @@ Hey everyone!
 &nbsp;
 
 Tag databases, while documented [on this very website](https://www.bionus.org/imgbrd-grabber/docs/tools/tag-loader.html), is a little-known feature of Grabber.
-However, they are very useful, and as such there is ongoing work to make them more easy to use.
+However, they are very useful, and as such there is ongoing work to make them easier to use.
 
 <!-- more -->
 
-Part of this work is a way to provide already generated tag databases so that users don't need to spend a lot of time and overload servers' tag APIs. The more people use tag databases, the less requests are done on servers, saving both users and servers bandwidth, since the additional request to get tag information is not necessary anymore.
+Part of this work is a way to provide already generated tag databases so that users don't need to spend a lot of time and overload servers' tag APIs. The more people use tag databases, the fewer requests are done on servers, saving both users and servers bandwidth, since the additional request to get tag information is not necessary anymore.
 
 The already generated tag databases can now be found here:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag-databases>

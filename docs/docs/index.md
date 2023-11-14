@@ -8,7 +8,7 @@ permalink: /docs/
 
 * [Install steps for Windows](install/windows.md)
 * [Install steps for Linux](install/linux.md)
-* [Install steps for MacOS](install/macos.md)
+* [Install steps for macOS](install/macos.md)
 * [Install steps for Android](install/android.md)
 
 ## Usage
@@ -42,7 +42,7 @@ You should now be seeing something like this:
 The upper part of the window is "divided" into two sections:
 
 * The search form: to make searches using tags. To insert a date, or access advanced features, you can click the "Plus" button. You can also browse other pages by changing the page value on the right.
-* Hidden form: you can show it by clicking the "+" button. Here, you have some fields to quickly change the settings (images per page and columns), the sources and "Post-filtering". Post-filtering allows you, for example, to bypass the two tags limitation of Danbooru by adding additional tags or metas (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit, so if you want to definitely change the number of images per page or columns for example, you have should change them directly in the options.
+* Hidden form: you can show it by clicking the "+" button. Here, you have some fields to quickly change the settings (images per page and columns), the sources and "Post-filtering". Post-filtering allows you, for example, to bypass the two tags limitation of Danbooru by adding additional tags or metas (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit, so if you want to definitely change the number of images per page or columns for example, you should change them directly in the options.
 
 After searching for something, you should see something as:
 
@@ -52,7 +52,7 @@ After searching for something, you should see something as:
 
 #### Batch downloads
 
-To download a lot of pictures at the same time, first search for the tag you want to download (or no tag if that's what you want). You should arrive on the search page. From here, just click "Get this page" to download all the images on the page you are currently seeing (usually around 20 images), or "Get all" to download all the results of your search, including further pages (can go from 1 images to thousands).
+To download a lot of pictures at the same time, first search for the tag you want to download (or no tag if that's what you want). You should arrive at the search page. From here, just click "Get this page" to download all the images on the page you are currently seeing (usually around 20 images), or "Get all" to download all the results of your search, including further pages (can go from 1 images to thousands).
 
 Then, go to the "Downloads" tab to see a summary of what will be downloaded:
 
@@ -74,7 +74,7 @@ To download single images, you have to "Ctrl + click" the images you want to dow
 
 ![single image selection](img/getselected.png)
 
-One you have selected all the images you want to download, click the "Get selected" button. It will mark these images to be downloaded in the "Downloads" tab:
+Once you have selected all the images you want to download, click the "Get selected" button. It will mark these images to be downloaded in the "Downloads" tab:
 
 ![single image downloads tab](img/downloadselected.png)
 
@@ -98,7 +98,7 @@ Note that you can also merge all results to remove duplicates checking the "Merg
 
 #### Logging in
 
-Some sources (for example Danbooru or Gelbooru) require to login to enable full API access. Even though it is usually not mandatory thanks to the regex fallback, it is usually strongly advised to do so.
+Some sources (for example Danbooru or Gelbooru) require to log in to enable full API access. Even though it is usually not mandatory thanks to the regex fallback, it is usually strongly advised to do so.
 
 To log into a source using an account, just enter your credentials in the "Credentials" tab of the Source Settings window:
 

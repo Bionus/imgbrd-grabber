@@ -22,9 +22,9 @@ If your language is not available for the program, or not up-to-date, you can ad
 2. Login, either by creating a new account or using one of your existing accounts (for example a GitHub account).
 3. Click the language you'd like to translate.
 4. Click the "Join" button (*note that you won't see the "Join" button if you're not logged in*).
-5. You'll be asked for a short introduction about why you can and want to translate Grabber. Don't forget to tell me which languages you want to translate so you can be given the proper access.
+5. You'll be asked for a short introduction about why you can and want to translate Grabber. Don't forget to tell me which languages you want to translate, so that you can be given the proper access.
 
-Once done, your application will be reviewed as soon as possible, and if approved you'll be access to the language's translation interface.
+Once done, your application will be reviewed as soon as possible, and if approved you'll be able to access to the language's translation interface.
 
 
 ### Translating
@@ -54,7 +54,7 @@ Note that even if you don't use Qt Linguist, you'll need `lrelease` in order to 
 2. Rename it by the name of your language in English, for example "German" (so the file will be called "German.ts").
 3. Launch Qt Linguist.
 4. Open ("File > Open..." or `Ctrl + O`) your translation file.
-5. A new window will pop-up: for the source language's language, set English, and for the country USA (you can also leave the default value). For the target language and country, just put here your language and country (in the previous example, German from Germany).
+5. A new window will pop up: for the source language's language, set English, and for the country USA (you can also leave the default value). For the target language and country, just put here your language and country (in the previous example, German from Germany).
 
 
 ### Editing an existing translation
@@ -76,7 +76,7 @@ Now that you're ready, all that's left is to actually get translating!
 3. Once all the translations have been marked as done, save and quit.
 4. Drag and drop your translation file on "lrelease.exe".
 5. Another file will be created : "'Your language'.qm". Move it to the "languages" directory in the Grabber's installation folder (by default "%ProgramFiles(x86)%/Grabber").
-6. You can know choose your language in the options! Note that it may need a restart for all texts to be properly translated.
+6. You can now choose your language in the options! Note that it may need a restart for all texts to be properly translated.
 
 *You can find more information about translating with Qt Linguist in [the official Qt documentation](https://doc.qt.io/qt-5/linguist-translators.html).*
 

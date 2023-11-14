@@ -78,7 +78,7 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		auto *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL | Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
 		auto *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL | Qt::Key_W), this);
-			// Pointer name must not overlap with function name ("saveNQuit"...
+			// Pointer name must not overlap with function name ("saveNQuit"...)
 			connect(SNQ, SIGNAL(activated()), this, SLOT(saveNQuit()));
 		auto *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL | Qt::Key_O), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDir()));

@@ -23,7 +23,7 @@ First of all, know that using commands can slow down huge batch downloads (a rec
 First, we're going to install WAMP, which contains everything required to have a local web server.
 
 1. Download the latest version of WampServer here (2.2e as I am writing this): <http://sourceforge.net/projects/wampserver/>
-2. Install it somewhere that doesn’t requires admin rights to write into (such as the default location: `C:\wamp`)
+2. Install it somewhere that doesn't require admin rights to write into (such as the default location: `C:\wamp`)
 3. At the end of the installation, the installer may ask for two things.
     1. What your favorite browser is. It doesn't really matter, so you can leave it to the default value which will be Internet Explorer, or change it to another browser (Firefox, Chrome, etc.).
     2. It will ask some email settings. Leave the default values, it's not important.
@@ -38,36 +38,36 @@ First, we're going to install WAMP, which contains everything required to have a
 2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be <http://localhost/subfolder/>, and if you don’t it will only be <http://localhost/>. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "gelbooru".
 3. Create a folder named `1` in the `images` folder.
 4. If you are using linux, give the `images`, `images/1` and `thumbnails` folders writable permissions.
-5. Then, go to <http://localhost/phpmyadmin/>. If you have to login, use "root" as username and "" as password (no password).
+5. Then, go to <http://localhost/phpmyadmin/>. If you have to log in, use "root" as username and "" as password (no password).
 6. Then, go to the databases tab and create a database named "gelbooru" with an `utf8_unicode_ci` encoding.
 7. Once done, Go to the "SQL" tab, and put this query in the text area and click "Go":
-```sql
-SET GLOBAL log_bin_trust_function_creators = 1;
-```
+   ```sql
+   SET GLOBAL log_bin_trust_function_creators = 1;
+   ```
 8. Then, open the file "config.php" with a plain text editor (I don’t recommend using a WYSIWYG editor such as word).
-<table cellpadding='3'><tr><td border='2'><b>Replace the line</b></td><td><b>By</b></td></tr><tr><td><code>$mysql_user = "gelbooru";</code></td><td><code>$mysql_user = "root";</code></td></tr><tr><td><code>$mysql_pass = "test";</code></td><td><code>$mysql_pass = "";</code></td></tr><tr><td><code>$mysql_db = "asdf";</code></td><td><code>$mysql_db = "gelbooru";</code></td></tr><tr><td><code>$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";</code></td><td><code>$site_url = "http://localhost/gelbooru";</code></td></tr><tr><td><code>$site_url3 = "Default Booru";</code></td><td><code>$site_url2 = $site_url3 = "Localbooru";</code></td></tr></table>
-(you can change "Localbooru" to anything: it will be the name of the booru)
+   <table cellpadding='3'><tr><td border='2'><b>Replace the line</b></td><td><b>By</b></td></tr><tr><td><code>$mysql_user = "gelbooru";</code></td><td><code>$mysql_user = "root";</code></td></tr><tr><td><code>$mysql_pass = "test";</code></td><td><code>$mysql_pass = "";</code></td></tr><tr><td><code>$mysql_db = "asdf";</code></td><td><code>$mysql_db = "gelbooru";</code></td></tr><tr><td><code>$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";</code></td><td><code>$site_url = "http://localhost/gelbooru";</code></td></tr><tr><td><code>$site_url3 = "Default Booru";</code></td><td><code>$site_url2 = $site_url3 = "Localbooru";</code></td></tr></table>
+   (you can change "Localbooru" to anything: it will be the name of the booru)
 
 9. And finally add, just before the "?>" at the end of the file:
-```php
-$lowerlimit = 20;
-$no_cache = false;
-$tag_count = 20;
-$new_tag_list = 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii';
-$new_user_list = 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii';
-$new_cthreshold = 0;
-$new_pthreshold = 0;
-$new_my_tags = '';
-error_reporting(0);
-```
-You can of course change these values to whatever you want.
+   ```php
+   $lowerlimit = 20;
+   $no_cache = false;
+   $tag_count = 20;
+   $new_tag_list = 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii';
+   $new_user_list = 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii';
+   $new_cthreshold = 0;
+   $new_pthreshold = 0;
+   $new_my_tags = '';
+   error_reporting(0);
+   ```
+   You can of course change these values to whatever you want.
 
 10. Go to <http://localhost/gelbooru/install/> and register your admin account.
 11. If you don’t see any errors the installation went well! As the script suggests, you can now delete the `C:\wamp\www\gelbooru\install` folder.
 12. Finally, go to phpMyAdmin, click on the "gelbooru" database on the left menu, then click on the "SQL" tab, and put this query in the text area and click "Go":
-```sql
-ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
-```
+    ```sql
+    ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
+    ```
 13. You can now access your booru by going here: <http://localhost/gelbooru/>
 14. If you still run into errors after adding images, click on the WampServer icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
 
@@ -97,17 +97,17 @@ And, in the Database part:
 * Database: `gelbooru`
 * Start: leave empty
 * Image:
-```sql
-INSERT INTO posts(creation_date, hash, image, height, width, ext, rating, tags, directory, active_date) VALUES(NOW(), "%md5%", "%md5%.%ext%", %height%, %width%, ".%ext%", "%rating%", " %allo% ", "1", "20110619");
-```
+  ```sql
+  INSERT INTO posts(creation_date, hash, image, height, width, ext, rating, tags, directory, active_date) VALUES(NOW(), "%md5%", "%md5%.%ext%", %height%, %width%, ".%ext%", "%rating%", " %allo% ", "1", "20110619");
+  ```
 * Tag:
-```sql
-INSERT INTO tag_index(tag, index_count) VALUES("%tag%", 1) ON DUPLICATE KEY UPDATE index_count = index_count+1;
-```
+  ```sql
+  INSERT INTO tag_index(tag, index_count) VALUES("%tag%", 1) ON DUPLICATE KEY UPDATE index_count = index_count+1;
+  ```
 * End:
-```sql
-UPDATE post_count SET pcount = (SELECT COUNT(*) FROM posts), last_update = (CURDATE() + 0) WHERE access_key = "posts";
-```
+  ```sql
+  UPDATE post_count SET pcount = (SELECT COUNT(*) FROM posts), last_update = (CURDATE() + 0) WHERE access_key = "posts";
+  ```
 
 Now, every time you save an image, a copy will be created in your local booru!
 
