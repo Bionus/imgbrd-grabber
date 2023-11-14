@@ -20,12 +20,12 @@ Part of this work is a way to provide already generated tag databases so that us
 The already generated tag databases can now be found here:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag-databases>
 
-Currently, only one source has been added, selected because to a recent issue where a tag database would have been very useful. But I am open to suggestions for sources where providing such a database would be useful! Feel free to suggest those [on Github](https://github.com/Bionus/imgbrd-grabber/issues) as usual, with a rationale.
+Currently, only one source has been added, selected because to a recent issue where a tag database would have been very useful. But I am open to suggestions for sources where providing such a database would be useful! Feel free to suggest those [on GitHub](https://github.com/Bionus/imgbrd-grabber/issues) as usual, with a rationale.
 
 Note that those are not bundled with the installer because they can quickly take a lot of size, and not everyone would use those sources. So for those users, they would be a waste of space on their machine.
 
 The next steps include:
-* Automatically generating those databases from time to time using [Github actions](https://github.com/Bionus/imgbrd-grabber/actions)
+* Automatically generating those databases from time to time using [GitHub actions](https://github.com/Bionus/imgbrd-grabber/actions)
 * Automatically downloading them from Grabber
 
 &nbsp;

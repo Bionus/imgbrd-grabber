@@ -18,7 +18,7 @@ This section guides you through submitting an enhancement suggestion, including 
 
 Start by [a search](https://github.com/Bionus/imgbrd-grabber/issues?q=is%3Aissue) to see if your idea was not already suggested. If so, you add information to it if you feel it could help, bump it or simply add a :+1: reaction to the original post.
 
-After you've determined that your idea have not already been suggested, create an issue on Github and provide the following information:
+After you've determined that your idea have not already been suggested, create an issue on GitHub and provide the following information:
 
 * **Use a clear and descriptive title** for the issue to identify the suggestion.
 * **Provide a step-by-step description of the suggested enhancement** in as many details as possible.
@@ -32,7 +32,7 @@ Following these guidelines helps maintainers and the community understand your r
 
 Start by [a search](https://github.com/Bionus/imgbrd-grabber/issues?q=is%3Aissue) to see if the problem has already been reported. If so, you add information to it if you feel it could help.
 
-After you've determined that your bug have not already been reported, create an issue on Github and provide the following information:
+After you've determined that your bug have not already been reported, create an issue on GitHub and provide the following information:
 
 * **Use a clear and descriptive title** for the issue to identify the problem.
 * **Describe the exact steps which reproduce the problem** in as many details as possible. **Don't just say what you did, but explain how you did it**.
@@ -70,10 +70,10 @@ Start by follwing the [Reporting Bugs](#reporting-bugs) guidelines. Additionally
 If you want to ensure your pull request is merged in a timely manner, it is better to follow a few guidelines:
 
 * **Use an explicit commit message**, to help maintainers understand what your pull request is about.
-* **If you changed the code, make sure the program still passes the tests**. They are run automatically on Github Actions in any case, but your pull request won't be merged if the tests are broken.
+* **If you changed the code, make sure the program still passes the tests**. They are run automatically on GitHub Actions in any case, but your pull request won't be merged if the tests are broken.
 * **Follow the coding style of the project**. There is no fixed coding style, but please try to adapt to the code of the project.
 * **Document the code** if what you added is not obvious.
-* **If your pull request is complex, add a detailed description**. You can either add it in your commit message or in the Github discussion.
+* **If your pull request is complex, add a detailed description**. You can either add it in your commit message or in the GitHub discussion.
 
 ## Translations
 

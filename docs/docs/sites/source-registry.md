@@ -7,7 +7,7 @@ title: Source registries
 
 Source registries are JSON files pointing to source files. They are used to add sources easily to Grabber.
 
-They can be hosted anywhere an can point to sources anywhere. The official source registry is hosted in Github, in the [sources-metadata](https://github.com/Bionus/imgbrd-grabber/releases/tag/sources-metadata) release.
+They can be hosted anywhere an can point to sources anywhere. The official source registry is hosted in GitHub, in the [sources-metadata](https://github.com/Bionus/imgbrd-grabber/releases/tag/sources-metadata) release.
 
 
 ## Format

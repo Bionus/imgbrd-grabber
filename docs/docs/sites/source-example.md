@@ -16,7 +16,7 @@ The goal of this page is to provide a step-by-step example on how to create a ne
 
 All sources in Grabber are coded in TypeScript. So before going further, it is recommended to set it up first. For that, you'll first need to install [NodeJS](https://nodejs.org/en/).
 
-Then, download Grabber source code somewhere, either via git or via Github "download code as ZIP" feature.
+Then, download Grabber source code somewhere, either via git or via GitHub "download code as ZIP" feature.
 
 Once done, run `npm install` in the "src/sites/" directory to install the dependencies. Then, you can build all sources with `npm run build`. You can also run the linter to check for invalid coding style issues with `npm run check`.
 

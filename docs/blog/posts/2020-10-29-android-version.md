@@ -11,7 +11,7 @@ Hey everyone!
 
 &nbsp;
 
-For those that might not follow the project closely on Github, there's a new Android version of Grabber that's under active development.
+For those that might not follow the project closely on GitHub, there's a new Android version of Grabber that's under active development.
 
 <!-- more -->
 
@@ -23,7 +23,7 @@ You can find more details here, such as screenshots, status, roadmap, etc:
 Or if you just want to download it, here's the link!  
 [Grabber_nightly.apk](https://github.com/Bionus/imgbrd-grabber/releases/download/nightly/Grabber_nightly.apk)
 
-It's still rough around the edges, but the basics are there! Feel free to comment here or on Github if you have any feedback, suggestions, requests, etc!
+It's still rough around the edges, but the basics are there! Feel free to comment here or on GitHub if you have any feedback, suggestions, requests, etc.!
 
 &nbsp;
 

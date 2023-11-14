@@ -67,7 +67,7 @@ jobs:
           prerelease: true
           artifacts: metadata.json,sources_packages/*.zip
           body: |
-            Automatically uploaded by Github actions.
+            Automatically uploaded by GitHub actions.
 
             **Head:** ${{ github.sha }}
             **Date:** ${{ steps.date.outputs.date }}

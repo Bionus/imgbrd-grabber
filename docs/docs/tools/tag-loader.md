@@ -33,7 +33,7 @@ Note that only in the `from filename tags: 1/1` case would a  tag database help.
 
 ### Pre-generated databases
 
-You can find some already generated databases directly on Github:  
+You can find some already generated databases directly on GitHub:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag-databases>
 
 Note that they are only generated for a handful of sources and might not be totally up to date. However, they can be useful to get started quickly without having to generate one yourselves.

@@ -50,7 +50,7 @@ Note that even if you don't use Qt Linguist, you'll need `lrelease` in order to 
 
 ### How to create a new translation file
 
-1. Download "YourLanguage.ts" from Github [here]( https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/languages/YourLanguage.ts). The translation file for the Crash Reporter can be found [here](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/CrashReporter/languages/YourLanguage.ts).
+1. Download "YourLanguage.ts" from GitHub [here]( https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/languages/YourLanguage.ts). The translation file for the Crash Reporter can be found [here](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/CrashReporter/languages/YourLanguage.ts).
 2. Rename it by the name of your language in English, for example "German" (so the file will be called "German.ts").
 3. Launch Qt Linguist.
 4. Open ("File > Open..." or `Ctrl + O`) your translation file.

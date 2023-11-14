@@ -9,5 +9,5 @@ authors: [Bionus]
 
 Grabber 7.6.0 has been released.
 
-The list of changes and download links can be found on Github:  
+The list of changes and download links can be found on GitHub:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag/v7.6.0>
