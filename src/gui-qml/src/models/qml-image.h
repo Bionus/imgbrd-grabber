@@ -56,7 +56,7 @@ class QmlImage : public QObject
 		bool isGallery() const { return m_image->isGallery(); }
 
 	public slots:
-		void loadTags() { m_image->loadDetails(); };
+		void loadTags() { m_image->loadDetails(); }
 
 	private:
 		QSharedPointer<Image> m_image;

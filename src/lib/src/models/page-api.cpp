@@ -310,7 +310,7 @@ void PageApi::parseActual()
 				}
 			}
 		}
-		int searchTagsCount = m_query.tags.count();;
+		int searchTagsCount = m_query.tags.count();
 		if (m_query.tags.count() > found) {
 			const QStringList modifiers = QStringList() << "-" << m_api->modifiers();
 			for (const QString &search : qAsConst(m_query.tags)) {

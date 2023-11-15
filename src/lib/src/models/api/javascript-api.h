@@ -67,7 +67,7 @@ class JavascriptApi : public Api
 		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;
 		QList<Tag> makeTags(const QJSValue &tags, Site *site) const;
 		QSharedPointer<Image> makeImage(const QJSValue &raw, Site *site, Page *parentPage = nullptr, int index = 0, int first = 1) const;
-		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue(QJSValue::UndefinedValue)) const;
+		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue::UndefinedValue) const;
 		ParsedPage parsePageInternal(const QString &type, Page *parentPage, const QString &source, int statusCode, int first) const;
 
 	private:

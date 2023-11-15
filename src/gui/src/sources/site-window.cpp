@@ -67,8 +67,8 @@ void SiteWindow::accept()
 		// Check in the source registries if there is a perfect match
 		for (const auto &sourceRegistry : m_profile->getSourceRegistries()) {
 			const auto &sources = sourceRegistry->sources();
-			for (const QString &src : sources.keys()) {
-				const auto &source = sources[src];
+			for (auto it = sources.constBegin(); it != sources.constEnd(); ++it) {
+				const auto &source = it.value();
 				if (source.supportedSites.contains(domain)) {
 					const int reply = QMessageBox::question(this, windowTitle(), tr("A source supporting '%1' has been found in the registry '%2': '%3'. Install it?").arg(domain, sourceRegistry->name(), source.name), QMessageBox::Yes | QMessageBox::No);
 					if (reply == QMessageBox::Yes) {
@@ -132,9 +132,9 @@ void SiteWindow::sourceImported(SourceImporter::ImportResult result, const QList
 	finish(sources.first());
 }
 
-void SiteWindow::finish(Source *src)
+void SiteWindow::finish(Source *source)
 {
-	if (src == nullptr) {
+	if (source == nullptr) {
 		error(this, tr("Unable to guess site's type. Are you sure about the url?"));
 		ui->comboBox->setDisabled(false);
 		ui->checkBox->setChecked(false);
@@ -151,7 +151,7 @@ void SiteWindow::finish(Source *src)
 	bool ssl = false;
 	const QString url = getDomain(m_url, &ssl);
 
-	Site *site = new Site(url, src, m_profile);
+	Site *site = new Site(url, source, m_profile);
 	m_profile->addSite(site);
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site

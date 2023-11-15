@@ -126,7 +126,7 @@ void BlacklistFix1::getAll(Page *p)
 			blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 		}
 
-		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
+		auto *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
 		close();
 		bf2->show();
 	}

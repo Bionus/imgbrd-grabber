@@ -166,8 +166,8 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 
 	QTextStream stream(stdout);
 	Printer *printer = parser.isSet(jsonOption)
-		? (Printer*) new JsonPrinter(&stream, profile)
-		: (Printer*) new SimplePrinter(&stream, parser.value(tagsFormatOption));
+		? static_cast<Printer*>(new JsonPrinter(&stream, profile))
+		: static_cast<Printer*>(new SimplePrinter(&stream, parser.value(tagsFormatOption)));
 
 	CliCommand *cmd = nullptr;
 

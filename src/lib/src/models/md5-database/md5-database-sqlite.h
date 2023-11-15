@@ -16,7 +16,7 @@ class Md5DatabaseSqlite : public Md5Database
 	Q_OBJECT
 
 	public:
-		explicit Md5DatabaseSqlite(QString file, QSettings *settings);
+		explicit Md5DatabaseSqlite(QString path, QSettings *settings);
 		~Md5DatabaseSqlite() override;
 
 		void sync() override;

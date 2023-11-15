@@ -37,7 +37,7 @@ QQuickImageResponse *AsyncImageProvider::requestImageResponse(const QString &id,
 	auto *reply = manager->get(request);
 
 	auto *ret = new AsyncImageResponse(reply, rect);
-	QObject::connect(ret, &AsyncImageResponse::finished, manager, &QNetworkAccessManager::deleteLater);
+	connect(ret, &AsyncImageResponse::finished, manager, &QNetworkAccessManager::deleteLater);
 
 	return ret;
 }

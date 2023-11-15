@@ -120,7 +120,7 @@ addHelper("countToInt", (str: string): number | undefined => {
     return Math.round(count);
 });
 
-addHelper("fileSizeToInt", (str: string): number => {
+addHelper("fileSizeToInt", (str: string | number): number => {
     if  (typeof str !== "string") {
         return str as any;
     }
@@ -225,8 +225,8 @@ addHelper("regexToPools", (regexp: string, src: string): IPool[] => {
 });
 
 addHelper("regexToConst", (key: string, regexp: string, src: string): string | undefined => {
-    const matches = Grabber.regexMatches(regexp, src);
-    for (const match of matches) {
+    const match = Grabber.regexMatch(regexp, src);
+    if (match) {
         return match[key];
     }
     return undefined;

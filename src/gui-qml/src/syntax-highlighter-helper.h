@@ -13,7 +13,7 @@ class SyntaxHighlighterHelper : public QObject
 	Q_PROPERTY(QQuickTextDocument * quickDocument READ quickDocument WRITE setQuickDocument NOTIFY quickDocumentChanged)
 
 	public:
-		SyntaxHighlighterHelper(QObject *parent = nullptr) : QObject(parent), m_quickDocument(nullptr) {}
+		explicit SyntaxHighlighterHelper(QObject *parent = nullptr) : QObject(parent), m_quickDocument(nullptr) {}
 		QQuickTextDocument *quickDocument() const { return m_quickDocument; }
 		void setQuickDocument(QQuickTextDocument *quickDocument)
 		{

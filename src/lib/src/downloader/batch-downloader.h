@@ -85,7 +85,7 @@ class BatchDownloader : public QObject
 
 		// Counters
 		QMap<Counter, int> m_counters;
-		int m_counterSum;
+		int m_counterSum = 0;
 };
 
 #endif // BATCH_DOWNLOADER_H

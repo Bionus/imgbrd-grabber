@@ -207,7 +207,7 @@ void ImagePreview::finishedLoading()
 		}
 
 		connect(l, SIGNAL(appui(int)), this, SIGNAL(clicked()));
-		connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggledWithId(int, bool, bool)));
+		connect(l, SIGNAL(toggled(int,bool,bool)), this, SLOT(toggledWithId(int,bool,bool)));
 
 		layout->addWidget(l);
 		m_bouton = l;

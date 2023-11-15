@@ -7,6 +7,7 @@ AndroidShareUtils::AndroidShareUtils(QQuickItem* parent)
 	: BaseShareUtils(parent)
 {}
 
+
 bool AndroidShareUtils::share(const QString &text)
 {
 	if (!QJniObject::isClassAvailable("org/bionus/grabber/ShareUtils")) {

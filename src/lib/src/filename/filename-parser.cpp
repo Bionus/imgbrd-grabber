@@ -321,11 +321,11 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 			break;
 		}
 
-		int prec = (c == '&' ? 2 : 1);
+		int prec = c == '&' ? 2 : 1;
 
 		while (!opsStack.isEmpty()) {
 			QChar stackC = opsStack.top();
-			int stackPrec = (stackC == '&' ? 2 : 1);
+			int stackPrec = stackC == '&' ? 2 : 1;
 
 			if (prec > stackPrec) {
 				break;

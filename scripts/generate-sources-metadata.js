@@ -37,7 +37,7 @@ function getLastCommit(path) {
 
 const args = process.argv.slice(2);
 const branch = args.length > 0 ? args[0] : "master";
-const isNightly = branch == "develop";
+const isNightly = branch === "develop";
 const output = {
     name: "Official Grabber sources" + (isNightly ? " (nightly)" : ""),
     home: "https://github.com/Bionus/imgbrd-grabber",

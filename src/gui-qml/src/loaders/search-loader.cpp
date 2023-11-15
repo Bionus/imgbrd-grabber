@@ -11,7 +11,7 @@
 
 
 SearchLoader::SearchLoader(QObject *parent)
-	: Loader(parent), m_page(1), m_perPage(20), m_hasPrev(false), m_hasNext(false)
+	: Loader(parent), m_page(1), m_perPage(20), m_profile(nullptr), m_hasPrev(false), m_hasNext(false)
 {}
 
 

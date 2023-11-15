@@ -1,7 +1,6 @@
 #include "search/search-parser.h"
 #include <QStringList>
 #include <utility>
-#include <stdexcept>
 #include "search/ast/search-node.h"
 #include "search/ast/search-node-op.h"
 #include "search/ast/search-node-tag.h"
@@ -43,10 +42,9 @@ SearchNode *SearchParser::parse()
 	}
 
 	// Otherwise, loop and create as many Op nodes as needed
-	SearchNode *left;
 	SearchNode *right = makeTagNode(parts.takeLast());
 	while (parts.count() > 0) {
-		left = makeTagNode(parts.takeLast());
+		SearchNode *left = makeTagNode(parts.takeLast());
 		right = new SearchNodeOp(SearchNodeOp::Operator::And, left, right);
 	}
 	return right;

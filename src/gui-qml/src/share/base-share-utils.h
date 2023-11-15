@@ -8,7 +8,7 @@
 class BaseShareUtils : public QQuickItem
 {
 	public:
-		BaseShareUtils(QQuickItem *parent = 0) : QQuickItem(parent){}
+		explicit BaseShareUtils(QQuickItem *parent = nullptr) : QQuickItem(parent){}
 		virtual ~BaseShareUtils() {}
 
 		virtual bool share(const QString &text) { return true; }

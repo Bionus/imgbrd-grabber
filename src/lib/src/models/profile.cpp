@@ -124,8 +124,8 @@ Profile::Profile(QString path)
 
 	// Load MD5s
 	m_md5s = QFile::exists(m_path + "/md5s.sqlite") || !QFile::exists(m_path + "/md5s.txt")
-		? (Md5Database*) new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings)
-		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
+		? static_cast<Md5Database*>(new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings))
+		: static_cast<Md5Database*>(new Md5DatabaseText(m_path + "/md5s.txt", m_settings));
 
 	// Load auto-complete
 	QFile fileAutoComplete(savePath("words.txt", true, false));
@@ -435,6 +435,7 @@ void Profile::addMd5(const QString &md5, const QString &path)
 /**
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
+ * @param   path    The specific path to remove (optional).
  */
 void Profile::removeMd5(const QString &md5, const QString &path)
 {

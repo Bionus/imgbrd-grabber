@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
 	// Define a few globals
 	engine.rootContext()->setContextProperty("VERSION", QString(VERSION));
 	#ifdef NIGHTLY
-		engine.rootContext()->setContextProperty("NIGHTLY", true);
+		engine.rootContext()->setContextProperty("NIGHTLY", QVariant(true));
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString(NIGHTLY_COMMIT));
 	#else
-		engine.rootContext()->setContextProperty("NIGHTLY", false);
+		engine.rootContext()->setContextProperty("NIGHTLY", QVariant(false));
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString());
 	#endif
 

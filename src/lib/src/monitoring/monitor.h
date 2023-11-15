@@ -71,4 +71,4 @@ class Monitor
 bool operator==(const Monitor &lhs, const Monitor &rhs);
 bool operator!=(const Monitor &lhs, const Monitor &rhs);
 
-#endif // MONITORING_H
+#endif // MONITOR_H

@@ -1633,37 +1633,37 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	// Prev
 	buttons.append(ButtonSettings {CustomButtons::IsButtonPrev, "Prev",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonPrev->text(), ViewerWindowButtons::DefaultPrevState),
-		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonPrevPosition->value(),
-		(unsigned short) ui->spinButtonPrevWidth->value()
+		ui->checkButtonPrev->checkState() != Qt::Unchecked,
+		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonPrevPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonPrevWidth->value())
 	});
 
 	// Next
 	buttons.append(ButtonSettings {CustomButtons::IsButtonNext, "Next",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonNext->text(), ViewerWindowButtons::DefaultNextState),
-		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonNext->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonNextPosition->value(),
-		(unsigned short) ui->spinButtonNextWidth->value()
+		ui->checkButtonNext->checkState() != Qt::Unchecked,
+		ui->checkButtonNext->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonNextPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonNextWidth->value())
 	});
 
 	// Details
 	buttons.append(ButtonSettings {CustomButtons::IsButtonDetails, "Details",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonDetails->text(), ViewerWindowButtons::DefaultDetailsState),
-		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonDetailsPosition->value(),
-		(unsigned short) ui->spinButtonDetailsWidth->value()
+		ui->checkButtonDetails->checkState() != Qt::Unchecked,
+		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonDetailsPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonDetailsWidth->value())
 	});
 
 	// Save as
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveAs, "SaveAs",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonSaveAs->text(), ViewerWindowButtons::DefaultSaveAsState),
-		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveAsPosition->value(),
-		(unsigned short) ui->spinButtonSaveAsWidth->value()
+		ui->checkButtonSaveAs->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveAsPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveAsWidth->value())
 	});
 
 	// Save
@@ -1677,10 +1677,10 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveStateExistsDisk);
 	states.append(ViewerWindowButtons::DefaultSaveStateDelete);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSave, "Save", states,
-		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSave->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSavePosition->value(),
-		(unsigned short) ui->spinButtonSaveWidth->value()
+		ui->checkButtonSave->checkState() != Qt::Unchecked,
+		ui->checkButtonSave->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSavePosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveWidth->value())
 	});
 
 	// Save and quit
@@ -1688,19 +1688,19 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveNQuitStateSaving);
 	states.append(ViewerWindowButtons::DefaultSaveNQuitStateClose);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit, "SaveNQuit", states,
-		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveNQuitPosition->value(),
-		(unsigned short) ui->spinButtonSaveNQuitWidth->value()
+		ui->checkButtonSaveNQuit->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitWidth->value())
 	});
 
 	// Open
 	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen, "Open",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonOpen->text(), ViewerWindowButtons::DefaultOpenState),
-		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenPosition->value(),
-		(unsigned short) ui->spinButtonOpenWidth->value()
+		ui->checkButtonOpen->checkState() != Qt::Unchecked,
+		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonOpenPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonOpenWidth->value())
 	});
 
 	// Save (fav)
@@ -1714,10 +1714,10 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveFavStateExistsDisk);
 	states.append(ViewerWindowButtons::DefaultSaveFavStateDelete);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, "SaveFav", states,
-		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveFavPosition->value(),
-		(unsigned short) ui->spinButtonSaveFavWidth->value()
+		ui->checkButtonSaveFav->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveFavPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveFavWidth->value())
 	});
 
 	// Save and quit (fav)
@@ -1725,19 +1725,19 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveNQuitFavStateSaving);
 	states.append(ViewerWindowButtons::DefaultSaveNQuitFavStateClose);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, "SaveNQuitFav", states,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveNQuitFavPosition->value(),
-		(unsigned short) ui->spinButtonSaveNQuitFavWidth->value()
+		ui->checkButtonSaveNQuitFav->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitFavPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitFavWidth->value())
 	});
 
 	// Open (fav)
 	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, "OpenFav",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonOpenFav->text(), ViewerWindowButtons::DefaultOpenFavState),
-		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenFavPosition->value(),
-		(unsigned short) ui->spinButtonOpenFavWidth->value()
+		ui->checkButtonOpenFav->checkState() != Qt::Unchecked,
+		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonOpenFavPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonOpenFavWidth->value())
 	});
 
 	// Write settings

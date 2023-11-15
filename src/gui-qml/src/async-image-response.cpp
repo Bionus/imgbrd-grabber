@@ -29,4 +29,4 @@ void AsyncImageResponse::replyFinished()
 	}
 
 	emit finished();
-};
+}

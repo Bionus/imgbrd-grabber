@@ -33,4 +33,4 @@ class GetDetailsCliCommand : public CliCommand
 		Image *m_image;
 };
 
-#endif // LOAD_TAG_DATABASE_CLI_COMMAND_H
+#endif // GET_DETAILS_CLI_COMMAND_H

@@ -47,10 +47,10 @@ TEST_CASE("TagTypeDatabase")
 		file.write("0,general\n1,artist\n2,invalid,test\n3,copyright\n4,character");
 		file.seek(0);
 
-		TagTypeDatabase database(file.fileName());
-		REQUIRE(database.load());
+		TagTypeDatabase invalidDatabase(file.fileName());
+		REQUIRE(invalidDatabase.load());
 
-		QMap<int, TagType> types = database.getAll();
+		QMap<int, TagType> types = invalidDatabase.getAll();
 		REQUIRE(types.count() == 4);
 		REQUIRE(types.keys() == QList<int>() << 0 << 1 << 3 << 4);
 		REQUIRE(types.value(0).name() == QString("general"));

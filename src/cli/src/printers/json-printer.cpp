@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QList>
+#include <QMetaType>
 #include <QSharedPointer>
 #include <QTextStream>
 #include "logger.h"
@@ -90,9 +91,11 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 
 	QJsonObject jsObject;
 
-	const auto tokens = image.tokens(m_profile);
-	for (auto& key : tokens.keys()) {
-		typedef QVariant::Type Type;
+	const auto &tokens = image.tokens(m_profile);
+    for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
+		typedef QMetaType::Type Type;
+
+        const QString &key = it.key();
 		if (ignoreKeys.contains(key)) {
 			continue;
 		}
@@ -100,7 +103,7 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 			continue;
 		}
 
-		const QVariant& qvalue = tokens.value(key).value();
+		const QVariant &qvalue = it.value().value();
 		auto type = qvalue.type();
 
 		if (type == QVariant::Type::StringList) {

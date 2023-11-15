@@ -340,7 +340,7 @@ QDateTime qDateTimeFromString(const QString &str)
 
 QString getUnit(double *size)
 {
-	QStringList units = FILESIZE_UNITS;
+	const QStringList units = FILESIZE_UNITS;
 	const int multiplier = FILESIZE_MULTIPLIER;
 
 	int power = 0;
@@ -391,9 +391,10 @@ bool validSavePath(const QString &file, bool writable)
 
 /**
  * Return the path to a specified file in the config folder (since program files is not writable).
- * @param	file	The file.
- * @param	exists	If the file must already exist beforehand.
- * @return			The absolute path to the file.
+ * @param	file	 The file.
+ * @param	exists	 If the file must already exist beforehand.
+ * @param   writable If the file must be writable (the install directory usually isn't).
+ * @return			 The absolute path to the file.
  */
 QString savePath(const QString &file, bool exists, bool writable)
 {
@@ -675,7 +676,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 	QStringList parts = filename.split(sep);
 	QString file, ext;
 	if (!fn.isEmpty()) {
-		file = parts.takeLast();;
+		file = parts.takeLast();
 		const int lastDot = file.lastIndexOf('.');
 		if (lastDot != -1) {
 			ext = file.right(file.length() - lastDot - 1);

@@ -307,7 +307,7 @@ void ViewerWindow::configureButtons()
 		ui->buttonsLayout->addWidget(pushButton, row, effectivePosition, 1, bs.relativeWidth);
 	}
 
-	unsigned short biggestMaxRow, biggestMaxColPos = 0;
+	unsigned short biggestMaxRow = 0, biggestMaxColPos = 0;
 	for (unsigned short i = 0; i < maxColPos.size(); i++) {
 		unsigned short spanBack = spans.at(i).empty() ? 0 : spans.at(i).back();
 		if (maxColPos.at(i) + spanBack > biggestMaxColPos) {

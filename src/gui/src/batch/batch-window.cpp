@@ -196,7 +196,7 @@ void BatchWindow::addImage(const QUrl &url, int batch, double size)
 	}
 
 	static QIcon pendingIcon(":/images/status/pending.png");
-	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items + 1));
+	auto *id = new QTableWidgetItem(QString::number(m_items + 1));
 	id->setIcon(pendingIcon);
 
 	ui->tableWidget->setItem(m_items, 0, id);

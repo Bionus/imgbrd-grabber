@@ -9,7 +9,7 @@
 
 
 HttpBasicLogin::HttpBasicLogin(HttpBasicAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings)
-	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings)
+	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_page(nullptr)
 {}
 
 bool HttpBasicLogin::isTestable() const
@@ -52,6 +52,5 @@ void HttpBasicLogin::complementRequest(QNetworkRequest *request) const
 
 	const QString credentials = username + ":" + password;
 	const QByteArray base64Credentials = credentials.toLocal8Bit().toBase64();
-	QString toto = m_auth->tokenType() + " " + base64Credentials;
 	request->setRawHeader("Authorization", (m_auth->tokenType() + " " + base64Credentials).toLatin1());
 }

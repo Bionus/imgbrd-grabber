@@ -313,17 +313,17 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QStringL
 }
 
 
-QString FilenameExecutionVisitor::cleanVariable(QString res, const QMap<QString, QString> &options) const
+QString FilenameExecutionVisitor::cleanVariable(QString val, const QMap<QString, QString> &options) const
 {
 	// Forbidden characters
 	if (!options.contains("unsafe") && !options.contains("raw")) {
-		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+		val = val.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 	}
 
 	// Replace underscores by spaces
 	if (!options.contains("raw") && !options.contains("underscores") && (!m_settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces"))) {
-		res = res.replace("_", " ");
+		val = val.replace("_", " ");
 	}
 
-	return res;
+	return val;
 }

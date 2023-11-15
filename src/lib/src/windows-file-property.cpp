@@ -161,7 +161,7 @@ bool setWindowsProperty(const QString &filename, const QString &property, const 
 					if (SUCCEEDED(hr)) {
 						// Commit does the actual writing back to the file stream.
 						hr = pps->Commit();
-						if (!SUCCEEDED(hr)) {
+						if (FAILED(hr)) {
 							log(QString("Error %1 committing to the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 						}
 					} else {

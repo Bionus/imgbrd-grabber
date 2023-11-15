@@ -46,7 +46,7 @@ PageUrl JavascriptApiEndpoint::url(const QMap<QString, QVariant> &query, int pag
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
-	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
+	QJSValue previous = QJSValue::UndefinedValue;
 	if (lastPage.page > 0) {
 		previous = m_engine->newObject();
 		previous.setProperty("page", lastPage.page);

@@ -62,7 +62,7 @@ ColumnLayout {
     }
     SpinBoxSetting {
         name: qsTr("Keep n tags")
-        visible: multipleSetting.value == "keepN"
+        visible: multipleSetting.value === "keepN"
         setting: Setting {
             key: "Save/" + key + "_multiple_keepN"
             def: 1
@@ -71,7 +71,7 @@ ColumnLayout {
     }
     SpinBoxSetting {
         name: qsTr("Keep n tags")
-        visible: multipleSetting.value == "keepNThenAdd"
+        visible: multipleSetting.value === "keepNThenAdd"
         setting: Setting {
             key: "Save/" + key + "_multiple_keepNThenAdd_keep"
             def: 1
@@ -80,7 +80,7 @@ ColumnLayout {
     }
     TextFieldSetting {
         name: qsTr("Then add")
-        visible: multipleSetting.value == "keepNThenAdd"
+        visible: multipleSetting.value === "keepNThenAdd"
         setting: Setting {
             key: "Save/" + key + "_multiple_keepNThenAdd_add"
             def: " (+ %count%)"
@@ -89,7 +89,7 @@ ColumnLayout {
     }
     TextFieldSetting {
         name: qsTr("Replace all tags by")
-        visible: multipleSetting.value == "replaceAll"
+        visible: multipleSetting.value === "replaceAll"
         setting: Setting {
             key: "Save/" + key + "_value"
             def: defaultMultiple

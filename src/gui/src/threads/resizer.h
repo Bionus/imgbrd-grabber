@@ -32,4 +32,4 @@ class Resizer : public QObject
 		QString m_inputFilename;
 };
 
-#endif // IMAGE_THREAD_H
+#endif // RESIZER_H

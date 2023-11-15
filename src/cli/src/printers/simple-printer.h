@@ -21,7 +21,7 @@ class SimplePrinter : public Printer
 		void print(int val) const override;
 		void print(const QString &val) const override;
 
-		void print(const Image &val) const override;
+		void print(const Image &image) const override;
 		void print(const QList<QSharedPointer<Image>> &images) const override;
 		void print(const Tag &tag, Site *site) const override;
 		void print(const QList<Tag> &tags, Site *site) const override;

@@ -1240,7 +1240,6 @@ const ImageSize &Image::mediaForSize(const QSize &size)
 	QSharedPointer<ImageSize> ret;
 
 	// Find the biggest media smaller than the given size
-	int max = 0;
 	for (const QSharedPointer<ImageSize> &media : m_allSizes) {
 		if (media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
 			ret = media;

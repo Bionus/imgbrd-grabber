@@ -59,11 +59,11 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
 	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
 
-	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
+	auto *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &DownloadsTab::batchClearSelGroups);
 
-	QShortcut *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
+    auto *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
 	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &DownloadsTab::batchClearSelUniques);
 
@@ -168,7 +168,7 @@ QSet<int> DownloadsTab::selectedRows(QTableView *table) const
 
 void DownloadsTab::batchClear()
 {
-	// Don't do anything if there's nothing to clear
+	// Don't do anything if there's nothing to be cleared
 	if (m_groupBatchsModel->rowCount() == 0 && m_batchsModel->rowCount() == 0) {
 		return;
 	}
@@ -248,7 +248,7 @@ void DownloadsTab::batchMove(int diff)
 	}
 
 	if (diff > 0) {
-		std::sort(rows.begin(), rows.end(), std::greater<int>());
+		std::sort(rows.begin(), rows.end(), std::greater<>());
 	} else {
 		std::sort(rows.begin(), rows.end());
 	}

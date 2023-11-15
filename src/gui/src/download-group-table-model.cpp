@@ -110,7 +110,7 @@ Qt::ItemFlags DownloadGroupTableModel::flags(const QModelIndex &index) const
 		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 	}
 
-	Qt::ItemFlags flags = QAbstractItemModel::flags(index);
+	Qt::ItemFlags flags = QAbstractTableModel::flags(index);
 	flags |= Qt::ItemIsDragEnabled;
 
 	const int minColumn = m_downloads[index.row()].query.gallery.isNull() ? 1 : 2; // Cannot edit gallery queries
@@ -188,11 +188,11 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 9:
-			download.getBlacklisted = (val != "false");
+			download.getBlacklisted = val != "false";
 			break;
 
 		case 10:
-			download.galleriesCountAsOne = (val != "false");
+			download.galleriesCountAsOne = val != "false";
 			break;
 	}
 
