@@ -67,9 +67,9 @@ TEST_CASE("Site")
 	}
 	SECTION("FixUrlRelative")
 	{
-		REQUIRE(site->fixUrl("dir/toto.jpg", QUrl("http://test.com/dir/")) == QUrl("http://test.com/dir/dir/toto.jpg"));
-		REQUIRE(site->fixUrl("toto.jpg", QUrl("http://test.com/dir/file.html")) == QUrl("http://test.com/dir/toto.jpg"));
-		REQUIRE(site->fixUrl("toto.jpg", QUrl("http://test.com/dir/")) == QUrl("http://test.com/dir/toto.jpg"));
+		REQUIRE(site->fixUrl("dir/toto.jpg", QUrl("https://test.com/dir/")) == QUrl("https://test.com/dir/dir/toto.jpg"));
+		REQUIRE(site->fixUrl("toto.jpg", QUrl("https://test.com/dir/file.html")) == QUrl("https://test.com/dir/toto.jpg"));
+		REQUIRE(site->fixUrl("toto.jpg", QUrl("https://test.com/dir/")) == QUrl("https://test.com/dir/toto.jpg"));
 	}
 
 	SECTION("GetSites")

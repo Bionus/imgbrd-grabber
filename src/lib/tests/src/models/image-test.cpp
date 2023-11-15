@@ -44,13 +44,13 @@ TEST_CASE("Image")
 	details["has_children"] = "true";
 	details["has_note"] = "true";
 	details["has_comments"] = "true";
-	details["file_url"] = "http://test.com/img/oldfilename.jpg?123456";
-	details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
-	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+	details["file_url"] = "https://test.com/img/oldfilename.jpg?123456";
+	details["sample_url"] = "https://test.com/sample/oldfilename.jpg";
+	details["preview_url"] = "https://test.com/preview/oldfilename.jpg";
 	details["page_url"] = "/posts/7331";
 	details["width"] = "800";
 	details["height"] = "600";
-	details["source"] = "http://google.com/toto/toto.jpg";
+	details["source"] = "https://google.com/toto/toto.jpg";
 	details["tags_general"] = "tag1 tag2 tag3 ";
 	details["tags_artist"] = "artist1 ";
 	details["tags_copyright"] = "copyright1 copyright2 ";
@@ -332,7 +332,7 @@ TEST_CASE("Image")
 
 	SECTION("SetUrl")
 	{
-		QUrl url("http://google.fr");
+		QUrl url("https://google.fr");
 
 		REQUIRE(img->url() != url);
 		img->setUrl(url);

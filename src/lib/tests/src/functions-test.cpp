@@ -223,20 +223,20 @@ TEST_CASE("Functions")
 	SECTION("GetExtension")
 	{
 		REQUIRE(getExtension(QUrl("")) == QString(""));
-		REQUIRE(getExtension(QUrl("http://test.com/file")) == QString(""));
-		REQUIRE(getExtension(QUrl("http://test.com/some.dir/file")) == QString(""));
-		REQUIRE(getExtension(QUrl("http://test.com/file.jpg")) == QString("jpg"));
-		REQUIRE(getExtension(QUrl("http://test.com/file.jpg?toto=1")) == QString("jpg"));
-		REQUIRE(getExtension(QUrl("http://test.com/file.jpg:large")) == QString("jpg"));
-		REQUIRE(getExtension(QUrl("http://test.com/index.php?image=file.jpg")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("https://test.com/file")) == QString(""));
+		REQUIRE(getExtension(QUrl("https://test.com/some.dir/file")) == QString(""));
+		REQUIRE(getExtension(QUrl("https://test.com/file.jpg")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("https://test.com/file.jpg?toto=1")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("https://test.com/file.jpg:large")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("https://test.com/index.php?image=file.jpg")) == QString("jpg"));
 	}
 	SECTION("SetExtension")
 	{
 		REQUIRE(setExtension(QUrl(""), "png") == QUrl(""));
-		REQUIRE(setExtension(QUrl("http://test.com/file"), "png") == QUrl("http://test.com/file"));
-		REQUIRE(setExtension(QUrl("http://test.com/file.jpg"), "png") == QUrl("http://test.com/file.png"));
-		REQUIRE(setExtension(QUrl("http://test.com/file.jpg?toto=1"), "png") == QUrl("http://test.com/file.png?toto=1"));
-		REQUIRE(setExtension(QUrl("http://test.com/file.jpg:large"), "png") == QUrl("http://test.com/file.png:large"));
+		REQUIRE(setExtension(QUrl("https://test.com/file"), "png") == QUrl("https://test.com/file"));
+		REQUIRE(setExtension(QUrl("https://test.com/file.jpg"), "png") == QUrl("https://test.com/file.png"));
+		REQUIRE(setExtension(QUrl("https://test.com/file.jpg?toto=1"), "png") == QUrl("https://test.com/file.png?toto=1"));
+		REQUIRE(setExtension(QUrl("https://test.com/file.jpg:large"), "png") == QUrl("https://test.com/file.png:large"));
 	}
 
 	SECTION("Levenshtein")
@@ -309,20 +309,20 @@ TEST_CASE("Functions")
 	SECTION("IsUrl")
 	{
 		// Valid URLs
-		REQUIRE(isUrl("http://foo.com/blah_blah"));
-		REQUIRE(isUrl("http://foo.com/blah_blah_(wikipedia)"));
-		REQUIRE(isUrl("http://foo.com/blah_(wikipedia)_blah#cite-1"));
-		REQUIRE(isUrl("http://foo.com/(something)?after=parens"));
-		REQUIRE(isUrl("http://1337.net"));
-		REQUIRE(isUrl("http://a.b-c.de"));
-		REQUIRE(isUrl("http://223.255.255.254"));
+		REQUIRE(isUrl("https://foo.com/blah_blah"));
+		REQUIRE(isUrl("https://foo.com/blah_blah_(wikipedia)"));
+		REQUIRE(isUrl("https://foo.com/blah_(wikipedia)_blah#cite-1"));
+		REQUIRE(isUrl("https://foo.com/(something)?after=parens"));
+		REQUIRE(isUrl("https://1337.net"));
+		REQUIRE(isUrl("https://a.b-c.de"));
+		REQUIRE(isUrl("https://223.255.255.254"));
 
 		// Invalid URLs
-		REQUIRE(!isUrl("http://"));
-		REQUIRE(!isUrl("http://."));
-		REQUIRE(!isUrl("http://?"));
+		REQUIRE(!isUrl("https://"));
+		REQUIRE(!isUrl("https://."));
+		REQUIRE(!isUrl("https://?"));
 		REQUIRE(!isUrl("//"));
-		REQUIRE(!isUrl("http:///a"));
+		REQUIRE(!isUrl("https:///a"));
 		REQUIRE(!isUrl("foo.com"));
 	}
 
