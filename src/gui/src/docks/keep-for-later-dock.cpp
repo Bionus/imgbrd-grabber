@@ -80,7 +80,7 @@ void KeepForLaterDock::contextMenu(const QPoint &pos)
 	}
 
 	const QList<Site*> sites = m_currentTab->loadSites();
-	TagContextMenu *menu = new TagContextMenu(m_hover, {}, {}, m_profile, sites, false, this);
+    auto *menu = new TagContextMenu(m_hover, {}, {}, m_profile, sites, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &KeepForLaterDock::emitOpenInNewTab);
 	menu->exec(QCursor::pos());
 }

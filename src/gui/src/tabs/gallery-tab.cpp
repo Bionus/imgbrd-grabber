@@ -67,10 +67,10 @@ GalleryTab::~GalleryTab()
 	delete ui;
 }
 
-void GalleryTab::closeEvent(QCloseEvent *e)
+void GalleryTab::closeEvent(QCloseEvent *event)
 {
 	emit closed(this);
-	e->accept();
+    event->accept();
 }
 
 

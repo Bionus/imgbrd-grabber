@@ -44,11 +44,11 @@ QStringList EmptyDirsFix1::mkList(const QDir &dir)
 {
 	QStringList ret;
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (int i = 0; i < dirs.size(); i++) {
-		if (isEmpty(QDir(dir.path() + "/" + dirs.at(i)))) {
-			ret.append(dir.path() + "/" + dirs.at(i));
+    for (const QString &entry : dirs) {
+		if (isEmpty(QDir(dir.path() + "/" + entry))) {
+			ret.append(dir.path() + "/" + entry);
 		} else {
-			ret.append(mkList(QDir(dir.path() + "/" + dirs.at(i))));
+			ret.append(mkList(QDir(dir.path() + "/" + entry)));
 		}
 	}
 	return ret;
@@ -63,8 +63,8 @@ bool EmptyDirsFix1::isEmpty(const QDir &dir)
 
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	bool empty = true;
-	for (int i = 0; i < dirs.size(); i++) {
-		empty = empty && isEmpty(QDir(dir.path() + "/" + dirs.at(i)));
+    for (const QString &entry : dirs) {
+		empty = empty && isEmpty(QDir(dir.path() + "/" + entry));
 	}
 	return empty;
 }

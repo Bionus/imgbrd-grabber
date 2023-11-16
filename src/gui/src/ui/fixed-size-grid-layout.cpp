@@ -61,7 +61,7 @@ QLayoutItem *FixedSizeGridLayout::itemAt(int index) const
 QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 {
 	if (index >= 0 && index < m_items.size()) {
-		auto item = m_items.takeAt(index);
+		auto *item = m_items.takeAt(index);
 		invalidate();
 		return item;
 	}

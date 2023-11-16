@@ -27,7 +27,7 @@ class SourceEngine : public QObject
 	Q_OBJECT
 
 	public:
-		SourceEngine(QObject *parent = nullptr);
+		explicit SourceEngine(QObject *parent = nullptr);
 
 		virtual bool isValid() const = 0;
 		Api *getApi(const QString &name) const;

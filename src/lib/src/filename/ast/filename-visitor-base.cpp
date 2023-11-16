@@ -61,7 +61,7 @@ void FilenameVisitorBase::visit(const FilenameNodeJavaScript &node)
 
 void FilenameVisitorBase::visit(const FilenameNodeRoot &node)
 {
-	for (auto expr : node.exprs) {
+	for (auto *expr : node.exprs) {
 		expr->accept(*this);
 	}
 }

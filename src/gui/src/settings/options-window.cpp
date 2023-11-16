@@ -275,7 +275,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
+		auto *tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "General" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
@@ -734,35 +734,35 @@ void OptionsWindow::showWebServices()
 		m_webServicesIds.insert(id, j);
 
 		QIcon icon = webService.icon();
-		QLabel *labelIcon = new QLabel();
+        auto *labelIcon = new QLabel();
 		labelIcon->setPixmap(icon.pixmap(QSize(16, 16)));
 		labelIcon->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 		ui->layoutWebServices->addWidget(labelIcon, j, 0);
 
-		QLabel *label = new QLabel(webService.name());
+        auto *label = new QLabel(webService.name());
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 		ui->layoutWebServices->addWidget(label, j, 1);
 
 		if (j > 0) {
-			QPushButton *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), QString());
+            auto *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), QString());
 			mapperMoveUpWebService->setMapping(buttonMoveUp, id);
 			connect(buttonMoveUp, SIGNAL(clicked(bool)), mapperMoveUpWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveUp, j, 2);
 		}
 
 		if (j < m_webServices.count() - 1) {
-			QPushButton *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), QString());
+            auto *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), QString());
 			mapperMoveDownWebService->setMapping(buttonMoveDown, id);
 			connect(buttonMoveDown, SIGNAL(clicked(bool)), mapperMoveDownWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveDown, j, 3);
 		}
 
-		QPushButton *buttonEdit = new QPushButton(tr("Edit"));
+        auto *buttonEdit = new QPushButton(tr("Edit"));
 		mapperEditWebService->setMapping(buttonEdit, id);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonEdit, j, 4);
 
-		QPushButton *buttonDelete = new QPushButton(tr("Remove"));
+        auto *buttonDelete = new QPushButton(tr("Remove"));
 		mapperRemoveWebService->setMapping(buttonDelete, id);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
@@ -1809,7 +1809,7 @@ void OptionsWindow::checkAllSpinners()
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
 		// Set the alert style on relevant spinners
-		for (auto it : numberMatches) {
+		for (auto *it : numberMatches) {
 			it->setStyleSheet(alarmStyle.c_str());
 		}
 	}

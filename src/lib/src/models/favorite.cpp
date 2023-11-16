@@ -118,7 +118,7 @@ void Favorite::toJson(QJsonObject &json) const
 
 	if (!m_sites.isEmpty()) {
 		QStringList sites;
-		for (auto site : m_sites) {
+		for (auto *site : m_sites) {
 			sites.append(site->url());
 		}
 		json["sites"] = QJsonArray::fromStringList(sites);

@@ -21,7 +21,7 @@ class GifPlayer : public Player
 
 	public:
 		explicit GifPlayer(QSettings *settings, Qt::Alignment alignment, QWidget *parent = nullptr);
-		~GifPlayer();
+		~GifPlayer() override;
 
 		bool supports(const QString &file) override;
 		void load(const QString &file) override;

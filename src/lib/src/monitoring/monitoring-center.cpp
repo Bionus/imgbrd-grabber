@@ -123,7 +123,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 		}
 
 		for (const QSharedPointer<Image> &img : newImagesList) {
-			auto downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
+			auto *downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
 			if (!monitor.getBlacklisted()) {
 				downloader->setBlacklist(&m_profile->getBlacklist());
 			}

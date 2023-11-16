@@ -63,7 +63,7 @@ BatchWindow::~BatchWindow()
 		m_taskBarProgress->deleteLater();
 	#endif
 }
-void BatchWindow::closeEvent(QCloseEvent *e)
+void BatchWindow::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("Batch/geometry", saveGeometry());
 	m_settings->setValue("Batch/details", ui->buttonDetails->isChecked());
@@ -84,7 +84,7 @@ void BatchWindow::closeEvent(QCloseEvent *e)
 	#endif
 
 	emit closed();
-	e->accept();
+    event->accept();
 }
 void BatchWindow::pause()
 {
@@ -116,7 +116,7 @@ void BatchWindow::cancel()
 		m_taskBarProgress->setVisible(false);
 	#endif
 }
-bool BatchWindow::cancelled()
+bool BatchWindow::cancelled() const
 { return m_cancel; }
 
 void BatchWindow::clear()
@@ -453,6 +453,6 @@ int BatchWindow::totalValue() const
 int BatchWindow::totalMax() const
 { return ui->progressTotal->maximum(); }
 
-int BatchWindow::endAction() { return ui->comboEnd->currentIndex(); }
-bool BatchWindow::endRemove() { return ui->checkRemove->isChecked(); }
-bool BatchWindow::isPaused() { return m_paused; }
+int BatchWindow::endAction() const { return ui->comboEnd->currentIndex(); }
+bool BatchWindow::endRemove() const { return ui->checkRemove->isChecked(); }
+bool BatchWindow::isPaused() const { return m_paused; }

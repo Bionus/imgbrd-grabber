@@ -8,7 +8,7 @@
 
 
 DownloadImagesCliCommand::DownloadImagesCliCommand(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sites, int page, int perPage, QString filename, QString folder, int max, bool login, bool noDuplicates, bool getBlacklisted, Blacklist blacklistedTags, QObject *parent)
-	: SearchImagesCliCommand(profile, std::move(tags), std::move(postFiltering), std::move(sites), page, perPage, filename, folder, max, login, noDuplicates, getBlacklisted, parent), m_printer(printer), m_blacklistedTags(std::move(blacklistedTags))
+	: SearchImagesCliCommand(profile, std::move(tags), std::move(postFiltering), std::move(sites), page, perPage, std::move(filename), std::move(folder), max, login, noDuplicates, getBlacklisted, parent), m_printer(printer), m_blacklistedTags(std::move(blacklistedTags))
 {}
 
 bool DownloadImagesCliCommand::validate()

@@ -82,9 +82,9 @@ void FavoriteWindow::choosePathOverride()
 
 void FavoriteWindow::openSourcesWindow()
 {
-	auto w = new SourcesWindow(m_profile, m_selectedSources, this);
-	connect(w, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
-	w->show();
+	auto *sourcesWindow = new SourcesWindow(m_profile, m_selectedSources, this);
+	connect(sourcesWindow, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
+    sourcesWindow->show();
 }
 
 void FavoriteWindow::setSources(const QList<Site*> &sources)

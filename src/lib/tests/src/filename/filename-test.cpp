@@ -103,9 +103,9 @@ TEST_CASE("Filename")
 	details["name"] = "Test gallery name";
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
-	auto settings = profile->getSettings();
+	auto *settings = profile->getSettings();
 	profile->setRemovedTags("");
 	settings->setValue("Save/separator", " ");
 	settings->setValue("Save/character_value", "group");

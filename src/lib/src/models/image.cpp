@@ -83,7 +83,7 @@ Image::Image(Profile *profile)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
-	: Image(site, details, QVariantMap(), QVariantMap(), profile, parent)
+	: Image(site, std::move(details), QVariantMap(), QVariantMap(), profile, parent)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent)
@@ -365,7 +365,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	}
 
 	if (json.contains("gallery")) {
-		auto gallery = new Image(m_profile);
+		auto *gallery = new Image(m_profile);
 		if (gallery->read(json["gallery"].toObject(), sites)) {
 			m_parentGallery = QSharedPointer<Image>(gallery);
 		} else {

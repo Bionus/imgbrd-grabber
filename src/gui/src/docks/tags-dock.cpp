@@ -49,7 +49,7 @@ void TagsDock::refresh()
 {
 	clearLayout(ui->layoutTags);
 
-	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
+    auto *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
 	taglabel->setText(TagStylist(m_profile).stylished(m_currentTab->results(), true, true).join("<br/>"));
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
@@ -76,7 +76,7 @@ void TagsDock::contextMenu()
 	}
 
 	const QList<Site*> sites = m_currentTab->loadSites();
-	TagContextMenu *menu = new TagContextMenu(m_link, m_currentTab->results(), QUrl(), m_profile, sites, false, this);
+    auto *menu = new TagContextMenu(m_link, m_currentTab->results(), QUrl(), m_profile, sites, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &TagsDock::emitOpenInNewTab);
 	menu->exec(QCursor::pos());
 }

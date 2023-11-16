@@ -10,7 +10,7 @@
 static QString executeFilename(const QString &filename, const QMap<QString, Token> &tokens)
 {
 	FilenameParser parser(filename);
-	auto ast = parser.parseRoot();
+	auto *ast = parser.parseRoot();
 
 	REQUIRE(parser.error() == QString());
 	REQUIRE(ast != nullptr);

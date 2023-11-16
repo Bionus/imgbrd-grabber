@@ -87,7 +87,7 @@ void MainScreen::downloadImage(const QSharedPointer<Image> &image)
 		return;
 	}
 
-	auto downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
+	auto *downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
 }
@@ -138,7 +138,7 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 	}
 
 	// Add site
-	Site *site = new Site(host, source, m_profile);
+	Site *site = new Site(url, source, m_profile);
 	m_profile->addSite(site);
 
 	// Set HTTP setting

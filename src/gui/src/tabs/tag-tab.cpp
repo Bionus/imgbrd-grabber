@@ -77,13 +77,13 @@ void TagTab::on_buttonSearch_clicked()
 	sw->show();
 }
 
-void TagTab::closeEvent(QCloseEvent *e)
+void TagTab::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->sync();
 
 	emit closed(this);
-	e->accept();
+    event->accept();
 }
 
 

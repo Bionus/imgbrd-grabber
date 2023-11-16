@@ -296,7 +296,7 @@ void ImagePreview::contextSaveImage()
 		const QString fn = settings->value("Save/filename").toString();
 		const QString path = settings->value("Save/path").toString();
 
-		auto downloader = new ImageDownloader(m_profile, m_image, fn, path, 1, true, true, m_downloadQueue);
+		auto *downloader = new ImageDownloader(m_profile, m_image, fn, path, 1, true, true, m_downloadQueue);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 		m_downloadQueue->add(DownloadQueue::Manual, downloader);
 	}
@@ -341,7 +341,7 @@ void ImagePreview::contextSaveImageAs()
 		if (!tmpPath.isEmpty()) {
 			QFile::rename(tmpPath, path);
 		} else {
-			auto downloader = new ImageDownloader(m_profile, m_image, { path }, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
+			auto *downloader = new ImageDownloader(m_profile, m_image, { path }, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
 			connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 			m_downloadQueue->add(DownloadQueue::Manual, downloader);
 		}
@@ -358,5 +358,5 @@ void ImagePreview::contextSaveImageProgress(const QSharedPointer<Image> &img, qi
 
 void ImagePreview::setCustomContextMenu(std::function<void (QMenu *, const QSharedPointer<Image> &)> customContextMenu)
 {
-	m_customContextMenu = customContextMenu;
+	m_customContextMenu = std::move(customContextMenu);
 }

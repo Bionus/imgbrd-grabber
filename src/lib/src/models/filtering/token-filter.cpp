@@ -17,7 +17,7 @@ QString TokenFilter::toString(bool escape) const
 
 bool TokenFilter::compare(const Filter &rhs) const
 {
-	const auto other = dynamic_cast<const TokenFilter*>(&rhs);
+	const auto *other = dynamic_cast<const TokenFilter*>(&rhs);
 	if (other == nullptr) {
 		return false;
 	}

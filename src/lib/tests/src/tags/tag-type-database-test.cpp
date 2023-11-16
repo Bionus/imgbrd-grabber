@@ -10,7 +10,7 @@ TEST_CASE("TagTypeDatabase")
 
 	SECTION("Basic load")
 	{
-		QMap<int, TagType> types = database.getAll();
+		const QMap<int, TagType> &types = database.getAll();
 		REQUIRE(types.count() == 4);
 		REQUIRE(types.keys() == QList<int>() << 0 << 1 << 3 << 4);
 		REQUIRE(types.value(0).name() == "general");

@@ -1198,7 +1198,7 @@ void ViewerWindow::toggleSlideshow()
 	}
 }
 
-void ViewerWindow::resizeEvent(QResizeEvent *e)
+void ViewerWindow::resizeEvent(QResizeEvent *event)
 {
 	if (!m_resizeTimer.isActive()) {
 		m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000));
@@ -1207,10 +1207,10 @@ void ViewerWindow::resizeEvent(QResizeEvent *e)
 	m_resizeTimer.start(m_timeout);
 	update(true);
 
-	QWidget::resizeEvent(e);
+	QWidget::resizeEvent(event);
 }
 
-void ViewerWindow::closeEvent(QCloseEvent *e)
+void ViewerWindow::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("Viewer/geometry", saveGeometry());
 	m_settings->setValue("Viewer/plus", m_drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
@@ -1223,12 +1223,12 @@ void ViewerWindow::closeEvent(QCloseEvent *e)
 		it.value()->deleteLater();
 	}
 
-	e->accept();
+    event->accept();
 }
 
-void ViewerWindow::showEvent(QShowEvent *e)
+void ViewerWindow::showEvent(QShowEvent *event)
 {
-	Q_UNUSED(e)
+	Q_UNUSED(event)
 
 	showThumbnail();
 }
@@ -1418,17 +1418,17 @@ void ViewerWindow::openFile(bool now)
 	m_pendingAction = PendingNothing;
 }
 
-void ViewerWindow::mouseReleaseEvent(QMouseEvent *e)
+void ViewerWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (e->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool()) {
+	if (event->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool()) {
 		close();
 		return;
 	}
 
-	QWidget::mouseReleaseEvent(e);
+	QWidget::mouseReleaseEvent(event);
 }
 
-void ViewerWindow::wheelEvent(QWheelEvent *e)
+void ViewerWindow::wheelEvent(QWheelEvent *event)
 {
 	if (m_settings->value("imageNavigateScroll", true).toBool()) {
 		// Ignore events triggered when reaching the bottom of the tag list
@@ -1438,11 +1438,11 @@ void ViewerWindow::wheelEvent(QWheelEvent *e)
 
 		// Ignore events if we already got one less than 500ms ago
 		if (m_lastWheelEvent.isValid() && m_lastWheelEvent.elapsed() <= 500) {
-			e->ignore();
+            event->ignore();
 		}
 		m_lastWheelEvent.start();
 
-		const int angle = e->angleDelta().y();
+		const int angle = event->angleDelta().y();
 		if (angle <= -120) { // Scroll down
 			next();
 			return;
@@ -1453,5 +1453,5 @@ void ViewerWindow::wheelEvent(QWheelEvent *e)
 		}
 	}
 
-	QWidget::wheelEvent(e);
+	QWidget::wheelEvent(event);
 }

@@ -123,8 +123,8 @@ void OAuth2Login::postRequest(QList<QStrP> body, QMap<QString, QByteArray> heade
 
 	// Build headers
 	m_site->setRequestHeaders(request);
-	for (const QString &key : headers.keys()) {
-		request.setRawHeader(key.toLatin1(), headers[key]);
+    for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
+		request.setRawHeader(it.key().toLatin1(), it.value());
 	}
 
 	// Build body

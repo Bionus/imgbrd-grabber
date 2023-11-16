@@ -36,14 +36,14 @@ class BatchWindow : public QDialog
 		int currentMax() const;
 		int totalValue() const;
 		int totalMax() const;
-		int endAction();
+		int endAction() const;
 		int indexOf(const QUrl &url);
 		int batch(const QUrl &url);
 		void setCount(int);
 		void updateColumns();
-		bool endRemove();
-		bool cancelled();
-		bool isPaused();
+		bool endRemove() const;
+		bool cancelled() const;
+		bool isPaused() const;
 
 	public slots:
 		void clear();
@@ -60,7 +60,7 @@ class BatchWindow : public QDialog
 		void speedImage(const QUrl &url, double speed);
 		void loadedImage(const QUrl &url, Downloadable::SaveResult result);
 		void on_buttonDetails_clicked(bool visible);
-		void closeEvent(QCloseEvent *) override;
+		void closeEvent(QCloseEvent *event) override;
 		void copyToClipboard();
 		void cancel();
 		void drawSpeed();

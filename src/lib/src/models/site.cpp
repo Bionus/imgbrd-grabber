@@ -41,8 +41,8 @@ Site::Site(QString url, Source *source, Profile *profile)
 	: Site(url, source->getEngine(), source->getPath().readWritePath(QString(url).replace(':', '_')), profile)
 {}
 
-Site::Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile)
-	: m_profile(profile), m_dir(dir), m_type(engine->getName()), m_url(std::move(url)), m_sourceEngine(engine), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+Site::Site(QString url, SourceEngine *engine, ReadWritePath dir, Profile *profile)
+	: m_profile(profile), m_dir(std::move(dir)), m_type(engine->getName()), m_url(std::move(url)), m_sourceEngine(engine), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new NetworkManager(this);

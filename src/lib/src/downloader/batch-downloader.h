@@ -58,7 +58,7 @@ class BatchDownloader : public QObject
 		void nextPack();
 		void nextImages();
 		void nextImage();
-		void loadImage(QSharedPointer<Image> img);
+		void loadImage(const QSharedPointer<Image> &img);
 		void loadImageFinished(const QSharedPointer<Image> &img, QList<ImageSaveResult> result);
 		void allFinished();
 

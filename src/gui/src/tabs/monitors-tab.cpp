@@ -23,14 +23,14 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 {
 	ui->setupUi(this);
 
-	auto monitorTableModel = new MonitorTableModel(m_monitorManager, m_settings, this);
+	auto *monitorTableModel = new MonitorTableModel(m_monitorManager, m_settings, this);
 	m_monitorTableModel = new QSortFilterProxyModel(this);
 	m_monitorTableModel->setSortRole(Qt::UserRole);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
-	QShortcut *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
+    auto *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
 	actionRemoveSelected->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionRemoveSelected, &QShortcut::activated, this, &MonitorsTab::removeSelected);
 
@@ -105,7 +105,7 @@ void MonitorsTab::removeSelected()
 		}
 	}
 
-	std::sort(rows.begin(), rows.end(), std::greater<int>());
+	std::sort(rows.begin(), rows.end(), std::greater<>());
 
 	for (int i : qAsConst(rows)) {
 		m_monitorTableModel->removeRow(i);

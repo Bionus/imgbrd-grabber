@@ -24,7 +24,7 @@ class ImageDownloader : public QObject
 	public:
 		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown, bool postSave = true, bool forceExisting = false);
 		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown, bool postSave = true, bool forceExisting = false);
-		~ImageDownloader();
+		~ImageDownloader() override;
 		bool isRunning() const;
 		void setSize(Image::Size size);
 		void setBlacklist(Blacklist *blacklist);

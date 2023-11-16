@@ -184,5 +184,8 @@ bool WindowsShareUtils::shareUrl(const QUrl &url)
 
 bool WindowsShareUtils::sendFile(const QString &path, const QString &mimeType, const QString &title)
 {
+    Q_UNUSED(path);
+    Q_UNUSED(mimeType);
+    Q_UNUSED(title);
 	return false;
 }

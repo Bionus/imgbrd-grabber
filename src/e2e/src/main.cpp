@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	QJsonDocument input = QJsonDocument::fromJson(f.readAll());
 	f.close();
 
-	Profile *profile = new Profile(savePath());
+	auto *profile = new Profile(savePath());
 	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
 
@@ -138,8 +138,8 @@ int main(int argc, char *argv[])
 					continue;
 				}
 
-				auto page = new Page(profile, site, allSites.values(), QStringList() << search, pageI, limit);
-				auto pageApi = new PageApi(page, profile, site, api, search.split(' '), pageI, limit);
+				auto *page = new Page(profile, site, allSites.values(), QStringList() << search, pageI, limit);
+				auto *pageApi = new PageApi(page, profile, site, api, search.split(' '), pageI, limit);
 				QEventLoop loop;
 				QObject::connect(pageApi, &PageApi::finishedLoading, &loop, &QEventLoop::quit);
 				QTimer::singleShot(1, pageApi, SLOT(load()));

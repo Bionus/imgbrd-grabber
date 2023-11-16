@@ -26,7 +26,7 @@ QString MetaFilter::toString(bool escape) const
 
 bool MetaFilter::compare(const Filter& rhs) const
 {
-	const auto other = dynamic_cast<const MetaFilter*>(&rhs);
+	const auto *other = dynamic_cast<const MetaFilter*>(&rhs);
 	if (other == nullptr) {
 		return false;
 	}

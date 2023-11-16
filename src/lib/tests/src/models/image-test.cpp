@@ -62,9 +62,9 @@ TEST_CASE("Image")
 	details["file_size"] = "358400";
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
-	auto settings = profile->getSettings();
+	auto *settings = profile->getSettings();
 	settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
 	settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");
 	settings->setValue("Coloring/Fonts/characters", ",8.25,-1,5,50,0,0,0,0,0");

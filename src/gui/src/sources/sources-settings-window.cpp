@@ -31,11 +31,11 @@ void setSource(QComboBox *combo, const QStringList &opts, const QStringList &val
 
 QLineEdit *createLineEdit(QWidget *parent, QString value, bool isPassword)
 {
-	auto le = new QLineEdit(std::move(value), parent);
+	auto *lineEdit = new QLineEdit(std::move(value), parent);
 	if (isPassword) {
-		le->setEchoMode(QLineEdit::Password);
+        lineEdit->setEchoMode(QLineEdit::Password);
 	}
-	return le;
+	return lineEdit;
 }
 
 SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent)
@@ -112,12 +112,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "accessToken", tr("Access token") },
 		{ "refreshToken", tr("Refresh token") }
 	};
-	QStringList types;
 	QMultiMap<QString, QLineEdit*> fields;
 	auto auths = m_site->getSourceEngine()->getAuths();
 	int activeLoginIndex = 0;
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
-		const QString id = it.key();
+		const QString &id = it.key();
 		const QString type = it.value()->type();
 		const QString name = it.value()->name();
 		ui->comboLoginType->addItem(typeNames.contains(name) ? typeNames[name] : name, id);
@@ -126,8 +125,8 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		}
 
 		// Build credential fields
-		QWidget *credentialsWidget = new QWidget(this);
-		QFormLayout *formLayout = new QFormLayout;
+        auto *credentialsWidget = new QWidget(this);
+        auto *formLayout = new QFormLayout;
 		formLayout->setContentsMargins(0, 0, 0, 0);
 
 		QList<AuthSettingField> settingFields = it.value()->settingFields();
@@ -279,8 +278,8 @@ void SourcesSettingsWindow::updateFields()
 {
 	for (auto it = m_credentialFields.begin(); it != m_credentialFields.end(); ++it) {
 		for (auto jt = it.value().begin(); jt != it.value().end(); ++jt) {
-			const QString type = it.key();
-			const QString id = jt.key();
+			const QString &type = it.key();
+			const QString &id = jt.key();
 
 			const QString val = m_site->settings()->value("auth/" + id).toString();
 			if (!val.isEmpty()) {

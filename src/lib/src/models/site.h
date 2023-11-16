@@ -55,7 +55,7 @@ class Site : public QObject
 		};
 
 		Site(QString url, Source *source, Profile *profile);
-		Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile);
+		Site(QString url, SourceEngine *engine, ReadWritePath dir, Profile *profile);
 		~Site() override;
 
 		void loadConfig();

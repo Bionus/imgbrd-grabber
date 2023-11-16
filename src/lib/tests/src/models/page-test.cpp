@@ -17,7 +17,7 @@ TEST_CASE("Page")
 	setupSite("Gelbooru (0.2)", "gelbooru.com");
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
 	Site *site = profile->getSites().value("gelbooru.com");

@@ -40,7 +40,7 @@ class TagTab : public SearchTab
 		void getAll();
 		// Others
 		void monitor();
-		void closeEvent(QCloseEvent *) override;
+		void closeEvent(QCloseEvent *event) override;
 		void on_buttonSearch_clicked();
 		void focusSearch() override;
 		void updateTitle() override;

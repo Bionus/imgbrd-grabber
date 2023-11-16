@@ -42,7 +42,7 @@ void SearchLoader::searchFinished(Page *page)
 		return;
 	}
 
-	const QList<QSharedPointer<Image>> results = page->images();
+	const QList<QSharedPointer<Image>> &results = page->images();
 	const bool hideBlacklisted = m_profile->getSettings()->value("hideblacklisted", false).toBool();
 
 	m_results.clear();

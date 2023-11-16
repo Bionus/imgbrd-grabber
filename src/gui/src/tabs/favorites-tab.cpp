@@ -97,7 +97,7 @@ FavoritesTab::~FavoritesTab()
 	delete ui;
 }
 
-void FavoritesTab::closeEvent(QCloseEvent *e)
+void FavoritesTab::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->beginGroup("Favorites");
@@ -108,7 +108,7 @@ void FavoritesTab::closeEvent(QCloseEvent *e)
 	m_settings->sync();
 
 	emit closed(this);
-	e->accept();
+    event->accept();
 }
 
 
@@ -391,8 +391,8 @@ void FavoritesTab::favoriteProperties(const QString &name)
 	}
 
 	const Favorite fav = m_favorites[index];
-	auto fwin = new FavoriteWindow(m_profile, fav, this);
-	fwin->show();
+	auto *favoriteWindow = new FavoriteWindow(m_profile, fav, this);
+    favoriteWindow->show();
 }
 
 void FavoritesTab::focusSearch()

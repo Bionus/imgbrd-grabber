@@ -155,11 +155,11 @@ TEST_CASE("FilenameConditionVisitor")
 			{ "allos", Token(QStringList() << "tag1" << "tag2" << "tag3") },
 		};
 
-		auto validTag = new NTag(Tag("tag1"));
-		auto invalidToken = new NToken("not_found");
+		auto *validTag = new NTag(Tag("tag1"));
+		auto *invalidToken = new NToken("not_found");
 
-		auto validOp = new NOp(NOp::Operator::Or, new NTag(Tag("tag1")), new NToken("not_found"));
-		auto invalidOp = new NOp(NOp::Operator::And, new NTag(Tag("tag1")), new NToken("not_found"));
+		auto *validOp = new NOp(NOp::Operator::Or, new NTag(Tag("tag1")), new NToken("not_found"));
+		auto *invalidOp = new NOp(NOp::Operator::And, new NTag(Tag("tag1")), new NToken("not_found"));
 
 		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 		REQUIRE(!FilenameConditionVisitor(tokens, &settings).run(NInvert(validTag)));

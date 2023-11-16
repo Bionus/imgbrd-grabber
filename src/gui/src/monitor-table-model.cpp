@@ -131,7 +131,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		case 2:
 		{
 			QStringList sites;
-			for (auto site : monitor.sites()) {
+			for (auto *site : monitor.sites()) {
 				sites.append(site->url());
 			}
 			return sites.join(", ");

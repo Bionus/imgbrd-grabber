@@ -23,7 +23,7 @@ class VideoPlayer : public Player
 
 	public:
 		explicit VideoPlayer(QSettings *settings, QWidget *parent = nullptr);
-		~VideoPlayer();
+		~VideoPlayer() override;
 
 		bool supports(const QString &file) override;
 		void load(const QString &file) override;

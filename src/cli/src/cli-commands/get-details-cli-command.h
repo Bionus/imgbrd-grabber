@@ -17,7 +17,7 @@ class GetDetailsCliCommand : public CliCommand
 	Q_OBJECT
 
 	public:
-		explicit GetDetailsCliCommand(Profile *profile, Printer *printer, const QList<Site*> &sites, const QString &pageUrl, QObject *parent = nullptr);
+		explicit GetDetailsCliCommand(Profile *profile, Printer *printer, const QList<Site*> &sites, QString pageUrl, QObject *parent = nullptr);
 
 		bool validate() override;
 		void run() override;

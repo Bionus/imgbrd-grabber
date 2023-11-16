@@ -5,8 +5,8 @@
 
 TEST_CASE("MixedSettings")
 {
-	auto child = new QSettings("tests/resources/tmp/child.ini", QSettings::IniFormat);
-	auto parent = new QSettings("tests/resources/tmp/parent.ini", QSettings::IniFormat);
+	auto *child = new QSettings("tests/resources/tmp/child.ini", QSettings::IniFormat);
+	auto *parent = new QSettings("tests/resources/tmp/parent.ini", QSettings::IniFormat);
 
 	child->clear();
 	parent->clear();
@@ -31,8 +31,6 @@ TEST_CASE("MixedSettings")
 
 		child->setValue("test", "child");
 		parent->setValue("test", "parent");
-		QVariant v1 = child->value("test");
-		QVariant v2 = child->value("test");
 
 		REQUIRE(settings.value("test").toString() == QString("child"));
 	}

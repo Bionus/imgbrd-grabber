@@ -57,7 +57,7 @@ bool SearchQuery::read(const QJsonObject &json, Profile *profile)
 	// Gallery
 	if (json.contains("gallery")) {
 		const QMap<QString, Site*> &sites = profile->getSites();
-		auto image = new Image(profile);
+		auto *image = new Image(profile);
 		if (image->read(json["gallery"].toObject(), sites)) {
 			gallery = QSharedPointer<Image>(image);
 		} else {

@@ -56,7 +56,7 @@ QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> det
 		}
 	}
 
-	return QSharedPointer<Image>(new Image(site, details, identity, data, profile, parent));
+	return QSharedPointer<Image>(new Image(site, details, std::move(identity), data, profile, parent));
 }
 
 

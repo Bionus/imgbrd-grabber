@@ -194,7 +194,7 @@ Profile::Profile(QString path)
 	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
 	for (const QString &url : sourceRegistries) {
 		auto *sourceRegistry = new SourceRegistry(url);
-		auto receiver = new QObject(this);
+		auto *receiver = new QObject(this);
 		connect(sourceRegistry, &SourceRegistry::loaded, receiver, [=](bool ok) {
 			receiver->deleteLater();
 			if (ok) {
