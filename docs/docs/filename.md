@@ -5,11 +5,11 @@ title: Filename
 
 ## Introduction
 
-If you want to download lots of images at the same time and have each of them be downloaded in a different location or having a different filename, you have to first tell the program which filename format to use.
+If you want to download lots of images at the same time and have each of them be downloaded in a different location or have a different filename, you have to first tell the program which filename format to use.
 
 The program has many tokens to use to ensure different and unique filenames, you can find an exhaustive list [below](#available-tokens).
 
-The most basic tokens are `md5` (an image unique identifier across all websites), `id` (an image unique identifier on a given website) and `ext` (the image's extension). Each token should be written between percent signs (`%`) to differentiate it from plain text. So if you want to use the `md5` token in your filename, you have to write `%md5%`.
+The most basic tokens are `md5` (an image unique identifier across all websites), `id` (an image unique identifier on a given website), and `ext` (the image's extension). Each token should be written between percent signs (`%`) to differentiate it from plain text. So if you want to use the `md5` token in your filename, you have to write `%md5%`.
 
 ### Examples
 
@@ -62,7 +62,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `rating`: `safe`, `questionable`, `explicit`, or `unknown`.
 * `score`
 * `md5`: the file's MD5 hash. If not returned by the server, it is generated automatically.
-* `id`: unique image id per board.
+* `id`: unique image ID per board.
 * `website`: the website's URL (without HTTP and trailing slash).
 * `websitename`: the website name as set in the sources' settings.
 * `height`: the image's height.
@@ -72,19 +72,19 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `authorid`: the ID of the author of the image.
 * `date`: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".
 * `all`: all tags.
-* `allo`: do not use this unless you know what you're doing. It is the same as `%all%`, but without the removal of forbidden characters and any other kind treatment (using it as a filename may cause some images to not save).
-* `source`: the source of this file, usually an URL.
+* `allo`: do not use this unless you know what you're doing. It is the same as `%all%`, but without the removal of forbidden characters and any other kind of treatment (using it as a filename may cause some images to not save).
+* `source`: the source of this file, usually a URL.
 * `sources`: all sources for this file, usually a list of URLs.
 * `url_file`: the URL of that file.
 * `url_original`: the URL of that file's original.
 * `url_sample`: the URL of that file's sample.
 * `url_thumbnail`: the URL of that file's thumbnail.
 * `url_page`: the URL of the details page of that file.
-* `count`: counts the current image downloaded during a batch download. Useful to have unique counters per batches.
-* `num`: counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
+* `count`: counts the current image downloaded during a batch download. Useful to have unique counters per batch.
+* `num`: a counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
 * `position`: the position of the image in the results list or gallery (starts at 1).
 * `old_directory`: when renaming, store the local path for the current file. (useful to rename images, without changing directory structure).
-* `old_filename`: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token keep the extension of the file, therefore, should not be used with %ext%.
+* `old_filename`: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token contains the extension of the file, therefore, should not be used with %ext%.
 
 ### Gallery tokens
 
@@ -99,7 +99,7 @@ Images can access information on the gallery by using the `gallery.` prefix. Man
 ### Introduction
 Most tokens can have options. To add options to a token, just add `:` after its name, followed by the option name and its value (separated by a `=`). Multiple options can be set, separating them by `,`.
 
-When a same option is set multiple times, only the latest one is taken into account.
+When the same option is set multiple times, only the latest one is taken into account.
 
 The value can be omitted for boolean options. In this case, `option_name` will be equivalent to `option_name=true`. Useful to set multiple flags.
 
@@ -131,7 +131,7 @@ fate/stay_night
 ```
 
 #### Underscores (bool)
-If the "replace spaces by underscores" setting is not enabled globally, you can enable for a given token using this option.
+If the "replace spaces by underscores" setting is not enabled globally, you can enable it for a given token using this option.
 
 Example:
 ```
@@ -143,7 +143,7 @@ fate_stay_night
 ```
 
 #### Spaces (bool)
-If the "replace spaces by underscores" setting is enabled globally, you can disable for a given token using this option.
+If the "replace spaces by underscores" setting is enabled globally, you can disable it for a given token using this option.
 
 Example:
 ```
@@ -324,9 +324,9 @@ Beware of not using any character forbidden by your operating system in the form
 | AP | use AM/PM display. AP will be replaced by either "AM" or "PM". |
 | ap | use am/pm display. ap will be replaced by either "am" or "pm". |
 
-All other input characters will be ignored. Any sequence of characters that are enclosed in singlequotes will be treated as text and not be used as an expression. Two consecutive singlequotes `''` are replaced by a singlequote in the output.
+All other input characters will be ignored. Any sequence of characters that are enclosed in single quotes will be treated as text and not be used as an expression. Two consecutive single quotes `''` are replaced by a single quote in the output.
 
-Some examples, assumed that the date is 21 May 2001 at 14:13:09:
+Some examples assumed that the date is 21 May 2001 at 14:13:09:
 
 | Format          | Result        |
 | --------------- | ------------- |
@@ -386,7 +386,7 @@ You can use conditionals in your filename, using strict inequality signs (`<` an
 
 !!! note
 
-    There is currently issues with conditionals inside other conditionals, so it is advised to not imbricate conditionals in your filename.
+    There are currently issues with conditionals inside other conditionals, so it is advised to not imbricate conditionals in your filename.
 
 ### Simple conditionals
 #### Token conditionals
@@ -428,7 +428,7 @@ If, for some obscure reason, it has both:
 image - image contains the tag solo group is one of the image tags %md5%.%ext%
 ```
 
-If, it does not have solo nor group:
+If, it does not have solo or group:
 ```
 image -   %md5%.%ext%
 ```
@@ -460,7 +460,7 @@ If you do not need an "else" part, you can omit it and use the simpler `<if?then
 ```
 If the tag is present in the image, the condition will be replaced by "yes". Otherwise, it will simply be skipped.
 
-The condition part can use either tags or tokens, same as simple conditionals, combined with `&` (for "and"), `|` (for "or"), and `!` (for inversion). Complex conditions can also use parentheses (`(` and `)`).
+The condition part can use either tags or tokens, the same as simple conditionals, combined with `&` (for "and"), `|` (for "or"), and `!` (for inversion). Complex conditions can also use parentheses (`(` and `)`).
 ```
 <"tag" | !%artist%?tag or no artist:otherwise>
 ```
@@ -470,19 +470,19 @@ You can escape special characters (`?`, `!`...) by prefixing them with `^`. For 
 Note that while double quotes are optional for tags, it's recommended to use them, especially in complex conditions or for tags containing special characters.
 
 ## JavaScript
-You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, that you can open clicking the "..." button near the filename field, or by adding "javascript:" before your script.
+You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, which you can open by clicking the "..." button near the filename field, or by adding "javascript:" before your script.
 
 For example, if your script is "md5 + '.' + ext", your filename will be "javascript:md5 + '.' + ext".
 
 ## Similar tags
-Sometimes, you have similar tags in your image, which can be problematic for your filename. For example, if you have an image tagged as both "pokemon" and "pokemon_bw", you might get "crossover" when using `%copyright%`, or "pokemon pokemon_bw", which can become annoying for organization.
+Sometimes, you have similar tags in your image, which can be problematic for your filename. For example, if you have an image tagged as both "pokemon" and "pokemon_bw", you might get "crossover" when using `%copyright%`, or "pokemon pokemon_bw", which can become annoying for organizing.
 
-In order to fix this, there are a few options.
+To fix this, there are a few options.
 
 ### The "use shortest if possible" setting
-This setting is specific for copyright tags, and can be found in the option window, in the "Save > Tags > Copyright" category, as a checkbox at the bottom of the window.
+This setting is specific for copyright tags and can be found in the options window, in the "Save > Tags > Copyright" category, as a checkbox at the bottom of the window.
 
-This feature takes all tags marked as "copyright", and remove all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "\_bw"..
+This feature takes all tags marked as "copyright", and removes all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "\_bw"..
 
 ### Ignored tags
-You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appearing, in our example, in `%copyright%`. It will however still be in `%all%`.
+You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appear, in our example, in `%copyright%`. It will however still be in `%all%`.
