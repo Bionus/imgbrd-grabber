@@ -130,7 +130,7 @@ void TagTab::write(QJsonObject &json) const
 		if (!it.value().isEmpty()) {
 			QJsonObject siteUrls;
 			const auto urls = it.value().last()->urls();
-			for (auto urlIt = urls.constBegin(); urlIt != urls.constEnd(); ++it) {
+			for (auto urlIt = urls.constBegin(); urlIt != urls.constEnd(); ++urlIt) {
 				siteUrls.insert(urlIt.key(), urlIt.value().toString());
 			}
 			lastUrls.insert(site, siteUrls);

@@ -47,7 +47,7 @@ class FavoritesTab : public SearchTab
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
-		void setFavoriteViewed(const QString &tag, QDateTime date = {});
+ 		void setFavoriteViewed(const QString &tag, const QDateTime &date = {});
 		void viewed();
 		// Others
 		void closeEvent(QCloseEvent *) override;
