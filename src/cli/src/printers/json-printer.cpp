@@ -93,7 +93,7 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 
 	const auto &tokens = image.tokens(m_profile);
     for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
-		typedef QMetaType::Type Type;
+		typedef QVariant::Type Type;
 
         const QString &key = it.key();
 		if (ignoreKeys.contains(key)) {
@@ -106,13 +106,13 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 		const QVariant &qvalue = it.value().value();
 		auto type = qvalue.type();
 
-		if (type == QVariant::Type::StringList) {
+		if (type == Type::StringList) {
 			QStringList l = qvalue.toStringList();
 			if (l.isEmpty()) {
 				continue;
 			}
 			jsObject.insert(key, QJsonArray::fromStringList(l));
-		} else if (type == QVariant::Type::String) {
+		} else if (type == Type::String) {
 			QString s = qvalue.toString();
 			if (s.isEmpty()) {
 				continue;
