@@ -63,7 +63,7 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &DownloadsTab::batchClearSelGroups);
 
-    auto *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
+	auto *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
 	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &DownloadsTab::batchClearSelUniques);
 

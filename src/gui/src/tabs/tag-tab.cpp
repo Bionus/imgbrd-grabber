@@ -125,12 +125,12 @@ void TagTab::write(QJsonObject &json) const
 
 	// Last urls
 	QJsonObject lastUrls;
-    for (auto it = m_pages.constBegin(); it != m_pages.constEnd(); ++it) {
-	    const QString &site = it.key();
+	for (auto it = m_pages.constBegin(); it != m_pages.constEnd(); ++it) {
+		const QString &site = it.key();
 		if (!it.value().isEmpty()) {
 			QJsonObject siteUrls;
 			const auto urls = it.value().last()->urls();
-            for (auto urlIt = urls.constBegin(); urlIt != urls.constEnd(); ++it) {
+			for (auto urlIt = urls.constBegin(); urlIt != urls.constEnd(); ++it) {
 				siteUrls.insert(urlIt.key(), urlIt.value().toString());
 			}
 			lastUrls.insert(site, siteUrls);

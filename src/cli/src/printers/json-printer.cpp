@@ -92,10 +92,10 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 	QJsonObject jsObject;
 
 	const auto &tokens = image.tokens(m_profile);
-    for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
+	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
 		typedef QVariant::Type Type;
 
-        const QString &key = it.key();
+		const QString &key = it.key();
 		if (ignoreKeys.contains(key)) {
 			continue;
 		}

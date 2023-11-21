@@ -1222,24 +1222,24 @@ void SearchTab::pruneSources()
 
 	log(QStringLiteral("Pruning sources..."), Logger::Info);
 
-    QSet<Site*> sitesWithImages;
-    for (const QSharedPointer<Image> &img : qAsConst(m_images)) {
-        if (!sitesWithImages.contains(img->parentSite())) {
-            sitesWithImages.insert(img->parentSite());
-        }
+	QSet<Site*> sitesWithImages;
+	for (const QSharedPointer<Image> &img : qAsConst(m_images)) {
+		if (!sitesWithImages.contains(img->parentSite())) {
+			sitesWithImages.insert(img->parentSite());
+		}
 	}
 
-    QList<Site*> goodSources;
+	QList<Site*> goodSources;
 	QStringList removedSources;
-    for (Site *site : m_selectedSources) {
-        if (sitesWithImages.contains(site)) {
+	for (Site *site : m_selectedSources) {
+		if (sitesWithImages.contains(site)) {
 			goodSources.append(site);
-        } else {
+		} else {
 			removedSources.append(site->name());
-        }
-    }
+		}
+	}
 
-    this->setSources(goodSources);
+	this->setSources(goodSources);
 	log(QStringLiteral("Sources pruned: %1").arg(removedSources.isEmpty() ? "none" : removedSources.join(", ")), Logger::Info);
 }
 

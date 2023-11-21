@@ -49,7 +49,7 @@ void FavoritesDock::contextMenu(const QPoint &pos)
 	}
 
 	const QList<Site*> sites = m_currentTab->loadSites();
-    auto *menu = new TagContextMenu(m_hover, {}, {}, m_profile, sites, false, this);
+	auto *menu = new TagContextMenu(m_hover, {}, {}, m_profile, sites, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &FavoritesDock::emitOpenInNewTab);
 	menu->exec(QCursor::pos());
 }
@@ -101,7 +101,7 @@ void FavoritesDock::refresh()
 
 	int i = 0;
 	for (const Favorite &fav : qAsConst(m_favorites)) {
-        auto *lab = new QAffiche(QString(fav.getName()), 0, QColor(), this);
+		auto *lab = new QAffiche(QString(fav.getName()), 0, QColor(), this);
 		lab->setText(fav.getName());
 		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), QLocale().toString(fav.getLastViewed(), QLocale::ShortFormat)));
 		lab->setCursor(Qt::PointingHandCursor);

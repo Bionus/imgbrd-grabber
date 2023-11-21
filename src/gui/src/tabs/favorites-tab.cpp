@@ -39,7 +39,7 @@ FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 		const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		m_favoritesLayout->setFixedWidth(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
 	}
-    auto *layoutWidget = new QWidget;
+	auto *layoutWidget = new QWidget;
 	layoutWidget->setLayout(m_favoritesLayout);
 	ui->layoutFavorites->addWidget(layoutWidget, 0, 0);
 
@@ -165,7 +165,7 @@ void FavoritesTab::updateFavorites()
 			const bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
 
 			QPixmap img = fav.getImage();
-            auto *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
+			auto *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
 				image->scale(img, QSize(imageSize, imageSize));
 				image->setFixedSize(dim, dim);
 				image->setFlat(true);
@@ -191,7 +191,7 @@ void FavoritesTab::updateFavorites()
 			label += "<br/>(" + QString::number(fav.getNote()) + " % - " + QLocale().toString(fav.getLastViewed().date(), QLocale::ShortFormat) + ")";
 		}
 
-        auto *caption = new QAffiche(fav.getName(), 0, QColor(), this);
+		auto *caption = new QAffiche(fav.getName(), 0, QColor(), this);
 			caption->setText(label);
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
@@ -421,14 +421,14 @@ void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image>
 	QAction *first = menu->actions().first();
 
 	// Mark as "last viewed"
-    auto *actionMarkAsLastViewed = new QAction(QIcon(":/images/icons/eye.png"), tr("Mark as last viewed"), menu);
+	auto *actionMarkAsLastViewed = new QAction(QIcon(":/images/icons/eye.png"), tr("Mark as last viewed"), menu);
 	connect(actionMarkAsLastViewed, &QAction::triggered, [this, img]() {
 		this->setFavoriteViewed(m_currentTags, img->createdAt());
 	});
 	menu->insertAction(first, actionMarkAsLastViewed);
 
 	// Choose selected image as favorite thumbnail
-    auto *actionUseAsThumbnail = new QAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), menu);
+	auto *actionUseAsThumbnail = new QAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), menu);
 	connect(actionUseAsThumbnail, &QAction::triggered, [this, img]() {
 		const int index = m_favorites.indexOf(Favorite(m_currentTags));
 		if (index >= 0) {
