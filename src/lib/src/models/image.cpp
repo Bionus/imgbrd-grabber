@@ -1186,6 +1186,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("photo_set", Token(details["photo_set"], "keepAll", "unknown", "multiple"));
 	tokens.insert("species", Token(details["species"], "keepAll", "unknown", "multiple"));
 	tokens.insert("meta", Token(details["meta"], "keepAll", "none", "multiple"));
+	tokens.insert("lore", Token(details["lore"], "keepAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
 	tokens.insert("allo", Token(details["allos"].join(' ')));
 	tokens.insert("tags", Token(QVariant::fromValue(tags)));
