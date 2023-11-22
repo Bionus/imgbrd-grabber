@@ -28,32 +28,24 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Cache Qt
-        id: cache-qt
-        if: matrix.language == 'cpp'
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
+        uses: actions/checkout@v4
 
       - name: Install Qt
         if: matrix.language == 'cpp'
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
+        uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
           config-file: ./.github/codeql/codeql-config.yml
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
+        uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+        uses: github/codeql-action/analyze@v2
