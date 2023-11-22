@@ -87,7 +87,7 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	return ret;
 }
 
-QList<QMap<QString, Token>> Filename::expandTokens(QMap<QString, Token> tokens, QSettings *settings) const
+QList<QMap<QString, Token>> Filename::expandTokens(const QMap<QString, Token> &tokens, QSettings *settings) const
 {
 	QList<QMap<QString, Token>> ret;
 	ret.append(tokens);
@@ -111,7 +111,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(QMap<QString, Token> tokens, 
 		for (int i = 0; i < cnt; ++i) {
 			ret[i].insert(key, reps[0]);
 			for (int j = 1; j < reps.count(); ++j) {
-				tokens = ret[i];
+				QMap<QString, Token> tokens = ret[i];
 				tokens.insert(key, reps[j]);
 				ret.append(tokens);
 			}
