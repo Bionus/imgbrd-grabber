@@ -30,9 +30,7 @@ jobs:
           touch settings.ini
 
       - name: Generate tag databases
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          run: ./scripts/generate-tag-databases.sh
+        run: QT_QPA_PLATFORM=offscreen ./scripts/generate-tag-databases.sh
 
       - name: Get date for release body
         id: date
