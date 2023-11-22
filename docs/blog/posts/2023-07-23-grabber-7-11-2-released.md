@@ -1,5 +1,5 @@
 ---
-date: 2023-07-23 21:45 +0200
+date: 2023-07-23 21:45:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

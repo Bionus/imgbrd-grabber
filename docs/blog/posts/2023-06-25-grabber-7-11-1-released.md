@@ -1,5 +1,5 @@
 ---
-date: 2023-06-25 16:00 +0200
+date: 2023-06-25 16:00:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

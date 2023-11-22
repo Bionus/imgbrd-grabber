@@ -1,5 +1,5 @@
 ---
-date: 2020-07-24 01:18:00 +0200
+date: 2020-07-24 01:18:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

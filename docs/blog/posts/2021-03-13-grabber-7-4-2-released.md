@@ -1,5 +1,5 @@
 ---
-date: 2021-03-13 15:40:00 +0100
+date: 2021-03-13 15:40:00 +1:00
 categories: [Release]
 authors: [Bionus]
 ---

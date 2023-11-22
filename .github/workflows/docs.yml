@@ -36,10 +36,7 @@ jobs:
             mkdocs-material-
 
       - name: Install Python dependencies
-        run: pip install mkdocs-material==9.2.0b3 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
-
-      - name: Patch blog dates to support datetimes
-        run: sed -i 's|date.fromisoformat|datetime.fromisoformat|' $(pip show mkdocs-material | grep Location | cut -d ' ' -f 2)/material/plugins/blog/plugin.py
+        run: pip install mkdocs-material==9.4 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force

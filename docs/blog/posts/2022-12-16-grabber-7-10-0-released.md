@@ -1,5 +1,5 @@
 ---
-date: 2022-12-16 22:00 +0100
+date: 2022-12-16 22:00:00 +1:00
 categories: [Release]
 authors: [Bionus]
 ---

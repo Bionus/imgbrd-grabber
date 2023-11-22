@@ -1,5 +1,5 @@
 ---
-date: 2019-05-19 14:44:00 +0200
+date: 2019-05-19 14:44:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

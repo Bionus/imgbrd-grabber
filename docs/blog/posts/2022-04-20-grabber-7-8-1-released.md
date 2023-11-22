@@ -1,5 +1,5 @@
 ---
-date: 2022-04-20 23:34 +0100
+date: 2022-04-20 23:34:00 +1:00
 categories: [Release]
 authors: [Bionus]
 ---

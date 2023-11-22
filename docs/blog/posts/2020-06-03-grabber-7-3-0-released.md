@@ -1,5 +1,5 @@
 ---
-date: 2020-06-03 17:12:00 +0200
+date: 2020-06-03 17:12:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

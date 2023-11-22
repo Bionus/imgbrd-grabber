@@ -1,5 +1,5 @@
 ---
-date: 2020-08-01 23:15:00 +0200
+date: 2020-08-01 23:15:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

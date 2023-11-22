@@ -1,5 +1,5 @@
 ---
-date: 2022-07-16 13:45 +0200
+date: 2022-07-16 13:45:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

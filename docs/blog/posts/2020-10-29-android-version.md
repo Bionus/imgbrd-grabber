@@ -1,5 +1,5 @@
 ---
-date: 2020-10-29 21:20:00 +0100
+date: 2020-10-29 21:20:00 +1:00
 categories: [Android]
 authors: [Bionus]
 ---

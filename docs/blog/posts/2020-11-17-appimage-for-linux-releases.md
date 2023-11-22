@@ -1,5 +1,5 @@
 ---
-date: 2020-11-17 14:09:00 +0100
+date: 2020-11-17 14:09:00 +1:00
 categories: [Linux]
 authors: [Bionus]
 ---

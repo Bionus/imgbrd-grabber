@@ -1,5 +1,5 @@
 ---
-date: 2021-08-24 23:55:00 +0200
+date: 2021-08-24 23:55:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---

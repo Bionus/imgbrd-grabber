@@ -1,5 +1,5 @@
 ---
-date: 2022-06-06 16:19 +0200
+date: 2022-06-06 16:19:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---
