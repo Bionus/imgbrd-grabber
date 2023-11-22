@@ -13,13 +13,13 @@ on:
       - crowdin
 
 env:
-  QT_VERSION: 6.5.2
+  QT_VERSION: 6.6.0
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
   CMAKE_BUILD_PARALLEL_LEVEL: 2
-  QSCINTILLA_VERSION: 2.13.0
-  QSCINTILLA_DIR: QScintilla_src-2.13.0
+  QSCINTILLA_VERSION: 2.14.1
+  QSCINTILLA_DIR: QScintilla_src-2.14.1
   ANDROID_NDK_VERSION: 25.1.8937393
 
 jobs:
