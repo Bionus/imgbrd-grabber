@@ -222,6 +222,12 @@ jobs:
           curl -Lo "linuxdeployqt.AppImage" "https://github.com/probonopd/linuxdeployqt/releases/download/${LINUXDEPLOYQT_VERSION}/linuxdeployqt-${LINUXDEPLOYQT_VERSION}-x86_64.AppImage"
           chmod a+x linuxdeployqt.AppImage
 
+      # This driver causes an issue in linuxdeployqt because Mimer SQL is not installed but the plugin depends on it
+      - name: Delete unnecessary SQL driver
+        run: |
+          rm $Qt6_DIR/plugins/sqldrivers/libqsqlmimer.so
+          rm $Qt6_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
+
       - name: Build
         run: |
           mkdir build
