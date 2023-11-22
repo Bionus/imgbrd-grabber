@@ -120,6 +120,7 @@ endif()
 
 # Necessary to prevent "Target "Qt6::QmlIntegration" not found." errors on targets not using QML
 find_package(Qt6 COMPONENTS Qml REQUIRED)
+message(STATUS "Qt6 version: ${Qt6_VERSION}")
 
 add_subdirectory(lib)
 add_subdirectory(gui)
