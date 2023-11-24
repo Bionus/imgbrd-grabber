@@ -5,19 +5,23 @@ title: Compilation
 
 ## Introduction
 
-Tired of waiting for the next update? Want to get the latest developer version? Want to help on the program's development? You'll have to compile the program yourself.
+Tired of waiting for the next update? Want to get the latest developer version? Want to help on the program's development? You'll need to compile the program yourself.
 
 
 ## Windows
 
 ### Dependencies
 
-Bullets with '`*`' are mandatory, other are optional. Note that the compiler used for official builds is Visual Studio 2019. You can use MinGW or a more recent version of MSVC if it works for you. However, know that this is the one used to push releases and updates.
+!!! note
 
-* `*`Qt 5.14 or higher (MSVC 2019)
-* `*`Visual Studio 2019 C++ compiler
-* `*`CMake 2.8.12 or above
-* `*`NodeJS (for building images sources)
+    Note that the compiler used for official builds is Visual Studio 2019. You can use MinGW or a more recent version of MSVC if it works for you. However, know that this is the one used in official releases.
+
+Bullets marked with `*` are mandatory, other are optional.
+
+* `*` Qt 6.6 or higher
+* `*` A C++ compiler such as MSVC 2019
+* `*` CMake 3.2 or higher
+* `*` Node.js (for building images sources)
 * QScintilla2 (for syntax highlighting in JavaScript filename window)
 * Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
 
@@ -29,51 +33,54 @@ You can find the Qt installer here:
 
 Just download and install.
 
-#### Compiler
+#### MSVC
 You can use the free Visual Studio Community version to compile (note that only the compiler is required). You can find it here: <https://www.visualstudio.com/downloads/>
 
 Just download and install.
 
-#### NodeJS
+#### Node.js
 You can find it here: <https://nodejs.org/en/download/>
 
 Just download and install.
 
 #### QScintilla
-If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
+If you don't want to use QScintilla, edit the "src/gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
 
-Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
+Otherwise, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
 
 1. Download
 2. Open the Qt command prompt (you can find it in the start menu)
 3. Add Visual Studio compiler to the path by typing "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" (with quotes, else it will give you an error message on "C:\Program") in the prompt
-4. Browse to where you extracted QScintilla using the "cd" command (for example, "cd C:\Users\Bionus\Desktop\QScintilla-gpl-2.7.2"). If it's on another hard drive, use the "cd /D" command
-5. Type "cd Qt4Qt5" (without quotes)
-6. Type "qmake qscintilla.pro" (without quotes)
-7. Type "nmake" (without quotes)
-8. Type "nmake install" (without quotes)
-9. The dlls should now have been installed and the headers added to Qt
+4. Browse to where you extracted QScintilla using the `cd` command (for example, `cd C:\Users\Bionus\Desktop\QScintilla-gpl-2.7.2`). If it's on another hard drive, use the `cd /D` command
+5. Type `cd src`
+6. Type `qmake qscintilla.pro`
+7. Type `nmake`
+8. Type `nmake install`
+9. The DLL files should now have been installed and the headers added to Qt
 
 #### Google Breakpad
-If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
+If you don't want to use Google Breakpad, edit the "src/gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
 
-If you want to use it, I won't explain here how to configure it to work with Qt. Beware that it's a real pain to have it work with Qt on Windows.
+If you want to use it, I won't explain here how to configure it to work with Qt, as it's a pretty complicated task.
 
-1. Open "gui/CMakeLists.txt"
+1. Open "src/gui/CMakeLists.txt"
 2. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
+
 
 ## Linux
 
-Shortcut: just run `./build.sh` at the root of the repository, and it will build everything for you.
+!!! info
+
+    You can just run `./build.sh` at the root of the repository, and it will build everything for you.
 
 ### Dependencies
 
-Bullets with '`*`' are mandatory, other are optional.
+Bullets marked with `*` are mandatory, other are optional.
 
-* `*`Qt 5.14 or higher
-* `*`g++
-* `*`CMake 2.8.12 or above
-* `*`NodeJS (for building images sources)
+* `*` Qt 6.6 or higher
+* `*` A C++ compiler such as g++
+* `*` CMake 3.2 or higher
+* `*` Node.js (for building images sources)
 * OpenSSL (for HTTPS websites)
 * QScintilla2 (for syntax highlighting in JavaScript filename window)
 * Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
@@ -83,26 +90,13 @@ Bullets with '`*`' are mandatory, other are optional.
 #### Qt
 Most Linux package managers do not provide up-to-date Qt packages. As such, it is recommended to either use [aqtinstall](https://github.com/miurahr/aqtinstall), or a third-party repository.
 
-For example using `apt` and the [beineri](https://launchpad.net/~beineri) repository:
 ```bash
-sudo add-apt-repository ppa:beineri/opt-qt-5.15.2-bionic
-sudo apt-get update
-sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translations qt515networkauth-no-lgpl
-source /opt/qt515/bin/qt515-env.sh
-```
-
-If you know your package manager has up-to-date Qt versions, you can use it, for example using `apt`:
-```bash
-sudo apt install -y "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools"
-```
-
-Or if you're using Fedora:
-```bash
-sudo dnf install -y "qt5-qtbase" "qt5-qtbase-devel" "qt5-qtmultimedia-devel" "qt5-qtscript-devel" "qscintilla-qt5-devel" "qt5-linguist" --best
+pip install aqtinstall
+aqt install-qt linux desktop 6.6.0 gcc_64 -m qtmultimedia qtimageformats qtnetworkauth qtshadertools
 ```
 
 #### Compiler
-You can use the g++ compiler to compile the program. If it's not already installed, the process may vary depending on your Linux distribution. Note that you can also replace g++ with clang if you want.
+You can use the g++ compiler to compile the program. If it's not already installed, the process may vary depending on your Linux distribution. Note that you can also replace g++ with clang if you want, but make sure to use the proper Qt version for your compiler.
 
 You'll also need `cmake` for the makefile generation, and `make` for executing it.
 
@@ -116,7 +110,7 @@ Or if you're using Fedora:
 sudo dnf install -y "gcc-c++" "cmake" "make" --best
 ```
 
-#### NodeJS
+#### Node.js
 Usually found in packages managers by the name `node` or `nodejs`. You can refer to the official docs:
 
 <https://nodejs.org/en/download/package-manager/>
@@ -127,32 +121,32 @@ If you want to access HTTPS websites, you'll need the OpenSSL libraries.
 They're usually found in packages managers by the name `libssl-dev`.
 
 #### QScintilla
-If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
+If you don't want to use QScintilla, edit the "src/gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
 
-Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
+Otherwise, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
 
 1. Download
 2. Open a terminal
-3. Browse to where you extracted QScintilla using the "cd" command (for example, "cd /home/Bionus/QScintilla-gpl-2.7.2").
-4. Type "cd Qt4Qt5" (without quotes)
-5. Type "qmake qscintilla.pro" (without quotes)
-6. Type "make" (without quotes)
-7. Type "make install" (without quotes)
+3. Browse to where you extracted QScintilla using the `cd` command (for example, `cd /home/Bionus/QScintilla-gpl-2.7.2`).
+4. Type `cd src`
+5. Type `qmake qscintilla.pro`
+6. Type `make`
+7. Type `make install`
 8. The shared libraries should now have been installed and the headers added to Qt
 
 #### Google Breakpad
-If you don't want to use Google Breakpad, edit the "gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
+If you don't want to use Google Breakpad, edit the "src/gui/CMakeLists.txt" file and change the line `set(USE_BREAKPAD 1)` into `set(USE_BREAKPAD 0)`.
 
 If you want to use it, I won't explain here how to configure it to work with Qt, as it's a pretty complicated task.
 
-1. Open "gui/CMakeLists.txt"
+1. Open "src/gui/CMakeLists.txt"
 2. Edit the `set(BREAKPAD "D:/bin/google-breakpad")` line to match where you cloned Google Breakpad
 
 #### Building
 ```bash
 mkdir build
 cd build
-cmake ..
+cmake ../src
 make
 cd ..
 
@@ -168,7 +162,8 @@ If you compile the program and run it as-is, it may say something like "no sourc
 * words.txt (not required, used for tag autocompletion)
 * settings.ini (if it doesn't exist, create it using `touch settings.ini`
 
-Another option would be to simply move the binary to the release folder after the compilation.
+Another option would be to simply move the binary to the "release" folder after the compilation.
+
 
 ## Raspberry Pi (Raspbian)
 
@@ -199,10 +194,11 @@ You can now run your program from `/home/pi/imgbrd-grabber/release`.
 If you want to use the database-support of grabber, install one or all of these packages.
 
 ```bash
-sudo apt-get install libqt5sql5-mysql
-sudo apt-get install libqt5sql5-odbc
-sudo apt-get install libqt5sql5-psql
+sudo apt install libqt5sql5-mysql
+sudo apt install libqt5sql5-odbc
+sudo apt install libqt5sql5-psql
 ```
+
 
 ## macOS
 
@@ -219,20 +215,22 @@ sudo apt-get install libqt5sql5-psql
 3. Install QT5 with brew.
 
     ```bash
-    brew install qt5
+    brew install qt6
     ```
 
 4. Edit `~/.bash_profile` and add the following line: 
 
     ```bash
-    export PATH="/usr/local/Cellar/qt5/5.7.0/bin"
+    export PATH="/usr/local/Cellar/qt6/6.6.0/bin"
     ```
     This is the default path to your QT installation. **Be sure to update the version number, or it won't work!**
 
 #### Compiler
 You can use the g++ compiler to compile the program. If it's not already installed, you can easily do so using the Homebrew package manager.
 
-1. `brew install gcc`
+```bash
+brew install gcc
+```
 
 #### Running
 
@@ -247,8 +245,9 @@ If you compile the program and run it as-is, it may say something like "no sourc
 
 ```bash
 appDir=./gui/build/release/Grabber.app/Contents/MacOS
+
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew install qt5
+brew install qt6
 brew install gcc
 brew install cmake
 

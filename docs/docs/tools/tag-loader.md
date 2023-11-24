@@ -23,6 +23,7 @@ Not enough information to directly load the image (from blacklist: 0 / from file
 ```
 
 You'll notice three parts in this line:
+
 * `from blacklist: 1`: you have a blacklist set, but the tags could not be loaded from the listing page
 * `from file url: 1`: this source only provides the download link for the image on the details page
 * `from filename tags: 1/1`: specific tags are used in the filename (like `%character%`) but the image contain some non-typed tags
