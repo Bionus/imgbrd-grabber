@@ -10,6 +10,7 @@
 #include "loaders/gallery-search-loader.h"
 #include "loaders/image-loader.h"
 #include "loaders/tag-search-loader.h"
+#include "logger.h"
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -49,6 +50,8 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	Logger::getInstance().initialize();
 
 	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");

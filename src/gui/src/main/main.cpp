@@ -38,6 +38,7 @@
 #include "analytics.h"
 #include "cli.h"
 #include "functions.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/page-api.h"
 #include "models/profile.h"
@@ -73,6 +74,8 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
+
+	Logger::getInstance().initialize();
 
 	// Handler for custom URL protocols, redirecting to the main program through HTTP calls
 	if (argc == 3 && QString(argv[1]) == "--url-protocol") {

@@ -1,5 +1,6 @@
 #include "logger.h"
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QStringList>
 #include <stdexcept>
@@ -8,6 +9,31 @@
 #ifdef QT_DEBUG
 	#include <QDebug>
 #endif
+
+
+void Logger::initialize()
+{
+	// Create the "logs/" directory if it doesn't exist
+	const QDir logsDirectory = savePath(QStringLiteral("logs/"), false, true);
+	if (!logsDirectory.exists()) {
+		logsDirectory.mkpath(".");
+	}
+
+	// Clean-up old log files if we have too many
+	const QFileInfoList list = logsDirectory.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoSymLinks, QDir::Time | QDir::Reversed);
+	if (list.count() > MAX_LOG_FILES) {
+		for (int i = 0; i < (list.count() - MAX_LOG_FILES); i++) {
+			QFile::remove(list[i].absoluteFilePath());
+		}
+	}
+
+	// Generate a new file for each run
+	const QString logFilename = QString("main_%1-%2.log")
+			.arg(QDate::currentDate().toString("yyyy.MM.dd"))
+			.arg(QTime::currentTime().toString("hh.mm.ss.zzz"));
+	setLogFile(logsDirectory.filePath(logFilename));
+}
+
 
 void Logger::logToConsole()
 {
@@ -94,6 +120,7 @@ void Logger::log(const QString &l, LogLevel level)
 		return;
 	}
 
+	// Fallback to "main.log" if no log file is open
 	if (!m_logFile.isOpen()) {
 		setLogFile(savePath(QStringLiteral("main.log"), false, true));
 	}

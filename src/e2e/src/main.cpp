@@ -51,6 +51,9 @@ int main(int argc, char *argv[])
 {
 	const QCoreApplication app(argc, argv);
 
+	Logger::getInstance().initialize();
+	Logger::getInstance().setLogLevel(Logger::Warning);
+
 	QCommandLineParser parser;
 	parser.addHelpOption();
 
@@ -59,8 +62,6 @@ int main(int argc, char *argv[])
 	parser.addOption(inputOption);
 	parser.addOption(outputOption);
 	parser.process(app);
-
-	Logger::getInstance().setLogLevel(Logger::Warning);
 
 	QFile f(parser.value(inputOption));
 	if (!f.open(QFile::ReadOnly | QFile::Text)) {

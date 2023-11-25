@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QObject>
 
+#define MAX_LOG_FILES 20
+
 
 class QString;
 
@@ -37,6 +39,7 @@ class Logger : public QObject
 		static void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message);
 		static void setupMessageOutput(bool log);
 
+		void initialize();
 		void setExitOnError(bool val);
 		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
