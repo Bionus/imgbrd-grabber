@@ -105,6 +105,13 @@ The value can be omitted for boolean options. In this case, `option_name` will b
 
 Example: `%token:option1=value1,option2%`
 
+!!! note
+
+    Since the comma is used to delimitate options, you need to escape it with `^` if you want to use it in the value, otherwise it'll be considered as the next option.
+
+    Example: `%tags:separator=^,%` will use `,` as separator.
+
+
 ### Common options
 #### Max length (int)
 If the contents of the token is longer than this value, it will be cut.
