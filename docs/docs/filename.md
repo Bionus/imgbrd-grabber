@@ -93,6 +93,11 @@ Images can access information on the gallery by using the `gallery.` prefix. Man
 * `gallery.id`: the ID of the gallery.
 * `gallery.name`: the name/title of the gallery.
 
+### Special tokens
+Some tokens do not strictly relate to the image itself. Those tokens are:
+
+* `current_date`: the current date and time at the moment you're downloading the media.
+
 
 ## Options
 
