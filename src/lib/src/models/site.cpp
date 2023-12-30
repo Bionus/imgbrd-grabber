@@ -8,6 +8,7 @@
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
+#include <QWebEngineProfile>
 #include <utility>
 #include "functions.h"
 #include "logger.h"
@@ -160,7 +161,11 @@ void Site::loadConfig()
 	// Generate the User-Agent
 	m_userAgent = m_settings->value("Headers/User-Agent").toString();
 	if (m_userAgent.isEmpty()) {
-		m_userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0");
+		if (pSettings->value("useQtUserAgent", true).toBool()) {
+			m_userAgent = QWebEngineProfile::defaultProfile()->httpUserAgent();
+		} else {
+			m_userAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString();
+		}
 	} else {
 		m_userAgent.replace("%version%", QString(VERSION));
 	}
@@ -286,7 +291,7 @@ void Site::setRequestHeaders(QNetworkRequest &request) const
 	}
 
 	// User-Agent header tokens and default value
-	request.setRawHeader("User-Agent", m_userAgent.toLatin1());
+	request.setRawHeader("User-Agent", userAgent().toLatin1());
 }
 
 QMap<QString, QString> Site::settingsHeaders() const

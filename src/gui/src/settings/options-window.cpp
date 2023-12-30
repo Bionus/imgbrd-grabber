@@ -110,6 +110,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings->value("source_3", "regex").toString()));
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
+	ui->checkUseQtUserAgent->setChecked(settings->value("useQtUserAgent", true).toBool());
+	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString());
 
 	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
@@ -1084,6 +1086,8 @@ void OptionsWindow::save()
 	settings->setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings->setValue("source_4", sources.at(ui->comboSource4->currentIndex()));
 	settings->setValue("tagsautoadd", ui->spinAutoTagAdd->value());
+	settings->setValue("useQtUserAgent", ui->checkUseQtUserAgent->isChecked());
+	settings->setValue("userAgent", ui->lineUserAgent->text());
 	const QStringList starts { "none", "loadfirst", "restore" };
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());

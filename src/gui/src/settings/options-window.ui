@@ -627,6 +627,30 @@
           </property>
          </widget>
         </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkUseQtUserAgent">
+          <property name="text">
+           <string>Use Qt default User-Agent</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="labelUserAgent">
+          <property name="text">
+           <string>User-Agent</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QLineEdit" name="lineUserAgent">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSourcesRegistries">
@@ -1152,8 +1176,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>473</width>
-             <height>466</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -5851,12 +5875,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>635</x>
-     <y>100</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>635</x>
-     <y>127</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5867,12 +5891,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>635</x>
-     <y>100</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>635</x>
-     <y>154</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5883,8 +5907,8 @@
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>474</x>
-     <y>35</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>661</x>
@@ -5899,12 +5923,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>474</x>
-     <y>29</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>87</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5915,8 +5939,8 @@
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>720</x>
-     <y>97</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>659</x>
@@ -5931,12 +5955,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>623</x>
-     <y>68</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>114</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5947,12 +5971,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>584</x>
-     <y>453</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>584</x>
-     <y>480</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5963,8 +5987,8 @@
    <slot>addSourceRegistry()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>719</x>
-     <y>71</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
@@ -5979,8 +6003,8 @@
    <slot>backupGenerate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>513</x>
-     <y>29</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>735</x>
@@ -5995,12 +6019,28 @@
    <slot>backupRestore()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>706</x>
-     <y>68</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>749</x>
      <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkUseQtUserAgent</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineUserAgent</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>263</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>291</y>
     </hint>
    </hints>
   </connection>
