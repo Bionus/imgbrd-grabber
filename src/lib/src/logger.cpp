@@ -29,8 +29,8 @@ void Logger::initialize()
 
 	// Generate a new file for each run
 	const QString logFilename = QString("main_%1-%2.log")
-			.arg(QDate::currentDate().toString("yyyy.MM.dd"))
-			.arg(QTime::currentTime().toString("hh.mm.ss.zzz"));
+		.arg(QDate::currentDate().toString("yyyy.MM.dd"))
+		.arg(QTime::currentTime().toString("hh.mm.ss.zzz"));
 	setLogFile(logsDirectory.filePath(logFilename));
 }
 
