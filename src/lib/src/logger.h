@@ -43,7 +43,8 @@ class Logger : public QObject
 		void setExitOnError(bool val);
 		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
-		void log(const QString &, LogLevel level = Info);
+		void setConsoleOutputLevel(LogLevel level);
+		void log(const QString &message, LogLevel level = Info);
 		void logCommand(const QString &);
 		void logCommandSql(const QString &);
 		void logUpdate(const QString &);
@@ -58,6 +59,7 @@ class Logger : public QObject
 		Logger() = default;
 		QFile m_logFile, m_fCommandsLog, m_fCommandsSqlLog;
 		LogLevel m_level = LogLevel::Info;
+		LogLevel m_consoleOutputLevel = LogLevel::Error;
 		bool m_exitOnError = false;
 };
 

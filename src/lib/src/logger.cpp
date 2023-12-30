@@ -6,10 +6,6 @@
 #include <stdexcept>
 #include "functions.h"
 
-#ifdef QT_DEBUG
-	#include <QDebug>
-#endif
-
 
 void Logger::initialize()
 {
@@ -56,17 +52,34 @@ void Logger::setLogFile(const QString &path)
 QString Logger::logFile() const
 { return m_logFile.fileName(); }
 
+/**
+ * Sets the minimum log level for which messages will not be ignored.
+ */
 void Logger::setLogLevel(LogLevel level)
 {
 	m_level = level;
 }
 
+/**
+ * Sets the minimum log level for which messages will also be printed to the console.
+ */
+void Logger::setConsoleOutputLevel(LogLevel level)
+{
+	m_consoleOutputLevel = level;
+}
+
+/**
+ * Sets whether an error should also cause the program to stop (all errors considered as fatal).
+ */
 void Logger::setExitOnError(bool val)
 {
 	m_exitOnError = val;
 }
 
 
+/**
+ * Qt message handler that formats and redirects the message to Grabber's logger.
+ */
 void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
 	static const QMap<QtMsgType, LogLevel> messageTypes
@@ -98,6 +111,9 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, co
 	Logger::getInstance().log(QStringLiteral("%1 %2").arg(label, message), level);
 }
 
+/**
+ * Qt message handler that ignores the message.
+ */
 void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
 	Q_UNUSED(type);
@@ -105,6 +121,10 @@ void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext &context, 
 	Q_UNUSED(message);
 }
 
+/**
+ * Installs a message handler for Qt internal logs (using qDebug, qWarning, etc.).
+ * @param log If true, will send all Qt internal logs to the internal log function. If false, drop them.
+ */
 void Logger::setupMessageOutput(bool log)
 {
 	qInstallMessageHandler(log ? Logger::messageOutput : Logger::noMessageOutput);
@@ -112,10 +132,13 @@ void Logger::setupMessageOutput(bool log)
 
 /**
  * Append text in the log in a new line.
- * @param	l	The message to append.
+ * @param message The message to append.
  */
-void Logger::log(const QString &l, LogLevel level)
+void Logger::log(const QString &message, LogLevel level)
 {
+	static QTextStream qStdOut(stdout);
+	static QTextStream qStdErr(stderr);
+
 	if (level < m_level) {
 		return;
 	}
@@ -132,22 +155,29 @@ void Logger::log(const QString &l, LogLevel level)
 		<< QStringLiteral("Warning")
 		<< QStringLiteral("Error");
 	const QString &levelStr = levels[level];
-	QDateTime time = QDateTime::currentDateTime();
+	const QDateTime time = QDateTime::currentDateTime();
+	const QString timeStr = time.toString(timeFormat);
 
 	// Write ASCII log to file
-	m_logFile.write(QString("[" + time.toString(timeFormat) + "][" + levelStr + "] " + stripTags(l) + "\n").toUtf8());
+	const QString strippedMsg("[" + timeStr + "][" + levelStr + "] " + stripTags(message));
+	m_logFile.write((strippedMsg + "\n").toUtf8());
 	m_logFile.flush();
 
 	// Emit colored HTML log
-	const QString msg = "[" + time.toString(timeFormat) + "][" + levelStr + "] " + l;
+	const QString msg("[" + timeStr + "][" + levelStr + "] " + message);
 	emit newLog(msg);
 
-	#ifdef QT_DEBUG
-		qDebug() << time.toString(timeFormat) << levelStr << l;
-	#endif
+	// Print the message to the console
+	if (level >= m_consoleOutputLevel) {
+		if (level == LogLevel::Debug || level == LogLevel::Info) {
+			qStdOut << strippedMsg << Qt::endl;
+		} else {
+			qStdErr << strippedMsg << Qt::endl;
+		}
+	}
 
 	if (m_exitOnError && level == Logger::LogLevel::Error) {
-		throw std::runtime_error(l.toStdString());
+		throw std::runtime_error(message.toStdString());
 	}
 }
 

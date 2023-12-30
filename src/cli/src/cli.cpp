@@ -100,12 +100,9 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 
 	// Log messages output and level
 	const bool verbose = parser.isSet(verboseOption);
-	#if !defined(QT_DEBUG)
-		Logger::setupMessageOutput(gui || verbose);
-	#endif
-	if (verbose) {
-		Logger::getInstance().setLogLevel(Logger::Debug);
-	}
+	Logger::setupMessageOutput(gui || verbose);
+	Logger::getInstance().setLogLevel(verbose ? Logger::Debug : Logger::Info);
+	Logger::getInstance().setConsoleOutputLevel(verbose ? Logger::Debug : Logger::Error);
 
 	// Stop here for GUI, but pass some information to the main window from the parser later
 	if (gui) {
