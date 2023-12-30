@@ -63,7 +63,9 @@ class Site : public QObject
 		const QString &name() const;
 		QString baseUrl() const;
 		const QString &url() const;
+		const QString &userAgent() const;
 		const QList<QNetworkCookie> &cookies() const;
+		PersistentCookieJar *cookieJar() const;
 		QVariant setting(const QString &key, const QVariant &def = QVariant()) const;
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def) const;
 		void syncSettings() const;
@@ -110,6 +112,7 @@ class Site : public QObject
 		QString m_type;
 		QString m_name;
 		QString m_url;
+		QString m_userAgent;
 		SourceEngine *m_sourceEngine;
 		QList<QNetworkCookie> m_cookies;
 		MixedSettings *m_settings;

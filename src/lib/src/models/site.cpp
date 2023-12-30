@@ -156,6 +156,14 @@ void Site::loadConfig()
 	m_manager->setInterval(QueryType::Thumbnail, setting("download/throttle_thumbnail", 0).toInt() * 1000);
 	m_manager->setInterval(QueryType::Details, setting("download/throttle_details", 0).toInt() * 1000);
 	m_manager->setInterval(QueryType::Retry, setting("download/throttle_retry", 60).toInt() * 1000);
+
+	// Generate the User-Agent
+	m_userAgent = m_settings->value("Headers/User-Agent").toString();
+	if (m_userAgent.isEmpty()) {
+		m_userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0");
+	} else {
+		m_userAgent.replace("%version%", QString(VERSION));
+	}
 }
 
 Site::~Site()
@@ -278,12 +286,7 @@ void Site::setRequestHeaders(QNetworkRequest &request) const
 	}
 
 	// User-Agent header tokens and default value
-	QString userAgent = request.rawHeader("User-Agent");
-	if (userAgent.isEmpty()) {
-		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0");
-	}
-	userAgent.replace("%version%", QString(VERSION));
-	request.setRawHeader("User-Agent", userAgent.toLatin1());
+	request.setRawHeader("User-Agent", m_userAgent.toLatin1());
 }
 
 QMap<QString, QString> Site::settingsHeaders() const
@@ -333,6 +336,7 @@ QString Site::baseUrl() const
 const QString &Site::name() const { return m_name; }
 const QString &Site::url() const { return m_url; }
 const QString &Site::type() const { return m_type; }
+const QString &Site::userAgent() const { return m_userAgent; }
 
 SourceEngine *Site::getSourceEngine() const { return m_sourceEngine; }
 const QList<Api *> &Site::getApis() const { return m_apis; }
@@ -433,6 +437,11 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 const QList<QNetworkCookie> &Site::cookies() const
 {
 	return m_cookies;
+}
+
+PersistentCookieJar *Site::cookieJar() const
+{
+	return m_cookieJar;
 }
 
 bool Site::isLoggedIn(bool unknown, bool pending) const

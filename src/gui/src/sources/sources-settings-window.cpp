@@ -1,7 +1,5 @@
 #include "sources/sources-settings-window.h"
 #include <QCryptographicHash>
-#include <QFile>
-#include <QInputDialog>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QNetworkCookie>
@@ -13,7 +11,9 @@
 #include "models/api/api.h"
 #include "models/profile.h"
 #include "models/source-engine.h"
+#include "network/persistent-cookie-jar.h"
 #include "login/login-factory.h"
+#include "webview-window.h"
 
 
 void setSource(QComboBox *combo, const QStringList &opts, const QStringList &vals, const QStringList &defs, Site *site, QSettings *settings, int index)
@@ -252,6 +252,19 @@ void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
 	const QString italic = QStringLiteral("<i>%1</li>").arg(msg);
 	ui->labelTestLogin->setText(italic);
+}
+
+void SourcesSettingsWindow::openInWebView()
+{
+	auto *window = new WebViewWindow(m_site, this);
+	window->show();
+}
+
+void SourcesSettingsWindow::clearOtherCookies()
+{
+	auto *cookieJar = m_site->cookieJar();
+	cookieJar->clear();
+	cookieJar->save();
 }
 
 void SourcesSettingsWindow::updateFields()
