@@ -8,7 +8,6 @@
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
-#include <QWebEngineProfile>
 #include <utility>
 #include "functions.h"
 #include "logger.h"
@@ -25,6 +24,9 @@
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
 #include "login/login-factory.h"
+#if defined(USE_WEBENGINE)
+	#include <QWebEngineProfile>
+#endif
 
 #ifdef QT_DEBUG
 	// #define CACHE_POLICY QNetworkRequest::PreferCache
@@ -161,10 +163,16 @@ void Site::loadConfig()
 	// Generate the User-Agent
 	m_userAgent = m_settings->value("Headers/User-Agent").toString();
 	if (m_userAgent.isEmpty()) {
+		const QString globalUserAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString();
 		if (pSettings->value("useQtUserAgent", true).toBool()) {
-			m_userAgent = QWebEngineProfile::defaultProfile()->httpUserAgent();
+			#if defined(USE_WEBENGINE)
+				m_userAgent = QWebEngineProfile::defaultProfile()->httpUserAgent();
+			#else
+				log(QStringLiteral("Cannot use Qt User-Agent because WebEngine is not available"), Logger::Warning);
+				m_userAgent = globalUserAgent;
+			#endif
 		} else {
-			m_userAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString();
+			m_userAgent = globalUserAgent;
 		}
 	} else {
 		m_userAgent.replace("%version%", QString(VERSION));

@@ -1,9 +1,7 @@
 #include "webview-window.h"
-#include <QHBoxLayout>
 #include <QWebEngineCookieStore>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
-#include <QWebEngineView>
 #include <utility>
 #include <ui_webview-window.h>
 #include "models/site.h"
@@ -43,14 +41,12 @@ WebViewWindow::WebViewWindow(Site *site, QWidget *parent)
 	// Cookie listener to automatically sync the web view cookies with the site's cookie jar
 	connect(cookieStore, &QWebEngineCookieStore::cookieRemoved, [=](const QNetworkCookie &cookie) {
 		if (m_cookies.isEmpty()) {
-			qDebug() << "!!!!! COOKIE REMOVED" << cookie;
 			cookieJar->deleteCookie(cookie);
 			m_saveCookies.start();
 		}
 	});
 	connect(cookieStore, &QWebEngineCookieStore::cookieAdded, [=](const QNetworkCookie &cookie) {
 		if (m_cookies.isEmpty() || m_cookies.contains(cookie.name())) {
-			qDebug() << "!!!!! COOKIE ADDED" << cookie;
 			cookieJar->insertCookie(cookie);
 			m_saveCookies.start();
 

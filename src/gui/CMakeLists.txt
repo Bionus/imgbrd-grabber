@@ -38,8 +38,18 @@ if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 endif()
 
 # Qt libraries
-find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql WebEngineCore WebEngineWidgets Widgets Xml REQUIRED)
-set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::WebEngineCore Qt6::WebEngineWidgets Qt6::Widgets Qt6::Xml)
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml OPTIONAL_COMPONENTS WebEngineCore WebEngineWidgets REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::Widgets Qt6::Xml)
+
+# Optional WebEngine components
+if(TARGET Qt6::WebEngineCore AND TARGET Qt6::WebEngineWidgets)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WebEngineCore Qt6::WebEngineWidgets)
+	set(USE_WEBENGINE 1)
+	add_definitions(-DUSE_WEBENGINE=1)
+	message(STATUS "Compiling with WebEngine support")
+else()
+	message(STATUS "Compiling without WebEngine support")
+endif()
 
 # Android specials
 if(ANDROID)
@@ -98,6 +108,12 @@ if(WIN32)
 	file(GLOB_RECURSE WINEXTRAS_SOURCES "vendor/winextras/*.cpp")
 	set(SOURCES ${SOURCES} ${WINEXTRAS_SOURCES})
 	list(APPEND LIBS "dwmapi.lib")
+endif()
+
+# Exclude WebEngine files when disabled
+if(NOT USE_WEBENGINE)
+	include(ListFilterRegex)
+	listFilterRegex(SOURCES "webview-window")
 endif()
 
 # Breakpad files

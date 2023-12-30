@@ -13,7 +13,9 @@
 #include "models/source-engine.h"
 #include "network/persistent-cookie-jar.h"
 #include "login/login-factory.h"
-#include "webview-window.h"
+#if !defined(USE_WEBENGINE)
+	#include "webview-window.h"
+#endif
 
 
 void setSource(QComboBox *combo, const QStringList &opts, const QStringList &vals, const QStringList &defs, Site *site, QSettings *settings, int index)
@@ -183,6 +185,10 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	} else {
 		setLoginType(activeLoginIndex);
 	}
+
+	#if !defined(USE_WEBENGINE)
+		ui->buttonOpenInWebView->setDisabled(true);
+	#endif
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()
@@ -256,8 +262,10 @@ void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 
 void SourcesSettingsWindow::openInWebView()
 {
-	auto *window = new WebViewWindow(m_site, this);
-	window->show();
+	#if defined(USE_WEBENGINE)
+		auto *window = new WebViewWindow(m_site, this);
+		window->show();
+	#endif
 }
 
 void SourcesSettingsWindow::clearOtherCookies()

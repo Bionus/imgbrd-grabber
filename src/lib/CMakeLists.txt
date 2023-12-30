@@ -1,7 +1,17 @@
 project(lib VERSION ${VERSION})
 
-find_package(Qt6 COMPONENTS Core Concurrent Gui Network NetworkAuth Qml Sql WebEngineCore Xml REQUIRED) # Qt6::Gui required for some classes such as QPixmap
-set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Network Qt6::NetworkAuth Qt6::Qml Qt6::Sql Qt6::WebEngineCore Qt6::Xml)
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network NetworkAuth Qml Sql Xml OPTIONAL_COMPONENTS WebEngineCore REQUIRED) # Qt6::Gui required for some classes such as QPixmap
+set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Network Qt6::NetworkAuth Qt6::Qml Qt6::Sql Qt6::Xml)
+
+# Optional WebEngine component
+if(TARGET Qt6::WebEngineCore)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WebEngineCore)
+	set(USE_WEBENGINE 1)
+	add_definitions(-DUSE_WEBENGINE=1)
+	message(STATUS "Compiling with WebEngine support")
+else()
+	message(STATUS "Compiling without WebEngine support")
+endif()
 
 # Android specials
 if(ANDROID)
