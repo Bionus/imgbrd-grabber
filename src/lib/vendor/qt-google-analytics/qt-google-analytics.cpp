@@ -189,7 +189,7 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-	request.setHeader(QNetworkRequest::UserAgentHeader, m_userAgent);
+	request.setHeader(QNetworkRequest::UserAgentHeader, m_userAgent.isEmpty() ? m_generatedUserAgent : m_userAgent);
 	m_uach.setRequestHeaders(request);
 
 	QNetworkReply *reply = m_networkAccessManager->post(request, QByteArray());
