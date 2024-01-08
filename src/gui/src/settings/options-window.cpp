@@ -14,6 +14,7 @@
 #include <QSqlDatabase>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QStyleFactory>
 #include <QtConcurrent>
 #include <ui_options-window.h>
 #include <algorithm>
@@ -316,11 +317,17 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	}
 
 	// Themes
-	QStringList themes = m_themeLoader->getAllThemes();
+	const QStringList themes = m_themeLoader->getAllThemes();
 	for (const QString &theme : themes) {
 		ui->comboTheme->addItem(theme, theme);
 	}
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
+	const QStringList baseStyles = QStyleFactory::keys();
+	const QString defaultStyle = !baseStyles.isEmpty() ? baseStyles.first() : "";
+	for (const QString &style : baseStyles) {
+		ui->comboBaseStyle->addItem(style, style);
+	}
+	ui->comboBaseStyle->setCurrentText(settings->value("baseStyle", defaultStyle).toString());
 
 	ui->checkViewerSingleWindow->setChecked(settings->value("Viewer/singleWindow", false).toBool());
 	const QStringList positions { "top", "left", "auto" };
@@ -1075,6 +1082,9 @@ void OptionsWindow::save()
 		}
 		settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
 	}
+	const QString baseStyle = ui->comboBaseStyle->currentText();
+	qApp->setStyle(baseStyle);
+	settings->setValue("baseStyle", baseStyle);
 
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("add", ui->lineAdd->text());
