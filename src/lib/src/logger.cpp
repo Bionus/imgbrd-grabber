@@ -136,7 +136,6 @@ void Logger::setupMessageOutput(bool log)
  */
 void Logger::log(const QString &message, LogLevel level)
 {
-	static QTextStream qStdOut(stdout);
 	static QTextStream qStdErr(stderr);
 
 	if (level < m_level) {
@@ -169,11 +168,7 @@ void Logger::log(const QString &message, LogLevel level)
 
 	// Print the message to the console
 	if (level >= m_consoleOutputLevel) {
-		if (level == LogLevel::Debug || level == LogLevel::Info) {
-			qStdOut << strippedMsg << Qt::endl;
-		} else {
-			qStdErr << strippedMsg << Qt::endl;
-		}
+		qStdErr << strippedMsg << Qt::endl;
 	}
 
 	if (m_exitOnError && level == Logger::LogLevel::Error) {
