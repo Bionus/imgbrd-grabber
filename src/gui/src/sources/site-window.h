@@ -28,9 +28,6 @@ class SiteWindow : public QDialog
 		void sourceImported(SourceImporter::ImportResult result, const QList<Source*> &sources);
 		void finish(Source *source = nullptr);
 
-	protected:
-		QString getDomain(QString url, bool *ssl = nullptr);
-
 	private:
 		Ui::SiteWindow *ui;
 		Profile *m_profile;

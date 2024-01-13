@@ -8,6 +8,7 @@
 #include "helpers.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/site-factory.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
 #include "models/source-registry.h"
@@ -54,7 +55,7 @@ void SiteWindow::accept()
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (ui->checkBox->isChecked()) {
-		const QString &domain = getDomain(m_url);
+		const QString &domain = SiteFactory::getDomain(m_url);
 
 		// Check in installed sources if there is a perfect match
 		for (Source *source : m_sources) {
@@ -103,25 +104,6 @@ void SiteWindow::accept()
 	finish(src);
 }
 
-QString SiteWindow::getDomain(QString url, bool *ssl)
-{
-	if (url.startsWith("http://")) {
-		url = url.mid(7);
-		if (ssl != nullptr) {
-			*ssl = false;
-		}
-	} else if (url.startsWith("https://")) {
-		url = url.mid(8);
-		if (ssl != nullptr) {
-			*ssl = true;
-		}
-	}
-	if (url.endsWith('/')) {
-		url = url.left(url.length() - 1);
-	}
-	return url;
-}
-
 void SiteWindow::sourceImported(SourceImporter::ImportResult result, const QList<Source*> &sources)
 {
 	if (result != SourceImporter::Success || sources.isEmpty()) {
@@ -147,17 +129,8 @@ void SiteWindow::finish(Source *source)
 		ui->progressBar->hide();
 	}
 
-	// Remove unnecessary prefix
-	bool ssl = false;
-	const QString url = getDomain(m_url, &ssl);
-
-	Site *site = new Site(url, source, m_profile);
+	Site *site = SiteFactory::fromUrl(m_url, source, m_profile);
 	m_profile->addSite(site);
-
-	// If the user wrote "https://" in the URL, we enable SSL for this site
-	if (ssl) {
-		site->setSetting("ssl", true, false);
-	}
 
 	emit accepted();
 	close();
