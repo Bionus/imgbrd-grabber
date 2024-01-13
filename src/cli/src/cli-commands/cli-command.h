@@ -13,6 +13,7 @@ class CliCommand : public QObject
 
 		virtual bool validate() = 0;
 		virtual void run() = 0;
+		virtual int execute();
 
 	signals:
 		void finished(int code);

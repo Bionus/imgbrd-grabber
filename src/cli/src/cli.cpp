@@ -236,11 +236,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 		return 1;
 	}
 
-	QEventLoop loop;
-	QObject::connect(cmd, &CliCommand::finished, &loop, &QEventLoop::quit);
-	QTimer::singleShot(0, [cmd]() { cmd->run(); });
-	loop.exec();
-
+	int exitCode = cmd->execute();
 	cmd->deleteLater();
-	return 0;
+	return exitCode;
 }
