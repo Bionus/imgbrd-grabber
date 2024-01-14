@@ -7,31 +7,36 @@ title: Command-line interface
 
 Starting 4.0.0 version, Grabber can be run through the command line.
 
+!!! info "Windows and CLI applications"
 
-## Compilation
+    Windows apps cannot both have a GUI and print to the console easily. So if you try to use `Grabber.exe`, even with the `-c` flag, you will not see any output in your console. You can use the `Grabber.com` binary or the `Grabber` shorthand instead (the `COM` extension has a higher priority than `EXE`).
 
-There are two ways to use the command line.
 
-When compiling Grabber, just uncomment "CONFIG += use\_cli" to set the CLI to be the default behavior. The downside is that running it in GUI mode with the "-g" or "--gui" command will pop up a console too if not run from a terminal already.
+## Usage
 
-If you keep it commented or just use the precompiled version, Grabber will start with its GUI by default, which can be disabled with the "-c" or "--cli" commands.
+There are a few ways to use the command line.
+
+1. When compiling Grabber, just build the `cli` target. It will generate a CLI-only program.
+2. When compiling Grabber, define the `USE_CLI` variable to set the CLI to be the default behavior. The downside is that running it in GUI mode with the `-g` or `--gui` flag will pop up a console too if not run from a terminal already.
+3. If you use the precompiled version, Grabber will start with its GUI by default, but this can be disabled with the `-c` or `--cli` option.
+4. On Windows, there is also a `Grabber.com` binary provided, which is a CLI-only version of the program.
 
 
 ## Commands
 
-In this part, I'll consider that you are using the precompiled version, which has "CONFIG += use\_cli" commented.
+In this part, I'll consider that you are using the pre-compiled version, which requires the use of the `-c` or `--cli` option.
 
 ### Help
-You can find help with the "-?", "-h", or "--help" commands.
+You can find help with the `-h` or `--help` argument (on Windows, `-?` is also available).
 
 ### Sources
-You can set a source using the "-s" or "--sources" parameter, followed by the list of hosts to connect, separated by spaces. For example:
+You can set a source using the `-s` or `--sources` parameter, followed by the list of hosts to connect, separated by spaces. For example:
 ```bash
 ./grabber -c -s "danbooru.donmai.us gelbooru.com"
 ```
 
 
-## Usage
+## Examples
 
 ### Count the number of images
 Prints the result followed by a new line to stdout.
