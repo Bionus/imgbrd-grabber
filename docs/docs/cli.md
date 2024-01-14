@@ -5,12 +5,12 @@ title: Command-line interface
 
 ## Introduction
 
-Starting 4.0.0 version, Grabber can be totally run through the command line.
+Starting 4.0.0 version, Grabber can be run through the command line.
 
 
 ## Compilation
 
-There is two ways to use the command line.
+There are two ways to use the command line.
 
 When compiling Grabber, just uncomment "CONFIG += use\_cli" to set the CLI to be the default behavior. The downside is that running it in GUI mode with the "-g" or "--gui" command will pop up a console too if not run from a terminal already.
 
@@ -19,7 +19,7 @@ If you keep it commented or just use the precompiled version, Grabber will start
 
 ## Commands
 
-In this part I'll consider that you are using the precompiled version, which has "CONFIG += use\_cli" commented.
+In this part, I'll consider that you are using the precompiled version, which has "CONFIG += use\_cli" commented.
 
 ### Help
 You can find help with the "-?", "-h", or "--help" commands.
@@ -111,11 +111,11 @@ https://img3.gelbooru.com/images/ee/a3/eea3d1e72f2f33521ccf68874b408d38.png
 ```
 
 #### Images per page
-You can use the "-i" or "--perpage" option to choose how many images per page the program should return. Default value is 20.
+You can use the "-i" or "--perpage" option to choose how many images per page the program should return. The default value is 20.
 
 You can use the "-m" or "--max" option to choose how many images you want to return. By default, the program returns everything it finds on the requested pages.
 
-Mixed together, they can allow to get multiple pages for a single request. For example, "-i 2 -m 10" will return the same result as "-i 10", but will use 5 requests to do so.
+Mixed together, they can allow you to get multiple pages for a single request. For example, "-i 2 -m 10" will return the same result as "-i 10", but will use 5 requests to do so.
 ```
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 10 --return-images
 https://cdn.donmai.us/original/3f/cc/3fccf5d7c6a0fe066cb0c6d3d584dba4.png
@@ -169,7 +169,7 @@ You can use the "--tf" or "--tags-format" to change the format tags are returned
 
 Available replacements are "%tag", "%count", "%type" and "%stype".
 
-Default value is "%tag\t%count\t%type"
+The default value is "%tag\t%count\t%type"
 ```
 ./grabber -c -s "danbooru.donmai.us" -i 100 --tags-format "%stype %tag (%count)" --tags-min 10 --return-pure-tags
 1 emererre (10)

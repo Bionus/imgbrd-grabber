@@ -17,9 +17,7 @@ See the [Portable version](portable-version.md) documentation page.
 
 ### Where are the settings, favorites, etc. stored?
 
-```
-C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber
-```
+See the [Configuration files](configuration-files.md#location) documentation page.
 
 
 ### How can I filter images by extension?
@@ -40,24 +38,18 @@ It can be found in "Save > Tags > Category name". Change it to something else th
 
 ### How to avoid duplicates?
 
-In addition to being able to not overwrite existing files, Grabber stores a global MD5 list to ensure you don't download twice the same image in different locations.
-
-You can change this behavior to one of those below, in the "Save" category of the settings:
-
-* **Save**: download and save the image twice (as if it's not a duplicate)
-* **Copy**: save the image twice, but copy it from the original image to prevent a useless download
-* **Move**: move the original image to the duplicate location (useful for example if you're re-downloading an image that has changed a few tags)
-* **Link**: create a shortcut with the duplicate image's name, pointing to the original image (useful if you often have duplicates in different folders, with each folder having a useful meaning)
-* **Don't save**: skip duplicate images
+See the [Duplicate files](duplicate-files.md) documentation page.
 
 
 ### Why do I get a message saying my filename is not unique?
 
 This means that different images can end up having the same filename if you are not careful.
 
-Note that the message is a **warning**, and not an error. You are free to ignore it, you might just sometimes have duplicate filenames for your images.
+Note that the message is a **warning**, and not an error. You are free to ignore it, you might just sometimes have duplicate filenames for your images, which will cause some images' download to be skipped.
 
 For example, the filename `%id%.%ext%` will generate this warning, because an ID in a given source will represent a different image on another one.
+
+See [Duplicate files](duplicate-files.md) for more details.
 
 
 ### Why do my tags have spaces between words instead of underscores?
