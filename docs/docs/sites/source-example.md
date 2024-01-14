@@ -95,6 +95,7 @@ export const source: ISource = {
 ```
 
 We can see a few things here:
+
 * The `name` field is quite obvious, we just use "JSON" because that's the format used by this API
 * The `auth` field is left as an empty array, because even anonymous users can use this API, no authentication is required
 * The `search` object contains two functions, `url()` and `parse()` that we will now discuss in more detail
