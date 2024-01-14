@@ -14,6 +14,7 @@
 #include "cli-commands/get-page-tags-cli-command.h"
 #include "cli-commands/get-tags-cli-command.h"
 #include "cli-commands/load-tag-database-cli-command.h"
+#include "cli-commands/site/site-cli-command.h"
 #include "printers/json-printer.h"
 #include "printers/simple-printer.h"
 #include "logger.h"
@@ -22,11 +23,76 @@
 #include "models/site.h"
 
 
+/**
+ * New version of the CLI parser.
+ *
+ * @param app The Qt application.
+ * @param profile The current Grabber profile.
+ * @param defaultToGui Whether we should run in GUI unless an explicit CLI parameter is passed.
+ * @param params Used to forward CLI params to the GUI.
+ * @param positionalArgs Used to forward positional args to the GUI.
+ * @return -1 if it should continue in GUI mode, 0 on success, any other code on failure.
+ */
+int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultToGui, QMap<QString, QString> &params, QStringList &positionalArgs)
+{
+	QCommandLineCommandParser parser;
+	parser.addVersionOption();
+	parser.addHelpOptionOnly();
+
+	if (defaultToGui) {
+		parser.addOption(QCommandLineOption({"c", "cli"}, "Disable the GUI."));
+	}
+
+	parser.addCommand("source", "Manage sources");
+
+	parser.process(*app);
+
+	// Stop trying to parse CLI arguments if we're not running in CLI mode
+	if (defaultToGui && !parser.isSet("cli")) {
+		// TODO: set log level
+		// TODO: fill params & positionalArgs
+		Q_UNUSED(params);
+		Q_UNUSED(positionalArgs);
+		return -1;
+	}
+
+	// Get rid of the top-level CLI options since we don't want sub-parsers to have to deal with them
+	QStringList arguments = app->arguments();
+	arguments.removeAll("-c");
+	arguments.removeAll("--cli");
+
+	// Handle each specific command separately
+	CliCommand *cmd = nullptr;
+	const QString command = parser.command();
+	if (command == "source") {
+		cmd = new SiteCliCommand(arguments, profile);
+	}
+
+	// If we're here, that means that help was requested or no command was passed
+	if (cmd == nullptr) {
+		parser.showHelp();
+		return 1;
+	}
+
+	// Actually run the command
+	int exitCode = cmd->execute();
+	cmd->deleteLater();
+	return exitCode;
+}
+
+
 int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGui, QMap<QString, QString> &params, QStringList &positionalArgs)
 {
 	QSettings *settings = profile->getSettings();
 	QString dPath = settings->value("Save/path", "").toString();
 	QString dFilename = settings->value("Save/filename", "").toString();
+
+	// Go through the new CLI for the various commands supported by it
+	const QStringList args = app->arguments();
+	bool guessUseCLI = (defaultToGui && (args.contains("-c") || args.contains("--cli"))) || (!defaultToGui && !args.contains("-g") && !args.contains("--gui"));
+	if (guessUseCLI && args.contains("source")) {
+		return parseAndRunCliArgsV2(app, profile, defaultToGui, params, positionalArgs);
+	}
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
