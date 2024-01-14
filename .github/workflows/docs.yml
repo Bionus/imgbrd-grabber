@@ -36,7 +36,7 @@ jobs:
             mkdocs-material-
 
       - name: Install Python dependencies
-        run: pip install mkdocs-material==9.4 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
+        run: pip install mkdocs-material==9.5 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
