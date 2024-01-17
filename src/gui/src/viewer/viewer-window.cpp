@@ -134,12 +134,12 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 
-	m_gifPlayer = new GifPlayer(m_settings->value("Viewer/showGifPlayerControls", true).toBool(), getAlignments("imagePositionAnimation"), this);
+	m_gifPlayer = new GifPlayer(m_settings, getAlignments("imagePositionAnimation"), this);
 	m_stackedWidget->addWidget(m_gifPlayer);
 
 	if (m_settings->value("Viewer/useVideoPlayer", true).toBool()) {
 		// getAlignments("imagePositionVideo")
-		m_videoPlayer = new VideoPlayer(m_settings->value("Viewer/showVideoPlayerControls", true).toBool(), this);
+		m_videoPlayer = new VideoPlayer(m_settings, this);
 		m_stackedWidget->addWidget(m_videoPlayer);
 	}
 

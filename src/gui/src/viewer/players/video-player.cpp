@@ -1,15 +1,16 @@
 #include "video-player.h"
+#include <QAudioOutput>
 #include <QFileInfo>
 #include <QMediaPlayer>
-#include <QAudioOutput>
+#include <QSettings>
 #include <QStyle>
 #include <QTime>
 #include <QVideoWidget>
 #include "ui_video-player.h"
 
 
-VideoPlayer::VideoPlayer(bool showControls, QWidget *parent)
-	: Player(parent), ui(new Ui::VideoPlayer)
+VideoPlayer::VideoPlayer(QSettings *settings, QWidget *parent)
+	: Player(parent), ui(new Ui::VideoPlayer), m_settings(settings)
 {
 	ui->setupUi(this);
 
@@ -24,7 +25,7 @@ VideoPlayer::VideoPlayer(bool showControls, QWidget *parent)
 	m_mediaPlayer->setAudioOutput(m_audioOutput);
 	m_mediaPlayer->setLoops(QMediaPlayer::Infinite);
 
-	if (showControls) {
+	if (m_settings->value("Viewer/showVideoPlayerControls", true).toBool()) {
 		// TODO QT6 m_mediaPlayer->setNotifyInterval(50);
 
 		ui->buttonPlayPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
@@ -34,10 +35,14 @@ VideoPlayer::VideoPlayer(bool showControls, QWidget *parent)
 	} else {
 		ui->controls->hide();
 	}
+
+	ui->sliderVolume->setValue(m_settings->value("Viewer/Video/Volume", 100).toInt());
 }
 
 VideoPlayer::~VideoPlayer()
 {
+	m_settings->setValue("Viewer/Video/Volume", ui->sliderVolume->value());
+
 	unload();
 
 	// Fix for weird Linux crash (issue #2190)
