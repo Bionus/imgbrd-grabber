@@ -11,7 +11,7 @@ Site *SiteFactory::fromUrl(const QString &url, Source *source, Profile *profile)
 	const QString domain = getDomain(url, &ssl);
 
 	// Create the site instance
-	Site *site = new Site(url, source, profile);
+	Site *site = new Site(domain, source, profile);
 	if (ssl) {
 		site->setSetting("ssl", true, false);
 	}
