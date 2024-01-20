@@ -635,8 +635,8 @@ void OptionsWindow::showLogFiles(QSettings *settings)
 	auto logFiles = getExternalLogFiles(settings);
 	auto *mapperEditLogFile = new QSignalMapper(this);
 	auto *mapperRemoveLogFile = new QSignalMapper(this);
-	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
-	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
+	connect(mapperEditLogFile, &QSignalMapper::mappedInt, this, &OptionsWindow::editLogFile);
+	connect(mapperRemoveLogFile, &QSignalMapper::mappedInt, this, &OptionsWindow::removeLogFile);
 	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
 		const int i = it.key();
 		auto logFile = it.value();
@@ -722,10 +722,10 @@ void OptionsWindow::showWebServices()
 	auto *mapperRemoveWebService = new QSignalMapper(this);
 	auto *mapperMoveUpWebService = new QSignalMapper(this);
 	auto *mapperMoveDownWebService = new QSignalMapper(this);
-	connect(mapperEditWebService, SIGNAL(mapped(int)), this, SLOT(editWebService(int)));
-	connect(mapperRemoveWebService, SIGNAL(mapped(int)), this, SLOT(removeWebService(int)));
-	connect(mapperMoveUpWebService, SIGNAL(mapped(int)), this, SLOT(moveUpWebService(int)));
-	connect(mapperMoveDownWebService, SIGNAL(mapped(int)), this, SLOT(moveDownWebService(int)));
+	connect(mapperEditWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::editWebService);
+	connect(mapperRemoveWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::removeWebService);
+	connect(mapperMoveUpWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::moveUpWebService);
+	connect(mapperMoveDownWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::moveDownWebService);
 
 	m_webServicesIds.clear();
 	for (int j = 0; j < m_webServices.count(); ++j) {

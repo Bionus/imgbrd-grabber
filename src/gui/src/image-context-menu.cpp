@@ -27,7 +27,7 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 	// Reverse search actions
 	QMenu *reverseSearchMenu = addMenu(QIcon(":/images/icons/globe.png"), tr("Web services"));
 	auto *reverseSearchMapper = new QSignalMapper(this);
-	connect(reverseSearchMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
+	connect(reverseSearchMapper, &QSignalMapper::mappedInt, this, &ImageContextMenu::reverseImageSearch);
 	for (int i = 0; i < m_reverseSearchEngines.count(); ++i) {
 		ReverseSearchEngine engine = m_reverseSearchEngines[i];
 		QAction *subMenuAct = reverseSearchMenu->addAction(engine.icon(), engine.name());
