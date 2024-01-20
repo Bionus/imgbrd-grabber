@@ -63,7 +63,7 @@ QString TagNameFormat::formatted(const QString &word, int index) const
 		case TagNameFormat::UpperFirst:
 		{
 			auto res = word.toLower();
-			if (index == 0 || m_caseFormat == TagNameFormat::Upper) {
+			if ((index == 0 || m_caseFormat == TagNameFormat::Upper) && res.length() > 0) {
 				res[0] = res[0].toUpper();
 			}
 			return res;
