@@ -131,7 +131,7 @@ function parseDetails(src: string): IParsedDetails {
     }
     return {
         tags,
-        imageUrl: Grabber.regexToConst("url", "<img.+?id=['\"]main_image['\"] src=['\"](?<url>[^']+)['\"][^>]*>", src),
+        imageUrl: Grabber.regexToConst("url", "<img.+?id=['\"]main_image['\"] src=['\"](?<url>[^'\"]+)['\"][^>]*>", src),
         createdAt: Grabber.regexToConst("date", "<time datetime=['\"](?<date>[^'\"]+)['\"]>", src),
     };
 }
