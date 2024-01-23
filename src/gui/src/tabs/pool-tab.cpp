@@ -67,13 +67,13 @@ void PoolTab::on_buttonSearch_clicked()
 {
 	auto *searchWindow = new SearchWindow(m_search->toPlainText(), m_profile, this);
 	connect(searchWindow, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
-    searchWindow->show();
+	searchWindow->show();
 }
 
 void PoolTab::closeEvent(QCloseEvent *event)
 {
 	emit closed(this);
-    event->accept();
+	event->accept();
 }
 
 

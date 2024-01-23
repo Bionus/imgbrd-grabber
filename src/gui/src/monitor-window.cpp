@@ -84,7 +84,7 @@ void MonitorWindow::openSourcesWindow()
 {
 	auto *sourcesWindow = new SourcesWindow(m_profile, m_selectedSources, this);
 	connect(sourcesWindow, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
-    sourcesWindow->show();
+	sourcesWindow->show();
 }
 
 void MonitorWindow::setSources(const QList<Site*> &sources)

@@ -708,7 +708,7 @@ void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 
 	Site *site = page->site();
 	if (!m_siteLabels.contains(site)) {
-        auto *txt = new QLabel(this);
+		auto *txt = new QLabel(this);
 		txt->setOpenExternalLinks(true);
 		m_siteLabels.insert(site, txt);
 
@@ -846,7 +846,7 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 
 QWidget *SearchTab::createImageThumbnail()
 {
-    auto *w = new QWidget(this);
+	auto *w = new QWidget(this);
 
 	const bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	const int borderSize = m_settings->value("borders", 3).toInt();
@@ -869,7 +869,7 @@ void SearchTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &i
 
 	// Save selected
 	if (!m_selectedImagesPtrs.empty()) {
-        auto *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
+		auto *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
 		connect(actionSaveSelected, &QAction::triggered, this, &SearchTab::contextSaveSelected);
 		menu->insertAction(first, actionSaveSelected);
 	}
@@ -1069,7 +1069,7 @@ void SearchTab::updateCheckboxes()
 			}
 		}
 
-        auto *checkBox = new QCheckBox(url.left(m), this);
+		auto *checkBox = new QCheckBox(url.left(m), this);
 			checkBox->setChecked(m_selectedSources.contains(site));
 			m_checkboxesSignalMapper->setMapping(checkBox, it.key());
 			connect(checkBox, SIGNAL(toggled(bool)), m_checkboxesSignalMapper, SLOT(map()));
@@ -1198,7 +1198,7 @@ void SearchTab::openSourcesWindow()
 {
 	auto *sourcesWindow = new SourcesWindow(m_profile, m_selectedSources, this);
 	connect(sourcesWindow, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
-    sourcesWindow->show();
+	sourcesWindow->show();
 }
 
 QList<Site*> SearchTab::sourcesWithResults(bool eager)

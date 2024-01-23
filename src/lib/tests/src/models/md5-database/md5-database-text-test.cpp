@@ -11,11 +11,11 @@ TEST_CASE("Md5DatabaseText")
 	FileDeleter databaseDeleter("tests/resources/md5s.txt", true);
 
 	QFile md5sFile("tests/resources/md5s.txt");
-    md5sFile.open(QFile::WriteOnly | QFile::Text | QFile::Truncate);
-    md5sFile.write(QString("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_1x1.png\r\n").toUtf8());
-    md5sFile.write(QString("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_200x200.png\r\n").toUtf8());
-    md5sFile.write(QString("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png\r\n").toUtf8());
-    md5sFile.close();
+	md5sFile.open(QFile::WriteOnly | QFile::Text | QFile::Truncate);
+	md5sFile.write(QString("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_1x1.png\r\n").toUtf8());
+	md5sFile.write(QString("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_200x200.png\r\n").toUtf8());
+	md5sFile.write(QString("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png\r\n").toUtf8());
+	md5sFile.close();
 
 	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 

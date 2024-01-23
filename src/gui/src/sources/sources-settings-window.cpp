@@ -33,7 +33,7 @@ QLineEdit *createLineEdit(QWidget *parent, QString value, bool isPassword)
 {
 	auto *lineEdit = new QLineEdit(std::move(value), parent);
 	if (isPassword) {
-        lineEdit->setEchoMode(QLineEdit::Password);
+		lineEdit->setEchoMode(QLineEdit::Password);
 	}
 	return lineEdit;
 }
@@ -125,8 +125,8 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		}
 
 		// Build credential fields
-        auto *credentialsWidget = new QWidget(this);
-        auto *formLayout = new QFormLayout;
+		auto *credentialsWidget = new QWidget(this);
+		auto *formLayout = new QFormLayout;
 		formLayout->setContentsMargins(0, 0, 0, 0);
 
 		QList<AuthSettingField> settingFields = it.value()->settingFields();

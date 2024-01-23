@@ -30,7 +30,7 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
-    auto *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
+	auto *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
 	actionRemoveSelected->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionRemoveSelected, &QShortcut::activated, this, &MonitorsTab::removeSelected);
 

@@ -1223,7 +1223,7 @@ void ViewerWindow::closeEvent(QCloseEvent *event)
 		it.value()->deleteLater();
 	}
 
-    event->accept();
+	event->accept();
 }
 
 void ViewerWindow::showEvent(QShowEvent *event)
@@ -1438,7 +1438,7 @@ void ViewerWindow::wheelEvent(QWheelEvent *event)
 
 		// Ignore events if we already got one less than 500ms ago
 		if (m_lastWheelEvent.isValid() && m_lastWheelEvent.elapsed() <= 500) {
-            event->ignore();
+			event->ignore();
 		}
 		m_lastWheelEvent.start();
 

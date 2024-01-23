@@ -84,7 +84,7 @@ void BatchWindow::closeEvent(QCloseEvent *event)
 	#endif
 
 	emit closed();
-    event->accept();
+	event->accept();
 }
 void BatchWindow::pause()
 {

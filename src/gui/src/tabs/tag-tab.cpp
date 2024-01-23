@@ -83,7 +83,7 @@ void TagTab::closeEvent(QCloseEvent *event)
 	m_settings->sync();
 
 	emit closed(this);
-    event->accept();
+	event->accept();
 }
 
 

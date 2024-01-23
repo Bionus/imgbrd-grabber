@@ -1137,16 +1137,16 @@ bool createLink(const QString &from, const QString &to, const QString &type)
 		if (type == "link") {
 			return QFile::link(from, to + ".lnk");
 		}/* else if (type == "symlink") {
-	        wchar_t *wFrom = toWCharT(from);
-	        wchar_t *wTo = toWCharT(to);
-	        const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
-	        delete[] wFrom;
-	        delete[] wTo;
-	        if (!res) {
-	        	log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
-	        }
-	        return res;
-	    }*/
+			wchar_t *wFrom = toWCharT(from);
+			wchar_t *wTo = toWCharT(to);
+			const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
+			delete[] wFrom;
+			delete[] wTo;
+			if (!res) {
+				log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+			}
+			return res;
+		}*/
 		else if (type == "hardlink") {
 			wchar_t *wFrom = toWCharT(from);
 			wchar_t *wTo = toWCharT(to);

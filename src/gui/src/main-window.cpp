@@ -193,12 +193,12 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_settings->beginGroup("Main/Shortcuts");
 		ui->actionClosetab->setShortcut(getKeySequence(m_settings, "keyCloseTab", Qt::CTRL | Qt::Key_W));
 
-        auto *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL | Qt::Key_L), this);
+		auto *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL | Qt::Key_L), this);
 			connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
 
-        auto *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL | Qt::Key_PageDown), this);
+		auto *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL | Qt::Key_PageDown), this);
 			connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
-        auto *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL | Qt::Key_PageUp), this);
+		auto *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL | Qt::Key_PageUp), this);
 			connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
 
 		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL | Qt::Key_T));
@@ -313,14 +313,14 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	favoritesDock->tabChanged(m_favoritesTab);
 
 	// Tab corner widget
-    auto *cornerWidget = new QWidget(this);
-    auto *layout = new QHBoxLayout(cornerWidget);
+	auto *cornerWidget = new QWidget(this);
+	auto *layout = new QHBoxLayout(cornerWidget);
 	layout->setContentsMargins(0, 0, 6, 0);
 	layout->setSpacing(0);
 	ui->tabWidget->setCornerWidget(cornerWidget);
 
 	// Last tab button
-    auto *lastTab = new QPushButton(QIcon(":/images/back.png"), "", this);
+	auto *lastTab = new QPushButton(QIcon(":/images/back.png"), "", this);
 		lastTab->setFlat(true);
 		lastTab->resize(QSize(15, 12));
 		layout->addWidget(lastTab);
@@ -541,7 +541,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 
 	m_tabSelector->updateCounter();
 
-    auto *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
+	auto *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8, 8));
 		connect(closeTab, &QPushButton::clicked, w, &SearchTab::deleteLater);
@@ -814,7 +814,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		m_trayIcon->hide();
 	}
 
-    event->accept();
+	event->accept();
 }
 
 void MainWindow::options()

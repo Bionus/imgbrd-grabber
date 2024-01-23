@@ -40,7 +40,7 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, QVariant 
 		f.close();
 
 		QStringList tabs = links.split("\r\n");
-        for (const QString &tab : tabs) {
+		for (const QString &tab : tabs) {
 			QStringList infos = tab.split("¤");
 			if (infos.size() > 3) {
 				if (infos[infos.size() - 1] == "pool") {

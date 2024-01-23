@@ -31,7 +31,7 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 		auto *id = new QTableWidgetItem(QString::number(i + 1));
 		id->setIcon(QIcon(":/images/colors/" + color + ".png"));
 
-        auto *preview = new QLabel();
+		auto *preview = new QLabel();
 		m_previews.append(preview);
 
 		ui->tableWidget->setItem(i, 0, id);

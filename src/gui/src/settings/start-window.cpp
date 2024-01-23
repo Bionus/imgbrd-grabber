@@ -62,7 +62,7 @@ void StartWindow::on_buttonFolder_clicked()
 }
 void StartWindow::on_buttonFilenamePlus_clicked()
 {
-    auto *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
+	auto *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	fw->show();
 }

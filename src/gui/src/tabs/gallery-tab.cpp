@@ -70,7 +70,7 @@ GalleryTab::~GalleryTab()
 void GalleryTab::closeEvent(QCloseEvent *event)
 {
 	emit closed(this);
-    event->accept();
+	event->accept();
 }
 
 

@@ -108,7 +108,7 @@ void FavoritesTab::closeEvent(QCloseEvent *event)
 	m_settings->sync();
 
 	emit closed(this);
-    event->accept();
+	event->accept();
 }
 
 
@@ -392,7 +392,7 @@ void FavoritesTab::favoriteProperties(const QString &name)
 
 	const Favorite fav = m_favorites[index];
 	auto *favoriteWindow = new FavoriteWindow(m_profile, fav, this);
-    favoriteWindow->show();
+	favoriteWindow->show();
 }
 
 void FavoritesTab::focusSearch()

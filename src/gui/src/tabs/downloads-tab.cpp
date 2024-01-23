@@ -303,13 +303,13 @@ void DownloadsTab::addGroup()
 {
 	auto *addGroupWindow = new AddGroupWindow(m_parent->getSelectedSiteOrDefault(), m_profile, this);
 	connect(addGroupWindow, &AddGroupWindow::sendData, this, &DownloadsTab::batchAddGroup);
-    addGroupWindow->show();
+	addGroupWindow->show();
 }
 void DownloadsTab::addUnique()
 {
 	auto *addUniqueWindow = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, &m_batchs, this);
 	connect(addUniqueWindow, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
-    addUniqueWindow->show();
+	addUniqueWindow->show();
 }
 
 
