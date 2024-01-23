@@ -1089,11 +1089,13 @@ void SearchTab::openImage(int id)
 
 	const QSharedPointer<Image> &image = m_images.at(id);
 
-	QStringList detected = m_profile->getBlacklist().match(image->tokens(m_profile));
-	if (!detected.isEmpty()) {
-		const int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::No) {
-			return;
+	if (m_settings->value("warnblacklisted", true).toBool()) {
+		QStringList detected = m_profile->getBlacklist().match(image->tokens(m_profile));
+		if (!detected.isEmpty()) {
+			const int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::No) {
+				return;
+			}
 		}
 	}
 

@@ -5007,21 +5007,16 @@
         <item>
          <widget class="QCheckBox" name="checkHideBlacklisted">
           <property name="text">
-           <string>Ignore images containing a blacklisted tag</string>
+           <string>Hide images containing a blacklisted tag from results</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="labelHideBlacklisted">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
+         <widget class="QCheckBox" name="checkWarnBlacklisted">
           <property name="text">
-           <string>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</string>
+           <string>Warn before opening images containing a blacklisted tag</string>
           </property>
-          <property name="wordWrap">
+          <property name="checked">
            <bool>true</bool>
           </property>
          </widget>
@@ -6049,8 +6044,24 @@
      <y>263</y>
     </hint>
     <hint type="destinationlabel">
-     <x>498</x>
-     <y>291</y>
+     <x>718</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkHideBlacklisted</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkWarnBlacklisted</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>523</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>515</x>
+     <y>522</y>
     </hint>
    </hints>
   </connection>

@@ -182,6 +182,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	// Blacklist
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
+	ui->checkWarnBlacklisted->setChecked(settings->value("warnblacklisted", true).toBool());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	new SearchSyntaxHighlighter(false, ui->textBlacklist->document());
 
@@ -1159,6 +1160,7 @@ void OptionsWindow::save()
 		blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 	}
 	m_profile->setBlacklistedTags(blacklist);
+	settings->setValue("warnblacklisted", ui->checkWarnBlacklisted->isChecked());
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Ignored tags
