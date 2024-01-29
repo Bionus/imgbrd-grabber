@@ -429,7 +429,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 
 	QList<ImageSaveResult> result;
 	for (const QString &file : qAsConst(m_paths)) {
-		const QString path = file + suffix;
+		QString path = file + suffix;
 
 		// Don't overwrite already existing files
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path))) {
@@ -475,10 +475,10 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 			}
 		}
 
-		result.append({ path, size, saveResult });
 		if (m_postSave) {
-			m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
+			path = m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
 		}
+		result.append({ path, size, saveResult });
 	}
 
 	if (!moved) {

@@ -13,6 +13,7 @@
 #include "downloader/extension-rotator.h"
 #include "exiftool.h"
 #include "favorite.h"
+#include "ffmpeg.h"
 #include "filename/filename.h"
 #include "filtering/tag-filter-list.h"
 #include "functions.h"
@@ -701,11 +702,9 @@ QString &pathTokens(QString &filename, const QString &path)
 		.replace("%dir:nobackslash%", QString(dir).replace("\\", "/"))
 		.replace("%dir%", dir);
 }
-void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCommands, int count, bool basic)
+QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, bool startCommands, int count, bool basic)
 {
-	if (addMd5) {
-		m_profile->addMd5(md5(), path);
-	}
+	QString path = originalPath;
 
 	// Save info to a text file
 	if (!basic) {
@@ -767,8 +766,14 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 		commands.after();
 	}
 
-	// Metadata
 	const QString &ext = extension();
+
+	// FFmpeg
+	if (ext == QStringLiteral("webm") && m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool()) {
+		path = FFmpeg::remux(path, "mp4");
+	}
+
+	// Metadata
 	#ifdef WIN_FILE_PROPS
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
 		if (exts.isEmpty() || exts.contains(ext)) {
@@ -799,7 +804,12 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 		}
 	}
 
+	if (addMd5) {
+		m_profile->addMd5(md5(), path);
+	}
+
 	setSavePath(path, size);
+	return path;
 }
 
 
@@ -1218,10 +1228,10 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	return tokens;
 }
 
-void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count, bool basic)
+QString Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count, bool basic)
 {
 	static const QList<SaveResult> md5Results { SaveResult::Moved, SaveResult::Copied, SaveResult::Shortcut, SaveResult::Linked, SaveResult::Saved };
-	postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
+	return postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
 }
 
 bool Image::isValid() const

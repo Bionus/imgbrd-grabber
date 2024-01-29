@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>619</height>
+    <width>747</width>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -96,6 +96,11 @@
        <item>
         <property name="text">
          <string>Image size</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Format conversion</string>
         </property>
        </item>
       </item>
@@ -1176,8 +1181,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>473</width>
-             <height>466</height>
+             <width>476</width>
+             <height>475</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1416,6 +1421,53 @@
         </item>
         <item>
          <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageFormatConversion">
+       <layout class="QVBoxLayout" name="verticalLayout_15">
+        <item>
+         <widget class="QGroupBox" name="groupConversionFFmpeg">
+          <property name="title">
+           <string>FFmpeg</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_27">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelConversionFFmpegVersionLabel">
+             <property name="text">
+              <string>Version</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelConversionFFmpegVersion">
+             <property name="text">
+              <string>Loading...</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionFFmpegRemuxWebmToMp4">
+             <property name="text">
+              <string>Remux WEBM files to MP4</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="spacerFormatConversion">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>

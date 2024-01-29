@@ -51,7 +51,7 @@ class Downloadable
 		virtual QStringList paths(const Filename &filename, const QString &folder, int count) const = 0;
 		const QMap<QString, Token> &tokens(Profile *profile) const;
 		virtual SaveResult preSave(const QString &path, Size size) = 0;
-		virtual void postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count, bool basic = false) = 0;
+		virtual QString postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count, bool basic = false) = 0;
 
 		virtual QColor color() const = 0;
 		virtual QString tooltip() const = 0;

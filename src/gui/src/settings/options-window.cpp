@@ -22,6 +22,7 @@
 #include "backup.h"
 #include "custom-buttons.h"
 #include "exiftool.h"
+#include "ffmpeg.h"
 #include "functions.h"
 #include "filename/conditional-filename.h"
 #include "helpers.h"
@@ -137,6 +138,21 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL | Qt::Key_Y));
 	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N));
+
+	// FFmpeg format conversion
+	QFuture<QString> ffmpegVersion = QtConcurrent::run([=]() {
+		return FFmpeg::version();
+	});
+	auto *ffmpegVersionWatcher = new QFutureWatcher<QString>(this);
+	connect(ffmpegVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
+		const QString &version = ffmpegVersion.result();
+		ui->labelConversionFFmpegVersion->setText(version.isEmpty() ? tr("ffmpeg not found") : version);
+		if (version.isEmpty()) {
+			ui->labelConversionFFmpegVersion->setStyleSheet("color: red");
+		}
+	});
+	ffmpegVersionWatcher->setFuture(ffmpegVersion);
+	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -1256,6 +1272,8 @@ void OptionsWindow::save()
 		for (TokenSettingsWidget *tokenSettings : m_tokenSettings) {
 			tokenSettings->save();
 		}
+
+		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
 
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
 		settings->beginWriteArray("MetadataPropsys");
