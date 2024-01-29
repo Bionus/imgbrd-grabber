@@ -41,7 +41,7 @@ SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow 
 
 	// Checkboxes
 	m_checkboxesSignalMapper = new QSignalMapper(this);
-	connect(m_checkboxesSignalMapper, SIGNAL(mapped(QString)), this, SLOT(toggleSource(QString)));
+	connect(m_checkboxesSignalMapper, &QSignalMapper::mappedString, this, &SearchTab::toggleSource);
 
 	// Modifiers
 	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
