@@ -9,6 +9,7 @@
 
 
 class Api;
+class ApiEndpoint;
 class Auth;
 class Image;
 class MixedSettings;
@@ -89,6 +90,7 @@ class Site : public QObject
 		Api *detailsApi() const;
 		Api *fullDetailsApi() const;
 		Api *tagsApi() const;
+		ApiEndpoint *apiEndpoint(const QString &name) const;
 
 		// Login
 		void setAutoLogin(bool autoLogin);

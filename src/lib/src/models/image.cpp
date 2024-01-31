@@ -585,6 +585,44 @@ void Image::parseDetails()
 
 	refreshTokens();
 
+	// If we load the details for an ugoira file that we will want to convert later, load the ugoira metadata as well
+	if (extension() == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
+		auto *endpoint = m_parentSite->apiEndpoint("ugoira_details");
+		if (endpoint != nullptr) {
+			const QString ugoiraDetailsUrl = endpoint->url(m_identity, 1, 1, {}, m_parentSite).url;
+
+			log(QStringLiteral("Loading image ugoira details from `%1`").arg(ugoiraDetailsUrl), Logger::Info);
+			auto *reply = m_parentSite->get(ugoiraDetailsUrl, Site::QueryType::Details);
+			reply->setParent(this);
+
+			connect(reply, &NetworkReply::finished, this, &Image::parseUgoiraDetails);
+			return;
+		}
+	}
+
+	emit finishedLoadingTags(LoadTagsResult::Ok);
+}
+void Image::parseUgoiraDetails()
+{
+	auto *reply = qobject_cast<NetworkReply*>(sender());
+	auto *endpoint = m_parentSite->apiEndpoint("ugoira_details");
+
+	// Handle network errors
+	if (reply->error()) {
+		if (reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
+			log(QStringLiteral("Loading ugoira details error for '%1': %2").arg(reply->url().toString(), reply->errorString()), Logger::Error);
+		}
+		reply->deleteLater();
+		emit finishedLoadingTags(LoadTagsResult::NetworkError);
+		return;
+	}
+
+	// Parse the metadata
+	const QString source = QString::fromUtf8(reply->readAll());
+	const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	m_data["ugoira_metadata"] = endpoint->parseAny(source, statusCode);
+
+	reply->deleteLater();
 	emit finishedLoadingTags(LoadTagsResult::Ok);
 }
 
@@ -772,6 +810,13 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	// FFmpeg
 	if (ext == QStringLiteral("webm") && m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool()) {
 		path = FFmpeg::remux(path, "mp4");
+	}
+
+	// Ugoira conversion
+	if (ext == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
+		const QString targetExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
+		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
+		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetExt, deleteOriginal);
 	}
 
 	// Metadata
@@ -1264,4 +1309,24 @@ const ImageSize &Image::mediaForSize(const QSize &size)
 	}
 
 	return *ret;
+}
+
+QList<QPair<QString, int>> Image::ugoiraFrameInformation() const
+{
+	// Ensure the ugoira metadata is loaded first
+	const QVariant ugoiraMetadata = m_data.value("ugoira_metadata");
+	if (!ugoiraMetadata.isValid() || ugoiraMetadata.isNull()) {
+		return {};
+	}
+
+	QList<QPair<QString, int>> frameInformation;
+
+	const auto frames = ugoiraMetadata.toMap()["frames"].toList();
+	for (const QVariant &frame : frames) {
+		const auto obj = frame.toMap();
+		const QString file = obj["file"].isNull() ? "" : obj["file"].toString();
+		frameInformation.append({file, obj["delay"].toInt()});
+	}
+
+	return frameInformation;
 }

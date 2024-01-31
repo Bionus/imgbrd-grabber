@@ -109,3 +109,10 @@ ParsedPage JavascriptApiEndpoint::parse(Page *parentPage, const QString &source,
 
 	return ret;
 }
+
+QVariant JavascriptApiEndpoint::parseAny(const QString &source, int statusCode) const
+{
+	const QJSValue parseFunction = m_endpoint.property("parse");
+	const QJSValue &result = parseFunction.call(QList<QJSValue> { source, statusCode });
+	return result.toVariant();
+}

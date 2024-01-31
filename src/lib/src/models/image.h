@@ -90,6 +90,7 @@ class Image : public QObject, public Downloadable
 		bool isValid() const;
 		Profile *getProfile() const { return m_profile; }
 		const ImageSize &mediaForSize(const QSize &size);
+		QList<QPair<QString, int>> ugoiraFrameInformation() const;
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -131,6 +132,7 @@ class Image : public QObject, public Downloadable
 		void loadDetails(bool rateLimit = false);
 		void abortTags();
 		void parseDetails();
+		void parseUgoiraDetails();
 
 	signals:
 		void finishedLoadingPreview();

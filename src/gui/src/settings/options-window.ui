@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
-    <height>628</height>
+    <width>743</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1181,8 +1181,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>476</width>
-             <height>475</height>
+             <width>473</width>
+             <height>466</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1460,6 +1460,56 @@
             <widget class="QCheckBox" name="checkConversionFFmpegRemuxWebmToMp4">
              <property name="text">
               <string>Remux WEBM files to MP4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelConversionUgoiraTargetExtension">
+             <property name="text">
+              <string>Target format</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="comboConversionUgoiraTargetExtension">
+             <item>
+              <property name="text">
+               <string>GIF</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>WEBM</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>APNG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>WEBP</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>MKV</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionUgoiraDelete">
+             <property name="text">
+              <string>Delete original ugoira ZIP files</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionUgoiraEnabled">
+             <property name="text">
+              <string>Convert ugoira ZIP files</string>
              </property>
             </widget>
            </item>
@@ -5996,8 +6046,8 @@
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>336</x>
-     <y>40</y>
+     <x>584</x>
+     <y>97</y>
     </hint>
     <hint type="destinationlabel">
      <x>659</x>
@@ -6044,8 +6094,8 @@
    <slot>addSourceRegistry()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>336</x>
-     <y>40</y>
+     <x>584</x>
+     <y>81</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
@@ -6080,7 +6130,7 @@
      <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>749</x>
+     <x>742</x>
      <y>79</y>
     </hint>
    </hints>
@@ -6096,8 +6146,8 @@
      <y>263</y>
     </hint>
     <hint type="destinationlabel">
-     <x>718</x>
-     <y>325</y>
+     <x>720</x>
+     <y>308</y>
     </hint>
    </hints>
   </connection>
@@ -6108,12 +6158,44 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>523</x>
-     <y>507</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>515</x>
-     <y>522</y>
+     <x>336</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkConversionUgoiraEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboConversionUgoiraTargetExtension</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>138</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkConversionUgoiraEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkConversionUgoiraDelete</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>

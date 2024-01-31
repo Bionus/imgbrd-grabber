@@ -153,6 +153,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	});
 	ffmpegVersionWatcher->setFuture(ffmpegVersion);
 	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
+	ui->checkConversionUgoiraEnabled->setChecked(settings->value("Save/ConvertUgoira", false).toBool());
+	ui->comboConversionUgoiraTargetExtension->setCurrentText(settings->value("Save/ConvertUgoiraFormat", "gif").toString().toUpper());
+	ui->checkConversionUgoiraDelete->setChecked(settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool());
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -1274,6 +1277,9 @@ void OptionsWindow::save()
 		}
 
 		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
+		settings->setValue("ConvertUgoira", ui->checkConversionUgoiraEnabled->isChecked());
+		settings->setValue("ConvertUgoiraFormat", ui->comboConversionUgoiraTargetExtension->currentText().toLower());
+		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());
 
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
 		settings->beginWriteArray("MetadataPropsys");

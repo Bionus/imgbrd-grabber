@@ -25,6 +25,7 @@ class JavascriptApiEndpoint : public QObject, public ApiEndpoint
 
 		PageUrl url(const QMap<QString, QVariant> &query, int page, int limit, const PageInformation &lastPage, Site *site) const override;
 		ParsedPage parse(Page *parentPage, const QString &source, int statusCode, int first) const override;
+		QVariant parseAny(const QString &source, int statusCode) const override;
 
 	private:
 		JavascriptApi *m_api; // TODO: get rid of this

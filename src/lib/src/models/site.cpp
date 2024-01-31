@@ -402,6 +402,16 @@ Api *Site::tagsApi() const
 	}
 	return nullptr;
 }
+ApiEndpoint *Site::apiEndpoint(const QString &name) const
+{
+	for (Api *api : m_apis) {
+		ApiEndpoint *endpoint = api->endpoints().value(name);
+		if (endpoint != nullptr) {
+			return endpoint;
+		}
+	}
+	return nullptr;
+}
 
 bool Site::autoLogin() const { return m_autoLogin; }
 void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }

@@ -727,6 +727,23 @@ interface IUrlOptions extends IUrlOptionsBase {
     limit: number;
 }
 
+interface IParsedUgoiraDetails {
+    /**
+     * The list of all frames contained in this ugoira file, sorted in order.
+     */
+    frames: {
+        /**
+         * The file for that frame. If empty, will take the next frame from the ZIP file alphabetically.
+         */
+        file?: string;
+
+        /**
+         * The duration for which this frame should be shown.
+         */
+        delay: number;
+    }[];
+}
+
 /**
  * Additional information for a details query.
  */
@@ -802,7 +819,7 @@ interface IEndpoint<T extends string> {
     /**
      * The function that will parse the response of the URL above.
      */
-    parse: (src: string, statusCode: number) => IParsedSearch | IError;
+    parse: (src: string, statusCode: number) => IParsedSearch | IParsedUgoiraDetails | IError;
 }
 
 /**

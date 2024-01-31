@@ -1,4 +1,9 @@
 function completeImage(img: IImage): IImage {
+    img.identity = {
+        "id": img.id!,
+        "md5": img.md5!,
+    };
+
     if (img.ext && img.ext[0] === ".") {
         img.ext = img.ext.substr(1);
     }
@@ -155,6 +160,22 @@ export const source: ISource = {
                 },
             },
             endpoints: {
+                ugoira_details: {
+                    input: {
+                        id: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"id", number>): string => {
+                        return "/posts/" + String(query.id) + ".json?only=media_metadata";
+                    },
+                    parse: (src: string): IParsedUgoiraDetails => {
+                        const delays = JSON.parse(src)["media_metadata"]["metadata"]["Ugoira:FrameDelays"];
+                        return {
+                            frames: delays.map((delay: number) => ({ delay })),
+                        };
+                    },
+                },
                 pool_list: {
                     name: "Pools",
                     input: {

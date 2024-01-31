@@ -81,6 +81,7 @@ void ImageDownloader::save()
 	// Always load details if the API doesn't provide the file URL in the listing page
 	const QStringList forcedTokens = m_image->parentSite()->getApis().first()->forcedTokens();
 	const bool needFileUrl = forcedTokens.contains("*") || forcedTokens.contains("file_url");
+	const bool needUgoiraData = m_image->extension() == QStringLiteral("zip") && m_profile->getSettings()->value("Save/ConvertUgoira", false).toBool();
 
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
@@ -88,7 +89,7 @@ void ImageDownloader::save()
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
-	if (!blacklistNeedTags && !needFileUrl && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
+	if (!blacklistNeedTags && !needFileUrl && !needUgoiraData && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
