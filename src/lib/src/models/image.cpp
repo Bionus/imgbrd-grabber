@@ -20,6 +20,7 @@
 #include "loader/token.h"
 #include "logger.h"
 #include "models/api/api.h"
+#include "models/api/api-endpoint.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/pool.h"
@@ -472,7 +473,7 @@ void Image::loadDetails(bool rateLimit)
 
 	log(QStringLiteral("Loading image details from `%1`").arg(m_pageUrl.toString()), Logger::Info);
 
-	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
+	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::Details;
 	m_loadDetails = m_parentSite->get(m_pageUrl, type);
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
