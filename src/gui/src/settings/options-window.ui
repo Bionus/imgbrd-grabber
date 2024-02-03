@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>619</height>
+    <width>747</width>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1181,8 +1181,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>473</width>
-             <height>466</height>
+             <width>476</width>
+             <height>493</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1435,42 +1435,58 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageFormatConversion">
-       <layout class="QVBoxLayout" name="verticalLayout_15">
-        <item>
+       <layout class="QFormLayout" name="formLayout_28">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_22">
+          <property name="text">
+           <string>FFmpeg version</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
          <widget class="QGroupBox" name="groupConversionFFmpeg">
           <property name="title">
-           <string>FFmpeg</string>
+           <string>Video conversion</string>
           </property>
           <layout class="QFormLayout" name="formLayout_27">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelConversionFFmpegVersionLabel">
-             <property name="text">
-              <string>Version</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="labelConversionFFmpegVersion">
-             <property name="text">
-              <string>Loading...</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
+           <item row="0" column="0" colspan="2">
             <widget class="QCheckBox" name="checkConversionFFmpegRemuxWebmToMp4">
              <property name="text">
               <string>Remux WEBM files to MP4</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="labelConversionFFmpegVersion">
+          <property name="text">
+           <string>Loading...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Ugoira (ZIP) conversion</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_29">
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionUgoiraEnabled">
+             <property name="text">
+              <string>Convert ugoira ZIP files</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
             <widget class="QLabel" name="labelConversionUgoiraTargetExtension">
              <property name="text">
               <string>Target format</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="1" column="1">
             <widget class="QComboBox" name="comboConversionUgoiraTargetExtension">
              <item>
               <property name="text">
@@ -1499,35 +1515,15 @@
              </item>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2">
+           <item row="2" column="0" colspan="2">
             <widget class="QCheckBox" name="checkConversionUgoiraDelete">
              <property name="text">
               <string>Delete original ugoira ZIP files</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QCheckBox" name="checkConversionUgoiraEnabled">
-             <property name="text">
-              <string>Convert ugoira ZIP files</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
-        </item>
-        <item>
-         <spacer name="spacerFormatConversion">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -1981,8 +1977,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>474</width>
-             <height>682</height>
+             <width>261</width>
+             <height>622</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2691,8 +2687,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>474</width>
-             <height>710</height>
+             <width>329</width>
+             <height>660</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -4141,8 +4137,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>474</width>
-             <height>840</height>
+             <width>194</width>
+             <height>765</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -4980,8 +4976,6 @@
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
        <zorder>labelColoringMetas</zorder>
-       <zorder>formLayoutWidget</zorder>
-       <zorder>formLayoutWidget_2</zorder>
        <zorder>labelColoringBlacklisteds</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
