@@ -16,6 +16,17 @@ class FFmpeg
 		static QString version(int msecs = 30000);
 
 		/**
+		 * Convert a file to a different format.
+		 *
+		 * @param file The file to convert.
+		 * @param extension The target extension (ex: "mp4").
+		 * @param deleteOriginal Whether to delete the original file on success.
+		 * @param msecs The duration to wait in milliseconds for the command to run.
+		 * @return The destination file path on success, the original file path on error.
+		 */
+		static QString convert(const QString &file, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
+
+		/**
 		 * Remux a file to a different format, copying the streams.
 		 *
 		 * @param file The file to remux.
@@ -39,6 +50,7 @@ class FFmpeg
 		static QString convertUgoira(const QString &file, const QList<QPair<QString, int>> &frameInformation, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
 
 	protected:
+		static bool executeConvert(const QString &file, const QString &destination, bool deleteOriginal, const QStringList &params, int msecs = 30000);
 		static bool execute(const QStringList &params, int msecs = 30000);
 };
 

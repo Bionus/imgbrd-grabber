@@ -13,6 +13,7 @@
 #include "downloader/extension-rotator.h"
 #include "external/exiftool.h"
 #include "external/ffmpeg.h"
+#include "external/image-magick.h"
 #include "favorite.h"
 #include "filename/filename.h"
 #include "filtering/tag-filter-list.h"
@@ -812,11 +813,22 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		path = FFmpeg::remux(path, "mp4");
 	}
 
+	// Image conversion
+	const QString targetImgExt = m_settings->value("Save/ImageConversion/" + ext.toUpper() + "/to").toString().toLower();
+	if (!targetImgExt.isEmpty()) {
+		const QString backend = m_settings->value("Save/ImageConversionBackend", "ImageMagick").toString();
+		if (backend == QStringLiteral("ImageMagick")) {
+			path = ImageMagick::convert(path, targetImgExt);
+		} else if (backend == QStringLiteral("FFmpeg")) {
+			path = FFmpeg::remux(path, targetImgExt);
+		}
+	}
+
 	// Ugoira conversion
 	if (ext == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
-		const QString targetExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
+		const QString targetUgoiraExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
 		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
-		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetExt, deleteOriginal);
+		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal);
 	}
 
 	// Metadata

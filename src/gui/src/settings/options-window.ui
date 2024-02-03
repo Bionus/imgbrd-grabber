@@ -1182,7 +1182,7 @@
              <x>0</x>
              <y>0</y>
              <width>476</width>
-             <height>493</height>
+             <height>475</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1437,14 +1437,35 @@
       <widget class="QWidget" name="pageFormatConversion">
        <layout class="QFormLayout" name="formLayout_28">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_22">
+         <widget class="QLabel" name="labelConversionFFmpegVersionLabel">
           <property name="text">
            <string>FFmpeg version</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QGroupBox" name="groupConversionFFmpeg">
+        <item row="0" column="1">
+         <widget class="QLabel" name="labelConversionFFmpegVersion">
+          <property name="text">
+           <string>Loading...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelConversionImageMagickVersionLabel">
+          <property name="text">
+           <string>ImageMagick version</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="labelConversionImageMagickVersion">
+          <property name="text">
+           <string>Loading...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupConversionVideo">
           <property name="title">
            <string>Video conversion</string>
           </property>
@@ -1459,15 +1480,48 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="labelConversionFFmpegVersion">
-          <property name="text">
-           <string>Loading...</string>
+        <item row="3" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupConversionImage">
+          <property name="title">
+           <string>Image conversion</string>
           </property>
+          <layout class="QFormLayout" name="formLayout_30">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelConversionImageBackend">
+             <property name="text">
+              <string>Back-end</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="comboConversionImageBackend">
+             <item>
+              <property name="text">
+               <string notr="true">ImageMagick</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">FFmpeg</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <layout class="QVBoxLayout" name="layoutConversionImageList"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonConversionImageListAdd">
+             <property name="text">
+              <string>Add new image conversion</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QGroupBox" name="groupBox">
+        <item row="4" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupConversionUgoira">
           <property name="title">
            <string>Ugoira (ZIP) conversion</string>
           </property>
@@ -1518,7 +1572,7 @@
            <item row="2" column="0" colspan="2">
             <widget class="QCheckBox" name="checkConversionUgoiraDelete">
              <property name="text">
-              <string>Delete original ugoira ZIP files</string>
+              <string>Delete original file on success</string>
              </property>
             </widget>
            </item>
@@ -1977,8 +2031,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>261</width>
-             <height>622</height>
+             <width>323</width>
+             <height>682</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2687,8 +2741,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>329</width>
-             <height>660</height>
+             <width>388</width>
+             <height>710</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -4137,8 +4191,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>194</width>
-             <height>765</height>
+             <width>235</width>
+             <height>840</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">

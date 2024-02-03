@@ -23,6 +23,7 @@
 #include "custom-buttons.h"
 #include "external/exiftool.h"
 #include "external/ffmpeg.h"
+#include "external/image-magick.h"
 #include "functions.h"
 #include "filename/conditional-filename.h"
 #include "helpers.h"
@@ -44,7 +45,7 @@
 #include "viewer/viewer-window-buttons.h"
 
 
-void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
+void disableItem(QComboBox *combo, const int index, const QString &toolTip = {}) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
 	QStandardItem *item = model->item(index);
 	item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
@@ -139,20 +140,59 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL | Qt::Key_Y));
 	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N));
 
-	// FFmpeg format conversion
+	// FFmpeg version
 	QFuture<QString> ffmpegVersion = QtConcurrent::run([=]() {
 		return FFmpeg::version();
 	});
 	auto *ffmpegVersionWatcher = new QFutureWatcher<QString>(this);
 	connect(ffmpegVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
 		const QString &version = ffmpegVersion.result();
-		ui->labelConversionFFmpegVersion->setText(version.isEmpty() ? tr("ffmpeg not found") : version);
+		ui->labelConversionFFmpegVersion->setText(version.isEmpty() ? tr("FFmpeg not found") : version);
 		if (version.isEmpty()) {
 			ui->labelConversionFFmpegVersion->setStyleSheet("color: red");
+			disableItem(ui->comboConversionImageBackend, 1);
 		}
 	});
 	ffmpegVersionWatcher->setFuture(ffmpegVersion);
+
+	// ImageMagick version
+	QFuture<QString> imageMagickVersion = QtConcurrent::run([=]() {
+		return ImageMagick::version();
+	});
+	auto *imageMagickVersionWatcher = new QFutureWatcher<QString>(this);
+	connect(imageMagickVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
+		const QString &version = imageMagickVersion.result();
+		ui->labelConversionImageMagickVersion->setText(version.isEmpty() ? tr("ImageMagick not found") : version);
+		if (version.isEmpty()) {
+			ui->labelConversionImageMagickVersion->setStyleSheet("color: red");
+			disableItem(ui->comboConversionImageBackend, 0);
+		}
+	});
+	imageMagickVersionWatcher->setFuture(imageMagickVersion);
+
+	// Video conversion
 	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
+
+	// Image conversion
+	ui->comboConversionImageBackend->setCurrentText(settings->value("Save/ImageConversionBackend", "ImageMagick").toString());
+	settings->beginGroup("Save/ImageConversion");
+	for (const QString &from : settings->childGroups()) {
+		settings->beginGroup(from);
+		const QString to = settings->value("to").toString();
+		settings->endGroup();
+
+		auto *leFrom = new QLineEdit(from, this);
+		auto *leTo = new QLineEdit(to, this);
+		m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
+
+		auto *layout = new QHBoxLayout(this);
+		layout->addWidget(leFrom);
+		layout->addWidget(leTo);
+		ui->layoutConversionImageList->addLayout(layout);
+	}
+	settings->endGroup();
+
+	// Ugoira conversion
 	ui->checkConversionUgoiraEnabled->setChecked(settings->value("Save/ConvertUgoira", false).toBool());
 	ui->comboConversionUgoiraTargetExtension->setCurrentText(settings->value("Save/ConvertUgoiraFormat", "gif").toString().toUpper());
 	ui->checkConversionUgoiraDelete->setChecked(settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool());
@@ -599,6 +639,18 @@ void OptionsWindow::on_buttonMetadataExiftoolAdd_clicked()
 	auto *leValue = new QLineEdit(this);
 	ui->layoutMetadataExiftool->addRow(leKey, leValue);
 	m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+}
+
+void OptionsWindow::on_buttonConversionImageListAdd_clicked()
+{
+	auto *leFrom = new QLineEdit(this);
+	auto *leTo = new QLineEdit(this);
+	m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
+
+	auto *layout = new QHBoxLayout(this);
+	layout->addWidget(leFrom);
+	layout->addWidget(leTo);
+	ui->layoutConversionImageList->addLayout(layout);
 }
 
 
@@ -1288,7 +1340,26 @@ void OptionsWindow::save()
 			tokenSettings->save();
 		}
 
+		// Video conversion
 		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
+
+		// Image conversion
+		settings->setValue("ImageConversionBackend", ui->comboConversionImageBackend->currentText());
+		settings->beginGroup("ImageConversion");
+		settings->remove("");
+		for (int i = 0, j = 0; i < m_imageConversion.count(); ++i) {
+			const QString &from = m_imageConversion[i].first->text();
+			const QString &to = m_imageConversion[i].second->text();
+			if (!from.isEmpty() && !to.isEmpty()) {
+				settings->beginGroup(from.toUpper());
+				settings->setValue("to", to.toUpper());
+				settings->endGroup();
+				++j;
+			}
+		}
+		settings->endGroup();
+
+		// Ugoira conversion
 		settings->setValue("ConvertUgoira", ui->checkConversionUgoiraEnabled->isChecked());
 		settings->setValue("ConvertUgoiraFormat", ui->comboConversionUgoiraTargetExtension->currentText().toLower());
 		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());

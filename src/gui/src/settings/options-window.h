@@ -89,6 +89,7 @@ class OptionsWindow : public QDialog
 		void addFilename(const QString &, const QString &, const QString &);
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
+		void on_buttonConversionImageListAdd_clicked();
 
 		// Custom image window buttons
 		void initButtonSettingPairs();
@@ -137,6 +138,7 @@ class OptionsWindow : public QDialog
 		QList<TokenSettingsWidget*> m_tokenSettings;
 		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
 		QList<QPair<QCheckBox*, QSpinBox*>> m_buttonSettingPairs;
+		QList<QPair<QLineEdit*, QLineEdit*>> m_imageConversion;
 };
 
 #endif // OPTIONS_WINDOW_H

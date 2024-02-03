@@ -41,6 +41,30 @@ QString FFmpeg::version(int msecs)
 }
 
 
+QString FFmpeg::convert(const QString &file, const QString &extension, bool deleteOriginal, int msecs)
+{
+	// Since the method takes an extension, build an absolute path to the input file with that extension
+	const QFileInfo info(file);
+	QString destination = info.path() + QDir::separator() + info.completeBaseName() + "." + extension;
+
+	// Ensure the operation is safe to do
+	if (!QFile::exists(file)) {
+		log(QStringLiteral("Cannot convert file that does not exist: `%1`").arg(file), Logger::Error);
+		return file;
+	}
+	if (QFile::exists(destination)) {
+		log(QStringLiteral("Converting the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
+		return file;
+	}
+
+	// Execute the conversion command
+	const QStringList params = { "-n", "-loglevel", "error", "-i", file, destination };
+	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
+		return file;
+	}
+	return destination;
+}
+
 QString FFmpeg::remux(const QString &file, const QString &extension, bool deleteOriginal, int msecs)
 {
 	// Since the method takes an extension, build an absolute path to the input file with that extension
@@ -59,24 +83,9 @@ QString FFmpeg::remux(const QString &file, const QString &extension, bool delete
 
 	// Execute the conversion command
 	const QStringList params = { "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
-	if (!execute(params, msecs)) {
-		// Clean-up failed conversions
-		if (QFile::exists(destination)) {
-			log(QStringLiteral("Cleaning up failed conversion target file: `%1`").arg(destination), Logger::Warning);
-			QFile::remove(destination);
-		}
-
+	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
-
-	// Copy file creation information
-	setFileCreationDate(destination, info.lastModified());
-
-	// On success, delete the original file if requested
-	if (deleteOriginal) {
-		QFile::remove(file);
-	}
-
 	return destination;
 }
 
@@ -145,21 +154,36 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 	params.append(destination);
 
 	// Execute the conversion command
-	if (!execute(params, msecs)) {
+	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
+	}
+	return destination;
+}
+
+
+bool FFmpeg::executeConvert(const QString &file, const QString &destination, bool deleteOriginal, const QStringList &params, int msecs)
+{
+	// Execute the command
+	if (!execute(params, msecs)) {
+		// Clean-up failed conversions
+		if (QFile::exists(destination)) {
+			log(QStringLiteral("Cleaning up failed conversion target file: `%1`").arg(destination), Logger::Warning);
+			QFile::remove(destination);
+		}
+
+		return false;
 	}
 
 	// Copy file creation information
-	setFileCreationDate(destination, info.lastModified());
+	setFileCreationDate(destination, QFileInfo(file).lastModified());
 
 	// On success, delete the original file if requested
 	if (deleteOriginal) {
 		QFile::remove(file);
 	}
 
-	return destination;
+	return true;
 }
-
 
 bool FFmpeg::execute(const QStringList &params, int msecs)
 {
