@@ -172,11 +172,11 @@ bool FFmpeg::execute(const QStringList &params, int msecs)
 	// Print stdout and stderr to the log
 	const QString standardOutput = QString::fromLocal8Bit(process.readAllStandardOutput()).trimmed();
 	if (!standardOutput.isEmpty()) {
-		log(QString("[Exiftool] %1").arg(standardOutput), Logger::Debug);
+		log(QString("[FFmpeg] %1").arg(standardOutput), Logger::Debug);
 	}
 	const QString standardError = QString::fromLocal8Bit(process.readAllStandardError()).trimmed();
 	if (!standardError.isEmpty()) {
-		log(QString("[Exiftool] %1").arg(standardError), Logger::Error);
+		log(QString("[FFmpeg] %1").arg(standardError), Logger::Error);
 	}
 
 	return ok;
