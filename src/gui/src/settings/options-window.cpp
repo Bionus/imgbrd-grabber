@@ -185,7 +185,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		auto *leTo = new QLineEdit(to, this);
 		m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
 
-		auto *layout = new QHBoxLayout(this);
+		auto *layout = new QHBoxLayout();
 		layout->addWidget(leFrom);
 		layout->addWidget(leTo);
 		ui->layoutConversionImageList->addLayout(layout);
@@ -617,7 +617,7 @@ void OptionsWindow::addFilename(const QString &condition, const QString &filenam
 	m_filenamesFilenames.append(leFilename);
 	m_filenamesFolders.append(leFolder);
 
-	auto *layout = new QHBoxLayout(this);
+	auto *layout = new QHBoxLayout();
 	layout->addWidget(leCondition);
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
@@ -647,7 +647,7 @@ void OptionsWindow::on_buttonConversionImageListAdd_clicked()
 	auto *leTo = new QLineEdit(this);
 	m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
 
-	auto *layout = new QHBoxLayout(this);
+	auto *layout = new QHBoxLayout();
 	layout->addWidget(leFrom);
 	layout->addWidget(leTo);
 	ui->layoutConversionImageList->addLayout(layout);
