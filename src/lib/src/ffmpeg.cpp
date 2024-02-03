@@ -167,7 +167,10 @@ bool FFmpeg::execute(const QStringList &params, int msecs)
 	}
 
 	// Wait for FFmpeg to finish
-	bool ok = process.waitForFinished(msecs);
+	bool finishedOk = process.waitForFinished(msecs);
+	bool didntCrash = process.exitStatus() == QProcess::NormalExit;
+	bool exitCodeOk = process.exitCode() == 0;
+	bool ok = finishedOk && didntCrash && exitCodeOk;
 
 	// Print stdout and stderr to the log
 	const QString standardOutput = QString::fromLocal8Bit(process.readAllStandardOutput()).trimmed();
