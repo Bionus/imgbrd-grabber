@@ -60,6 +60,12 @@ QString FFmpeg::remux(const QString &file, const QString &extension, bool delete
 	// Execute the conversion command
 	const QStringList params = { "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
 	if (!execute(params, msecs)) {
+		// Clean-up failed conversions
+		if (QFile::exists(destination)) {
+			log(QStringLiteral("Cleaning up failed conversion target file: `%1`").arg(destination), Logger::Warning);
+			QFile::remove(destination);
+		}
+
 		return file;
 	}
 
