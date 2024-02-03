@@ -11,9 +11,9 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
-#include "exiftool.h"
+#include "external/exiftool.h"
+#include "external/ffmpeg.h"
 #include "favorite.h"
-#include "ffmpeg.h"
 #include "filename/filename.h"
 #include "filtering/tag-filter-list.h"
 #include "functions.h"

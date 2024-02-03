@@ -12,7 +12,7 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/download-query-manager.h"
-#include "exiftool.h"
+#include "external/exiftool.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
