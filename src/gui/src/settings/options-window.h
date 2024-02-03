@@ -46,8 +46,10 @@ class OptionsWindow : public QDialog
 		void on_lineColoringModels_textChanged();
 		void on_lineColoringGenerals_textChanged();
 		void on_lineColoringFavorites_textChanged();
+		void on_lineColoringFavoritesBorder_textChanged();
 		void on_lineColoringKeptForLater_textChanged();
 		void on_lineColoringBlacklisteds_textChanged();
+		void on_lineColoringBlacklistedsBorder_textChanged();
 		void on_lineColoringIgnoreds_textChanged();
 		void on_buttonColoringArtistsColor_clicked();
 		void on_buttonColoringCirclesColor_clicked();
@@ -58,8 +60,10 @@ class OptionsWindow : public QDialog
 		void on_buttonColoringModelsColor_clicked();
 		void on_buttonColoringGeneralsColor_clicked();
 		void on_buttonColoringFavoritesColor_clicked();
+		void on_buttonColoringFavoritesBorderColor_clicked();
 		void on_buttonColoringKeptForLaterColor_clicked();
 		void on_buttonColoringBlacklistedsColor_clicked();
+		void on_buttonColoringBlacklistedsBorderColor_clicked();
 		void on_buttonColoringIgnoredsColor_clicked();
 		void on_buttonColoringArtistsFont_clicked();
 		void on_buttonColoringCirclesFont_clicked();

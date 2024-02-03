@@ -960,7 +960,7 @@ QColor Image::color() const
 	// Blacklisted
 	QStringList detected = m_profile->getBlacklist().match(tokens(m_profile));
 	if (!detected.isEmpty()) {
-		return { 0, 0, 0 };
+		return QColor(m_settings->value("Coloring/Borders/blacklisteds", "#000000").toString());
 	}
 
 	// Favorited (except for exact favorite search)
@@ -969,7 +969,7 @@ QColor Image::color() const
 		if (!m_parent->search().contains(tag.text())) {
 			for (const Favorite &fav : favorites) {
 				if (fav.getName() == tag.text()) {
-					return { 255, 192, 203 };
+					return QColor(m_settings->value("Coloring/Borders/favorites", "#ffc0cb").toString());
 				}
 			}
 		}

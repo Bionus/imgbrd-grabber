@@ -1981,7 +1981,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>323</width>
+             <width>474</width>
              <height>682</height>
             </rect>
            </property>
@@ -2691,7 +2691,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>388</width>
+             <width>474</width>
              <height>710</height>
             </rect>
            </property>
@@ -4141,7 +4141,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>235</width>
+             <width>474</width>
              <height>840</height>
             </rect>
            </property>
@@ -4680,6 +4680,62 @@
           </item>
          </layout>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labelColoringSpecies">
+          <property name="text">
+           <string>Species</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringSpecies">
+          <item>
+           <widget class="QLineEdit" name="lineColoringSpecies"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringSpeciesColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringSpeciesFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelColoringMetas">
+          <property name="text">
+           <string>Metas</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringMetas">
+          <item>
+           <widget class="QLineEdit" name="lineColoringMetas"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
         <item row="6" column="0">
          <widget class="QLabel" name="labelColoringModels">
           <property name="text">
@@ -4744,107 +4800,55 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringFavorites">
-          <item>
-           <widget class="QLineEdit" name="lineColoringFavorites"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringFavoritesColor">
+         <layout class="QFormLayout" name="layoutColoringFavorites">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelColoringFavoritesTags">
             <property name="text">
-             <string>Color</string>
+             <string>Tags</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringFavoritesFont">
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringFavoritesTags">
+            <item>
+             <widget class="QLineEdit" name="lineColoringFavorites"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringFavoritesColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringFavoritesFont">
+              <property name="text">
+               <string>Font</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelColoringFavoritesBorder">
             <property name="text">
-             <string>Font</string>
+             <string>Border</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="labelColoringBlacklisteds">
-          <property name="text">
-           <string>Blacklisted</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringBlacklisteds">
-          <item>
-           <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="labelColoringIgnoreds">
-          <property name="text">
-           <string>Ignored</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
-          <item>
-           <widget class="QLineEdit" name="lineColoringIgnoreds"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringIgnoredsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringIgnoredsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="labelColoringSpecies">
-          <property name="text">
-           <string>Species</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringSpecies">
-          <item>
-           <widget class="QLineEdit" name="lineColoringSpecies"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringSpeciesColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringSpeciesFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringFavoritesBorder">
+            <item>
+             <widget class="QLineEdit" name="lineColoringFavoritesBorder"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringFavoritesBorderColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -4876,27 +4880,87 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="labelColoringMetas">
+        <item row="10" column="0">
+         <widget class="QLabel" name="labelColoringBlacklisteds">
           <property name="text">
-           <string>Metas</string>
+           <string>Blacklisted</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringMetas">
+        <item row="10" column="1">
+         <layout class="QFormLayout" name="layoutColoringBlacklisteds">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelColoringBlacklistedsTags">
+            <property name="text">
+             <string>Tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelColoringBlacklistedsBorder">
+            <property name="text">
+             <string>Border</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringBlacklistedsTags">
+            <item>
+             <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
+              <property name="text">
+               <string>Font</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringBlacklistedsBorder">
+            <item>
+             <widget class="QLineEdit" name="lineColoringBlacklistedsBorder"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringBlacklistedsBorderColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="labelColoringIgnoreds">
+          <property name="text">
+           <string>Ignored</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
           <item>
-           <widget class="QLineEdit" name="lineColoringMetas"/>
+           <widget class="QLineEdit" name="lineColoringIgnoreds"/>
           </item>
           <item>
-           <widget class="QPushButton" name="buttonColoringMetasColor">
+           <widget class="QPushButton" name="buttonColoringIgnoredsColor">
             <property name="text">
              <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="buttonColoringMetasFont">
+           <widget class="QPushButton" name="buttonColoringIgnoredsFont">
             <property name="text">
              <string>Font</string>
             </property>
@@ -4911,12 +4975,14 @@
        <zorder>labelColoringModels</zorder>
        <zorder>labelColoringGenerals</zorder>
        <zorder>labelColoringFavorites</zorder>
-       <zorder>labelColoringBlacklisteds</zorder>
        <zorder>labelColoringIgnoreds</zorder>
        <zorder>labelColoringCircles</zorder>
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
        <zorder>labelColoringMetas</zorder>
+       <zorder>formLayoutWidget</zorder>
+       <zorder>formLayoutWidget_2</zorder>
+       <zorder>labelColoringBlacklisteds</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">

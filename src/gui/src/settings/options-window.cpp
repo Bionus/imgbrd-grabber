@@ -448,6 +448,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringBlacklisteds->setFont(qFontFromString(settings->value("blacklisteds").toString()));
 			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
 		settings->endGroup();
+		settings->beginGroup("Borders");
+			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffc0cb").toString());
+			ui->lineColoringBlacklistedsBorder->setText(settings->value("blacklisteds", "#000000").toString());
+		settings->endGroup();
 	settings->endGroup();
 
 	settings->beginGroup("Margins");
@@ -987,10 +991,14 @@ void OptionsWindow::on_lineColoringGenerals_textChanged()
 { setColor(ui->lineColoringGenerals); }
 void OptionsWindow::on_lineColoringFavorites_textChanged()
 { setColor(ui->lineColoringFavorites); }
+void OptionsWindow::on_lineColoringFavoritesBorder_textChanged()
+{ setColor(ui->lineColoringFavoritesBorder); }
 void OptionsWindow::on_lineColoringKeptForLater_textChanged()
 { setColor(ui->lineColoringKeptForLater); }
 void OptionsWindow::on_lineColoringBlacklisteds_textChanged()
 { setColor(ui->lineColoringBlacklisteds); }
+void OptionsWindow::on_lineColoringBlacklistedsBorder_textChanged()
+{ setColor(ui->lineColoringBlacklistedsBorder); }
 void OptionsWindow::on_lineColoringIgnoreds_textChanged()
 { setColor(ui->lineColoringIgnoreds); }
 void OptionsWindow::on_lineBorderColor_textChanged()
@@ -1014,10 +1022,14 @@ void OptionsWindow::on_buttonColoringGeneralsColor_clicked()
 { setColor(ui->lineColoringGenerals, true); }
 void OptionsWindow::on_buttonColoringFavoritesColor_clicked()
 { setColor(ui->lineColoringFavorites, true); }
+void OptionsWindow::on_buttonColoringFavoritesBorderColor_clicked()
+{ setColor(ui->lineColoringFavoritesBorder, true); }
 void OptionsWindow::on_buttonColoringKeptForLaterColor_clicked()
 { setColor(ui->lineColoringKeptForLater, true); }
 void OptionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 { setColor(ui->lineColoringBlacklisteds, true); }
+void OptionsWindow::on_buttonColoringBlacklistedsBorderColor_clicked()
+{ setColor(ui->lineColoringBlacklistedsBorder, true); }
 void OptionsWindow::on_buttonColoringIgnoredsColor_clicked()
 { setColor(ui->lineColoringIgnoreds, true); }
 void OptionsWindow::on_buttonBorderColor_clicked()
@@ -1434,6 +1446,10 @@ void OptionsWindow::save()
 			settings->setValue("keptForLater", ui->lineColoringKeptForLater->font().toString());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->font().toString());
+		settings->endGroup();
+		settings->beginGroup("Borders");
+			settings->setValue("favorites", ui->lineColoringFavoritesBorder->text());
+			settings->setValue("blacklisteds", ui->lineColoringBlacklistedsBorder->text());
 		settings->endGroup();
 	settings->endGroup();
 
