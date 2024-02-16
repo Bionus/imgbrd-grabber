@@ -66,7 +66,6 @@ TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *paren
 
 TagTab::~TagTab()
 {
-	close();
 	delete ui;
 }
 

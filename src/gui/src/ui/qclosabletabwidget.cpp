@@ -21,7 +21,7 @@ bool QClosableTabWidget::eventFilter(QObject *o, QEvent *e)
 
 			// Non-closable tabs have a maximum width of 16777214 (default: 16777215)
 			if (tab != nullptr && !tab->isLocked() && w->maximumWidth() != 16777214) {
-				w->deleteLater();
+				w->close();
 				removeTab(index);
 				return true;
 			}
