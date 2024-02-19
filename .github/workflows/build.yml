@@ -428,7 +428,7 @@ jobs:
         working-directory: vendor
         shell: cmd
         run: |
-          curl -Lo OpenSSL.exe "https://slproweb.com/download/Win64OpenSSL-3_2_1.exe" --fail
+          curl -Lo OpenSSL.exe "https://github.com/Bionus/imgbrd-grabber/releases/download/sources-master/Win64OpenSSL-3_1_4.exe" --fail
           OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
           rm OpenSSL.exe
           dir %OPENSSL_ROOT_DIR%
