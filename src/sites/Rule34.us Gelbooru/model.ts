@@ -5,6 +5,12 @@ function completeImage(img: IImage): IImage {
             .replace("/thumbnail_", "/");
     }
 
+    // Use the "video.rule34.us" server for videos to not get CloudFlare hot-linking error
+    const isVideo = img.tags && (img.tags as unknown as string).indexOf("video") !== -1;
+    if (isVideo && img.file_url && img.file_url.indexOf("//img") !== -1) {
+        img.file_url = img.file_url.replace(/\/\/img\d+\./, "//video.");
+    }
+
     return img;
 }
 
