@@ -14,9 +14,11 @@ class TagFilterList
 	public:
 		void add(const QString &word);
 		void add(const QStringList &words);
+		void remove(const QString &word);
 		void clear();
 
 		QList<Tag> filterTags(const QList<Tag> &tags) const;
+		bool contains(const QString &word) const;
 
 	private:
 		QStringList m_rawTags;

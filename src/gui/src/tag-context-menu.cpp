@@ -35,11 +35,18 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist()));
 	}
 
-	// Ignore
+	// Ignored tags
 	if (profile->getIgnored().contains(m_tag, Qt::CaseInsensitive)) {
 		addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore()));
 	} else {
 		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore()));
+	}
+
+	// Removed tags
+	if (profile->getRemovedTags().contains(m_tag)) {
+		addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't remove"), this, &TagContextMenu::unremove);
+	} else {
+		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Remove"), this, &TagContextMenu::remove);
 	}
 	addSeparator();
 
@@ -90,6 +97,15 @@ void TagContextMenu::ignore()
 void TagContextMenu::unignore()
 {
 	m_profile->removeIgnored(m_tag);
+}
+
+void TagContextMenu::remove()
+{
+	m_profile->getRemovedTags().add(m_tag);
+}
+void TagContextMenu::unremove()
+{
+	m_profile->getRemovedTags().remove(m_tag);
 }
 
 void TagContextMenu::blacklist()
