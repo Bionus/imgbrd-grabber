@@ -46,7 +46,7 @@ jobs:
           submodules: recursive
 
       - name: Uncrustify cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: bin-cache
         with:
           path: bin
@@ -138,7 +138,7 @@ jobs:
           lcov --list coverage.info
 
       - name: Upload coverage results
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
 
   version:
     name: Version
@@ -188,7 +188,7 @@ jobs:
           modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: vendor-cache
         with:
           path: vendor
@@ -255,14 +255,14 @@ jobs:
           mv Grabber_*-x86_64.AppImage.zsync Grabber-x86_64.AppImage.zsync
 
       - name: Upload AppImage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Grabber-x86_64.AppImage
           path: Grabber-x86_64.AppImage
           if-no-files-found: error
 
       - name: Upload AppImage update information
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Grabber-x86_64.AppImage.zsync
           path: Grabber-x86_64.AppImage.zsync
@@ -272,7 +272,7 @@ jobs:
         run: ./scripts/package-linux.sh
 
       - name: Upload archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Grabber.tar.gz
           path: Grabber.tar.gz
@@ -303,7 +303,7 @@ jobs:
           modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: vendor-cache
         with:
           path: vendor
@@ -354,7 +354,7 @@ jobs:
         run: ./scripts/package-mac.sh
 
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Grabber.dmg
           path: Grabber.dmg
@@ -391,7 +391,7 @@ jobs:
           modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: vendor-cache
         with:
           path: vendor
@@ -482,7 +482,7 @@ jobs:
           mv scripts/windows-setup/Grabber_*.exe "Grabber_x64.exe
 
       - name: Upload installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Grabber_x64.exe
           path: Grabber_x64.exe
@@ -493,7 +493,7 @@ jobs:
         run: scripts\package-windows.bat && mv Grabber.zip Grabber_x64.zip
 
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Grabber_x64.zip
           path: Grabber_x64.zip
@@ -505,7 +505,7 @@ jobs:
         run: 7z a "Grabber_x64_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
 
       - name: Upload symbols
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
         with:
           name: Grabber_x64_symbols.zip
@@ -603,7 +603,7 @@ jobs:
         mv build/gui-qml/android-build/build/outputs/apk/release/android-build-release-signed.apk Grabber.apk 2> /dev/null || true
 
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Grabber.apk
         path: Grabber.apk
@@ -622,43 +622,43 @@ jobs:
 
     steps:
       - name: Download artifact (Linux AppImage)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber-x86_64.AppImage
 
       - name: Download artifact (Linux AppImage update information)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber-x86_64.AppImage.zsync
 
       - name: Download artifact (Linux archive)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber.tar.gz
 
       - name: Download artifact (macOS)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber.dmg
 
       - name: Download artifact (Windows 64-bit installer)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber_x64.exe
 
       - name: Download artifact (Windows 64-bit archive)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber_x64.zip
 
       - name: Download artifact (Windows 64-bit symbols)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         if: needs.version.outputs.release == '1'
         with:
           name: Grabber_x64_symbols.zip
 
       - name: Download artifact (Android)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Grabber.apk
 

@@ -38,7 +38,7 @@ jobs:
         run: ./scripts/package-sources.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sources
           path: |
@@ -53,13 +53,13 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: sources
 
       - name: Get date for body
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+        run: echo "date=$(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_OUTPUT
 
       - name: Upload result
         uses: ncipollo/release-action@v1
@@ -77,7 +77,7 @@ jobs:
             **Head:** ${{ github.sha }}
             **Date:** ${{ steps.date.outputs.date }}
 
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@v4
         with:
           failOnError: false
           name: sources
