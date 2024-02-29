@@ -674,10 +674,6 @@
       <source>Tags</source>
       <translation>Tagi</translation>
     </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">Gatunki</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -928,17 +924,17 @@
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Remove from favorites</source>
-      <translation type="unfinished"/>
+      <translation>Usuń z ulubionych</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Add to favorites</source>
-      <translation type="unfinished"/>
+      <translation>Dodaj do ulubionych</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="34"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>Skopiuj tag</translation>
     </message>
   </context>
   <context>
@@ -946,7 +942,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">Ogólne</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
@@ -976,7 +972,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">Gatunki</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>

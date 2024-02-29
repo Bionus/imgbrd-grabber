@@ -674,10 +674,6 @@
       <source>Tags</source>
       <translation>Etiquetas</translation>
     </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">Especies</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -946,7 +942,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">General</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
@@ -976,7 +972,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">Especies</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
