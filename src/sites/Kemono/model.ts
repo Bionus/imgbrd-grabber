@@ -12,7 +12,7 @@ function parseJsonImage(data: any): IImage {
         user: data["user"],
         id: data["id"],
     }
-    if (data["attachments"].length > 1) {
+    if (data["attachments"].length > 0) {
         img.type = "gallery";
         img.gallery_count = data["attachments"].length;
     }
@@ -151,7 +151,7 @@ export const source: ISource = {
 
                         // Detect galleries with multiple files
                         const attachmentCount = parseInt(Grabber.regexToConst("count", "(?<count>\\d+) attachments?", article.innerHTML()), 10)
-                        if (attachmentCount > 1) {
+                        if (attachmentCount > 0) {
                             image.type = "gallery";
                             image.gallery_count = attachmentCount;
                         }
