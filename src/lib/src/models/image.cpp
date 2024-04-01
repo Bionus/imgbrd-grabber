@@ -806,11 +806,12 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		commands.after();
 	}
 
-	const QString &ext = extension();
+	QString ext = extension();
 
 	// FFmpeg
 	if (ext == QStringLiteral("webm") && m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool()) {
 		path = FFmpeg::remux(path, "mp4");
+		ext = getExtension(path);
 	}
 
 	// Image conversion
@@ -822,6 +823,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		} else if (backend == QStringLiteral("FFmpeg")) {
 			path = FFmpeg::remux(path, targetImgExt);
 		}
+		ext = getExtension(path);
 	}
 
 	// Ugoira conversion
@@ -829,6 +831,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		const QString targetUgoiraExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
 		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
 		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal);
+		ext = getExtension(path);
 	}
 
 	// Metadata
