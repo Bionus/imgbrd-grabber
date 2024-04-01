@@ -122,7 +122,15 @@ void MonitorsTab::convertSelected()
 	for (const int row : rows) {
 		const Monitor &monitor = m_monitorManager->monitors()[row];
 		for (Site *site : monitor.sites()) {
-			emit batchAddGroup(DownloadQueryGroup(m_settings, monitor.query(), 1, 200, -1, monitor.postFilters(), site));
+			QString path = monitor.pathOverride();
+			if (path.isEmpty()) {
+				path = m_settings->value("save/path").toString();
+			}
+			QString filename = monitor.filenameOverride();
+			if (filename.isEmpty()) {
+				filename = m_settings->value("save/filename").toString();
+			}
+			emit batchAddGroup(DownloadQueryGroup(monitor.query(), 1, 200, -1, monitor.postFilters(), monitor.getBlacklisted(), site, filename, path));
 		}
 	}
 }
