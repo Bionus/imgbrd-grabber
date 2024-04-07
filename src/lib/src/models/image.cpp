@@ -839,6 +839,9 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
 		if (exts.isEmpty() || exts.contains(ext)) {
 			const auto metadataPropsys = getMetadataPropsys(m_settings);
+			if (m_settings->value("Save/MetadataPropsysClear", false).toBool()) {
+				clearAllWindowsProperties(path);
+			}
 			for (const auto &pair : metadataPropsys) {
 				const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
 				if (!values.isEmpty()) {
@@ -861,7 +864,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		if (!metadata.isEmpty()) {
 			Exiftool &exiftool = m_profile->getExiftool();
 			exiftool.start();
-			exiftool.setMetadata(path, metadata);
+			exiftool.setMetadata(path, metadata, m_settings->value("Save/MetadataExiftoolClear", false).toBool());
 		}
 	}
 

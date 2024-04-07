@@ -18,7 +18,7 @@ class Exiftool : public QObject
 
 	public slots:
 		bool start(int msecs = 30000);
-		bool setMetadata(const QString &file, const QMap<QString, QString> &metadata, int msecs = 30000);
+		bool setMetadata(const QString &file, const QMap<QString, QString> &metadata, bool clear = false, int msecs = 30000);
 		bool execute(const QString &file, const QString &command, int msecs = 30000);
 		bool stop(int msecs = 30000);
 

@@ -202,6 +202,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->groupMetadataPropsys->setEnabled(false);
 	#else
 		ui->lineMetadataPropsysExtensions->setText(settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString());
+		ui->checkMetadataPropsysClear->setChecked(settings->value("Save/MetadataPropsysClear", false).toBool());
 		const QList<QPair<QString, QString>> metadataPropsys = getMetadataPropsys(settings);
 		for (const auto &pair : metadataPropsys) {
 			auto *leKey = new QLineEdit(pair.first, this);
@@ -226,6 +227,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	watcher->setFuture(future);
 
 	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
+	ui->checkMetadataExiftoolClear->setChecked(settings->value("Save/MetadataExiftoolClear", false).toBool());
 	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
 	for (const auto &pair : metadataExiftool) {
 		auto *leKey = new QLineEdit(pair.first, this);
@@ -1365,6 +1367,7 @@ void OptionsWindow::save()
 		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());
 
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
+		settings->setValue("MetadataPropsysClear", ui->checkMetadataPropsysClear->isChecked());
 		settings->beginWriteArray("MetadataPropsys");
 		for (int i = 0, j = 0; i < m_metadataPropsys.count(); ++i) {
 			const QString &key = m_metadataPropsys[i].first->text();
@@ -1379,6 +1382,7 @@ void OptionsWindow::save()
 		settings->endArray();
 
 		settings->setValue("MetadataExiftoolExtensions", ui->lineMetadataExiftoolExtensions->text());
+		settings->setValue("MetadataExiftoolClear", ui->checkMetadataExiftoolClear->isChecked());
 		settings->beginWriteArray("MetadataExiftool");
 		for (int i = 0, j = 0; i < m_metadataExiftool.count(); ++i) {
 			const QString &key = m_metadataExiftool[i].first->text();
