@@ -932,12 +932,13 @@ Image::Size Image::preferredDisplaySize() const
 		: Size::Full;
 }
 
-QStringList Image::tagsString() const
+QStringList Image::tagsString(bool namespaces) const
 {
 	QStringList tags;
 	tags.reserve(m_tags.count());
 	for (const Tag &tag : m_tags) {
-		tags.append(tag.text());
+		const QString nspace = namespaces && !tag.type().isUnknown() ? tag.type().name() + ":" : QString();
+		tags.append(nspace + tag.text());
 	}
 	return tags;
 }

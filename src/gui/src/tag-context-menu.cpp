@@ -54,6 +54,7 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 	addAction(QIcon(":/images/icons/copy.png"), tr("Copy tag"), this, SLOT(copyTagToClipboard()));
 	if (!allTags.isEmpty()) {
 		addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
+		addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags (with namespaces)"), this, SLOT(copyAllTagsWithNamespacesToClipboard()));
 	}
 	addSeparator();
 
@@ -141,6 +142,17 @@ void TagContextMenu::copyAllTagsToClipboard()
 	tags.reserve(m_allTags.count());
 	for (const Tag &tag : qAsConst(m_allTags)) {
 		tags.append(tag.text());
+	}
+
+	QApplication::clipboard()->setText(tags.join(' '));
+}
+void TagContextMenu::copyAllTagsWithNamespacesToClipboard()
+{
+	QStringList tags;
+	tags.reserve(m_allTags.count());
+	for (const Tag &tag : qAsConst(m_allTags)) {
+		const QString nspace = !tag.type().isUnknown() ? tag.type().name() + ":" : QString();
+		tags.append(nspace + tag.text());
 	}
 
 	QApplication::clipboard()->setText(tags.join(' '));

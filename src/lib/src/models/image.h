@@ -51,7 +51,7 @@ class Image : public QObject, public Downloadable
 		int value() const;
 		QString md5() const;
 		const QList<Tag> &tags() const;
-		QStringList tagsString() const;
+		QStringList tagsString(bool namespaces = false) const;
 		const QList<Pool> &pools() const;
 		qulonglong id() const;
 		QVariantMap identity() const;

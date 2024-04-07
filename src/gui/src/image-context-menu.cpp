@@ -19,6 +19,7 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 
 	// Copy
 	addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
+	addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags (with namespaces)"), this, SLOT(copyAllTagsWithNamespacesToClipboard()));
 	addSeparator();
 
 	// Open image in browser
@@ -43,6 +44,11 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 void ImageContextMenu::copyAllTagsToClipboard()
 {
 	QApplication::clipboard()->setText(m_image->tagsString().join(' '));
+}
+
+void ImageContextMenu::copyAllTagsWithNamespacesToClipboard()
+{
+	QApplication::clipboard()->setText(m_image->tagsString(true).join(' '));
 }
 
 void ImageContextMenu::openInBrowser()

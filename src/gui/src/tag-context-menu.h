@@ -35,6 +35,7 @@ class TagContextMenu : public QMenu
 		void openInBrowser();
 		void copyTagToClipboard();
 		void copyAllTagsToClipboard();
+		void copyAllTagsWithNamespacesToClipboard();
 
 	signals:
 		void setFavoriteImage();
