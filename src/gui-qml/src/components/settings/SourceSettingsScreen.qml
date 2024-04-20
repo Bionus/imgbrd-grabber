@@ -69,11 +69,8 @@ Page {
     }
 
     ScrollView {
-        width: parent.width
-        height: parent.height
-        contentWidth: column.width
-        contentHeight: column.height
-        clip: true
+        anchors.fill: parent
+        contentWidth: width
 
         ColumnLayout {
             id: column
