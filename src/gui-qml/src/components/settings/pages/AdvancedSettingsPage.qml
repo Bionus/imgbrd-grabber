@@ -31,14 +31,13 @@ ColumnLayout {
 
         onClicked: exportDialog.open()
 
-        FileDialog {
+        FolderDialog {
             id: exportDialog
 
             title: qsTr("Please choose a directory")
-            folder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
-            selectFolder: true
+            currentFolder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
 
-            onAccepted: backend.exportSettings(backend.toLocalFile(exportDialog.fileUrl.toString() + "/settings.ini"))
+            onAccepted: backend.exportSettings(backend.toLocalFile(exportDialog.selectedFolder.toString() + "/settings.ini"))
         }
     }
     SettingItem {
@@ -52,7 +51,7 @@ ColumnLayout {
             id: importDialog
 
             title: qsTr("Please choose a file")
-            folder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
+            currentFolder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
 
             onAccepted: backend.importSettings(backend.toLocalFile(importDialog.fileUrl.toString()))
         }
