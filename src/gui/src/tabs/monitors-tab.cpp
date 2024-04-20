@@ -30,6 +30,13 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
+	// Re-trigger sort on insert (FIXME: we shouldn't need to do this)
+	connect(m_monitorTableModel, &MonitorTableModel::rowsInserted, [=]() {
+		QTimer::singleShot(1, [=]() {
+			m_monitorTableModel->invalidate();
+		});
+	});
+
 	auto *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
 	actionRemoveSelected->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionRemoveSelected, &QShortcut::activated, this, &MonitorsTab::removeSelected);
