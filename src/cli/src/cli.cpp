@@ -37,7 +37,7 @@
 int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultToGui, QMap<QString, QString> &params, QStringList &positionalArgs)
 {
 	QCommandLineCommandParser parser;
-	parser.addVersionOption();
+	QCommandLineOption versionOpt = parser.addVersionOption();
 	parser.addHelpOptionOnly();
 
 	if (defaultToGui) {
@@ -75,6 +75,12 @@ int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultTo
 
 	// If we're here, that means that help was requested or no command was passed
 	if (cmd == nullptr) {
+		// Handle the -v flag
+		if (parser.isSet(versionOpt)) {
+			parser.showVersion();
+			return 0;
+		}
+
 		parser.showHelp();
 		return 1;
 	}
