@@ -23,6 +23,7 @@ Page {
 
         RowLayout {
             ToolButton {
+                visible: image.tags.rowCount() > 0
                 icon.source: showTags ? "/images/icons/image.png" : "/images/icons/tags.png"
                 onClicked: showTags = !showTags
             }
