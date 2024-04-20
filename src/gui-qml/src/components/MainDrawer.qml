@@ -27,6 +27,8 @@ Drawer {
         spacing: 0
         anchors.margins: 0
         anchors.fill: parent
+        anchors.topMargin: -Material.LargeScale
+        anchors.bottomMargin: -Material.LargeScale
 
         ListView {
             id: listView

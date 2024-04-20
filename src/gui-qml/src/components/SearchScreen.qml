@@ -189,6 +189,7 @@ Page {
                 enabled: pageLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page--
@@ -203,6 +204,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: searchTab.openSources()
             }
@@ -216,6 +218,7 @@ Page {
                 enabled: pageLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page++
