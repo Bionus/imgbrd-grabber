@@ -114,6 +114,12 @@ Drawer {
                     enabled: true
                 }
                 ListElement {
+                    page: "sources"
+                    name: qsTr("Sources")
+                    icon: "/images/icons/cloud.png"
+                    enabled: true
+                }
+                ListElement {
                     page: "log"
                     name: qsTr("Log")
                     icon: "/images/icons/log.png"

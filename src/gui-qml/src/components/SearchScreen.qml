@@ -213,21 +213,20 @@ Page {
                 onClicked: searchTab.openSources()
             }
 
-            Rectangle {
+            Label {
+                text: pageLoader.status == TagSearchLoader.Ready
+                    ? (results
+                        ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(pageLoader.pageCount).arg(results.length).arg(pageLoader.imageCount)
+                        : qsTr("No result"))
+                    : ''
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                rightPadding: sourcesButton.width
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: sourcesButton.background.color
 
-                Text {
-                    anchors.fill: parent
-                    text: pageLoader.status == TagSearchLoader.Ready
-                        ? (results
-                            ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(pageLoader.pageCount).arg(results.length).arg(pageLoader.imageCount)
-                            : qsTr("No result"))
-                        : ''
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    rightPadding: sourcesButton.width
+                background: Rectangle {
+                    color: sourcesButton.background.color
                 }
             }
 

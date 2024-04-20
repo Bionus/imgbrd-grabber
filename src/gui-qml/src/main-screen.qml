@@ -133,6 +133,18 @@ ApplicationWindow {
                 }
             }
 
+            SourcesScreen {
+                visible: currentPage == "sources"
+                anchors.fill: parent
+                sources: backend.sites
+                activeSource: gSettings.activeSource.value
+
+                onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
+                onBack: mainStackView.pop()
+                onAddSource: mainStackView.push(addSourceScreen)
+                onEditSource: mainStackView.push(editSourceScreen, { site: activeSource })
+            }
+
             LogScreen {
                 id: logScreen
                 visible: currentPage == "log"
