@@ -64,7 +64,7 @@ void SiteAddCliCommand::run()
 		}
 
 		m_profile->addSite(SiteFactory::fromUrl(url, source, m_profile));
-		stdOut << "Site added:" << url;
+		stdOut << "Site added: " << url << Qt::endl;
 		emit finished(0);
 		return;
 	}
@@ -80,7 +80,7 @@ void SiteAddCliCommand::run()
 		}
 
 		m_profile->addSite(SiteFactory::fromUrl(url, source, m_profile));
-		stdOut << "Site added:" << url;
+		stdOut << "Site added: " << url << Qt::endl;
 		emit finished(0);
 	});
 	sourceGuesser.start();

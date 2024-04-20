@@ -15,6 +15,7 @@
 #include "cli-commands/get-tags-cli-command.h"
 #include "cli-commands/load-tag-database-cli-command.h"
 #include "cli-commands/site/site-cli-command.h"
+#include "cli-commands/source-registry/source-registry-cli-command.h"
 #include "printers/json-printer.h"
 #include "printers/simple-printer.h"
 #include "logger.h"
@@ -44,6 +45,7 @@ int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultTo
 	}
 
 	parser.addCommand("source", "Manage sources");
+	parser.addCommand("source-registry", "Manage source registries");
 
 	parser.process(*app);
 
@@ -62,10 +64,13 @@ int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultTo
 	arguments.removeAll("--cli");
 
 	// Handle each specific command separately
-	CliCommand *cmd = nullptr;
+	QScopedPointer<CliCommand> cmd;
 	const QString command = parser.command();
 	if (command == "source") {
-		cmd = new SiteCliCommand(arguments, profile);
+		cmd.reset(new SiteCliCommand(arguments, profile));
+	}
+	if (command == "source-registry") {
+		cmd.reset(new SourceRegistryCliCommand(arguments, profile));
 	}
 
 	// If we're here, that means that help was requested or no command was passed
@@ -75,9 +80,7 @@ int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultTo
 	}
 
 	// Actually run the command
-	int exitCode = cmd->execute();
-	cmd->deleteLater();
-	return exitCode;
+	return cmd->execute();
 }
 
 
@@ -90,7 +93,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 	// Go through the new CLI for the various commands supported by it
 	const QStringList args = app->arguments();
 	bool guessUseCLI = (defaultToGui && (args.contains("-c") || args.contains("--cli"))) || (!defaultToGui && !args.contains("-g") && !args.contains("--gui"));
-	if (guessUseCLI && args.contains("source")) {
+	if (guessUseCLI && (args.contains("source") || args.contains("source-registry"))) {
 		return parseAndRunCliArgsV2(app, profile, defaultToGui, params, positionalArgs);
 	}
 
