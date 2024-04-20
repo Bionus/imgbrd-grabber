@@ -65,6 +65,16 @@ void SearchLoader::searchFinished(Page *page)
 	m_hasNext = pageCount > page->page() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0);
 	emit hasNextChanged();
 
+	m_pageCount = page->pagesCount() > 0
+		? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(page->pagesCount())
+		: (page->maxPagesCount() == -1 ? "?" : tr("max %1").arg(page->maxPagesCount()));
+	emit pageCountChanged();
+
+	m_imageCount = page->imagesCount() > 0
+		? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(page->imagesCount())
+		: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
+	emit imageCountChanged();
+
 	emit resultsChanged();
 	setStatus(Status::Ready);
 }

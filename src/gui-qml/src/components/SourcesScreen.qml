@@ -10,7 +10,7 @@ Page {
     signal addSource()
     signal editSource(var source)
 
-    property string currentSource
+    property string activeSource
     property var sources
 
     header: ToolBar {
@@ -52,7 +52,7 @@ Page {
                 property string url: modelData.url
 
                 width: parent.width
-                checked: modelData.url === currentSource
+                checked: modelData.url === activeSource
                 text: modelData.name || modelData.url
                 ButtonGroup.group: buttonGroup
                 height: 30 // from 40
@@ -65,7 +65,7 @@ Page {
                     size: 18 // from 28
                 }
 
-                onCheckedChanged: if (checked) currentSource = modelData.url
+                onCheckedChanged: if (checked) activeSource = modelData.url
             }
 
             ToolButton {

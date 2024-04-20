@@ -42,7 +42,8 @@ void MainScreen::refreshSites()
 	m_sites.clear();
 
 	for (Site *site : m_profile->getSites().values()) {
-		m_sites.append(new QmlSite(site, this));
+		Source *source = m_profile->getSources().value(site->type());
+		m_sites.append(new QmlSite(site, source, this));
 	}
 
 	emit sitesChanged();

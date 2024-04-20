@@ -13,7 +13,7 @@ Page {
     signal back()
 
     property int page: 1
-    property string site
+    property var site
     property var gallery
     property bool infiniteScroll: gSettings.resultsInfiniteScroll.value
     property var results
@@ -22,7 +22,7 @@ Page {
     GallerySearchLoader {
         id: galleryLoader
 
-        site: root.site
+        site: root.site.url
         gallery: root.gallery.image
         page: root.page
         perPage: 20
@@ -116,6 +116,7 @@ Page {
                 enabled: query !== "" && page > 1
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page--
@@ -136,6 +137,7 @@ Page {
                 enabled: query !== ""
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page++

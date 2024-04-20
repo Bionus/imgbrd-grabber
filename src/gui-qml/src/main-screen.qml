@@ -16,6 +16,7 @@ ApplicationWindow {
     title: "Grabber"
 
     property string currentPage: "search"
+    property var activeSite: backend.sites.filter(site => site.url === gSettings.activeSource.value)[0]
 
     Material.theme: gSettings.appearance_materialTheme.value
     Material.primary: gSettings.appearance_materialPrimary.value
@@ -115,7 +116,7 @@ ApplicationWindow {
                 id: searchScreen
                 visible: currentPage == "search"
                 anchors.fill: parent
-                site: gSettings.activeSource.value
+                site: activeSite
 
                 onOpenSources: mainStackView.push(sourcesScreen)
             }
@@ -163,7 +164,7 @@ ApplicationWindow {
         GalleryScreen {
             id: galleryScreen
             visible: false
-            site: gSettings.activeSource.value
+            site: activeSite
 
             onBack: mainStackView.pop()
         }
@@ -172,12 +173,12 @@ ApplicationWindow {
             id: sourcesScreen
             visible: false
             sources: backend.sites
-            currentSource: gSettings.activeSource.value
+            activeSource: gSettings.activeSource.value
 
-            onAccepted: { gSettings.activeSource.setValue(source); mainStackView.pop() }
-            onRejected: mainStackView.pop()
+            onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
+            onBack: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
-            onEditSource: mainStackView.push(editSourceScreen, { site: source })
+            onEditSource: mainStackView.push(editSourceScreen, { site: activeSource })
         }
 
         AddSourceScreen {

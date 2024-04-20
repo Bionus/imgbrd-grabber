@@ -13,7 +13,7 @@ Page {
     signal openSources()
 
     property int page: 1
-    property string site
+    property var site
     property bool infiniteScroll: gSettings.resultsInfiniteScroll.value
     property var results
     property bool queryChanged: false
@@ -22,7 +22,7 @@ Page {
     TagSearchLoader {
         id: pageLoader
 
-        site: searchTab.site
+        site: searchTab.site.url
         query: textFieldSearch.text
         page: searchTab.page
         perPage: 20
@@ -136,7 +136,7 @@ Page {
                     enabled: pageLoader.query !== ""
                     onClicked: isFavorited
                         ? backend.removeFavorite(pageLoader.query)
-                        : backend.addFavorite(pageLoader.query, searchTab.site)
+                        : backend.addFavorite(pageLoader.query, searchTab.site.url)
                 }
 
                 Item {
@@ -179,6 +179,7 @@ Page {
             spacing: 0
             Layout.fillWidth: true
             Layout.fillHeight: false
+            //Layout.preferredHeight: 40
 
             Button {
                 id: prevButton
@@ -200,13 +201,34 @@ Page {
             Button {
                 id: sourcesButton
                 background.anchors.fill: sourcesButton
-                text: qsTr("Sources")
-                Layout.fillWidth: true
+                implicitWidth: 50
+                icon.source: "file:///" + searchTab.site.icon
+                icon.color: "transparent"
+                leftPadding: 0
+                rightPadding: 0
                 Layout.fillHeight: true
                 Material.elevation: 0
                 Material.roundedScale: Material.NotRounded
 
                 onClicked: searchTab.openSources()
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: sourcesButton.background.color
+
+                Text {
+                    anchors.fill: parent
+                    text: pageLoader.status == TagSearchLoader.Ready
+                        ? (results
+                            ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(pageLoader.pageCount).arg(results.length).arg(pageLoader.imageCount)
+                            : qsTr("No result"))
+                        : ''
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    rightPadding: sourcesButton.width
+                }
             }
 
             Button {

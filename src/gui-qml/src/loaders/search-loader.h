@@ -27,6 +27,8 @@ class SearchLoader : public Loader
 	Q_PROPERTY(QList<QmlImage*> results READ results NOTIFY resultsChanged)
 	Q_PROPERTY(bool hasPrev READ hasPrev NOTIFY hasPrevChanged)
 	Q_PROPERTY(bool hasNext READ hasNext NOTIFY hasNextChanged)
+	Q_PROPERTY(QString pageCount READ pageCount NOTIFY pageCountChanged)
+	Q_PROPERTY(QString imageCount READ imageCount NOTIFY imageCountChanged)
 
 	public:
 		explicit SearchLoader(QObject *parent = nullptr);
@@ -50,6 +52,9 @@ class SearchLoader : public Loader
 		bool hasPrev() const { return m_hasPrev; }
 		bool hasNext() const { return m_hasNext; }
 
+		QString pageCount() const { return m_pageCount; }
+		QString imageCount() const { return m_imageCount; }
+
 	protected slots:
 		void search(SearchQuery query);
 
@@ -65,6 +70,8 @@ class SearchLoader : public Loader
 		void profileChanged();
 		void hasPrevChanged();
 		void hasNextChanged();
+		void pageCountChanged();
+		void imageCountChanged();
 
 	private:
 		QString m_site;
@@ -76,6 +83,8 @@ class SearchLoader : public Loader
 		QList<QmlImage*> m_results;
 		bool m_hasPrev;
 		bool m_hasNext;
+		QString m_pageCount;
+		QString m_imageCount;
 };
 
 #endif // SEARCH_LOADER_H
