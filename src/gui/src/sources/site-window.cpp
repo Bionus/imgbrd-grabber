@@ -67,6 +67,9 @@ void SiteWindow::accept()
 
 		// Check in the source registries if there is a perfect match
 		for (const auto &sourceRegistry : m_profile->getSourceRegistries()) {
+			if (!sourceRegistry->isValid()) {
+				continue;
+			}
 			const auto &sources = sourceRegistry->sources();
 			for (auto it = sources.constBegin(); it != sources.constEnd(); ++it) {
 				const auto &source = it.value();

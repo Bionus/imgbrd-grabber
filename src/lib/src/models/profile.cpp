@@ -194,18 +194,9 @@ Profile::Profile(QString path)
 	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
 	for (const QString &url : sourceRegistries) {
 		auto *sourceRegistry = new SourceRegistry(url);
-		auto *receiver = new QObject(this);
-		connect(sourceRegistry, &SourceRegistry::loaded, receiver, [=](bool ok) {
-			receiver->deleteLater();
-			if (ok) {
-				m_sourceRegistries.append(sourceRegistry);
-				emit sourceRegistriesChanged();
-			} else {
-				log(QStringLiteral("Error loading source registry `%1`").arg(url), Logger::Warning);
-				sourceRegistry->deleteLater();
-			}
-		});
 		sourceRegistry->load();
+		m_sourceRegistries.append(sourceRegistry);
+		emit sourceRegistriesChanged();
 	}
 }
 
@@ -530,6 +521,7 @@ void Profile::syncSourceRegistries()
 		sourceRegistries.append(sourceRegistry->jsonUrl());
 	}
 	m_settings->setValue("sourceRegistries", sourceRegistries);
+	m_settings->sync();
 }
 
 
