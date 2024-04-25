@@ -202,7 +202,7 @@ Page {
                 id: sourcesButton
                 background.anchors.fill: sourcesButton
                 implicitWidth: 50
-                icon.source: "file:///" + searchTab.site.icon
+                icon.source: searchTab.site.icon
                 icon.color: "transparent"
                 leftPadding: 0
                 rightPadding: 0

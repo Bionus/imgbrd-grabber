@@ -31,7 +31,7 @@ class QmlSite : public QObject
 
 		QString url() const { return m_site->url(); }
 		QString name() const { return m_site->name(); }
-		QString icon() const { return m_source->getPath().readPath("icon.png"); }
+		QString icon() const;
 		Settings *settings() const { return m_settings; }
 		QList<QmlAuth*> authFields() const { return m_fields; }
 
