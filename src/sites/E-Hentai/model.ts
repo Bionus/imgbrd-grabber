@@ -208,7 +208,9 @@ export const source: ISource = {
                     return {
                         images,
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
-                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing (?<count>[0-9,]+) results<", src)),
+                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing (?<count>[0-9,]+) results<|Found about (?<count_2>[0-9,]+) results.", src)),
+                        urlNextPage: Grabber.regexToConst("url", '<a id="unext" href="(?<url_2>[^"]+)">', src),
+                        urlPrevPage: Grabber.regexToConst("url", '<a id="uprev" href="(?<url_2>[^"]+)">', src),
                     };
                 },
             },
