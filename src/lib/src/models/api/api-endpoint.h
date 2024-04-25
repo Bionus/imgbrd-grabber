@@ -16,6 +16,7 @@ class ApiEndpoint
 		virtual QString name() const = 0;
 		virtual QStringList inputs() const = 0;
 		virtual bool parseErrors() const = 0;
+		virtual bool needAuth() const = 0;
 
 		virtual PageUrl url(const QMap<QString, QVariant> &query, int page, int limit, const PageInformation &lastPage, Site *site) const = 0;
 		virtual ParsedPage parse(Page *parentPage, const QString &source, int statusCode, int first) const = 0;

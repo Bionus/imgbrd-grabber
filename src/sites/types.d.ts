@@ -807,6 +807,11 @@ interface IEndpoint<T extends string> {
     input: Record<T, MetaField>;
 
     /**
+     * The ID of the authentication methods required to access this endpoint, or "true" for any method.
+     */
+    auth?: string[] | boolean;
+
+    /**
      * Whether to still pass HTTP errors to the parse function.
      */
     parseErrors?: boolean;

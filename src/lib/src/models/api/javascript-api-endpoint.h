@@ -22,6 +22,7 @@ class JavascriptApiEndpoint : public QObject, public ApiEndpoint
 		QString name() const override;
 		QStringList inputs() const override;
 		bool parseErrors() const override;
+		bool needAuth() const override;
 
 		PageUrl url(const QMap<QString, QVariant> &query, int page, int limit, const PageInformation &lastPage, Site *site) const override;
 		ParsedPage parse(Page *parentPage, const QString &source, int statusCode, int first) const override;

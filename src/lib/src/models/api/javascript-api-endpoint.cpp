@@ -28,6 +28,24 @@ bool JavascriptApiEndpoint::parseErrors() const
 	return getPropertyOr(m_endpoint, "parseErrors", false);
 }
 
+bool JavascriptApiEndpoint::needAuth() const
+{
+	if (!m_endpoint.hasProperty("auth")) {
+		return false;
+	}
+
+	const QJSValue prop = m_endpoint.property("auth");
+	if (prop.isUndefined() || prop.isNull() || (!prop.isArray() && !prop.isBool())) {
+		return false;
+	}
+
+	if (prop.isBool()) {
+		return prop.toBool();
+	} else {
+		return !jsToStringList(prop).isEmpty();
+	}
+}
+
 
 PageUrl JavascriptApiEndpoint::url(const QMap<QString, QVariant> &query, int page, int limit, const PageInformation &lastPage, Site *site) const
 {
