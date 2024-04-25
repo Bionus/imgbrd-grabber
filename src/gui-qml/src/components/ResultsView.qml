@@ -67,7 +67,7 @@ ScrollView {
 
                 Image {
                     id: img
-                    source: "image://async/" + modelData.siteUrl + "¤" + modelData.previewUrl + "¤" + modelData.previewRect
+                    source: "image://async/" + modelData.siteUrl + "¤" + modelData.smartPreviewUrl(width, height) + "¤" + modelData.previewRect
                     fillMode: root.thumbnailFillMode
                     anchors.centerIn: parent
                     width: parent.width - root.thumbnailSpacing

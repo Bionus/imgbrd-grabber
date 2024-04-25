@@ -55,6 +55,8 @@ class QmlImage : public QObject
 		bool isVideo() const { return m_image->isVideo(); }
 		bool isGallery() const { return m_image->isGallery(); }
 
+		Q_INVOKABLE QString smartPreviewUrl(int width, int height) const;
+
 	public slots:
 		void loadTags() { m_image->loadDetails(); }
 
