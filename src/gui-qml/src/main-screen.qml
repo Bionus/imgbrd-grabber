@@ -142,7 +142,7 @@ ApplicationWindow {
                 onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
                 onBack: mainStackView.pop()
                 onAddSource: mainStackView.push(addSourceScreen)
-                onEditSource: mainStackView.push(editSourceScreen, { site: activeSource })
+                onEditSource: mainStackView.push(editSourceScreen, { site: activeSite })
             }
 
             LogScreen {
@@ -190,7 +190,7 @@ ApplicationWindow {
             onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
             onBack: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
-            onEditSource: mainStackView.push(editSourceScreen, { site: activeSource })
+            onEditSource: mainStackView.push(editSourceScreen, { site: activeSite })
         }
 
         AddSourceScreen {
