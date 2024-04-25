@@ -360,6 +360,7 @@ void TagTab::setSources(const QList<Site *> &sources)
 	if (commonEndpointsWithName.isEmpty()) {
 		ui->comboEndpoint->hide();
 	} else {
+		const QString &activeEndpoint = ui->comboEndpoint->currentText();
 		ui->comboEndpoint->show();
 		ui->comboEndpoint->clear();
 		if (!commonEndpointsWithName.contains("search")) {
@@ -368,5 +369,6 @@ void TagTab::setSources(const QList<Site *> &sources)
 		for (const QString &key : commonEndpointsWithName) {
 			ui->comboEndpoint->addItem(endpointNames[key], key);
 		}
+		ui->comboEndpoint->setCurrentText(activeEndpoint);
 	}
 }
