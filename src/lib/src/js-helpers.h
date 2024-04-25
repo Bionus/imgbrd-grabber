@@ -26,6 +26,7 @@ T getPropertyOr(const QJSValue &val, const QString &key, T def)
 }
 
 QStringList jsToStringList(const QJSValue &val);
-QVariantMap jsToMap(const QJSValue &val);
+QMap<QString, QVariant> jsToMap(const QJSValue &val);
+QMap<QString, QString> jsToStringMap(const QJSValue &val);
 
 #endif // JS_HELPERS_H

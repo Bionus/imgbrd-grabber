@@ -128,14 +128,27 @@ QStringList jsToStringList(const QJSValue &val)
 	return ret;
 }
 
-QVariantMap jsToMap(const QJSValue &val)
+QMap<QString, QVariant> jsToMap(const QJSValue &val)
 {
-	QVariantMap ret;
+	QMap<QString, QVariant> ret;
 
 	QJSValueIterator dit(val);
 	while (dit.hasNext()) {
 		dit.next();
 		ret[dit.name()] = dit.value().toVariant();
+	}
+
+	return ret;
+}
+
+QMap<QString, QString> jsToStringMap(const QJSValue &val)
+{
+	QMap<QString, QString> ret;
+
+	QJSValueIterator dit(val);
+	while (dit.hasNext()) {
+		dit.next();
+		ret[dit.name()] = dit.value().toString();
 	}
 
 	return ret;

@@ -468,6 +468,11 @@ interface IHttpAuth {
     fields: IAuthField[];
 
     /**
+     * Additional HTTP headers to pass to the login request.
+     */
+    headers?: Record<string, string>;
+
+    /**
      * Optional URL to load to get any CSRF token from the form.
      */
     csrf?: {
