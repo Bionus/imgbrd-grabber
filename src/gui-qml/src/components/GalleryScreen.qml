@@ -22,11 +22,11 @@ Page {
     GallerySearchLoader {
         id: galleryLoader
 
+        profile: backend.profile
         site: root.site.url
         gallery: root.gallery.image
         page: root.page
         perPage: 20
-        profile: backend.profile
 
         onGalleryChanged: galleryLoader.load()
         onResultsChanged: {
@@ -113,7 +113,7 @@ Page {
                 width: 40
                 icon.source: "/images/icons/previous.png"
                 visible: !infiniteScroll
-                enabled: query !== "" && page > 1
+                enabled: galleryLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
                 Material.roundedScale: Material.NotRounded
@@ -124,8 +124,20 @@ Page {
                 }
             }
 
-            Item {
+            Label {
+                text: galleryLoader.status == TagSearchLoader.Ready
+                    ? (results
+                        ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(galleryLoader.pageCount).arg(results.length).arg(galleryLoader.imageCount)
+                        : qsTr("No result"))
+                    : ''
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                background: Rectangle {
+                    color: nextButton.background.color
+                }
             }
 
             Button {
@@ -134,7 +146,7 @@ Page {
                 width: 40
                 icon.source: "/images/icons/next.png"
                 visible: !infiniteScroll
-                enabled: query !== ""
+                enabled: galleryLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0
                 Material.roundedScale: Material.NotRounded

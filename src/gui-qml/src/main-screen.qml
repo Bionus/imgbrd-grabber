@@ -173,12 +173,13 @@ ApplicationWindow {
             }
         }
 
-        GalleryScreen {
+        Component {
             id: galleryScreen
-            visible: false
-            site: activeSite
 
-            onBack: mainStackView.pop()
+            GalleryScreen {
+                site: activeSite
+                onBack: mainStackView.pop()
+            }
         }
 
         SourcesScreen {
