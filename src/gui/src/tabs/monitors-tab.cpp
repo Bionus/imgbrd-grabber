@@ -121,9 +121,13 @@ void MonitorsTab::removeSelected()
 
 void MonitorsTab::convertSelected()
 {
-	QSet<int> rows;
+	// We don't use a QSet because the order of rows is important
+	QList<int> rows;
 	for (const QModelIndex &index : ui->tableMonitors->selectionModel()->selection().indexes()) {
-		rows.insert(m_monitorTableModel->mapToSource(index).row());
+		const int row = m_monitorTableModel->mapToSource(index).row();
+		if (!rows.contains(row)) {
+			rows.append(row);
+		}
 	}
 
 	for (const int row : rows) {
