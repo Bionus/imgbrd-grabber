@@ -64,9 +64,15 @@ if(ANDROID)
 
 	# Add target for compiled assets
 	file(RELATIVE_PATH ANDROID_PACKAGE_SOURCES_REL ${CMAKE_CURRENT_LIST_DIR} ${ANDROID_PACKAGE_SOURCES})
+	find_program(XCOPY xcopy)
+	if(XCOPY)
+		set(COPY_SITES_CMD ${XCOPY} /I /E /Y /K /F /EXCLUDE:..\\sites\\exclude_xcopy.txt \"../sites\" \"${ANDROID_PACKAGE_SOURCES_REL}/assets/sites/\")
+	else()
+		set(COPY_SITES_CMD rsync -ar --exclude-from="../sites/exclude.txt" "../sites" "${ANDROID_PACKAGE_SOURCES_REL}/assets")
+	endif()
 	add_custom_target(android_copy_assets_qml
 		DEPENDS sites gui-qml_translations
-		COMMAND rsync -ar --exclude-from="../sites/exclude.txt" "../sites" "${ANDROID_PACKAGE_SOURCES_REL}/assets" WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		COMMAND ${COPY_SITES_CMD} WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 		COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
 	add_dependencies(${PROJECT_NAME} android_copy_assets_qml)
