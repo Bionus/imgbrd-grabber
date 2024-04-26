@@ -19,7 +19,7 @@ do
 
     echo "Loading tags for $SITE ($SOURCE)..."
 
-    ./Grabber.AppImage -c --load-tag-database --sources $SITE --tags-min $MIN_TAG_COUNT
+    ./Grabber.AppImage -c --load-tag-database --sources "$SITE" --tags-min $MIN_TAG_COUNT
     cp "sites/$SOURCE/$SITE/tags.db" "$DESTDIR/$SITE.db"
     rm -rf sites/
 done
