@@ -639,7 +639,7 @@ interface IParsedSearchOperator {
  */
 interface ISearchQuery {
     /**
-     * What the user entered in the search field, as-is.
+     * What the user typed in the search field, as-is.
      */
     search: string;
 

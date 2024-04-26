@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="welcomeLabel">
      <property name="text">
-      <string>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</string>
+      <string>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>

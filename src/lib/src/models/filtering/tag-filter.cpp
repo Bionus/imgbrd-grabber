@@ -36,7 +36,7 @@ QString TagFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 
 	const QStringList &tags = tokens["allos"].value().toStringList();
 
-	// Check if any tag match the filter (case insensitive plain text with wildcards allowed)
+	// Check if any tag match the filter (case-insensitive plain text with wildcards allowed)
 	bool cond = false;
 	for (const QString &tag : tags) {
 		const bool match = m_regexp.isNull() ? tag == m_tag : m_regexp->match(tag).hasMatch();

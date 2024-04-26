@@ -494,7 +494,7 @@ To fix this, there are a few options.
 ### The "use shortest if possible" setting
 This setting is specific for copyright tags and can be found in the options window, in the "Save > Tags > Copyright" category, as a checkbox at the bottom of the window.
 
-This feature takes all tags marked as "copyright", and removes all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "\_bw"..
+This feature takes all tags marked as "copyright", and removes all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "_bw".
 
 ### Ignored tags
 You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appear, in our example, in `%copyright%`. It will however still be in `%all%`.
