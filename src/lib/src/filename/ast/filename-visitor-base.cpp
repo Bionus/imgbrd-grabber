@@ -35,7 +35,7 @@ void FilenameVisitorBase::visit(const FilenameNodeConditionInvert &node)
 
 void FilenameVisitorBase::visit(const FilenameNodeConditionJavaScript &node)
 {
-	Q_UNUSED(node); // No-op
+	Q_UNUSED(node) // No-op
 }
 
 void FilenameVisitorBase::visit(const FilenameNodeConditionOp &node)
@@ -46,17 +46,17 @@ void FilenameVisitorBase::visit(const FilenameNodeConditionOp &node)
 
 void FilenameVisitorBase::visit(const FilenameNodeConditionTag &node)
 {
-	Q_UNUSED(node); // No-op
+	Q_UNUSED(node) // No-op
 }
 
 void FilenameVisitorBase::visit(const FilenameNodeConditionToken &node)
 {
-	Q_UNUSED(node); // No-op
+	Q_UNUSED(node) // No-op
 }
 
 void FilenameVisitorBase::visit(const FilenameNodeJavaScript &node)
 {
-	Q_UNUSED(node); // No-op
+	Q_UNUSED(node) // No-op
 }
 
 void FilenameVisitorBase::visit(const FilenameNodeRoot &node)
@@ -68,10 +68,10 @@ void FilenameVisitorBase::visit(const FilenameNodeRoot &node)
 
 void FilenameVisitorBase::visit(const FilenameNodeText &node)
 {
-	Q_UNUSED(node); // No-op
+	Q_UNUSED(node) // No-op
 }
 
 void FilenameVisitorBase::visit(const FilenameNodeVariable &node)
 {
-	Q_UNUSED(node); // No-op
+	Q_UNUSED(node) // No-op
 }

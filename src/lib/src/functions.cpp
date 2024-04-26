@@ -665,7 +665,7 @@ bool cutStringToUtf8Bytes(QString &str, int limit)
 
 QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, bool invalidChars)
 {
-	Q_UNUSED(invalidChars);
+	Q_UNUSED(invalidChars)
 
 	// Fix parameters
 	const QString sep = QStringLiteral("/");

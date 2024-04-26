@@ -225,7 +225,7 @@ void ImagePreview::finishedLoading()
 
 void ImagePreview::toggledWithId(int id, bool toggle, bool range)
 {
-	Q_UNUSED(id);
+	Q_UNUSED(id)
 
 	emit toggled(toggle, range);
 }
@@ -352,7 +352,7 @@ void ImagePreview::contextSaveImageAs()
 
 void ImagePreview::contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 	setDownloadProgress(v1, v2);
 }
 

@@ -20,7 +20,7 @@ MetaFilter::MetaFilter(QString type, QString val, bool invert)
 
 QString MetaFilter::toString(bool escape) const
 {
-	Q_UNUSED(escape);
+	Q_UNUSED(escape)
 	return QString(m_invert ? "-" : "") % m_type % ":" % m_val;
 }
 

@@ -25,13 +25,13 @@ MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QSettings *
 
 int MonitorTableModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return m_monitorManager->monitors().count();
 }
 
 int MonitorTableModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return 12;
 }
 
@@ -203,7 +203,7 @@ void MonitorTableModel::inserted(int position)
 
 bool MonitorTableModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 
 	m_freeze = true;
 	beginInsertRows(QModelIndex(), position, position + rows - 1);
@@ -228,7 +228,7 @@ void MonitorTableModel::removed(int position)
 
 bool MonitorTableModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 
 	m_freeze = true;
 	beginRemoveRows(QModelIndex(), position, position + rows - 1);

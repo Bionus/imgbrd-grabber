@@ -73,7 +73,7 @@ void KeepForLaterDock::clearHover()
 
 void KeepForLaterDock::contextMenu(const QPoint &pos)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos)
 
 	if (!m_isHover) {
 		return;

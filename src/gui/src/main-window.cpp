@@ -276,7 +276,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// Monitors tab
 	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, this);
 	connect(m_monitoringCenter, &MonitoringCenter::notify, [this](const Monitor &monitor, const QString &msg) {
-		Q_UNUSED(monitor);
+		Q_UNUSED(monitor)
 		if (m_trayIcon != nullptr && m_trayIcon->isVisible()) {
 			m_trayIcon->showMessage(tr("Grabber monitoring"), msg, QSystemTrayIcon::Information);
 		}
@@ -637,7 +637,7 @@ void MainWindow::restoreLastClosedTab()
 }
 void MainWindow::currentTabChanged(int tab)
 {
-	Q_UNUSED(tab);
+	Q_UNUSED(tab)
 
 	if (!m_loaded) {
 		return;
@@ -914,7 +914,7 @@ void MainWindow::utilMd5DatabaseConverter()
 
 void MainWindow::tabContextMenuRequested(const QPoint &pos)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos)
 
 	int tabIndex = ui->tabWidget->tabBar()->tabAt(pos);
 

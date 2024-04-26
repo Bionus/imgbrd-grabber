@@ -443,7 +443,7 @@ void SearchTab::httpsRedirect(Page *page)
 
 void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &images)
 {
-	Q_UNUSED(page);
+	Q_UNUSED(page)
 
 	m_page++;
 
@@ -863,7 +863,7 @@ QWidget *SearchTab::createImageThumbnail()
 
 void SearchTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 
 	QAction *first = menu->actions().first();
 

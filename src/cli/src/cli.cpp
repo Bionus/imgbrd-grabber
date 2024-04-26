@@ -53,8 +53,8 @@ int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultTo
 	if (defaultToGui && !parser.isSet("cli")) {
 		// TODO: set log level
 		// TODO: fill params & positionalArgs
-		Q_UNUSED(params);
-		Q_UNUSED(positionalArgs);
+		Q_UNUSED(params)
+		Q_UNUSED(positionalArgs)
 		return -1;
 	}
 

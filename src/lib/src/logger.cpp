@@ -116,9 +116,9 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, co
  */
 void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
-	Q_UNUSED(type);
-	Q_UNUSED(context);
-	Q_UNUSED(message);
+	Q_UNUSED(type)
+	Q_UNUSED(context)
+	Q_UNUSED(message)
 }
 
 /**
@@ -204,7 +204,7 @@ void Logger::logCommandSql(const QString &l)
  */
 void Logger::logUpdate(const QString &l)
 {
-	Q_UNUSED(l);
+	Q_UNUSED(l)
 
 	/*QDateTime date = _log.keys().at(_log.count()-1);
 	QString message = _log.value(date)+l;

@@ -393,7 +393,7 @@ bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 
 int Filename::needExactTags(Site *site, QSettings *settings, const QString &api) const
 {
-	Q_UNUSED(api);
+	Q_UNUSED(api)
 
 	const QStringList forcedTokens = site != nullptr
 		? site->getApis().first()->forcedTokens()

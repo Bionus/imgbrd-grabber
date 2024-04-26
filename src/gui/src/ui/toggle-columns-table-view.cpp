@@ -43,7 +43,7 @@ void ToggleColumnsTableView::loadGeometry(QSettings *settings, const QString &gr
 
 void ToggleColumnsTableView::headersContextMenu(const QPoint &pos)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos)
 
 	auto *menu = new QMenu(this);
 

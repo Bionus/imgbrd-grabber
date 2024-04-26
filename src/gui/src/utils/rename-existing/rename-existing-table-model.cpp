@@ -11,13 +11,13 @@ RenameExistingTableModel::RenameExistingTableModel(const QList<RenameExistingFil
 
 int RenameExistingTableModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return m_files.count();
 }
 
 int RenameExistingTableModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return 3;
 }
 

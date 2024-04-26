@@ -180,7 +180,7 @@ void Page::loadTags()
 }
 void Page::loadTagsFinished(PageApi *api, PageApi::LoadResult status)
 {
-	Q_UNUSED(status);
+	Q_UNUSED(status)
 
 	if (m_regexApi < 0 || api != m_pageApis[m_regexApi]) {
 		return;
