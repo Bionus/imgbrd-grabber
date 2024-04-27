@@ -44,8 +44,8 @@ class AddUniqueWindow : public QDialog
 		void replyFinished(Page *p);
 		void addLoadedImage();
 		void addImage(const QSharedPointer<Image> &img);
-		void on_buttonFolder_clicked();
-		void on_lineFilename_textChanged(const QString &);
+		void chooseFolder();
+		void validateFilename(const QString &text);
 		void toggleMultiLineId(bool toggle);
 		void toggleMultiLineMd5(bool toggle);
 

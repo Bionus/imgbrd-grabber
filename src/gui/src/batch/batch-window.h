@@ -59,7 +59,7 @@ class BatchWindow : public QDialog
 		void statusImage(const QUrl &url, int percent);
 		void speedImage(const QUrl &url, double speed);
 		void loadedImage(const QUrl &url, Downloadable::SaveResult result);
-		void on_buttonDetails_clicked(bool visible);
+		void toggleDetails(bool visible);
 		void closeEvent(QCloseEvent *event) override;
 		void copyToClipboard();
 		void cancel();

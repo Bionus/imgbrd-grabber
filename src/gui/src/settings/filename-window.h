@@ -30,9 +30,9 @@ class FilenameWindow : public QDialog
 		QString format() const;
 
 	public slots:
-		void on_lineClassic_textChanged(QString);
-		void on_buttonHelpClassic_clicked();
-		void on_buttonHelpJavascript_clicked();
+		void validateClassicFilename(QString text);
+		void helpClassic();
+		void helpJavascript();
 		void send();
 		void done(int r) override;
 

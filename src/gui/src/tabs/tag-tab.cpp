@@ -69,9 +69,9 @@ TagTab::~TagTab()
 	delete ui;
 }
 
-void TagTab::on_buttonSearch_clicked()
+void TagTab::openSearchWindow()
 {
-	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_profile, this);
+	auto *sw = new SearchWindow(m_search->toPlainText(), m_profile, this);
 	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
 	sw->show();
 }

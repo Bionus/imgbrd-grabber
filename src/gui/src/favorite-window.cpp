@@ -55,7 +55,7 @@ FavoriteWindow::~FavoriteWindow()
 /**
  * Removes the favorite from the list and closes the window
  */
-void FavoriteWindow::on_buttonRemove_clicked()
+void FavoriteWindow::removeFavorite()
 {
 	m_profile->removeFavorite(m_favorite);
 	close();
@@ -64,7 +64,7 @@ void FavoriteWindow::on_buttonRemove_clicked()
 /**
  * Opens a window to choose an image to set the image path value.
  */
-void FavoriteWindow::on_openButton_clicked()
+void FavoriteWindow::browseImage()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Choose an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!file.isEmpty()) {

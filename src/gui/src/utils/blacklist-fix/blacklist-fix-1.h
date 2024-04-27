@@ -25,8 +25,8 @@ class BlacklistFix1 : public QDialog
 
 	private slots:
 		void getAll(Page *p = nullptr);
-		void on_buttonCancel_clicked();
-		void on_buttonContinue_clicked();
+		void cancel();
+		void nextStep();
 
 	private:
 		Ui::BlacklistFix1 *ui;

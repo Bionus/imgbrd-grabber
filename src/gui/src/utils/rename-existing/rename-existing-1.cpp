@@ -44,13 +44,13 @@ RenameExisting1::~RenameExisting1()
 	delete ui;
 }
 
-void RenameExisting1::on_buttonCancel_clicked()
+void RenameExisting1::cancel()
 {
 	emit rejected();
 	close();
 }
 
-void RenameExisting1::on_buttonContinue_clicked()
+void RenameExisting1::nextStep()
 {
 	ui->buttonContinue->setEnabled(false);
 	m_details.clear();

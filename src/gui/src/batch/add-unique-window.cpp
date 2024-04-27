@@ -77,14 +77,14 @@ void AddUniqueWindow::toggleMultiLineMd5(bool toggle)
 /**
  * Ui events
  */
-void AddUniqueWindow::on_buttonFolder_clicked()
+void AddUniqueWindow::chooseFolder()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty()) {
 		ui->lineFolder->setText(folder);
 	}
 }
-void AddUniqueWindow::on_lineFilename_textChanged(const QString &text)
+void AddUniqueWindow::validateFilename(const QString &text)
 {
 	QString message;
 	Filename fn(text);

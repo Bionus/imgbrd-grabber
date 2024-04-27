@@ -90,7 +90,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -135,8 +135,57 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>radioForceMd5</tabstop>
+  <tabstop>radioFilenameMd5</tabstop>
+  <tabstop>radioFilenameId</tabstop>
+  <tabstop>lineFilenameOrigin</tabstop>
+  <tabstop>lineSuffixes</tabstop>
+  <tabstop>lineFilenameDestination</tabstop>
+  <tabstop>comboSource</tabstop>
+  <tabstop>buttonContinue</tabstop>
+  <tabstop>buttonCancel</tabstop>
+ </tabstops>
  <resources>
   <include location="../../../resources/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonContinue</sender>
+   <signal>clicked()</signal>
+   <receiver>RenameExisting1</receiver>
+   <slot>nextStep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>RenameExisting1</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>371</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>nextStep()</slot>
+  <slot>cancel()</slot>
+ </slots>
 </ui>

@@ -59,7 +59,7 @@ void BlacklistFix2::loadThumbnails()
 	}
 }
 
-void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
+void BlacklistFix2::selectBlacklisted()
 {
 	ui->tableWidget->setSelectionMode(QTableWidget::MultiSelection);
 	for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
@@ -69,12 +69,12 @@ void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
 	}
 	ui->tableWidget->setSelectionMode(QTableWidget::ExtendedSelection);
 }
-void BlacklistFix2::on_buttonCancel_clicked()
+void BlacklistFix2::cancel()
 {
 	emit rejected();
 	close();
 }
-void BlacklistFix2::on_buttonOk_clicked()
+void BlacklistFix2::nextStep()
 {
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();

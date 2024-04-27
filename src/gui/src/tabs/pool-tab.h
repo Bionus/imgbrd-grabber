@@ -41,7 +41,7 @@ class PoolTab : public SearchTab
 		void getAll();
 		// Others
 		void closeEvent(QCloseEvent *event) override;
-		void on_buttonSearch_clicked();
+		void openSearchWindow();
 		void setSite(const QString &site);
 		void focusSearch() override;
 		void updateTitle() override;

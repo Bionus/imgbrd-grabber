@@ -24,8 +24,8 @@ class RenameExisting2 : public QDialog
 		void deleteDir(const QString &path);
 
 	private slots:
-		void on_buttonCancel_clicked();
-		void on_buttonOk_clicked();
+		void cancel();
+		void nextStep();
 
 	private:
 		Ui::RenameExisting2 *ui;

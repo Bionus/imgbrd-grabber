@@ -26,7 +26,7 @@ BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
 
 	restoreGeometry(m_settings->value("Batch/geometry").toByteArray());
 	ui->buttonDetails->setChecked(m_settings->value("Batch/details", true).toBool());
-	on_buttonDetails_clicked(m_settings->value("Batch/details", true).toBool());
+	toggleDetails(m_settings->value("Batch/details", true).toBool());
 	ui->comboEnd->setCurrentIndex(m_settings->value("Batch/end", 0).toInt());
 	ui->checkRemove->setChecked(m_settings->value("Batch/remove", false).toBool());
 	ui->checkScrollToDownload->setChecked(m_settings->value("Batch/scrollToDownload", true).toBool());
@@ -399,7 +399,7 @@ void BatchWindow::drawSpeed()
 	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
-void BatchWindow::on_buttonDetails_clicked(bool visible)
+void BatchWindow::toggleDetails(bool visible)
 {
 	if (ui->details->isHidden() || visible) {
 		ui->details->show();

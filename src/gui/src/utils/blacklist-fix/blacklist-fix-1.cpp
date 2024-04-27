@@ -39,13 +39,13 @@ BlacklistFix1::~BlacklistFix1()
 	delete ui;
 }
 
-void BlacklistFix1::on_buttonCancel_clicked()
+void BlacklistFix1::cancel()
 {
 	emit rejected();
 	close();
 }
 
-void BlacklistFix1::on_buttonContinue_clicked()
+void BlacklistFix1::nextStep()
 {
 	ui->buttonContinue->setEnabled(false);
 	m_details.clear();

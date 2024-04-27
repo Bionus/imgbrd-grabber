@@ -28,7 +28,7 @@
    <item>
     <widget class="QTableWidget" name="tableWidget">
      <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -76,7 +76,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -107,5 +107,59 @@
  <resources>
   <include location="../../../resources/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonSelectBlacklisted</sender>
+   <signal>clicked()</signal>
+   <receiver>BlacklistFix2</receiver>
+   <slot>selectBlacklisted()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>385</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>133</x>
+     <y>381</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>BlacklistFix2</receiver>
+   <slot>nextStep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>495</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>513</x>
+     <y>379</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>BlacklistFix2</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>560</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>593</x>
+     <y>379</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>selectBlacklisted()</slot>
+  <slot>cancel()</slot>
+  <slot>nextStep()</slot>
+ </slots>
 </ui>

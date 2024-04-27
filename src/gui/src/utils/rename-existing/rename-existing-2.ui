@@ -33,7 +33,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -64,5 +64,42 @@
  <resources>
   <include location="../../../resources/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>RenameExisting2</receiver>
+   <slot>nextStep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>495</x>
+     <y>373</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>511</x>
+     <y>374</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>RenameExisting2</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>577</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cancel()</slot>
+  <slot>nextStep()</slot>
+ </slots>
 </ui>

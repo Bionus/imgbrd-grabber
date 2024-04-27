@@ -25,8 +25,8 @@ class FavoriteWindow : public QDialog
 
 	public slots:
 		void save();
-		void on_openButton_clicked();
-		void on_buttonRemove_clicked();
+		void browseImage();
+		void removeFavorite();
 		void choosePathOverride();
 		void openSourcesWindow();
 		void setSources(const QList<Site*> &sources);
