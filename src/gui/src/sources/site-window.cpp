@@ -47,7 +47,8 @@ void SiteWindow::accept()
 	}
 
 	// Check URL validity
-	if (!QRegularExpression(R"(^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$)").match(m_url).hasMatch()) {
+	static const QRegularExpression rxValidUrl(R"(^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$)");
+	if (!rxValidUrl.match(m_url).hasMatch()) {
 		error(this, tr("The url you entered is not valid."));
 		return;
 	}

@@ -16,7 +16,8 @@ PostFilter::PostFilter(const QString &filters)
 	}
 
 	// Use advanced mode if the filter contains a parenthesis or conditional operator
-	if (filters.contains(QRegularExpression("[()&|]"))) {
+	static const QRegularExpression rxAdvancedCondition("[()&|]");
+	if (filters.contains(rxAdvancedCondition)) {
 		FilenameParser parser(filters);
 		FilenameNodeCondition *ast = parser.parseCondition();
 		if (!parser.error().isEmpty()) {

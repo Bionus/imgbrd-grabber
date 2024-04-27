@@ -139,8 +139,9 @@ void ImageFactory::parseTags(const QString &val, QVariantMap &data)
 		return;
 	}
 
+	static const QRegularExpression rxSpaces("[\r\n\t]+");
 	QString raw = val;
-	raw.replace(QRegularExpression("[\r\n\t]+"), " ");
+	raw.replace(rxSpaces, " ");
 
 	// Automatically find tag separator and split the list
 	const int commas = raw.count(", ");

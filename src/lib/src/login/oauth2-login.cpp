@@ -39,8 +39,9 @@ bool OAuth2Login::isTestable() const
 
 QString toUrlBase64(const QByteArray &data)
 {
+	static const QRegularExpression rxInvalidB64("=+$");
 	QString ret = data.toBase64();
-	ret.replace('+', '-').replace('/', '_').remove(QRegularExpression("=+$"));
+	ret.replace('+', '-').replace('/', '_').remove(rxInvalidB64);
 	return ret;
 }
 
