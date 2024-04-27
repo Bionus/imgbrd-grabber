@@ -7,6 +7,8 @@
 #include <QSettings>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"
+#include "models/api/api.h"
+#include "models/api/api-endpoint.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -60,6 +62,11 @@ TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *paren
 	ui->widgetPlus->hide();
 	updateCheckboxes();
 	m_search->setFocus();
+
+	// V8: endpoints
+	if (!m_settings->value("v8", false).toBool()) {
+		ui->comboEndpoint->hide();
+	}
 
 	init();
 }
@@ -317,11 +324,14 @@ void TagTab::updateTitle()
 	emit titleChanged(this);
 }
 
-#include "models/api/api.h"
-#include "models/api/api-endpoint.h"
 void TagTab::setSources(const QList<Site *> &sources)
 {
 	SearchTab::setSources(sources);
+
+	// V8: endpoints
+	if (!m_settings->value("v8", false).toBool()) {
+		return;
+	}
 
 	// Generate the list of all common endpoints across the selected sources
 	bool init = false;
