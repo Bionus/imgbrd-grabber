@@ -31,6 +31,7 @@ TextEdit {
         visible: !(parent.text.length || parent.inputMethodComposing)
         font: parent.font
         color: "#666"
+        leftPadding: parent.leftPadding
     }
 
     SyntaxHighlighterHelper {

@@ -211,21 +211,6 @@ Page {
                 }
             }
 
-            Button {
-                id: sourcesButton
-                background.anchors.fill: sourcesButton
-                implicitWidth: 50
-                icon.source: searchTab.site.icon
-                icon.color: "transparent"
-                leftPadding: 0
-                rightPadding: 0
-                Layout.fillHeight: true
-                Material.elevation: 0
-                Material.roundedScale: Material.NotRounded
-
-                onClicked: searchTab.openSources()
-            }
-
             Label {
                 text: pageLoader.status === TagSearchLoader.Ready
                     ? (results.length > 0
@@ -239,7 +224,7 @@ Page {
                 Layout.fillHeight: true
 
                 background: Rectangle {
-                    color: sourcesButton.background.color
+                    color: nextButton.background.color
                 }
             }
 
