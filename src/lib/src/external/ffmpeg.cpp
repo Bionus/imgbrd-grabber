@@ -111,7 +111,6 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 
 	// Extract the ugoira ZIP file
 	QTemporaryDir tmpDir;
-	const QString tmpDirPath = tmpDir.path();
 	if (!tmpDir.isValid() || !unzipFile(file, tmpDir.path())) {
 		log(QStringLiteral("Could not extract ugoira ZIP file `%1` into directory: `%2`").arg(file, destination), Logger::Error);
 		return file;
