@@ -41,14 +41,14 @@ Page {
 	            path: gSettings.save_path.value
             }
             ToolButton {
-                icon.source: downloader.status == ImageLoader.Ready
+                icon.source: downloader.status === ImageLoader.Ready
                     ? "/images/icons/delete.png"
-                    : (downloader.status == ImageLoader.Loading
+                    : (downloader.status === ImageLoader.Loading
                         ? "/images/icons/loading.png"
-                        : (downloader.status == ImageLoader.Error
+                        : (downloader.status === ImageLoader.Error
                             ? "/images/icons/warning.png"
                             : "/images/icons/download.png"))
-                onClicked: downloader.status == ImageLoader.Ready ? downloader.remove() : downloader.load()
+                onClicked: downloader.status === ImageLoader.Ready ? downloader.remove() : downloader.load()
             }
 
             ToolButton {
@@ -117,7 +117,7 @@ Page {
                 sourceComponent: StackLayout {
                     id: stackLayout
                     clip: true
-                    currentIndex: showTags && index == swipeView.currentIndex ? 1 : 0
+                    currentIndex: showTags && index === swipeView.currentIndex ? 1 : 0
 
                     Rectangle {
                         color: gSettings.imageBackgroundColor.value || "transparent"
@@ -144,7 +144,7 @@ Page {
 
                                 ProgressBar {
                                     value: loader.progress
-                                    visible: loader.status != ImageLoader.Ready
+                                    visible: loader.status !== ImageLoader.Ready
                                     Layout.fillWidth: true
                                 }
                             }
@@ -158,7 +158,7 @@ Page {
                                 fillMode: VideoOutput.PreserveAspectFit
                                 source: showHd || !hasSample ? modelData.fileUrl : modelData.sampleUrl
                                 clip: true
-                                autoPlay: index == swipeView.currentIndex
+                                autoPlay: index === swipeView.currentIndex
                             }
                         }
                     }
@@ -173,7 +173,7 @@ Page {
         }
     }
 
-    Keys.onReleased: {
+    Keys.onReleased: event => {
         if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
             if (root.showTags) {
                 root.showTags = false

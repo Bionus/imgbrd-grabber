@@ -114,7 +114,7 @@ ApplicationWindow {
 
             SearchScreen {
                 id: searchScreen
-                visible: currentPage == "search"
+                visible: currentPage === "search"
                 anchors.fill: parent
                 site: activeSite
 
@@ -123,7 +123,7 @@ ApplicationWindow {
 
             FavoritesScreen {
                 id: favoritesScreen
-                visible: currentPage == "favorites"
+                visible: currentPage === "favorites"
                 anchors.fill: parent
                 favorites: backend.favorites
 
@@ -134,7 +134,7 @@ ApplicationWindow {
             }
 
             SourcesScreen {
-                visible: currentPage == "sources"
+                visible: currentPage === "sources"
                 anchors.fill: parent
                 sources: backend.sites
                 activeSource: gSettings.activeSource.value
@@ -147,7 +147,7 @@ ApplicationWindow {
 
             LogScreen {
                 id: logScreen
-                visible: currentPage == "log"
+                visible: currentPage === "log"
                 anchors.fill: parent
             }
 
@@ -218,9 +218,9 @@ ApplicationWindow {
         }
 
         property double backPressed: 0
-        Keys.onReleased: {
+        Keys.onReleased: event => {
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-                var now = new Date().getTime()
+                const now = new Date().getTime()
                 if (mainStackView.depth > 1) {
                     mainStackView.pop()
                 } else if (currentPage !== "search") {

@@ -12,12 +12,12 @@ TextEdit {
     font.pixelSize: 14
     inputMethodHints: Qt.ImhPreferLowercase
 
-    Keys.onEnterPressed: {
+    Keys.onEnterPressed: event => {
         Qt.inputMethod.hide()
         root.enterPressed()
         event.accepted = true
     }
-    Keys.onReturnPressed: {
+    Keys.onReturnPressed: event => {
         Qt.inputMethod.hide()
         root.enterPressed()
         event.accepted = true

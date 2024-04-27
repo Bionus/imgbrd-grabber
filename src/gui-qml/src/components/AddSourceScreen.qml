@@ -74,7 +74,7 @@ Page {
         text: qsTr("Add")
 
         onClicked: {
-            var result = backend.addSite(typeField.currentText, urlField.text, httpsField.checked)
+            const result = backend.addSite(typeField.currentText, urlField.text, httpsField.checked)
             if (result !== "") {
                 errorDialog.text = result
                 errorDialog.open()

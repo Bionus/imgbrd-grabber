@@ -76,7 +76,7 @@ async function setTagCategory(name, category) {
         const parts = tags[i].split(":");
         const category = parts.shift();
         const name = parts.join(":");
-        setTagCategory(name, category);
+        void setTagCategory(name, category);
         tags[i] = name;
     }
 

@@ -44,9 +44,15 @@ First, we're going to install WAMP, which contains everything required to have a
    ```sql
    SET GLOBAL log_bin_trust_function_creators = 1;
    ```
-8. Then, open the file "config.php" with a plain text editor (I don’t recommend using a WYSIWYG editor such as word).
-   <table cellpadding='3'><tr><td border='2'><b>Replace the line</b></td><td><b>By</b></td></tr><tr><td><code>$mysql_user = "gelbooru";</code></td><td><code>$mysql_user = "root";</code></td></tr><tr><td><code>$mysql_pass = "test";</code></td><td><code>$mysql_pass = "";</code></td></tr><tr><td><code>$mysql_db = "asdf";</code></td><td><code>$mysql_db = "gelbooru";</code></td></tr><tr><td><code>$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";</code></td><td><code>$site_url = "http://localhost/gelbooru";</code></td></tr><tr><td><code>$site_url3 = "Default Booru";</code></td><td><code>$site_url2 = $site_url3 = "Localbooru";</code></td></tr></table>
-   (you can change "Localbooru" to anything: it will be the name of the booru)
+8. Then, open the file "config.php" with a plain text editor (I don’t recommend using a WYSIWYG editor such as word). You can change "Localbooru" to anything: it will be the name of the booru.
+
+      | Replace the line                                          | By                                         |
+      |-----------------------------------------------------------|--------------------------------------------|
+      | `$mysql_user = "gelbooru";`                               | `$mysql_user = "root";`                    |
+      | `$mysql_pass = "test";`                                   | `$mysql_pass = "";`                        |
+      | `$mysql_db = "asdf";`                                     | `$mysql_db = "gelbooru";`                  |
+      | `$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";` | `$site_url = "http://localhost/gelbooru";` |
+      | `$site_url3 = "Default Booru";`                           | `$site_url2 = $site_url3 = "Localbooru";`  |
 
 9. And finally add, just before the "?>" at the end of the file:
    ```php

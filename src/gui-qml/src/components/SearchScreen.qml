@@ -170,7 +170,7 @@ Page {
             }
 
             Loading {
-                visible: pageLoader.status == TagSearchLoader.Loading
+                visible: pageLoader.status === TagSearchLoader.Loading
                 anchors.fill: parent
             }
         }
@@ -214,7 +214,7 @@ Page {
             }
 
             Label {
-                text: pageLoader.status == TagSearchLoader.Ready
+                text: pageLoader.status === TagSearchLoader.Ready
                     ? (results.length > 0
                         ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(pageLoader.pageCount).arg(results.length).arg(pageLoader.imageCount)
                         : qsTr("No result"))

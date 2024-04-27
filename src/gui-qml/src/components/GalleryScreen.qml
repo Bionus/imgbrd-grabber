@@ -97,7 +97,7 @@ Page {
             }
 
             Loading {
-                visible: galleryLoader.status == TagSearchLoader.Loading
+                visible: galleryLoader.status === TagSearchLoader.Loading
                 anchors.fill: parent
             }
         }
@@ -125,7 +125,7 @@ Page {
             }
 
             Label {
-                text: galleryLoader.status == TagSearchLoader.Ready
+                text: galleryLoader.status === TagSearchLoader.Ready
                     ? (results.length > 0
                         ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(galleryLoader.pageCount).arg(results.length).arg(galleryLoader.imageCount)
                         : qsTr("No result"))
