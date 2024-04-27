@@ -2,6 +2,9 @@
 #define QML_SITE_H
 
 #include <QObject>
+#include "models/api/api.h"
+#include "models/api/api-endpoint.h"
+#include "models/qml-api-endpoint.h"
 #include "models/qml-auth.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -18,6 +21,7 @@ class QmlSite : public QObject
 	Q_PROPERTY(QString icon READ icon CONSTANT)
 	Q_PROPERTY(Settings * settings READ settings CONSTANT)
 	Q_PROPERTY(QList<QmlAuth*> authFields READ authFields CONSTANT)
+	Q_PROPERTY(QList<QmlApiEndpoint*> endpoints READ endpoints CONSTANT)
 
 	public:
 		explicit QmlSite(Site *site, Source *source, QObject *parent = nullptr)
@@ -27,6 +31,21 @@ class QmlSite : public QObject
 			for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
 				m_fields.append(new QmlAuth(it.key(), it.value(), this));
 			}
+
+			QSet<QString> added;
+			for (Api *api : m_site->getApis()) {
+				const auto endpoints = api->endpoints();
+				for (auto it = endpoints.constBegin(); it != endpoints.constEnd(); ++it) {
+					const QString &id = it.key();
+					if (!it.value()->name().isEmpty() && !added.contains(id)) {
+						m_endpoints.append(new QmlApiEndpoint(id, it.value()->name(), this));
+						added.insert(id);
+					}
+				}
+			}
+			if (!added.contains("search")) {
+				m_endpoints.prepend(new QmlApiEndpoint("", "Search", this));
+			}
 		}
 
 		QString url() const { return m_site->url(); }
@@ -34,6 +53,7 @@ class QmlSite : public QObject
 		QString icon() const;
 		Settings *settings() const { return m_settings; }
 		QList<QmlAuth*> authFields() const { return m_fields; }
+		QList<QmlApiEndpoint*> endpoints() const { return m_endpoints; }
 
 		Site *rawSite() const { return m_site; }
 
@@ -42,6 +62,7 @@ class QmlSite : public QObject
 		Source *m_source;
 		Settings *m_settings;
 		QList<QmlAuth*> m_fields;
+		QList<QmlApiEndpoint*> m_endpoints;
 };
 
 #endif // QML_SITE_H

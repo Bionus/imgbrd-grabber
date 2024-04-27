@@ -26,6 +26,7 @@ Page {
         query: textFieldSearch.text
         page: searchTab.page
         perPage: 20
+        endpoint: site.endpoints[comboEndpoint.currentIndex].id
         postFilter: textFieldPostFiltering.text
         profile: backend.profile
 
@@ -98,6 +99,18 @@ Page {
             spacing: 0
             Layout.fillWidth: true
             visible: textFieldSearch.isOpen
+
+            ComboBox {
+                id: comboEndpoint
+                visible: gSettings.v8.value
+                model: site.endpoints.map(endpoint => endpoint.name)
+
+                Layout.fillWidth: true
+                implicitHeight: 40
+                topInset: 0
+                bottomInset: 0
+                background: Rectangle {}
+            }
 
             Item {
                 Layout.fillWidth: true
