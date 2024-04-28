@@ -300,4 +300,18 @@ TEST_CASE("ImageDownloader")
 		settings->remove("ImageSize/maxWidthEnabled");
 		settings->remove("ImageSize/maxWidth");
 	}
+
+	SECTION("Skip details for existing images")
+	{
+		auto img = createImage(profile, site);
+		ImageDownloader downloader(profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ QDir::toNativeSeparators("tests/resources/tmp/misc.jpg.tmp"), Image::Size::Full, Image::SaveResult::AlreadyExistsMd5 });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "ignore");
+		profile->addMd5(img->md5(), "tests/resources/image_1x1.png");
+
+		assertDownload(profile, img, &downloader, expected, false);
+	}
 }

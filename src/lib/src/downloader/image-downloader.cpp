@@ -78,6 +78,13 @@ void ImageDownloader::setBlacklist(Blacklist *blacklist)
 
 void ImageDownloader::save()
 {
+	// We don't need to load the image details of files already in the MD5 list and that should be skipped
+	const QString md5action = m_profile->md5Action(m_image->md5(), {}).first;
+	if (md5action == "ignore" && !m_force) {
+		loadedSave(Image::LoadTagsResult::Ok);
+		return;
+	}
+
 	// Always load details if the API doesn't provide the file URL in the listing page
 	const QStringList forcedTokens = m_image->parentSite()->getApis().first()->forcedTokens();
 	const bool needFileUrl = forcedTokens.contains("*") || forcedTokens.contains("file_url");
@@ -231,7 +238,7 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		// If we don't need any loading, we can return already
 		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
-			QList<ImageSaveResult> preResult {{ m_temporaryPath, m_size, res }};
+			QList<ImageSaveResult> preResult {{ m_temporaryPath, m_size, res }}; // TODO(Bionus): this should use the MD5 path if possible
 
 			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Shortcut || res == Image::SaveResult::Linked) {
 				preResult = afterTemporarySave(res);
