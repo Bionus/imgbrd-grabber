@@ -232,6 +232,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		const QString realExt = details["ext"];
 		if (ext != realExt) {
 			setFileExtension(realExt);
+			m_extension = realExt;
 		}
 	} else if (ext == QLatin1String("jpg") && !url(Size::Thumbnail).isEmpty()) {
 		bool fixed = false;
@@ -899,7 +900,13 @@ Page *Image::page() const { return m_parent; }
 const QUrl &Image::parentUrl() const { return m_parentUrl; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
-QString Image::extension() const { return getExtension(m_url).toLower(); }
+QString Image::extension() const {
+	QString urlExt = getExtension(m_url).toLower();
+	if (!urlExt.isEmpty()) {
+		return urlExt;
+	}
+	return m_extension;
+}
 
 void Image::setPromoteDetailParsWarn(bool val) { m_detailsParsWarnAsErr = val; }
 void Image::setPreviewImage(const QPixmap &preview)

@@ -143,6 +143,7 @@ class Image : public QObject, public Downloadable
 		Profile *m_profile;
 		Page *m_parent = nullptr;
 		QUrl m_url;
+		QString m_extension;
 		QUrl m_pageUrl;
 		QUrl m_parentUrl;
 		QSettings *m_settings;
