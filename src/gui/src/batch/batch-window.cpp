@@ -48,7 +48,7 @@ BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
 	#endif
 
 	// Allow dialog minimization
-	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
 }
 
 BatchWindow::~BatchWindow()
