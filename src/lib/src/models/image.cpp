@@ -915,7 +915,8 @@ Page *Image::page() const { return m_parent; }
 const QUrl &Image::parentUrl() const { return m_parentUrl; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
-QString Image::extension() const {
+QString Image::extension() const
+{
 	QString urlExt = getExtension(m_url).toLower();
 	if (!urlExt.isEmpty()) {
 		return urlExt;
