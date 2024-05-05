@@ -45,7 +45,7 @@
 #include "viewer/viewer-window-buttons.h"
 
 
-void disableItem(QComboBox *combo, const int index, const QString &toolTip = {}) {
+void disableItem(QComboBox *combo, int index, const QString &toolTip = {}) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
 	QStandardItem *item = model->item(index);
 	item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
@@ -172,6 +172,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	// Video conversion
 	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
+	ui->checkConversionFFmpegConvertWebmToMp4->setChecked(settings->value("Save/FFmpegConvertWebmToMp4", false).toBool());
 
 	// Image conversion
 	ui->comboConversionImageBackend->setCurrentText(settings->value("Save/ImageConversionBackend", "ImageMagick").toString());
@@ -1344,6 +1345,7 @@ void OptionsWindow::save()
 
 		// Video conversion
 		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
+		settings->setValue("FFmpegConvertWebmToMp4", ui->checkConversionFFmpegConvertWebmToMp4->isChecked());
 
 		// Image conversion
 		settings->setValue("ImageConversionBackend", ui->comboConversionImageBackend->currentText());

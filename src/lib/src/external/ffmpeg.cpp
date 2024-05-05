@@ -159,6 +159,18 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 	return destination;
 }
 
+QString FFmpeg::getVideoCodec(const QString &file, int msecs)
+{
+	QStringList params = {
+		"-v", "error",
+		"-select_streams", "v:0",
+		"-show_entries", "stream=codec_name",
+		"-of", "default=noprint_wrappers=1:nokey=1",
+		file,
+	};
+	return probe(params, msecs);
+}
+
 
 bool FFmpeg::executeConvert(const QString &file, const QString &destination, bool deleteOriginal, const QStringList &params, int msecs)
 {
@@ -212,4 +224,33 @@ bool FFmpeg::execute(const QStringList &params, int msecs)
 	}
 
 	return ok;
+}
+
+QString FFmpeg::probe(const QStringList &params, int msecs)
+{
+	QProcess process;
+	process.start("ffprobe", params);
+
+	// Ensure the process started successfully
+	if (!process.waitForStarted(msecs)) {
+		log(QStringLiteral("Could not start FFprobe"));
+		return {};
+	}
+
+	// Wait for FFprobe to finish
+	bool finishedOk = process.waitForFinished(msecs);
+	bool didntCrash = process.exitStatus() == QProcess::NormalExit;
+	bool exitCodeOk = process.exitCode() == 0;
+	bool ok = finishedOk && didntCrash && exitCodeOk;
+	if (!ok) {
+		return {};
+	}
+
+	// Print stderr to the log
+	const QString standardError = QString::fromLocal8Bit(process.readAllStandardError()).trimmed();
+	if (!standardError.isEmpty()) {
+		log(QString("[FFprobe] %1").arg(standardError), Logger::Error);
+	}
+
+	return QString::fromLocal8Bit(process.readAllStandardOutput()).trimmed();
 }

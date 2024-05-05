@@ -49,9 +49,18 @@ class FFmpeg
 		 */
 		static QString convertUgoira(const QString &file, const QList<QPair<QString, int>> &frameInformation, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
 
+		/**
+		 * Get the video codec of the given file using FFprobe.
+		 *
+		 * @param file The file to check.
+		 * @return The video codec used in the first stream of the file (ex: "vp8").
+		 */
+		static QString getVideoCodec(const QString &file, int msecs = 30000);
+
 	protected:
 		static bool executeConvert(const QString &file, const QString &destination, bool deleteOriginal, const QStringList &params, int msecs = 30000);
 		static bool execute(const QStringList &params, int msecs = 30000);
+		static QString probe(const QStringList &params, int msecs = 30000);
 };
 
 #endif // FFMPEG_H

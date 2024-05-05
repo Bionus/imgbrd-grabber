@@ -810,9 +810,18 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	QString ext = extension();
 
 	// FFmpeg
-	if (ext == QStringLiteral("webm") && m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool()) {
-		path = FFmpeg::remux(path, "mp4");
-		ext = getExtension(path);
+	if (ext == QStringLiteral("webm")) {
+		const bool remux = m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool();
+		const bool convert = m_settings->value("Save/FFmpegConvertWebmToMp4", false).toBool();
+
+		// We can only remux VP9 to MP4 as VP8 is not compatible with the MP4 container and needs conversion instead
+		if (remux && FFmpeg::getVideoCodec(path) == QStringLiteral("vp9")) {
+			path = FFmpeg::remux(path, "mp4");
+			ext = getExtension(path);
+		} else if (convert) {
+			path = FFmpeg::convert(path, "mp4");
+			ext = getExtension(path);
+		}
 	}
 
 	// Image conversion
