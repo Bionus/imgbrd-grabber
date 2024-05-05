@@ -552,6 +552,15 @@ jobs:
         target: android
         arch: android_armv7
 
+    - name: Install Qt (android ARM64)
+      uses: jurplel/install-qt-action@v3
+      with:
+        cache: true
+        version: ${{ env.QT_VERSION }}
+        modules: ${{ env.QT_MODULES }}
+        target: android
+        arch: android_arm64_v8a
+
     - name: Install Android platform and build tools
       run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "platform-tools" "build-tools;33.0.0"
 
@@ -577,10 +586,9 @@ jobs:
         export ANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}"
         cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
           -DANDROID_ABI:STRING=armeabi-v7a \
-          -DANDROID_BUILD_ABI_arm64-v8a:BOOL=ON \
-          -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
-          -DANDROID_BUILD_ABI_x86:BOOL=OFF \
-          -DANDROID_BUILD_ABI_x86_64:BOOL=OFF \
+          -DQT_ANDROID_ABIS:STRING="armeabi-v7a;arm64-v8a" \
+          -DQT_PATH_ANDROID_ABI_armeabi-v7a:PATH=$Qt6_DIR/../android_armv7 \
+          -DQT_PATH_ANDROID_ABI_arm64-v8a:PATH=$Qt6_DIR/../android_arm64_v8a \
           -DANDROID_NATIVE_API_LEVEL:STRING=21 \
           -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
           -DANDROID_SDK:PATH=$ANDROID_HOME \
