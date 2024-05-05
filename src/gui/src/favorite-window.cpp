@@ -115,10 +115,14 @@ void FavoriteWindow::save()
 		monitors[0] = rep;
 	}
 
+	// Only keep the last images if the "last viewed" datetime is unchanged
+	const QMap<QString, QVariantMap> lastImages = oldFav.getLastViewed() == ui->lastViewedDateTimeEdit->dateTime() ? oldFav.getLastImages() : QMap<QString, QVariantMap>();
+
 	m_favorite = Favorite(
 		ui->tagLineEdit->text(),
 		ui->noteSpinBox->value(),
 		ui->lastViewedDateTimeEdit->dateTime(),
+		lastImages,
 		monitors,
 		savePath("thumbs/" + m_favorite.getName(true) + ".png"),
 		ui->postFilteringLineEdit->text().split(' ', Qt::SkipEmptyParts),

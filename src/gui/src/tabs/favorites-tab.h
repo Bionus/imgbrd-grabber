@@ -47,7 +47,7 @@ class FavoritesTab : public SearchTab
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
- 		void setFavoriteViewed(const QString &tag, const QDateTime &date = {});
+ 		void setFavoriteViewed(const QString &tag, const QSharedPointer<Image> &img = {});
 		void viewed();
 		// Others
 		void closeEvent(QCloseEvent *event) override;
@@ -61,6 +61,7 @@ class FavoritesTab : public SearchTab
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
 		int m_currentFav;
+		QMap<QString, QVariantMap> m_lastImages, m_newLastImages;
 		FixedSizeGridLayout *m_favoritesLayout;
 };
 

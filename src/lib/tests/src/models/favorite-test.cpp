@@ -74,14 +74,14 @@ TEST_CASE("Favorite")
 	SECTION("GetImagePath")
 	{
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("fate/stay_night", 50, date, "test/test.jpg");
+		Favorite fav("fate/stay_night", 50, date, {}, "test/test.jpg");
 
 		REQUIRE(fav.getImagePath() == QString("test/test.jpg"));
 	}
 	SECTION("SetImagePath")
 	{
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("fate/stay_night", 50, date, "test/test.jpg");
+		Favorite fav("fate/stay_night", 50, date, {}, "test/test.jpg");
 		fav.setImagePath("test/newimage.jpg");
 
 		REQUIRE(fav.getImagePath() == QString("test/newimage.jpg"));
@@ -91,7 +91,7 @@ TEST_CASE("Favorite")
 	{
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 		Monitor monitor(QList<Site*>(), 60, date, date, false, "", "");
-		Favorite fav("fate/stay_night", 50, date, QList<Monitor>() << monitor, "test/test.jpg");
+		Favorite fav("fate/stay_night", 50, date, {}, QList<Monitor>() << monitor, "test/test.jpg");
 		fav.setImagePath("test/newimage.jpg");
 
 		REQUIRE(fav.getMonitors().count() == 1);
@@ -204,7 +204,7 @@ TEST_CASE("Favorite")
 			}
 
 			QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-			Favorite fav("tag1", 50, date, QDir::currentPath() + "/tests/resources/image_200x200.png");
+			Favorite fav("tag1", 50, date, {}, QDir::currentPath() + "/tests/resources/image_200x200.png");
 			QPixmap actual = fav.getImage();
 
 			REQUIRE(file.exists() == true);
@@ -290,7 +290,7 @@ TEST_CASE("Favorite")
 
 		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 		Monitor monitor(QList<Site*> { &site }, 60, date, date, false, "", "");
-		Favorite original("fate/stay_night", 50, date, QList<Monitor>() << monitor);
+		Favorite original("fate/stay_night", 50, date, {}, QList<Monitor>() << monitor);
 
 		QJsonObject json;
 		original.toJson(json);

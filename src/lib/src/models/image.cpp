@@ -891,7 +891,13 @@ Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
 const QList<Pool> &Image::pools() const { return m_pools; }
 qulonglong Image::id() const { return m_id; }
-QVariantMap Image::identity() const { return m_identity; }
+QVariantMap Image::identity(bool id) const
+{
+	if (m_identity.isEmpty() && id) {
+		return {{"id", m_id}};
+	}
+	return m_identity;
+}
 int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }

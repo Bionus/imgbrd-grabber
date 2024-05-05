@@ -212,14 +212,23 @@ void FavoritesTab::updateFavorites()
 void FavoritesTab::load()
 {
 	updateTitle();
+	m_newLastImages.clear();
 
 	loadTags(m_currentTags.trimmed().split(' ', Qt::SkipEmptyParts));
 }
 
 bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	bool dateOk = img->createdAt() > m_loadFavorite || img->createdAt().isNull();
-	return dateOk && SearchTab::validateImage(img, error);
+	bool dateOk = img->createdAt().isNull() || img->createdAt() > m_loadFavorite;
+
+	const QVariantMap lastIdentity = m_lastImages.value(img->parentSite()->url());
+	bool idOk = !lastIdentity.contains("id") || img->id() > lastIdentity["id"].toULongLong();
+
+	if (dateOk && idOk && !m_newLastImages.contains(img->parentSite()->url())) {
+		m_newLastImages[img->parentSite()->url()] = img->identity(true);
+	}
+
+	return dateOk && idOk && SearchTab::validateImage(img, error);
 }
 
 void FavoritesTab::write(QJsonObject &json) const
@@ -305,6 +314,7 @@ void FavoritesTab::loadFavorite(const QString &name)
 	Favorite fav = m_favorites[index];
 	m_currentTags = fav.getName();
 	m_loadFavorite = fav.getLastViewed();
+	m_lastImages = fav.getLastImages();
 	m_postFiltering->setPlainText(fav.getPostFiltering().join(' '));
 
 	if (!fav.getSites().isEmpty()) {
@@ -348,7 +358,7 @@ void FavoritesTab::viewed()
 
 	m_profile->emitFavorite();
 }
-void FavoritesTab::setFavoriteViewed(const QString &tag, const QDateTime &date)
+void FavoritesTab::setFavoriteViewed(const QString &tag, const QSharedPointer<Image> &img)
 {
 	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
@@ -359,14 +369,21 @@ void FavoritesTab::setFavoriteViewed(const QString &tag, const QDateTime &date)
 
 	Favorite &fav = m_favorites[index];
 
-	if (!date.isValid()) {
+	if (img.isNull()) {
 		fav.setLastViewed(QDateTime::currentDateTime());
 
 		for (Monitor &monitor : fav.getMonitors()) {
 			monitor.setCumulated(0, true);
 		}
+
+		for (auto it = m_newLastImages.constBegin(); it != m_newLastImages.constEnd(); ++it) {
+			fav.setLastImage(it.key(), it.value());
+		}
 	} else {
-		fav.setLastViewed(date);
+		if (img->createdAt().isValid()) {
+			fav.setLastViewed(img->createdAt());
+		}
+		fav.setLastImage(img->parentSite()->url(), img->identity(true));
 	}
 
 	DONE();
@@ -414,7 +431,7 @@ void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image>
 {
 	SearchTab::thumbnailContextMenu(menu, img);
 
-	if (m_currentTags.isEmpty() || !img->createdAt().isValid()) {
+	if (m_currentTags.isEmpty()) {
 		return;
 	}
 
@@ -423,7 +440,7 @@ void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image>
 	// Mark as "last viewed"
 	auto *actionMarkAsLastViewed = new QAction(QIcon(":/images/icons/eye.png"), tr("Mark as last viewed"), menu);
 	connect(actionMarkAsLastViewed, &QAction::triggered, [this, img]() {
-		this->setFavoriteViewed(m_currentTags, img->createdAt());
+		this->setFavoriteViewed(m_currentTags, img);
 	});
 	menu->insertAction(first, actionMarkAsLastViewed);
 

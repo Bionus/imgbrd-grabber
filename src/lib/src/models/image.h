@@ -54,7 +54,7 @@ class Image : public QObject, public Downloadable
 		QStringList tagsString(bool namespaces = false) const;
 		const QList<Pool> &pools() const;
 		qulonglong id() const;
-		QVariantMap identity() const;
+		QVariantMap identity(bool id = false) const;
 		int fileSize() const;
 		int width() const;
 		int height() const;
