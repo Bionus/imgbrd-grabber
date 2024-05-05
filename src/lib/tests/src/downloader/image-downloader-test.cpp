@@ -304,14 +304,34 @@ TEST_CASE("ImageDownloader")
 	SECTION("Skip details for existing images")
 	{
 		auto img = createImage(profile, site);
-		ImageDownloader downloader(profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+		ImageDownloader downloader(profile, img, "something.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
 
 		QList<ImageSaveResult> expected;
-		expected.append({ QDir::toNativeSeparators("tests/resources/tmp/misc.jpg.tmp"), Image::Size::Full, Image::SaveResult::AlreadyExistsMd5 });
+		expected.append({ QDir::toNativeSeparators("tests/resources/tmp/something.jpg.tmp"), Image::Size::Full, Image::SaveResult::AlreadyExistsMd5 });
 
 		profile->getSettings()->setValue("Save/md5Duplicates", "ignore");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "save");
+		profile->getSettings()->setValue("Exec/SQL/image", "SELECT %copyright%");
 		profile->addMd5(img->md5(), "tests/resources/image_1x1.png");
 
 		assertDownload(profile, img, &downloader, expected, false);
+		REQUIRE(img->token("copyright", QString()) == QString());
+	}
+
+	SECTION("Skip details for existing images (same dir)")
+	{
+		auto img = createImage(profile, site);
+		ImageDownloader downloader(profile, img, "something.%ext%", "tests/resources", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ QDir::toNativeSeparators("tests/resources/something.jpg.tmp"), Image::Size::Full, Image::SaveResult::AlreadyExistsMd5 });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "save");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "ignore");
+		profile->getSettings()->setValue("Exec/SQL/image", "SELECT %copyright%");
+		profile->addMd5(img->md5(), "tests/resources/image_1x1.png");
+
+		assertDownload(profile, img, &downloader, expected, false);
+		REQUIRE(img->token("copyright", QString()) == QString());
 	}
 }
