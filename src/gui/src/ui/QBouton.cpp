@@ -201,9 +201,9 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 		emit this->rightClick(m_id.toString());
 		emit this->rightClick(m_id.toInt());
 	} else if (event->button() == Qt::MiddleButton) {
-		emit this->middleClick(m_id);
-		emit this->middleClick(m_id.toString());
-		emit this->middleClick(m_id.toInt());
+		emit this->appui(m_id);
+		emit this->appui(m_id.toString());
+		emit this->appui(m_id.toInt());
 	} else {
 		event->ignore();
 		return;
