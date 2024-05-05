@@ -13,7 +13,7 @@ on:
       - crowdin
 
 env:
-  QT_VERSION: 6.6.0
+  QT_VERSION: 6.6.3
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
@@ -370,7 +370,7 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/12856766/qsqlmysql.dll_Qt_SQL_driver_6.6.0_MSVC2019_64-bit.zip
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/14757676/qsqlmysql.dll_Qt_SQL_driver_6.6.3_MSVC2019_64-bit.zip
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       VCINSTALLDIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC

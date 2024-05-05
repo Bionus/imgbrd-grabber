@@ -92,7 +92,7 @@ Most Linux package managers do not provide up-to-date Qt packages. As such, it i
 
 ```bash
 pip install aqtinstall
-aqt install-qt linux desktop 6.6.0 gcc_64 -m qtmultimedia qtimageformats qtnetworkauth qtshadertools
+aqt install-qt linux desktop 6.6.3 gcc_64 -m qtmultimedia qtimageformats qtnetworkauth qtshadertools
 ```
 
 #### Compiler
@@ -221,7 +221,7 @@ sudo apt install libqt5sql5-psql
 4. Edit `~/.bash_profile` and add the following line: 
 
     ```bash
-    export PATH="/usr/local/Cellar/qt6/6.6.0/bin"
+    export PATH="/usr/local/Cellar/qt6/6.6.3/bin"
     ```
     This is the default path to your QT installation. **Be sure to update the version number, or it won't work!**
 
