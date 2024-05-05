@@ -579,31 +579,33 @@ jobs:
         QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
         QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        Qt6_DIR_HOST: ${{ env.Qt6_DIR }}/../gcc_64
+        Qt6_DIR_V7: ${{ env.Qt6_DIR }}/../android_armv7
+        Qt6_DIR_V8: ${{ env.Qt6_DIR }}/../android_arm64_v8a
       run: |
         mkdir build
         cd build
+        export Qt6_DIR=Qt6_DIR_V7
         export ANDROID_SDK_ROOT=$ANDROID_HOME
         export ANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}"
         cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
           -DANDROID_ABI:STRING=armeabi-v7a \
           -DQT_ANDROID_ABIS:STRING="armeabi-v7a;arm64-v8a" \
-          -DQT_PATH_ANDROID_ABI_armeabi-v7a:PATH=$Qt6_DIR/../android_armv7 \
-          -DQT_PATH_ANDROID_ABI_arm64-v8a:PATH=$Qt6_DIR/../android_arm64_v8a \
+          -DQT_PATH_ANDROID_ABI_armeabi-v7a:PATH=$Qt6_DIR_V7 \
+          -DQT_PATH_ANDROID_ABI_arm64-v8a:PATH=$Qt6_DIR_V8 \
           -DANDROID_NATIVE_API_LEVEL:STRING=21 \
           -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
           -DANDROID_SDK:PATH=$ANDROID_HOME \
-          -DQT_ANDROID_NDK_ROOT:PATH=$ANDROID_NDK_ROOT \
-          -DQT_ANDROID_SDK_ROOT:PATH=$ANDROID_HOME \
           -DANDROID_STL:STRING=c++_shared \
-          -DQT_HOST_PATH:STRING=$Qt6_DIR/../gcc_64 \
+          -DQT_HOST_PATH:STRING=$Qt6_DIR_HOST \
+          -DQT_HOST_PATH_CMAKE_DIR:STRING=$Qt6_DIR_HOST/lib/cmake \
           -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
           -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR/lib/cmake \
-          -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR \
-          -DCMAKE_MODULE_PATH:STRING="$Qt6_DIR/lib/cmake;$Qt6_DIR/../gcc_64/lib/cmake" \
-          -DCMAKE_TOOLCHAIN_FILE:PATH=$Qt6_DIR/lib/cmake/Qt6/qt.toolchain.cmake \
-          -DQT_QMAKE_EXECUTABLE:STRING=$Qt6_DIR/bin/qmake \
-          -DQt6LinguistTools_DIR="$Qt6_DIR/../gcc_64/lib/cmake/Qt6LinguistTools"
+          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR_V7 \
+          -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR_V7 \
+          -DCMAKE_TOOLCHAIN_FILE:PATH=$Qt6_DIR_V7/lib/cmake/Qt6/qt.toolchain.cmake \
+          -DQT_DEBUG_FIND_PACKAGE=ON \
+          -DQT_QMAKE_EXECUTABLE:STRING=$Qt6_DIR_V7/bin/qmake
         cmake --build . --config Release --target sites
         cmake --build . --config Release --target gui-qml_make_apk
 
