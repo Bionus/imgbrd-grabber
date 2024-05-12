@@ -164,7 +164,12 @@ void Site::loadConfig()
 	m_userAgent = m_settings->value("Headers/User-Agent").toString();
 	if (m_userAgent.isEmpty()) {
 		const QString globalUserAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString();
-		if (pSettings->value("useQtUserAgent", true).toBool()) {
+		#if defined(USE_WEBENGINE)
+			const bool defaultUseQtUserAgent = true;
+		#else
+			const bool defaultUseQtUserAgent = false;
+		#endif
+		if (pSettings->value("useQtUserAgent", defaultUseQtUserAgent).toBool()) {
 			#if defined(USE_WEBENGINE)
 				m_userAgent = QWebEngineProfile::defaultProfile()->httpUserAgent();
 			#else
