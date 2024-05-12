@@ -82,7 +82,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_themeLoader = new ThemeLoader(savePath("themes/", true, false), m_settings, this);
 	m_themeLoader->setTheme(m_settings->value("theme", "Default").toString());
 	const QStringList baseStyles = QStyleFactory::keys();
-	const QString defaultStyle = !baseStyles.isEmpty() ? baseStyles.first() : "";
+	const QString defaultStyle = !baseStyles.isEmpty() ? (baseStyles.contains("windowsvista") ? "windowsvista" : baseStyles.first()) : "";
 	qApp->setStyle(m_settings->value("baseStyle", defaultStyle).toString());
 	ui->setupUi(this);
 

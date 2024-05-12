@@ -386,7 +386,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	}
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 	const QStringList baseStyles = QStyleFactory::keys();
-	const QString defaultStyle = !baseStyles.isEmpty() ? baseStyles.first() : "";
+	const QString defaultStyle = !baseStyles.isEmpty() ? (baseStyles.contains("windowsvista") ? "windowsvista" : baseStyles.first()) : "";
 	for (const QString &style : baseStyles) {
 		ui->comboBaseStyle->addItem(style, style);
 	}
