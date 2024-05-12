@@ -59,11 +59,11 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
 	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
 
-	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
+	auto *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &DownloadsTab::batchClearSelGroups);
 
-	QShortcut *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
+	auto *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
 	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &DownloadsTab::batchClearSelUniques);
 
@@ -168,7 +168,7 @@ QSet<int> DownloadsTab::selectedRows(QTableView *table) const
 
 void DownloadsTab::batchClear()
 {
-	// Don't do anything if there's nothing to clear
+	// Don't do anything if there's nothing to be cleared
 	if (m_groupBatchsModel->rowCount() == 0 && m_batchsModel->rowCount() == 0) {
 		return;
 	}
@@ -248,7 +248,7 @@ void DownloadsTab::batchMove(int diff)
 	}
 
 	if (diff > 0) {
-		std::sort(rows.begin(), rows.end(), std::greater<int>());
+		std::sort(rows.begin(), rows.end(), std::greater<>());
 	} else {
 		std::sort(rows.begin(), rows.end());
 	}
@@ -301,15 +301,15 @@ void DownloadsTab::batchMoveToBottom()
 
 void DownloadsTab::addGroup()
 {
-	auto wAddGroup = new AddGroupWindow(m_parent->getSelectedSiteOrDefault(), m_profile, this);
-	connect(wAddGroup, &AddGroupWindow::sendData, this, &DownloadsTab::batchAddGroup);
-	wAddGroup->show();
+	auto *addGroupWindow = new AddGroupWindow(m_parent->getSelectedSiteOrDefault(), m_profile, this);
+	connect(addGroupWindow, &AddGroupWindow::sendData, this, &DownloadsTab::batchAddGroup);
+	addGroupWindow->show();
 }
 void DownloadsTab::addUnique()
 {
-	auto wAddUnique = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, &m_batchs, this);
-	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
-	wAddUnique->show();
+	auto *addUniqueWindow = new AddUniqueWindow(m_parent->getSelectedSiteOrDefault(), m_profile, &m_batchs, this);
+	connect(addUniqueWindow, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
+	addUniqueWindow->show();
 }
 
 
@@ -670,7 +670,7 @@ void DownloadsTab::getAllFinishedLogins()
 		DownloadQueryGroup b = it.value();
 		total += b.total;
 
-		auto packLoader = new PackLoader(m_profile, b, usePacking ? imagesPerPack : -1, this);
+		auto *packLoader = new PackLoader(m_profile, b, usePacking ? imagesPerPack : -1, this);
 		connect(packLoader, &PackLoader::finishedPage, this, &DownloadsTab::getAllFinishedPage);
 		m_waitingPackLoaders.enqueue(packLoader);
 	}
@@ -931,7 +931,7 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 	log(QStringLiteral("Loading image from `%1` %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed + 1;
 	bool getBlacklisted = download.queryGroup == nullptr || download.queryGroup->getBlacklisted;
-	auto imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, this);
+	auto *imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, this);
 	if (!getBlacklisted) {
 		imgDownloader->setBlacklist(&m_profile->getBlacklist());
 	}

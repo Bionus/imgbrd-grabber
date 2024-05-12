@@ -1,4 +1,9 @@
 function completeImage(img: IImage): IImage {
+    img.identity = {
+        "id": img.id!,
+        "md5": img.md5!,
+    };
+
     if (img.ext && img.ext[0] === ".") {
         img.ext = img.ext.substr(1);
     }
@@ -140,10 +145,77 @@ export const source: ISource = {
                         if (!img.md5 || img.md5.length === 0) {
                             continue;
                         }
+                        if ("media_asset" in image && "variants" in image["media_asset"]) {
+                            img.medias = image["media_asset"]["variants"].map((variant: any) => ({
+                                type: variant["type"] === "sample" ? "sample" : (variant["type"] === "original" ? "full" : undefined),
+                                url: variant.url,
+                                width: variant.width,
+                                height: variant.height,
+                            }));
+                        }
                         images.push(completeImage(img));
                     }
 
                     return { images };
+                },
+            },
+            endpoints: {
+                ugoira_details: {
+                    input: {
+                        id: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"id", number>): string => {
+                        return "/posts/" + String(query.id) + ".json?only=media_metadata";
+                    },
+                    parse: (src: string): IParsedUgoiraDetails => {
+                        const delays = JSON.parse(src)["media_metadata"]["metadata"]["Ugoira:FrameDelays"];
+                        return {
+                            frames: delays.map((delay: number) => ({ delay })),
+                        };
+                    },
+                },
+                pool_list: {
+                    name: "Pools",
+                    input: {
+                        name: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"name", string>, opts: IUrlOptions): string => {
+                        return "/pools.json?page=" + String(opts.page) + (query.name ? "&search[name_contains]=" + encodeURIComponent(query.name) : "");
+                    },
+                    parse: (src: string): IParsedSearch => {
+                        const data = JSON.parse(src);
+                        const images = data.map((raw: any): IImage => ({
+                            id: raw["id"],
+                            name: raw["name"],
+                            created_at: raw["created_at"],
+                            type: "gallery",
+                            gallery_count: raw["post_count"],
+                            details_endpoint: {
+                                endpoint: "pool_details",
+                                input: { id: raw["id"] },
+                            },
+                        }))
+                        return { images };
+                    },
+                },
+                pool_details: {
+                    input: {
+                        id: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"id", number>): string => {
+                        return "/pools/" + String(query.id) + ".json";
+                    },
+                    parse: (src: string): IParsedGallery => {
+                        const data = JSON.parse(src);
+                        const images = data["post_ids"].map((id: number): IImage => ({ id }));
+                        return { images };
+                    },
                 },
             },
             tags: {

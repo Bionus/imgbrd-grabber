@@ -161,11 +161,11 @@ bool setWindowsProperty(const QString &filename, const QString &property, const 
 					if (SUCCEEDED(hr)) {
 						// Commit does the actual writing back to the file stream.
 						hr = pps->Commit();
-						if (!SUCCEEDED(hr)) {
-							log(QString("Error %1 committing to the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
+						if (FAILED(hr)) {
+							log(QString("Error %1 committing to the propertystore \"%2\" for `%2`").arg(hr).arg(property, filename), Logger::Error);
 						}
 					} else {
-						log(QString("Error %1 setting value to the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
+						log(QString("Error %1 setting value to the propertystore \"%2\" for `%3`").arg(hr).arg(property, filename), Logger::Error);
 					}
 				}
 				PropVariantClear(&propvarValue);
@@ -180,6 +180,55 @@ bool setWindowsProperty(const QString &filename, const QString &property, const 
 
 	delete pszFilename;
 	delete pszCanonicalName;
+	delete pszValue;
+
+	return SUCCEEDED(hr);
+}
+
+bool clearAllWindowsProperties(const QString &filename)
+{
+	PCWSTR pszFilename = toWCharT2(filename);
+	PCWSTR pszValue = toWCharT2(QString());
+	IPropertyStore* pps = NULL;
+
+	HRESULT hr = GetPropertyStore(pszFilename, GPS_READWRITE, &pps);
+	if (SUCCEEDED(hr)) {
+		// Retrieve the number of properties stored in the item.
+		DWORD cProperties = 0;
+		hr = pps->GetCount(&cProperties);
+		if (SUCCEEDED(hr)) {
+			for (DWORD i = 0; i < cProperties; i++) {
+				// Get the property key at a given index.
+				PROPERTYKEY key;
+				hr = pps->GetAt(i, &key);
+				if (SUCCEEDED(hr)) {
+					// Build the value
+					PROPVARIANT propvarValue = {0};
+					PropVariantInit(&propvarValue);
+
+					// Clear the value in the property store of the item.
+					hr = pps->SetValue(key, propvarValue);
+					if (SUCCEEDED(hr)) {
+						i--; // Clearing a value changes the value count and the results of GetCount() and GetAt()
+					}
+
+					PropVariantClear(&propvarValue);
+				}
+			}
+		}
+
+		// Commit does the actual writing back to the file stream.
+		hr = pps->Commit();
+		if (FAILED(hr)) {
+			log(QString("Error %1 committing to the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
+		}
+
+		pps->Release();
+	} else {
+		log(QString("Error %1 getting the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
+	}
+
+	delete pszFilename;
 	delete pszValue;
 
 	return SUCCEEDED(hr);

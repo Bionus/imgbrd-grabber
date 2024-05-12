@@ -1,7 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
-import QtGraphicalEffects 1.0
 
 Drawer {
     id: drawer
@@ -28,6 +27,8 @@ Drawer {
         spacing: 0
         anchors.margins: 0
         anchors.fill: parent
+        anchors.topMargin: -Material.LargeScale
+        anchors.bottomMargin: -Material.LargeScale
 
         ListView {
             id: listView
@@ -110,6 +111,12 @@ Drawer {
                     page: "favorites"
                     name: qsTr("Favorites")
                     icon: "/images/icons/favorites.png"
+                    enabled: true
+                }
+                ListElement {
+                    page: "sources"
+                    name: qsTr("Sources")
+                    icon: "/images/icons/cloud.png"
                     enabled: true
                 }
                 ListElement {

@@ -592,6 +592,13 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>Clear other cookies</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabHeaders">
@@ -642,6 +649,13 @@
       <widget class="QPushButton" name="buttonDelete">
        <property name="text">
         <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOpenInWebView">
+       <property name="text">
+        <string>Open in WebView</string>
        </property>
       </widget>
      </item>
@@ -702,8 +716,11 @@
   <tabstop>tableHeaders</tabstop>
   <tabstop>buttonAddHeader</tabstop>
   <tabstop>buttonDelete</tabstop>
+  <tabstop>buttonOpenInWebView</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonAccept</tabstop>
+  <tabstop>lineAddedTags</tabstop>
+  <tabstop>lineRemovedTags</tabstop>
   <tabstop>buttonTestLogin</tabstop>
  </tabstops>
  <resources>
@@ -717,8 +734,8 @@
    <slot>deleteSite()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>84</x>
-     <y>262</y>
+     <x>96</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -749,12 +766,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>61</y>
+     <x>101</x>
+     <y>46</y>
     </hint>
     <hint type="destinationlabel">
-     <x>112</x>
-     <y>115</y>
+     <x>101</x>
+     <y>54</y>
     </hint>
    </hints>
   </connection>
@@ -765,8 +782,8 @@
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>509</x>
-     <y>233</y>
+     <x>123</x>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
      <x>273</x>
@@ -781,8 +798,8 @@
    <slot>addCookie()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>233</y>
+     <x>125</x>
+     <y>212</y>
     </hint>
     <hint type="destinationlabel">
      <x>470</x>
@@ -797,8 +814,8 @@
    <slot>addHeader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>233</y>
+     <x>101</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>43</x>
@@ -813,8 +830,8 @@
    <slot>save()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>490</x>
-     <y>254</y>
+     <x>613</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
@@ -829,12 +846,44 @@
    <slot>setLoginType(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>496</x>
-     <y>58</y>
+     <x>101</x>
+     <y>45</y>
     </hint>
     <hint type="destinationlabel">
      <x>526</x>
      <y>54</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOpenInWebView</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>openInWebView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>clearOtherCookies()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>594</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>621</x>
+     <y>230</y>
     </hint>
    </hints>
   </connection>
@@ -846,5 +895,7 @@
   <slot>addHeader()</slot>
   <slot>save()</slot>
   <slot>setLoginType(int)</slot>
+  <slot>openInWebView()</slot>
+  <slot>clearOtherCookies()</slot>
  </slots>
 </ui>

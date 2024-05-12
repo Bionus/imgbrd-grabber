@@ -6,6 +6,12 @@ SearchFormat::SearchFormat(SearchFormatType andOp, SearchFormatType orOp, bool p
 	: m_andOp(std::move(andOp)), m_orOp(std::move(orOp)), m_parenthesis(parenthesis), m_precedence(precedence)
 {}
 
+SearchFormat &SearchFormat::Normalized()
+{
+	static SearchFormat normalized({ " ", "" }, { " ", "" }, true, Precedence::And);
+	return normalized;
+}
+
 
 const SearchFormatType &SearchFormat::andOp() const
 {

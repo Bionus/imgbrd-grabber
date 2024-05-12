@@ -41,7 +41,7 @@ interface ITagType {
     /**
      * The tag type ID.
      *
-     * Useful for mapping a type ID to an useful type down the road.
+     * Useful for mapping a type ID to a useful type down the road.
      */
     id: number;
 
@@ -115,6 +115,21 @@ interface IImage {
     identity?: IImageIdentity;
 
     /**
+     * The endpoint to call to load more information about this media.
+     */
+    details_endpoint?: {
+        /**
+         * The key of the endpoint in the "endpoints" object of this API.
+         */
+        endpoint: string;
+
+        /**
+         * The inputs to pass to the endpoint to have it load details about this media.
+         */
+        input: Record<string, any>;
+    }
+
+    /**
      * The media files. At least one is required.
      * It's preferred to have one of each type, otherwise it will be inferred.
      */
@@ -145,7 +160,7 @@ interface IImage {
 
         /**
          * For videos, the bitrate (in bits per second) of this file.
-         * Useful to differentiate multiple videos when they have the same
+         * Useful to differentiate multiple videos when they have the same dimensions.
          */
         bitrate?: number;
 
@@ -156,7 +171,7 @@ interface IImage {
 
         /**
          * If this media is just a smaller part of the file, the rectangle to cut the media before showing it.
-         * Necessary sometimes for example in situations where all thumnails are concatenated into a single file to save bandwidth.
+         * Necessary sometimes for example in situations where all thumbnails are concatenated into a single file to save bandwidth.
          */
         rect?: {
             x: number;
@@ -434,7 +449,7 @@ interface IParsedCsrf {
 }
 
 /**
- * Authentication by a HTTP call to a given URL (for example for login forms).
+ * Authentication by an HTTP call to a given URL (for example for login forms).
  */
 interface IHttpAuth {
     /**
@@ -443,7 +458,7 @@ interface IHttpAuth {
     type: "get" | "post";
 
     /**
-     * The URL to call to login.
+     * The URL to call to log in.
      */
     url: string;
 
@@ -451,6 +466,11 @@ interface IHttpAuth {
      * Definition of fields to pass to the request.
      */
     fields: IAuthField[];
+
+    /**
+     * Additional HTTP headers to pass to the login request.
+     */
+    headers?: Record<string, string>;
 
     /**
      * Optional URL to load to get any CSRF token from the form.
@@ -486,10 +506,10 @@ interface IHttpBasicAuth {
      */
     passwordType?: "password" | "apiKey";
 
-	/**
-	 * The token type to pass in the Authorization header. Defaults to "Basic".
-	 */
-	tokenType?: string;
+    /**
+     * The token type to pass in the Authorization header. Defaults to "Basic".
+     */
+    tokenType?: string;
 
     /**
      * Method to check for successful authentication.
@@ -619,7 +639,7 @@ interface IParsedSearchOperator {
  */
 interface ISearchQuery {
     /**
-     * What the user entered in the search field, as-is.
+     * What the user typed in the search field, as-is.
      */
     search: string;
 
@@ -632,6 +652,8 @@ interface ISearchQuery {
 
     /**
      * The page number of this query.
+     *
+     * @deprecated Use `opts.page` instead
      */
     page: number;
 }
@@ -657,6 +679,8 @@ interface IGalleryQuery {
 
     /**
      * The page number of this query.
+     *
+     * @deprecated Use `opts.page` instead.
      */
     page: number;
 }
@@ -667,6 +691,8 @@ interface IGalleryQuery {
 interface ITagsQuery {
     /**
      * The page number of this query.
+     *
+     * @deprecated Use `opts.page` instead.
      */
     page: number;
 
@@ -696,9 +722,31 @@ interface IUrlOptionsBase {
  */
 interface IUrlOptions extends IUrlOptionsBase {
     /**
+     * The page number of this query.
+     */
+    page: number;
+
+    /**
      * The number of results per page to return.
      */
     limit: number;
+}
+
+interface IParsedUgoiraDetails {
+    /**
+     * The list of all frames contained in this ugoira file, sorted in order.
+     */
+    frames: {
+        /**
+         * The file for that frame. If empty, will take the next frame from the ZIP file alphabetically.
+         */
+        file?: string;
+
+        /**
+         * The duration for which this frame should be shown.
+         */
+        delay: number;
+    }[];
 }
 
 /**
@@ -749,6 +797,42 @@ interface IPreviousSearch {
 }
 
 /**
+ * A specific search mode on a source API.
+ */
+interface IEndpoint<T extends string> {
+    /**
+     * The name to show to the end user in the interface.
+     * If left empty, it will not be shown in the list.
+     */
+    name?: string;
+
+    /**
+     * The user input to provide to this endpoint.
+     */
+    input: Record<T, MetaField>;
+
+    /**
+     * The ID of the authentication methods required to access this endpoint, or "true" for any method.
+     */
+    auth?: string[] | boolean;
+
+    /**
+     * Whether to still pass HTTP errors to the parse function.
+     */
+    parseErrors?: boolean;
+
+    /**
+     * The function that will generate the URL to load based on the user input.
+     */
+    url: (query: Record<T, any>, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IRequest | IError | string;
+
+    /**
+     * The function that will parse the response of the URL above.
+     */
+    parse: (src: string, statusCode: number) => IParsedSearch | IParsedUgoiraDetails | IError;
+}
+
+/**
  * A source's API, such as JSON or HTML.
  */
 interface IApi {
@@ -769,7 +853,7 @@ interface IApi {
 
     /**
      * @see {@link ISource#forcedTokens}
-    */
+     */
     forcedTokens?: string[];
 
     /**
@@ -798,6 +882,11 @@ interface IApi {
         url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IRequest | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
+
+    /**
+     * Additional endpoints can be added as needed.
+     */
+    endpoints?: Record<string, IEndpoint<any>>;
 
     /**
      * Describes the endpoint for loading a single image's details.

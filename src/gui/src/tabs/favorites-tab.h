@@ -47,10 +47,10 @@ class FavoritesTab : public SearchTab
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
-		void setFavoriteViewed(const QString &tag, QDateTime date = {});
+ 		void setFavoriteViewed(const QString &tag, const QSharedPointer<Image> &img = {});
 		void viewed();
 		// Others
-		void closeEvent(QCloseEvent *) override;
+		void closeEvent(QCloseEvent *event) override;
 		void focusSearch() override;
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, int filteredImages, const QString &noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, int filteredImages, const QString &noResultsMessage = nullptr) override;
@@ -61,6 +61,7 @@ class FavoritesTab : public SearchTab
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
 		int m_currentFav;
+		QMap<QString, QVariantMap> m_lastImages, m_newLastImages;
 		FixedSizeGridLayout *m_favoritesLayout;
 };
 

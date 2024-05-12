@@ -26,6 +26,8 @@ class TagContextMenu : public QMenu
 		void unviewitlater();
 		void ignore();
 		void unignore();
+		void remove();
+		void unremove();
 		void blacklist();
 		void unblacklist();
 		void openInNewTab();
@@ -33,6 +35,7 @@ class TagContextMenu : public QMenu
 		void openInBrowser();
 		void copyTagToClipboard();
 		void copyAllTagsToClipboard();
+		void copyAllTagsWithNamespacesToClipboard();
 
 	signals:
 		void setFavoriteImage();

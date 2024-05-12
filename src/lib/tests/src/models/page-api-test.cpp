@@ -25,7 +25,7 @@ TEST_CASE("PageApi")
 	settings.sync();
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
 	REQUIRE(sites[0] != nullptr);

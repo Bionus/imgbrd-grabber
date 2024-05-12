@@ -9,9 +9,11 @@ class SearchVisitor;
 
 struct SearchNodeTag : public SearchNode
 {
-	Tag tag;
+	QStringList tag;
 
-	explicit SearchNodeTag(Tag tag);
+	explicit SearchNodeTag(const Tag &tag);
+	explicit SearchNodeTag(QStringList words);
+
 	void accept(SearchVisitor &v) const override;
 };
 

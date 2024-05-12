@@ -92,7 +92,7 @@ class MainWindow : public QMainWindow
 		void trayMessageClicked();
 		void trayClose();
 		// Others
-		void closeEvent(QCloseEvent *) override;
+		void closeEvent(QCloseEvent *event) override;
 		void onFirstLoad();
 		void init(const QStringList &args, const QMap<QString, QString> &params);
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);

@@ -28,10 +28,10 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 			color = found.empty() ? "green" : "red";
 		}
 
-		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i + 1));
+		auto *id = new QTableWidgetItem(QString::number(i + 1));
 		id->setIcon(QIcon(":/images/colors/" + color + ".png"));
 
-		QLabel *preview = new QLabel();
+		auto *preview = new QLabel();
 		m_previews.append(preview);
 
 		ui->tableWidget->setItem(i, 0, id);
@@ -45,7 +45,7 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 	headerView->resizeSection(1, 50);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
 
-	QtConcurrent::run(this, &BlacklistFix2::loadThumbnails);
+	QtConcurrent::run(&BlacklistFix2::loadThumbnails, this);
 }
 BlacklistFix2::~BlacklistFix2()
 {
@@ -59,7 +59,7 @@ void BlacklistFix2::loadThumbnails()
 	}
 }
 
-void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
+void BlacklistFix2::selectBlacklisted()
 {
 	ui->tableWidget->setSelectionMode(QTableWidget::MultiSelection);
 	for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
@@ -69,12 +69,12 @@ void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
 	}
 	ui->tableWidget->setSelectionMode(QTableWidget::ExtendedSelection);
 }
-void BlacklistFix2::on_buttonCancel_clicked()
+void BlacklistFix2::cancel()
 {
 	emit rejected();
 	close();
 }
-void BlacklistFix2::on_buttonOk_clicked()
+void BlacklistFix2::nextStep()
 {
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();

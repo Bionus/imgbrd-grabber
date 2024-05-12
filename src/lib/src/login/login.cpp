@@ -8,5 +8,5 @@ QString Login::complementUrl(QString url) const
 
 void Login::complementRequest(QNetworkRequest *request) const
 {
-	Q_UNUSED(request);
+	Q_UNUSED(request)
 }

@@ -10,7 +10,7 @@ class WindowsShareUtils : public BaseShareUtils
 	Q_OBJECT
 
 	public:
-		WindowsShareUtils(QQuickItem *parent = nullptr);
+		explicit WindowsShareUtils(QQuickItem *parent = nullptr);
 
 		bool share(const QString &text) override;
 		bool shareUrl(const QUrl &url);

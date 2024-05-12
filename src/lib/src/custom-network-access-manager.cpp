@@ -136,11 +136,11 @@ void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply *reply, const QLi
 	#ifdef QT_DEBUG
 		qDebug() << errors;
 	#else
-		Q_UNUSED(errors);
+		Q_UNUSED(errors)
 	#endif
 	#ifndef TEST
 		reply->ignoreSslErrors();
 	#else
-		Q_UNUSED(reply);
+		Q_UNUSED(reply)
 	#endif
 }

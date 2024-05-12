@@ -4,6 +4,7 @@
 #include <QString>
 #include "search/ast/search-visitor.h"
 #include "search/search-format.h"
+#include "tags/tag-name-format.h"
 
 
 struct SearchNode;
@@ -13,7 +14,8 @@ struct SearchNodeTag;
 class SearchFormatVisitor : public SearchVisitor
 {
 	public:
-		explicit SearchFormatVisitor(SearchFormat searchFormat);
+		SearchFormatVisitor(SearchFormat searchFormat, TagNameFormat tagNameFormat);
+
 		QString run(const SearchNode &node);
 		QString error() const;
 
@@ -22,6 +24,7 @@ class SearchFormatVisitor : public SearchVisitor
 
 	private:
 		SearchFormat m_searchFormat;
+		TagNameFormat m_tagNameFormat;
 
 		QString m_result;
 		QString m_error;

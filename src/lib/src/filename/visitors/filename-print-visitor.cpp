@@ -101,7 +101,7 @@ void FilenamePrintVisitor::visit(const FilenameNodeRoot &node)
 	m_result += "Root(";
 
 	int i = 0;
-	for (auto expr : node.exprs) {
+	for (auto *expr : node.exprs) {
 		if (i++ > 0) {
 			m_result += ";";
 		}

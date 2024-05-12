@@ -6,8 +6,8 @@
 #include <QStringList>
 #include <QTime>
 #ifdef Q_OS_WIN
-	#include <QWinTaskbarButton>
-	#include <QWinTaskbarProgress>
+	#include "vendor/winextras/qwintaskbarbutton.h"
+	#include "vendor/winextras/qwintaskbarprogress.h"
 #endif
 #include <ui_batch-window.h>
 #include "functions.h"
@@ -26,7 +26,7 @@ BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
 
 	restoreGeometry(m_settings->value("Batch/geometry").toByteArray());
 	ui->buttonDetails->setChecked(m_settings->value("Batch/details", true).toBool());
-	on_buttonDetails_clicked(m_settings->value("Batch/details", true).toBool());
+	toggleDetails(m_settings->value("Batch/details", true).toBool());
 	ui->comboEnd->setCurrentIndex(m_settings->value("Batch/end", 0).toInt());
 	ui->checkRemove->setChecked(m_settings->value("Batch/remove", false).toBool());
 	ui->checkScrollToDownload->setChecked(m_settings->value("Batch/scrollToDownload", true).toBool());
@@ -48,7 +48,7 @@ BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
 	#endif
 
 	// Allow dialog minimization
-	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
 }
 
 BatchWindow::~BatchWindow()
@@ -63,7 +63,7 @@ BatchWindow::~BatchWindow()
 		m_taskBarProgress->deleteLater();
 	#endif
 }
-void BatchWindow::closeEvent(QCloseEvent *e)
+void BatchWindow::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("Batch/geometry", saveGeometry());
 	m_settings->setValue("Batch/details", ui->buttonDetails->isChecked());
@@ -84,7 +84,7 @@ void BatchWindow::closeEvent(QCloseEvent *e)
 	#endif
 
 	emit closed();
-	e->accept();
+	event->accept();
 }
 void BatchWindow::pause()
 {
@@ -116,7 +116,7 @@ void BatchWindow::cancel()
 		m_taskBarProgress->setVisible(false);
 	#endif
 }
-bool BatchWindow::cancelled()
+bool BatchWindow::cancelled() const
 { return m_cancel; }
 
 void BatchWindow::clear()
@@ -196,7 +196,7 @@ void BatchWindow::addImage(const QUrl &url, int batch, double size)
 	}
 
 	static QIcon pendingIcon(":/images/status/pending.png");
-	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items + 1));
+	auto *id = new QTableWidgetItem(QString::number(m_items + 1));
 	id->setIcon(pendingIcon);
 
 	ui->tableWidget->setItem(m_items, 0, id);
@@ -399,7 +399,7 @@ void BatchWindow::drawSpeed()
 	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
-void BatchWindow::on_buttonDetails_clicked(bool visible)
+void BatchWindow::toggleDetails(bool visible)
 {
 	if (ui->details->isHidden() || visible) {
 		ui->details->show();
@@ -453,6 +453,6 @@ int BatchWindow::totalValue() const
 int BatchWindow::totalMax() const
 { return ui->progressTotal->maximum(); }
 
-int BatchWindow::endAction() { return ui->comboEnd->currentIndex(); }
-bool BatchWindow::endRemove() { return ui->checkRemove->isChecked(); }
-bool BatchWindow::isPaused() { return m_paused; }
+int BatchWindow::endAction() const { return ui->comboEnd->currentIndex(); }
+bool BatchWindow::endRemove() const { return ui->checkRemove->isChecked(); }
+bool BatchWindow::isPaused() const { return m_paused; }

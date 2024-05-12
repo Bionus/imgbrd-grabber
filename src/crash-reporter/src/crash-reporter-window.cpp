@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QMainWindow>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QTranslator>
 #include "crash-reporter-window.h"
 #include "ui_crash-reporter-window.h"
@@ -14,7 +15,7 @@
 QString savePath(const QString &file, bool exists = false)
 {
 	#ifdef TEST
-		Q_UNUSED(exists);
+		Q_UNUSED(exists)
 		return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file);
 	#else
 		const QString &check = exists ? file : "settings.ini";

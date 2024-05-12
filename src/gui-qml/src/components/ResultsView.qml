@@ -1,7 +1,6 @@
 import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
-import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
@@ -68,7 +67,7 @@ ScrollView {
 
                 Image {
                     id: img
-                    source: "image://async/" + modelData.siteUrl + "¤" + modelData.previewUrl + "¤" + modelData.previewRect
+                    source: "image://async/" + modelData.siteUrl + "¤" + modelData.smartPreviewUrl(width, height) + "¤" + modelData.previewRect
                     fillMode: root.thumbnailFillMode
                     anchors.centerIn: parent
                     width: parent.width - root.thumbnailSpacing

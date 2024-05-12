@@ -27,15 +27,15 @@ Global match a PCRE regex in a string.
 ```
 \d+ (\d+) (?<third>\d+)
 ```
-```javascript
+```json
 "01 23 45 67 89 01 23 45 67 89"
 ```
-```javascript
+```json
 [
     {
         "0": "01 23 45",
         "1": "23",
-        "2": "45"
+        "2": "45",
         "third": "45"
     },
     {
@@ -78,7 +78,7 @@ Parses the string passed and return the parsed XML tree.
     </post>
 </posts>
 ```
-```javascript
+```json
 {
     "posts": {
         "@attributes": {

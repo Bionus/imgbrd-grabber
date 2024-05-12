@@ -18,7 +18,7 @@ TEST_CASE("Site")
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
@@ -67,9 +67,9 @@ TEST_CASE("Site")
 	}
 	SECTION("FixUrlRelative")
 	{
-		REQUIRE(site->fixUrl("dir/toto.jpg", QUrl("http://test.com/dir/")) == QUrl("http://test.com/dir/dir/toto.jpg"));
-		REQUIRE(site->fixUrl("toto.jpg", QUrl("http://test.com/dir/file.html")) == QUrl("http://test.com/dir/toto.jpg"));
-		REQUIRE(site->fixUrl("toto.jpg", QUrl("http://test.com/dir/")) == QUrl("http://test.com/dir/toto.jpg"));
+		REQUIRE(site->fixUrl("dir/toto.jpg", QUrl("https://test.com/dir/")) == QUrl("https://test.com/dir/dir/toto.jpg"));
+		REQUIRE(site->fixUrl("toto.jpg", QUrl("https://test.com/dir/file.html")) == QUrl("https://test.com/dir/toto.jpg"));
+		REQUIRE(site->fixUrl("toto.jpg", QUrl("https://test.com/dir/")) == QUrl("https://test.com/dir/toto.jpg"));
 	}
 
 	SECTION("GetSites")

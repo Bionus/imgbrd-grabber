@@ -5,7 +5,6 @@
 #include <QGuiApplication>
 #include <QMimeDatabase>
 #include <QSettings>
-#include <QSslSocket>
 #include <QStandardPaths>
 #include "downloader/image-downloader.h"
 #include "functions.h"
@@ -15,6 +14,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/site-factory.h"
 #include "models/source.h"
 #include "settings.h"
 #include "share/share-utils.h"
@@ -42,7 +42,8 @@ void MainScreen::refreshSites()
 	m_sites.clear();
 
 	for (Site *site : m_profile->getSites().values()) {
-		m_sites.append(new QmlSite(site, this));
+		Source *source = m_profile->getSources().value(site->type());
+		m_sites.append(new QmlSite(site, source, this));
 	}
 
 	emit sitesChanged();
@@ -87,7 +88,7 @@ void MainScreen::downloadImage(const QSharedPointer<Image> &image)
 		return;
 	}
 
-	auto downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
+	auto *downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
 }
@@ -125,26 +126,9 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 		return "Invalid source";
 	}
 
-	// Remove unnecessary prefix
-	QString url = host;
-	if (url.startsWith("http://")) {
-		url = url.mid(7);
-	} else if (url.startsWith("https://")) {
-		url = url.mid(8);
-		https = true;
-	}
-	if (url.endsWith('/')) {
-		url = url.left(url.length() - 1);
-	}
-
 	// Add site
-	Site *site = new Site(host, source, m_profile);
+	Site *site = SiteFactory::fromUrl(host, source, m_profile);
 	m_profile->addSite(site);
-
-	// Set HTTP setting
-	if (https) {
-		site->setSetting("ssl", true, false);
-	}
 
 	return QString();
 }

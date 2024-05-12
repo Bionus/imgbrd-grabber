@@ -108,6 +108,61 @@ function parseSearch(srch: string): { cats: string, search: string } {
     return { cats, search };
 }
 
+function parseList(src: string): IParsedSearch {
+    const html = Grabber.parseHTML(src);
+
+    // Check display mode
+    const modeOption = html.find("#dms select option[selected], .searchnav select option[selected]");
+    let mode = "l";
+    if (!modeOption || !Array.isArray(modeOption) || modeOption.length === 0) {
+        console.warn("Parsing mode not found, falling back to 'Compact'"); // tslint:disable-line: no-console
+    } else {
+        const possibleModes = ["Minimal", "Minimal+", "Compact", "Extended", "Thumbnail"];
+        const allowedModeOptions = modeOption.filter(mode => possibleModes.indexOf(mode.innerText().trim()) !== -1);
+        const validOption = allowedModeOptions.length > 0 ? allowedModeOptions[0] : modeOption[0];
+        mode = validOption.attr("value");
+        if (["m", "p", "l", "e", "t"].indexOf(mode) === -1) {
+            console.warn(`Unknown parsing mode "${mode}", falling back to 'Compact'`); // tslint:disable-line: no-console
+            mode = "l"
+        }
+    }
+
+    // Use different parser depending on the display mode
+    let itemQuery;
+    let parseFunction: (item: any) => IImage | null;
+    if (mode === "m" || mode === "p" || mode === "l") {
+        itemQuery = "table.itg > tbody > tr, table.itg > tr";
+        parseFunction = parseCompactImage;
+    } else if (mode === "e") {
+        itemQuery = "table.itg > tbody > tr, table.itg > tr";
+        parseFunction = parseExtendedImage;
+    } else if (mode === "t") {
+        itemQuery = "div.itg > div.gl1t";
+        parseFunction = parseThumbnailImage;
+    }
+
+    // Parse all images
+    const images: IImage[] = [];
+    for (const item of html.find(itemQuery)) {
+        try {
+            const image = parseFunction!(item);
+            if (image) {
+                images.push(image);
+            }
+        } catch (e) {
+            console.warn("Error parsing image: " + e + " / " + item.innerHTML()); // tslint:disable-line: no-console
+        }
+    }
+
+    return {
+        images,
+        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
+        imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing (?<count>[0-9,]+) results<|Found(?: about)? (?<count_2>[0-9,]+) results.", src)),
+        urlNextPage: Grabber.regexToConst("url", '<a id="unext" href="(?<url_2>[^"]+)">', src),
+        urlPrevPage: Grabber.regexToConst("url", '<a id="uprev" href="(?<url_2>[^"]+)">', src),
+    };
+}
+
 export const source: ISource = {
     name: "E-Hentai",
     modifiers: ["cats:"],
@@ -162,55 +217,7 @@ export const source: ISource = {
                     const pagePart = Grabber.pageUrl(query.page, previous, 1, "", "prev={max}", "next={min}");
                     return "/?" + pagePart + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
-                parse: (src: string): IParsedSearch | IError => {
-                    const html = Grabber.parseHTML(src);
-
-                    // Check display mode
-                    const modeOption = html.find("#dms select option[selected], .searchnav select option[selected]");
-                    let mode = "l";
-                    if (!modeOption || !Array.isArray(modeOption) || modeOption.length === 0) {
-                        console.warn("Parsing mode not found, falling back to 'Compact'"); // tslint:disable-line: no-console
-                    } else {
-                        mode = modeOption[0].attr("value");
-                        if (["m", "p", "l", "e", "t"].indexOf(mode) === -1) {
-                            console.warn(`Unknown parsing mode "${mode}", falling back to 'Compact'`); // tslint:disable-line: no-console
-                            mode = "l"
-                        }
-                    }
-
-                    // Use different parser depending on the display mode
-                    let itemQuery;
-                    let parseFunction: (item: any) => IImage | null;
-                    if (mode === "m" || mode === "p" || mode === "l") {
-                        itemQuery = "table.itg > tbody > tr, table.itg > tr";
-                        parseFunction = parseCompactImage;
-                    } else if (mode === "e") {
-                        itemQuery = "table.itg > tbody > tr, table.itg > tr";
-                        parseFunction = parseExtendedImage;
-                    } else if (mode === "t") {
-                        itemQuery = "div.itg > div.gl1t";
-                        parseFunction = parseThumbnailImage;
-                    }
-
-                    // Parse all images
-                    const images: IImage[] = [];
-                    for (const item of html.find(itemQuery)) {
-                        try {
-                            const image = parseFunction!(item);
-                            if (image) {
-                                images.push(image);
-                            }
-                        } catch (e) {
-                            console.warn("Error parsing image: " + e + " / " + item.innerHTML()); // tslint:disable-line: no-console
-                        }
-                    }
-
-                    return {
-                        images,
-                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
-                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing (?<count>[0-9,]+) results<", src)),
-                    };
-                },
+                parse: parseList,
             },
             gallery: {
                 url: (query: IGalleryQuery): string => {
@@ -276,6 +283,21 @@ export const source: ISource = {
                     return {
                         imageUrl: Grabber.regexToConst("url", '<img id="img" src="(?<url>[^"]+)"', src),
                     };
+                },
+            },
+            endpoints: {
+                popular: {
+                    name: "Popular",
+                    input: {},
+                    url: (): string => "/popular",
+                    parse: parseList,
+                },
+                favorites: {
+                    name: "Favorites",
+                    input: {},
+                    auth: true,
+                    url: (): string =>  "/favorites.php",
+                    parse: parseList,
                 },
             },
         },

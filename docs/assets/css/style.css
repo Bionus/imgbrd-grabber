@@ -40,6 +40,10 @@
 /* Left navigation menu */
 
 @media screen and (min-width:60em) {
+	nav.md-nav[data-md-level="0"] > ul {
+		padding-right: .2rem;
+	}
+
 	nav.md-nav[data-md-level="0"] > ul > li > label,
 	nav.md-nav[data-md-level="1"] > ul > li > label {
 		font-size: 1rem;
@@ -47,13 +51,13 @@
 		color: var(--md-typeset-color) !important;
 		border-bottom: 1px dotted var(--md-accent-fg-color);
 		padding: 0 0 .1rem 0 !important;
-		margin: 0 0 .6rem 0;
+		margin: 0 0 .2rem 0;
 	}
 
 	nav.md-nav[data-md-level="0"] > ul > li > label {
 		font-size: 1.3rem;
 		font-weight: 300;
-		padding: 0 0 .4rem 0 !important;
-		margin: 0 .6rem .6rem .6rem;
+		padding-bottom: .4rem !important;
+		margin: 0;
 	}
 }

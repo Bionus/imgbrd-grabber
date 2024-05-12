@@ -32,7 +32,7 @@ void ProgressBarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 	// Set the progress
 	const DownloadQueryGroup &download = qobject_cast<DownloadGroupTableModel*>(parent())->dataForRow(index.row());
-	progressBarOption.progress = download.progressVal;
+	progressBarOption.progress = qMin(download.progressVal, download.total);
 	progressBarOption.maximum = download.total;
 
 	// Draw the progress bar onto the view

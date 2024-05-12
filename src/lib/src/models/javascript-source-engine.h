@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include "search/search-format.h"
 #include "tags/tag-name-format.h"
 
 
@@ -46,6 +47,8 @@ class JavaScriptSourceEngine : public SourceEngine
 		const QList<Api*> &getApis() const override;
 		const QMap<QString, Auth*> &getAuths() const override;
 		const QStringList &getAdditionalTokens() const override;
+		const TagNameFormat &getTagNameFormat() const override;
+		const SearchFormat &getSearchFormat() const override;
 
 	private:
 		void load();
@@ -66,7 +69,8 @@ class JavaScriptSourceEngine : public SourceEngine
 		QList<Api*> m_apis;
 		QMap<QString, Auth*> m_auths;
 		QStringList m_additionalTokens;
-		TagNameFormat m_tagNameFormat; // Unused
+		TagNameFormat m_tagNameFormat;
+		SearchFormat m_searchFormat;
 
 		QFileSystemWatcher m_watcher;
 };

@@ -10,6 +10,8 @@
 
 class Api;
 class Auth;
+class SearchFormat;
+class TagNameFormat;
 
 /**
  * Represents a source engine that can be used for multiple sites.
@@ -25,7 +27,7 @@ class SourceEngine : public QObject
 	Q_OBJECT
 
 	public:
-		SourceEngine(QObject *parent = nullptr);
+		explicit SourceEngine(QObject *parent = nullptr);
 
 		virtual bool isValid() const = 0;
 		Api *getApi(const QString &name) const;
@@ -35,6 +37,8 @@ class SourceEngine : public QObject
 		virtual const QList<Api*> &getApis() const = 0;
 		virtual const QMap<QString, Auth*> &getAuths() const = 0;
 		virtual const QStringList &getAdditionalTokens() const = 0;
+		virtual const TagNameFormat &getTagNameFormat() const = 0;
+		virtual const SearchFormat &getSearchFormat() const = 0;
 
 	signals:
 		void changed();

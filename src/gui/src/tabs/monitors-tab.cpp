@@ -23,14 +23,21 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 {
 	ui->setupUi(this);
 
-	auto monitorTableModel = new MonitorTableModel(m_monitorManager, m_settings, this);
+	auto *monitorTableModel = new MonitorTableModel(m_monitorManager, m_settings, this);
 	m_monitorTableModel = new QSortFilterProxyModel(this);
 	m_monitorTableModel->setSortRole(Qt::UserRole);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
-	QShortcut *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
+	// Re-trigger sort on insert (FIXME: we shouldn't need to do this)
+	connect(m_monitorTableModel, &MonitorTableModel::rowsInserted, [=]() {
+		QTimer::singleShot(1, [=]() {
+			m_monitorTableModel->invalidate();
+		});
+	});
+
+	auto *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
 	actionRemoveSelected->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionRemoveSelected, &QShortcut::activated, this, &MonitorsTab::removeSelected);
 
@@ -105,7 +112,7 @@ void MonitorsTab::removeSelected()
 		}
 	}
 
-	std::sort(rows.begin(), rows.end(), std::greater<int>());
+	std::sort(rows.begin(), rows.end(), std::greater<>());
 
 	for (int i : qAsConst(rows)) {
 		m_monitorTableModel->removeRow(i);
@@ -114,15 +121,27 @@ void MonitorsTab::removeSelected()
 
 void MonitorsTab::convertSelected()
 {
-	QSet<int> rows;
+	// We don't use a QSet because the order of rows is important
+	QList<int> rows;
 	for (const QModelIndex &index : ui->tableMonitors->selectionModel()->selection().indexes()) {
-		rows.insert(m_monitorTableModel->mapToSource(index).row());
+		const int row = m_monitorTableModel->mapToSource(index).row();
+		if (!rows.contains(row)) {
+			rows.append(row);
+		}
 	}
 
 	for (const int row : rows) {
 		const Monitor &monitor = m_monitorManager->monitors()[row];
 		for (Site *site : monitor.sites()) {
-			emit batchAddGroup(DownloadQueryGroup(m_settings, monitor.query(), 1, 200, -1, monitor.postFilters(), site));
+			QString path = monitor.pathOverride();
+			if (path.isEmpty()) {
+				path = m_settings->value("save/path").toString();
+			}
+			QString filename = monitor.filenameOverride();
+			if (filename.isEmpty()) {
+				filename = m_settings->value("save/filename").toString();
+			}
+			emit batchAddGroup(DownloadQueryGroup(monitor.query(), 1, 200, -1, monitor.postFilters(), monitor.getBlacklisted(), site, filename, path));
 		}
 	}
 }

@@ -31,7 +31,7 @@ TEST_CASE("TagTypeApi")
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);

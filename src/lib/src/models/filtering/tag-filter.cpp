@@ -9,8 +9,7 @@ TagFilter::TagFilter(QString tag, bool invert)
 	: Filter(invert), m_tag(std::move(tag))
 {
 	if (m_tag.contains('*')) {
-		const QString pattern = QRegularExpression::wildcardToRegularExpression(m_tag);
-		m_regexp.reset(new QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption));
+		m_regexp.reset(new QRegularExpression(QRegularExpression::fromWildcard(m_tag, Qt::CaseInsensitive)));
 	}
 }
 
@@ -37,7 +36,7 @@ QString TagFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 
 	const QStringList &tags = tokens["allos"].value().toStringList();
 
-	// Check if any tag match the filter (case insensitive plain text with wildcards allowed)
+	// Check if any tag match the filter (case-insensitive plain text with wildcards allowed)
 	bool cond = false;
 	for (const QString &tag : tags) {
 		const bool match = m_regexp.isNull() ? tag == m_tag : m_regexp->match(tag).hasMatch();

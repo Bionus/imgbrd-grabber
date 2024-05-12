@@ -24,6 +24,9 @@
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
 #include "login/login-factory.h"
+#if defined(USE_WEBENGINE)
+	#include <QWebEngineProfile>
+#endif
 
 #ifdef QT_DEBUG
 	// #define CACHE_POLICY QNetworkRequest::PreferCache
@@ -38,8 +41,8 @@ Site::Site(QString url, Source *source, Profile *profile)
 	: Site(url, source->getEngine(), source->getPath().readWritePath(QString(url).replace(':', '_')), profile)
 {}
 
-Site::Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile)
-	: m_profile(profile), m_dir(dir), m_type(engine->getName()), m_url(std::move(url)), m_sourceEngine(engine), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+Site::Site(QString url, SourceEngine *engine, ReadWritePath dir, Profile *profile)
+	: m_profile(profile), m_dir(std::move(dir)), m_type(engine->getName()), m_url(std::move(url)), m_sourceEngine(engine), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new NetworkManager(this);
@@ -156,6 +159,24 @@ void Site::loadConfig()
 	m_manager->setInterval(QueryType::Thumbnail, setting("download/throttle_thumbnail", 0).toInt() * 1000);
 	m_manager->setInterval(QueryType::Details, setting("download/throttle_details", 0).toInt() * 1000);
 	m_manager->setInterval(QueryType::Retry, setting("download/throttle_retry", 60).toInt() * 1000);
+
+	// Generate the User-Agent
+	m_userAgent = m_settings->value("Headers/User-Agent").toString();
+	if (m_userAgent.isEmpty()) {
+		const QString globalUserAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString();
+		if (pSettings->value("useQtUserAgent", true).toBool()) {
+			#if defined(USE_WEBENGINE)
+				m_userAgent = QWebEngineProfile::defaultProfile()->httpUserAgent();
+			#else
+				log(QStringLiteral("Cannot use Qt User-Agent because WebEngine is not available"), Logger::Warning);
+				m_userAgent = globalUserAgent;
+			#endif
+		} else {
+			m_userAgent = globalUserAgent;
+		}
+	} else {
+		m_userAgent.replace("%version%", QString(VERSION));
+	}
 }
 
 Site::~Site()
@@ -278,12 +299,7 @@ void Site::setRequestHeaders(QNetworkRequest &request) const
 	}
 
 	// User-Agent header tokens and default value
-	QString userAgent = request.rawHeader("User-Agent");
-	if (userAgent.isEmpty()) {
-		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0");
-	}
-	userAgent.replace("%version%", QString(VERSION));
-	request.setRawHeader("User-Agent", userAgent.toLatin1());
+	request.setRawHeader("User-Agent", userAgent().toLatin1());
 }
 
 QMap<QString, QString> Site::settingsHeaders() const
@@ -333,6 +349,7 @@ QString Site::baseUrl() const
 const QString &Site::name() const { return m_name; }
 const QString &Site::url() const { return m_url; }
 const QString &Site::type() const { return m_type; }
+const QString &Site::userAgent() const { return m_userAgent; }
 
 SourceEngine *Site::getSourceEngine() const { return m_sourceEngine; }
 const QList<Api *> &Site::getApis() const { return m_apis; }
@@ -385,6 +402,16 @@ Api *Site::tagsApi() const
 	}
 	return nullptr;
 }
+ApiEndpoint *Site::apiEndpoint(const QString &name) const
+{
+	for (Api *api : m_apis) {
+		ApiEndpoint *endpoint = api->endpoints().value(name);
+		if (endpoint != nullptr) {
+			return endpoint;
+		}
+	}
+	return nullptr;
+}
 
 bool Site::autoLogin() const { return m_autoLogin; }
 void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
@@ -433,6 +460,11 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 const QList<QNetworkCookie> &Site::cookies() const
 {
 	return m_cookies;
+}
+
+PersistentCookieJar *Site::cookieJar() const
+{
+	return m_cookieJar;
 }
 
 bool Site::isLoggedIn(bool unknown, bool pending) const

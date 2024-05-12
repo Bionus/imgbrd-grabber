@@ -55,7 +55,7 @@ FavoriteWindow::~FavoriteWindow()
 /**
  * Removes the favorite from the list and closes the window
  */
-void FavoriteWindow::on_buttonRemove_clicked()
+void FavoriteWindow::removeFavorite()
 {
 	m_profile->removeFavorite(m_favorite);
 	close();
@@ -64,7 +64,7 @@ void FavoriteWindow::on_buttonRemove_clicked()
 /**
  * Opens a window to choose an image to set the image path value.
  */
-void FavoriteWindow::on_openButton_clicked()
+void FavoriteWindow::browseImage()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Choose an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!file.isEmpty()) {
@@ -82,9 +82,9 @@ void FavoriteWindow::choosePathOverride()
 
 void FavoriteWindow::openSourcesWindow()
 {
-	auto w = new SourcesWindow(m_profile, m_selectedSources, this);
-	connect(w, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
-	w->show();
+	auto *sourcesWindow = new SourcesWindow(m_profile, m_selectedSources, this);
+	connect(sourcesWindow, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
+	sourcesWindow->show();
 }
 
 void FavoriteWindow::setSources(const QList<Site*> &sources)
@@ -115,10 +115,14 @@ void FavoriteWindow::save()
 		monitors[0] = rep;
 	}
 
+	// Only keep the last images if the "last viewed" datetime is unchanged
+	const QMap<QString, QVariantMap> lastImages = oldFav.getLastViewed() == ui->lastViewedDateTimeEdit->dateTime() ? oldFav.getLastImages() : QMap<QString, QVariantMap>();
+
 	m_favorite = Favorite(
 		ui->tagLineEdit->text(),
 		ui->noteSpinBox->value(),
 		ui->lastViewedDateTimeEdit->dateTime(),
+		lastImages,
 		monitors,
 		savePath("thumbs/" + m_favorite.getName(true) + ".png"),
 		ui->postFilteringLineEdit->text().split(' ', Qt::SkipEmptyParts),

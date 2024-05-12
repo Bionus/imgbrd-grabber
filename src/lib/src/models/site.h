@@ -9,6 +9,7 @@
 
 
 class Api;
+class ApiEndpoint;
 class Auth;
 class Image;
 class MixedSettings;
@@ -55,7 +56,7 @@ class Site : public QObject
 		};
 
 		Site(QString url, Source *source, Profile *profile);
-		Site(QString url, SourceEngine *engine, const ReadWritePath &dir, Profile *profile);
+		Site(QString url, SourceEngine *engine, ReadWritePath dir, Profile *profile);
 		~Site() override;
 
 		void loadConfig();
@@ -63,14 +64,16 @@ class Site : public QObject
 		const QString &name() const;
 		QString baseUrl() const;
 		const QString &url() const;
+		const QString &userAgent() const;
 		const QList<QNetworkCookie> &cookies() const;
+		PersistentCookieJar *cookieJar() const;
 		QVariant setting(const QString &key, const QVariant &def = QVariant()) const;
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def) const;
 		void syncSettings() const;
 		MixedSettings *settings() const;
 		QMap<QString, QString> settingsHeaders() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {}, bool login = true);
+		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {}, bool autoLogin = true);
 		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		NetworkReply *post(const QUrl &url, QByteArray data, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
@@ -87,6 +90,7 @@ class Site : public QObject
 		Api *detailsApi() const;
 		Api *fullDetailsApi() const;
 		Api *tagsApi() const;
+		ApiEndpoint *apiEndpoint(const QString &name) const;
 
 		// Login
 		void setAutoLogin(bool autoLogin);
@@ -110,6 +114,7 @@ class Site : public QObject
 		QString m_type;
 		QString m_name;
 		QString m_url;
+		QString m_userAgent;
 		SourceEngine *m_sourceEngine;
 		QList<QNetworkCookie> m_cookies;
 		MixedSettings *m_settings;

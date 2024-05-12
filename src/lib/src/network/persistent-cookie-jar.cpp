@@ -19,7 +19,7 @@ PersistentCookieJar::~PersistentCookieJar()
 
 void PersistentCookieJar::clear()
 {
-	QList<QNetworkCookie> list = allCookies();
+	const QList<QNetworkCookie> list = allCookies();
 	for (const QNetworkCookie &cookie : list) {
 		deleteCookie(cookie);
 	}
@@ -34,6 +34,12 @@ bool PersistentCookieJar::insertCookies(const QList<QNetworkCookie> &cookies)
 	return all;
 }
 
+
+QList<QNetworkCookie> PersistentCookieJar::getAllCookies() const
+{
+	QMutexLocker lock(&m_mutex);
+	return allCookies();
+}
 
 QList<QNetworkCookie> PersistentCookieJar::cookiesForUrl(const QUrl &url) const
 {

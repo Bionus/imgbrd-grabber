@@ -12,7 +12,7 @@ title: Linux
     ```bash
     chmod +x Grabber_*-x86_64.AppImage
     ```
-4. Double click on the AppImage file to start Grabber
+4. Double-click on the AppImage file to start Grabber
 
 ### Via the pre-built binary archive
 1. Go to the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest)

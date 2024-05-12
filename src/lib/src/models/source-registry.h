@@ -41,6 +41,7 @@ class SourceRegistry : public QObject
 		const QString &home() const { return m_home; }
 		const QString &url() const { return m_url; }
 		const QMap<QString, SourceRegistrySource> &sources() const { return m_sources; }
+		bool isValid() const { return m_isValid; }
 
 	protected slots:
 		void jsonLoaded();
@@ -51,6 +52,7 @@ class SourceRegistry : public QObject
 	private:
 		QString m_jsonUrl;
 		NetworkManager *m_manager;
+		bool m_isValid;
 
 		QString m_name;
 		QString m_home;

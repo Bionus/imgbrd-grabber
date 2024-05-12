@@ -10,6 +10,7 @@
 #include "loaders/gallery-search-loader.h"
 #include "loaders/image-loader.h"
 #include "loaders/tag-search-loader.h"
+#include "logger.h"
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -26,15 +27,15 @@
 
 #if defined(Q_OS_ANDROID)
 	#include <QStandardPaths>
-	#include <QtAndroid>
+	#include <QtCore/private/qandroidextras_p.h>
 	#include "logger.h"
 
 	bool checkPermission(const QString &perm)
 	{
-		auto already = QtAndroid::checkPermission(perm);
-		if (already == QtAndroid::PermissionResult::Denied) {
-			auto results = QtAndroid::requestPermissionsSync(QStringList() << perm);
-			if (results[perm] == QtAndroid::PermissionResult::Denied) {
+		auto already = QtAndroidPrivate::checkPermission(perm).result();
+		if (already == QtAndroidPrivate::PermissionResult::Denied) {
+			auto result = QtAndroidPrivate::requestPermission(perm).result();
+			if (result == QtAndroidPrivate::PermissionResult::Denied) {
 				return false;
 			}
 		}
@@ -44,31 +45,19 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
 	QGuiApplication app(argc, argv);
 	app.setApplicationName("Grabber");
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
-	qRegisterMetaType<ImageLoader::Size>("ImageLoader::Size");
+	Logger::getInstance().initialize();
 
 	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
 	qmlRegisterType<GallerySearchLoader>("Grabber", 1, 0, "GallerySearchLoader");
 	qmlRegisterType<TagSearchLoader>("Grabber", 1, 0, "TagSearchLoader");
 	qmlRegisterType<ImageLoader>("Grabber", 1, 0, "ImageLoader");
-
-	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");
-	qRegisterMetaType<Profile*>("Profile*");
-	qRegisterMetaType<Settings*>("Settings*");
-	qRegisterMetaType<QmlImage*>("QmlImage*");
-	qRegisterMetaType<QList<QmlImage*>>("QList>QmlImage*>");
-	qRegisterMetaType<QmlSite*>("QmlSite*");
-	qRegisterMetaType<QList<QmlSite*>>("QList<QmlSite*>");
-	qRegisterMetaType<QList<QmlAuth*>>("QList<QmlAuth*>");
-	qRegisterMetaType<QList<QmlAuthSettingField*>>("QList<QmlAuthSettingField*>");
 
 	// Copy settings files to writable directory
 	const QStringList toCopy { "themes/", "webservices/" };
@@ -102,10 +91,10 @@ int main(int argc, char *argv[])
 	// Define a few globals
 	engine.rootContext()->setContextProperty("VERSION", QString(VERSION));
 	#ifdef NIGHTLY
-		engine.rootContext()->setContextProperty("NIGHTLY", true);
+		engine.rootContext()->setContextProperty("NIGHTLY", QVariant(true));
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString(NIGHTLY_COMMIT));
 	#else
-		engine.rootContext()->setContextProperty("NIGHTLY", false);
+		engine.rootContext()->setContextProperty("NIGHTLY", QVariant(false));
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString());
 	#endif
 
@@ -146,7 +135,7 @@ int main(int argc, char *argv[])
 	engine.load(url);
 
 	#if defined(Q_OS_ANDROID)
-		QtAndroid::hideSplashScreen(250);
+		QNativeInterface::QAndroidApplication::hideSplashScreen(250);
 	#endif
 
 	return app.exec();

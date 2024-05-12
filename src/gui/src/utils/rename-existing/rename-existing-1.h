@@ -29,8 +29,8 @@ class RenameExisting1 : public QDialog
 		void getTags();
 		void fullDetailsFinished();
 		void loadNext();
-		void on_buttonCancel_clicked();
-		void on_buttonContinue_clicked();
+		void cancel();
+		void nextStep();
 
 	private:
 		void setImageResult(Image *img);

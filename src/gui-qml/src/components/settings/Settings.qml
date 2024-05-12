@@ -303,4 +303,11 @@ Item {
         def: true
         obj: root.obj
     }
+
+    // Setting to gate V8 features
+    property Setting v8: Setting {
+        key: "v8"
+        def: false
+        obj: root.obj
+    }
 }

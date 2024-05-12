@@ -55,13 +55,13 @@ void SettingsDock::reset()
 {
 	// Reload filename history
 	QFile f(m_profile->getPath() + "/filenamehistory.txt");
-	QStringList filenames;
+	QSet<QString> filenames;
 	if (f.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = f.readLine()).isEmpty()) {
 			QString l = line.trimmed();
 			if (!l.isEmpty() && !filenames.contains(l)) {
-				filenames.append(l);
+				filenames.insert(l);
 				ui->comboFilename->addItem(l);
 			}
 		}

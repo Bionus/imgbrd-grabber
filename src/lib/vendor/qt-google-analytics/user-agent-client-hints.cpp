@@ -4,13 +4,15 @@
 #include <QString>
 #include <QSysInfo>
 
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID)
 	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		#include <QJniObject>
 	#else
 		#include <QAndroidJniObject>
 		typedef QAndroidJniObject QJniObject;
 	#endif
+#elif defined(Q_OS_WIN)
+	#include <QSettings>
 #endif
 
 
@@ -129,7 +131,8 @@ QString UserAgentClientHints::platformVersion() const
 		case QOperatingSystemVersion::IOS:
 			return ""; // TODO: (UIDevice currentDevice).systemVersion
 
-		case QOperatingSystemVersion::Windows:
+		case QOperatingSystemVersion::Windows: {
+			// Windows versions before Windows 10 just use basic hard-coded values
 			if (m_osVersion.majorVersion() == 8 && m_osVersion.minorVersion() == 1) {
 				return "0.3.0";
 			}
@@ -142,7 +145,22 @@ QString UserAgentClientHints::platformVersion() const
 			if (m_osVersion.majorVersion() < 7) {
 				return "0.0.0";
 			}
-			return ""; // TODO: Windows.Foundation.UniversalApiContract
+
+			// TODO: use mapping for older Windows 10 versions (pre RedStone 4)
+
+			#if defined(Q_OS_WIN)
+				// On modern Windows versions, we should use "UniversalApiContract" which can be read in the registry
+				QSettings registry("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\WindowsRuntime\\WellKnownContracts", QSettings::Registry64Format);
+				const uint universalApiContractVersion = registry.value("Windows.Foundation.UniversalApiContract").toUInt();
+				if (universalApiContractVersion) {
+					const uint majorVersion = (universalApiContractVersion >> 16) & 0xffff;
+					const uint minorVersion = universalApiContractVersion & 0xffff;
+					return QString("%1.%2.0").arg(QString::number(majorVersion), QString::number(minorVersion));
+				}
+			#endif
+
+			return {}; // TODO: return "15.0.0" for future-proofing (kHighestKnownUniversalApiContractVersion)
+		}
 
 		case QOperatingSystemVersion::Android: // android.os.Build.VERSION.RELEASE
 		case QOperatingSystemVersion::MacOS: // NSProcessInfo.operatingSystemVersion

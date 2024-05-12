@@ -3,6 +3,7 @@
 
 #include <QMetaType>
 #include <QPixmap>
+#include <QSharedPointer>
 #include <QSize>
 #include <QString>
 #include <QUrl>

@@ -10,7 +10,7 @@ TEST_CASE("FilenameResolutionVisitor")
 	SECTION("Empty")
 	{
 		FilenameParser parser("");
-		auto ast = parser.parseRoot();
+		auto *ast = parser.parseRoot();
 
 		FilenameResolutionVisitor resolutionVisitor;
 		auto results = resolutionVisitor.run(*ast);
@@ -21,7 +21,7 @@ TEST_CASE("FilenameResolutionVisitor")
 	SECTION("Basic")
 	{
 		FilenameParser parser("out/%md5:opt%.%ext%");
-		auto ast = parser.parseRoot();
+		auto *ast = parser.parseRoot();
 
 		FilenameResolutionVisitor resolutionVisitor;
 		auto results = resolutionVisitor.run(*ast);
@@ -32,7 +32,7 @@ TEST_CASE("FilenameResolutionVisitor")
 	SECTION("Conditional")
 	{
 		FilenameParser parser("out/<%id%?some tag is present:%rating%>/%md5%.%ext%");
-		auto ast = parser.parseRoot();
+		auto *ast = parser.parseRoot();
 
 		FilenameResolutionVisitor resolutionVisitor;
 		auto results = resolutionVisitor.run(*ast);
@@ -43,7 +43,7 @@ TEST_CASE("FilenameResolutionVisitor")
 	SECTION("Duplicates")
 	{
 		FilenameParser parser("%md5%/file-%md5:opt%.%ext%");
-		auto ast = parser.parseRoot();
+		auto *ast = parser.parseRoot();
 
 		FilenameResolutionVisitor resolutionVisitor;
 		auto results = resolutionVisitor.run(*ast);

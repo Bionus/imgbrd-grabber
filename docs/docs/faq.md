@@ -41,7 +41,7 @@ It can be found in "Save > Tags > Category name". Change it to something else th
 See the [Duplicate files](duplicate-files.md) documentation page.
 
 
-### Why do I get an message saying my filename is not unique?
+### Why do I get a message saying my filename is not unique?
 
 This means that different images can end up having the same filename if you are not careful.
 

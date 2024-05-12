@@ -11,7 +11,7 @@
 [![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/Bionus/imgbrd-grabber/build.yml)](https://github.com/Bionus/imgbrd-grabber/actions)
 [![Code Coverage](https://img.shields.io/codecov/c/github/Bionus/imgbrd-grabber.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/044edd1462094c6e8d35cb0bcdd86a2b)](https://www.codacy.com/app/bionus/imgbrd-grabber)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3ab9cd9af181458fad287a2663129d98)](https://app.codacy.com/gh/Bionus/imgbrd-grabber/dashboard)
 [![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
 
 Imageboard/booru downloader which can download thousands of images from multiple boorus very easily.
@@ -27,7 +27,7 @@ For users interested, a nightly version is built automatically on every commit o
 
 * [Install steps for Windows](https://www.bionus.org/imgbrd-grabber/docs/install/windows.html)
 * [Install steps for Linux](https://www.bionus.org/imgbrd-grabber/docs/install/linux.html)
-* [Install steps for MacOS](https://www.bionus.org/imgbrd-grabber/docs/install/macos.html)
+* [Install steps for macOS](https://www.bionus.org/imgbrd-grabber/docs/install/macos.html)
 * [Install steps for Android](https://www.bionus.org/imgbrd-grabber/docs/install/android.html)
 
 ## Features

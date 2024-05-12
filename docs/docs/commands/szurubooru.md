@@ -35,7 +35,7 @@ If you're having issues setting it up (for example with filesystem permissions),
 
 ### Install NodeJS
 
-You need NodeJS to be installed on your machine to use the upload script used by Grabber.
+You need Node.js to be installed on your machine to use the upload script used by Grabber.
 You can download it from [their website](https://nodejs.org/en/download/), or from a package manager [here](https://nodejs.org/en/download/package-manager/).
 
 
@@ -50,7 +50,7 @@ Download the [szurubooru.js](szurubooru.js) file into Grabber's installation fol
 
 ### Install NodeJS global packages
 
-This script uses the NodeJS "axios" and "form-data" plugins, so you can install them with:
+This script uses the Node.js "axios" and "form-data" plugins, so you can install them with:
 ```bash
 npm install -g axios form-data
 ```

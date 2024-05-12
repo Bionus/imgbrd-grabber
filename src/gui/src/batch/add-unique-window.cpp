@@ -77,14 +77,14 @@ void AddUniqueWindow::toggleMultiLineMd5(bool toggle)
 /**
  * Ui events
  */
-void AddUniqueWindow::on_buttonFolder_clicked()
+void AddUniqueWindow::chooseFolder()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty()) {
 		ui->lineFolder->setText(folder);
 	}
 }
-void AddUniqueWindow::on_lineFilename_textChanged(const QString &text)
+void AddUniqueWindow::validateFilename(const QString &text)
 {
 	QString message;
 	Filename fn(text);
@@ -167,7 +167,7 @@ void AddUniqueWindow::loadNext()
 		connect(m_image.data(), &Image::finishedLoadingTags, this, &AddUniqueWindow::addLoadedImage);
 		m_image->loadDetails();
 	} else {
-		const QString query = (q.id.isEmpty() ? "md5:" + q.md5 : "id:" + q.id);
+		const QString query = q.id.isEmpty() ? "md5:" + q.md5 : "id:" + q.id;
 		const QStringList search { query, "status:any" };
 		m_page = new Page(m_profile, q.site, m_sites.values(), search, 1, 1);
 		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);

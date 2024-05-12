@@ -87,14 +87,15 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	return ret;
 }
 
-QList<QMap<QString, Token>> Filename::expandTokens(QMap<QString, Token> tokens, QSettings *settings) const
+QList<QMap<QString, Token>> Filename::expandTokens(const QMap<QString, Token> &tokens, QSettings *settings) const
 {
 	QList<QMap<QString, Token>> ret;
 	ret.append(tokens);
 
 	const bool isJavascript = m_format.startsWith(QLatin1String("javascript:"));
-	for (const QString &key : tokens.keys()) {
-		const Token &token = tokens[key];
+	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
+		const QString &key = it.key();
+		const Token &token = it.value();
 		if (token.value().type() != QVariant::StringList) {
 			continue;
 		}
@@ -110,7 +111,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(QMap<QString, Token> tokens, 
 		for (int i = 0; i < cnt; ++i) {
 			ret[i].insert(key, reps[0]);
 			for (int j = 1; j < reps.count(); ++j) {
-				tokens = ret[i];
+				QMap<QString, Token> tokens = ret[i];
 				tokens.insert(key, reps[j]);
 				ret.append(tokens);
 			}
@@ -326,7 +327,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Looking for unknown tokens
-	QStringList knownTokens {"tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid" };
+	QStringList knownTokens {"tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid" };
 	if (profile != nullptr) {
 		knownTokens.append(profile->getAdditionalTokens());
 		knownTokens.append(getCustoms(profile->getSettings()).keys());
@@ -392,7 +393,7 @@ bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 
 int Filename::needExactTags(Site *site, QSettings *settings, const QString &api) const
 {
-	Q_UNUSED(api);
+	Q_UNUSED(api)
 
 	const QStringList forcedTokens = site != nullptr
 		? site->getApis().first()->forcedTokens()
@@ -428,7 +429,7 @@ int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &
 	// Some sources require loading to get the tag list
 	if (forcedTokens.contains("tags")) {
 		// The filename use tags
-		static const QStringList forbidden { "tags", "all", "allo", "artist", "copyright", "character", "model", "photo_set", "species", "meta", "general" };
+		static const QStringList forbidden { "tags", "all", "allo", "artist", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "general" };
 		for (const QString &token : forbidden) {
 			if (toks.contains(token)) {
 				return 2;
@@ -444,7 +445,7 @@ int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &
 	}
 
 	// The filename contains one of the special tags
-	static const QStringList forbidden { "artist", "copyright", "character", "model", "photo_set", "species", "meta", "general" };
+	static const QStringList forbidden { "artist", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "general" };
 	for (const QString &token : forbidden) {
 		if (toks.contains(token)) {
 			return 1;

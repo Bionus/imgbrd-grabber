@@ -11,8 +11,9 @@ namespace Ui
 }
 
 
+class QAudioOutput;
 class QMediaPlayer;
-class QMediaPlaylist;
+class QSettings;
 class QVideoWidget;
 class QWidget;
 
@@ -21,8 +22,8 @@ class VideoPlayer : public Player
 	Q_OBJECT
 
 	public:
-		explicit VideoPlayer(bool showControls, QWidget *parent = nullptr);
-		~VideoPlayer();
+		explicit VideoPlayer(QSettings *settings, QWidget *parent = nullptr);
+		~VideoPlayer() override;
 
 		bool supports(const QString &file) override;
 		void load(const QString &file) override;
@@ -37,10 +38,11 @@ class VideoPlayer : public Player
 
 	private:
 		Ui::VideoPlayer *ui;
+		QSettings *m_settings;
 		QStringList m_supportedFormats;
 		QVideoWidget *m_videoWidget;
+		QAudioOutput *m_audioOutput;
 		QMediaPlayer *m_mediaPlayer;
-		QMediaPlaylist *m_mediaPlaylist;
 		bool m_noSeek = false;
 };
 

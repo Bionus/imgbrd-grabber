@@ -181,7 +181,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Each time an image is saved, an external text file will be save with the same name at the same location.</string>
+          <string>Each time an image is saved, an external text file will be saved with the same name at the same location.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>

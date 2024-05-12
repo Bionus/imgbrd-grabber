@@ -1,12 +1,21 @@
 project(lib VERSION ${VERSION})
 
-find_package(Qt5 COMPONENTS Concurrent Gui Network NetworkAuth Qml Sql Xml REQUIRED) # Qt5::Gui required for some classes such as QPixmap
-set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Network Qt5::NetworkAuth Qt5::Qml Qt5::Sql Qt5::Xml)
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network NetworkAuth Qml Sql Xml OPTIONAL_COMPONENTS WebEngineCore REQUIRED) # Qt6::Gui required for some classes such as QPixmap
+set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Network Qt6::NetworkAuth Qt6::Qml Qt6::Sql Qt6::Xml)
+
+# Optional WebEngine component
+if(FALSE AND TARGET Qt6::WebEngineCore)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WebEngineCore)
+	set(USE_WEBENGINE 1)
+	add_definitions(-DUSE_WEBENGINE=1)
+	message(STATUS "Compiling with WebEngine support")
+else()
+	message(STATUS "Compiling without WebEngine support")
+endif()
 
 # Android specials
 if(ANDROID)
-	find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
 # Lexbor

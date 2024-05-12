@@ -3,9 +3,10 @@
 #include <QSettings>
 #include <QString>
 #include <QStringList>
-#include "functions.h"
-#include "models/profile.h"
 #include "cli.h"
+#include "functions.h"
+#include "logger.h"
+#include "models/profile.h"
 
 
 int main(int argc, char *argv[])
@@ -16,6 +17,8 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
+
+	Logger::getInstance().initialize();
 
 	auto *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);

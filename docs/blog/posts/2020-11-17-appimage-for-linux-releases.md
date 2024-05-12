@@ -1,5 +1,5 @@
 ---
-date: 2020-11-17 14:09:00 +0100
+date: 2020-11-17 14:09:00 +1:00
 categories: [Linux]
 authors: [Bionus]
 ---
@@ -17,7 +17,7 @@ You can find more info about the _AppImage_ format on [appimage.org](https://app
 
 <!-- more -->
 
-This change is quite new and as such is still only available for Github nightlies, and there might be a few issues here and there. If that's the case, please do ping me by mail or on Github!
+This change is quite new and as such is still only available for GitHub nightlies, and there might be a few issues here and there. If that's the case, please do ping me by mail or on GitHub!
 
 You can find the download here:  
 <https://github.com/Bionus/imgbrd-grabber/releases/nightly>

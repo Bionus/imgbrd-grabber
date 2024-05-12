@@ -41,7 +41,7 @@ SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow 
 
 	// Checkboxes
 	m_checkboxesSignalMapper = new QSignalMapper(this);
-	connect(m_checkboxesSignalMapper, SIGNAL(mapped(QString)), this, SLOT(toggleSource(QString)));
+	connect(m_checkboxesSignalMapper, &QSignalMapper::mappedString, this, &SearchTab::toggleSource);
 
 	// Modifiers
 	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
@@ -443,7 +443,7 @@ void SearchTab::httpsRedirect(Page *page)
 
 void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &images)
 {
-	Q_UNUSED(page);
+	Q_UNUSED(page)
 
 	m_page++;
 
@@ -708,7 +708,7 @@ void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 
 	Site *site = page->site();
 	if (!m_siteLabels.contains(site)) {
-		QLabel *txt = new QLabel(this);
+		auto *txt = new QLabel(this);
 		txt->setOpenExternalLinks(true);
 		m_siteLabels.insert(site, txt);
 
@@ -846,7 +846,7 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 
 QWidget *SearchTab::createImageThumbnail()
 {
-	QWidget *w = new QWidget(this);
+	auto *w = new QWidget(this);
 
 	const bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	const int borderSize = m_settings->value("borders", 3).toInt();
@@ -863,13 +863,13 @@ QWidget *SearchTab::createImageThumbnail()
 
 void SearchTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 
 	QAction *first = menu->actions().first();
 
 	// Save selected
 	if (!m_selectedImagesPtrs.empty()) {
-		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
+		auto *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
 		connect(actionSaveSelected, &QAction::triggered, this, &SearchTab::contextSaveSelected);
 		menu->insertAction(first, actionSaveSelected);
 	}
@@ -881,9 +881,9 @@ void SearchTab::contextSaveSelected()
 	const QString path = m_settings->value("Save/path").toString();
 
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs)) {
-		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
+		auto *downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
 		if (m_boutons.contains(img.data())) {
-			connect(downloader, &ImageDownloader::downloadProgress, [this](QSharedPointer<Image> img, qint64 v1, qint64 v2) {
+			connect(downloader, &ImageDownloader::downloadProgress, [this](const QSharedPointer<Image> &img, qint64 v1, qint64 v2) {
 				ImagePreview *preview = m_boutons.value(img.data(), nullptr);
 				if (preview != nullptr) {
 					preview->setDownloadProgress(v1, v2);
@@ -1069,13 +1069,13 @@ void SearchTab::updateCheckboxes()
 			}
 		}
 
-		QCheckBox *c = new QCheckBox(url.left(m), this);
-			c->setChecked(m_selectedSources.contains(site));
-			m_checkboxesSignalMapper->setMapping(c, it.key());
-			connect(c, SIGNAL(toggled(bool)), m_checkboxesSignalMapper, SLOT(map()));
-			ui_layoutSourcesList->addWidget(c);
+		auto *checkBox = new QCheckBox(url.left(m), this);
+			checkBox->setChecked(m_selectedSources.contains(site));
+			m_checkboxesSignalMapper->setMapping(checkBox, it.key());
+			connect(checkBox, SIGNAL(toggled(bool)), m_checkboxesSignalMapper, SLOT(map()));
+			ui_layoutSourcesList->addWidget(checkBox);
 
-		m_checkboxes.append(c);
+		m_checkboxes.append(checkBox);
 	}
 
 	DONE();
@@ -1089,11 +1089,13 @@ void SearchTab::openImage(int id)
 
 	const QSharedPointer<Image> &image = m_images.at(id);
 
-	QStringList detected = m_profile->getBlacklist().match(image->tokens(m_profile));
-	if (!detected.isEmpty()) {
-		const int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::No) {
-			return;
+	if (m_settings->value("warnblacklisted", true).toBool()) {
+		QStringList detected = m_profile->getBlacklist().match(image->tokens(m_profile));
+		if (!detected.isEmpty()) {
+			const int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::No) {
+				return;
+			}
 		}
 	}
 
@@ -1196,9 +1198,9 @@ void SearchTab::toggleImage(int id, bool toggle, bool range)
 
 void SearchTab::openSourcesWindow()
 {
-	auto adv = new SourcesWindow(m_profile, m_selectedSources, this);
-	connect(adv, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
-	adv->show();
+	auto *sourcesWindow = new SourcesWindow(m_profile, m_selectedSources, this);
+	connect(sourcesWindow, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
+	sourcesWindow->show();
 }
 
 QList<Site*> SearchTab::sourcesWithResults(bool eager)
@@ -1222,24 +1224,24 @@ void SearchTab::pruneSources()
 
 	log(QStringLiteral("Pruning sources..."), Logger::Info);
 
-    QSet<Site*> sitesWithImages;
-    for (const QSharedPointer<Image> &img : qAsConst(m_images)) {
-        if (!sitesWithImages.contains(img->parentSite())) {
-            sitesWithImages.insert(img->parentSite());
-        }
+	QSet<Site*> sitesWithImages;
+	for (const QSharedPointer<Image> &img : qAsConst(m_images)) {
+		if (!sitesWithImages.contains(img->parentSite())) {
+			sitesWithImages.insert(img->parentSite());
+		}
 	}
 
-    QList<Site*> goodSources;
+	QList<Site*> goodSources;
 	QStringList removedSources;
-    for (Site *site : m_selectedSources) {
-        if (sitesWithImages.contains(site)) {
+	for (Site *site : m_selectedSources) {
+		if (sitesWithImages.contains(site)) {
 			goodSources.append(site);
-        } else {
+		} else {
 			removedSources.append(site->name());
-        }
-    }
+		}
+	}
 
-    this->setSources(goodSources);
+	this->setSources(goodSources);
 	log(QStringLiteral("Sources pruned: %1").arg(removedSources.isEmpty() ? "none" : removedSources.join(", ")), Logger::Info);
 }
 
@@ -1261,14 +1263,12 @@ void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 		sav.append(enabled->url());
 	}
 	m_settings->setValue("sites", sav);
-	m_selectedSources = sel;
+	setSources(sel);
 
 	// Log into new sources
 	for (Site *site : sel) {
 		site->login();
 	}
-
-	updateCheckboxes();
 
 	DONE();
 
@@ -1407,7 +1407,7 @@ void SearchTab::loadPage()
 		}
 		m_pages[page->website()].append(QSharedPointer<Page>(page));
 
-		// Setup the layout
+		// Set up the layout
 		if (!merged) {
 			FixedSizeGridLayout *pageLayout = createImagesLayout(m_settings);
 			m_layouts.insert(page, pageLayout);
@@ -1435,7 +1435,7 @@ void SearchTab::loadPage()
 
 void SearchTab::addLayout(QLayout *layout, int row, int column)
 {
-	QWidget *layoutWidget = new QWidget;
+	auto *layoutWidget = new QWidget;
 	layoutWidget->setLayout(layout);
 	ui_layoutResults->addWidget(layoutWidget, row, column);
 }

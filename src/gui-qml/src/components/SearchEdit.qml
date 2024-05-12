@@ -12,12 +12,12 @@ TextEdit {
     font.pixelSize: 14
     inputMethodHints: Qt.ImhPreferLowercase
 
-    Keys.onEnterPressed: {
+    Keys.onEnterPressed: event => {
         Qt.inputMethod.hide()
         root.enterPressed()
         event.accepted = true
     }
-    Keys.onReturnPressed: {
+    Keys.onReturnPressed: event => {
         Qt.inputMethod.hide()
         root.enterPressed()
         event.accepted = true
@@ -31,6 +31,7 @@ TextEdit {
         visible: !(parent.text.length || parent.inputMethodComposing)
         font: parent.font
         color: "#666"
+        leftPadding: parent.leftPadding
     }
 
     SyntaxHighlighterHelper {

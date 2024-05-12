@@ -21,5 +21,10 @@ void TagSearchLoader::setQuery(const QString &query)
 
 void TagSearchLoader::load()
 {
-	search(m_query.split(' '));
+	if (!m_endpoint.isEmpty()) {
+		const QMap<QString, QVariant> input {{ "search", m_query }};
+		search(SearchQuery(m_endpoint, input));
+	} else {
+		search(m_query.split(" ", Qt::SkipEmptyParts));
+	}
 }

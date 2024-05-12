@@ -3,7 +3,7 @@
  <class>StartWindow</class>
  <widget class="QDialog" name="StartWindow">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModality::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -20,13 +20,13 @@
    <item>
     <widget class="QLabel" name="welcomeLabel">
      <property name="text">
-      <string>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</string>
+      <string>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</string>
      </property>
      <property name="textFormat">
-      <enum>Qt::AutoText</enum>
+      <enum>Qt::TextFormat::AutoText</enum>
      </property>
      <property name="alignment">
-      <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -141,10 +141,10 @@
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Ignore|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::StandardButton::Ignore|QDialogButtonBox::StandardButton::Ok</set>
        </property>
       </widget>
      </item>
@@ -211,8 +211,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonFolder</sender>
+   <signal>clicked()</signal>
+   <receiver>StartWindow</receiver>
+   <slot>chooseFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>387</x>
+     <y>110</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonFilenamePlus</sender>
+   <signal>clicked()</signal>
+   <receiver>StartWindow</receiver>
+   <slot>chooseFormat()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>369</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>138</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openOptions()</slot>
+  <slot>chooseFolder()</slot>
+  <slot>chooseFormat()</slot>
  </slots>
 </ui>

@@ -7,6 +7,7 @@ class ExponentialMovingAverage
 	public:
 		ExponentialMovingAverage() = default;
 		explicit ExponentialMovingAverage(double smoothingFactor);
+
 		double average() const;
 		void setSmoothingFactor(double smoothingFactor);
 		void addValue(double value);

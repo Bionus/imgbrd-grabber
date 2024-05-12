@@ -11,7 +11,9 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
-#include "exiftool.h"
+#include "external/exiftool.h"
+#include "external/ffmpeg.h"
+#include "external/image-magick.h"
 #include "favorite.h"
 #include "filename/filename.h"
 #include "filtering/tag-filter-list.h"
@@ -19,6 +21,7 @@
 #include "loader/token.h"
 #include "logger.h"
 #include "models/api/api.h"
+#include "models/api/api-endpoint.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/pool.h"
@@ -83,7 +86,7 @@ Image::Image(Profile *profile)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
-	: Image(site, details, QVariantMap(), QVariantMap(), profile, parent)
+	: Image(site, std::move(details), QVariantMap(), QVariantMap(), profile, parent)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, QVariantMap data, Profile *profile, Page *parent)
@@ -140,6 +143,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		}
 
 		m_sizes.insert(it.key(), is);
+		m_allSizes.append(is);
 	}
 
 	// Medias
@@ -159,6 +163,8 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		for (const auto &media : medias) {
 			const Image::Size type = media->type;
 			const QSize size = media->size;
+
+			m_allSizes.append(media);
 
 			// If type is provided, trust it
 			if (type != Image::Unknown) {
@@ -226,6 +232,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		const QString realExt = details["ext"];
 		if (ext != realExt) {
 			setFileExtension(realExt);
+			m_extension = realExt;
 		}
 	} else if (ext == QLatin1String("jpg") && !url(Size::Thumbnail).isEmpty()) {
 		bool fixed = false;
@@ -362,7 +369,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	}
 
 	if (json.contains("gallery")) {
-		auto gallery = new Image(m_profile);
+		auto *gallery = new Image(m_profile);
 		if (gallery->read(json["gallery"].toObject(), sites)) {
 			m_parentGallery = QSharedPointer<Image>(gallery);
 		} else {
@@ -468,7 +475,7 @@ void Image::loadDetails(bool rateLimit)
 
 	log(QStringLiteral("Loading image details from `%1`").arg(m_pageUrl.toString()), Logger::Info);
 
-	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
+	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::Details;
 	m_loadDetails = m_parentSite->get(m_pageUrl, type);
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
@@ -580,6 +587,44 @@ void Image::parseDetails()
 
 	refreshTokens();
 
+	// If we load the details for an ugoira file that we will want to convert later, load the ugoira metadata as well
+	if (extension() == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
+		auto *endpoint = m_parentSite->apiEndpoint("ugoira_details");
+		if (endpoint != nullptr) {
+			const QString ugoiraDetailsUrl = endpoint->url(m_identity, 1, 1, {}, m_parentSite).url;
+
+			log(QStringLiteral("Loading image ugoira details from `%1`").arg(ugoiraDetailsUrl), Logger::Info);
+			auto *reply = m_parentSite->get(ugoiraDetailsUrl, Site::QueryType::Details);
+			reply->setParent(this);
+
+			connect(reply, &NetworkReply::finished, this, &Image::parseUgoiraDetails);
+			return;
+		}
+	}
+
+	emit finishedLoadingTags(LoadTagsResult::Ok);
+}
+void Image::parseUgoiraDetails()
+{
+	auto *reply = qobject_cast<NetworkReply*>(sender());
+	auto *endpoint = m_parentSite->apiEndpoint("ugoira_details");
+
+	// Handle network errors
+	if (reply->error()) {
+		if (reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
+			log(QStringLiteral("Loading ugoira details error for '%1': %2").arg(reply->url().toString(), reply->errorString()), Logger::Error);
+		}
+		reply->deleteLater();
+		emit finishedLoadingTags(LoadTagsResult::NetworkError);
+		return;
+	}
+
+	// Parse the metadata
+	const QString source = QString::fromUtf8(reply->readAll());
+	const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	m_data["ugoira_metadata"] = endpoint->parseAny(source, statusCode);
+
+	reply->deleteLater();
 	emit finishedLoadingTags(LoadTagsResult::Ok);
 }
 
@@ -698,11 +743,9 @@ QString &pathTokens(QString &filename, const QString &path)
 		.replace("%dir:nobackslash%", QString(dir).replace("\\", "/"))
 		.replace("%dir%", dir);
 }
-void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCommands, int count, bool basic)
+QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, bool startCommands, int count, bool basic)
 {
-	if (addMd5) {
-		m_profile->addMd5(md5(), path);
-	}
+	QString path = originalPath;
 
 	// Save info to a text file
 	if (!basic) {
@@ -764,12 +807,51 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 		commands.after();
 	}
 
+	QString ext = extension();
+
+	// FFmpeg
+	if (ext == QStringLiteral("webm")) {
+		const bool remux = m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool();
+		const bool convert = m_settings->value("Save/FFmpegConvertWebmToMp4", false).toBool();
+
+		// We can only remux VP9 to MP4 as VP8 is not compatible with the MP4 container and needs conversion instead
+		if (remux && FFmpeg::getVideoCodec(path) == QStringLiteral("vp9")) {
+			path = FFmpeg::remux(path, "mp4");
+			ext = getExtension(path);
+		} else if (convert) {
+			path = FFmpeg::convert(path, "mp4");
+			ext = getExtension(path);
+		}
+	}
+
+	// Image conversion
+	const QString targetImgExt = m_settings->value("Save/ImageConversion/" + ext.toUpper() + "/to").toString().toLower();
+	if (!targetImgExt.isEmpty()) {
+		const QString backend = m_settings->value("Save/ImageConversionBackend", "ImageMagick").toString();
+		if (backend == QStringLiteral("ImageMagick")) {
+			path = ImageMagick::convert(path, targetImgExt);
+		} else if (backend == QStringLiteral("FFmpeg")) {
+			path = FFmpeg::remux(path, targetImgExt);
+		}
+		ext = getExtension(path);
+	}
+
+	// Ugoira conversion
+	if (ext == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
+		const QString targetUgoiraExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
+		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
+		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal);
+		ext = getExtension(path);
+	}
+
 	// Metadata
-	const QString &ext = extension();
 	#ifdef WIN_FILE_PROPS
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
 		if (exts.isEmpty() || exts.contains(ext)) {
 			const auto metadataPropsys = getMetadataPropsys(m_settings);
+			if (m_settings->value("Save/MetadataPropsysClear", false).toBool()) {
+				clearAllWindowsProperties(path);
+			}
 			for (const auto &pair : metadataPropsys) {
 				const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
 				if (!values.isEmpty()) {
@@ -792,11 +874,16 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 		if (!metadata.isEmpty()) {
 			Exiftool &exiftool = m_profile->getExiftool();
 			exiftool.start();
-			exiftool.setMetadata(path, metadata);
+			exiftool.setMetadata(path, metadata, m_settings->value("Save/MetadataExiftoolClear", false).toBool());
 		}
 	}
 
+	if (addMd5) {
+		m_profile->addMd5(md5(), path);
+	}
+
 	setSavePath(path, size);
+	return path;
 }
 
 
@@ -804,7 +891,13 @@ Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
 const QList<Pool> &Image::pools() const { return m_pools; }
 qulonglong Image::id() const { return m_id; }
-QVariantMap Image::identity() const { return m_identity; }
+QVariantMap Image::identity(bool id) const
+{
+	if (m_identity.isEmpty() && id) {
+		return {{"id", m_id}};
+	}
+	return m_identity;
+}
 int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
@@ -822,7 +915,14 @@ Page *Image::page() const { return m_parent; }
 const QUrl &Image::parentUrl() const { return m_parentUrl; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
-QString Image::extension() const { return getExtension(m_url).toLower(); }
+QString Image::extension() const
+{
+	QString urlExt = getExtension(m_url).toLower();
+	if (!urlExt.isEmpty()) {
+		return urlExt;
+	}
+	return m_extension;
+}
 
 void Image::setPromoteDetailParsWarn(bool val) { m_detailsParsWarnAsErr = val; }
 void Image::setPreviewImage(const QPixmap &preview)
@@ -855,12 +955,13 @@ Image::Size Image::preferredDisplaySize() const
 		: Size::Full;
 }
 
-QStringList Image::tagsString() const
+QStringList Image::tagsString(bool namespaces) const
 {
 	QStringList tags;
 	tags.reserve(m_tags.count());
 	for (const Tag &tag : m_tags) {
-		tags.append(tag.text());
+		const QString nspace = namespaces && !tag.type().isUnknown() ? tag.type().name() + ":" : QString();
+		tags.append(nspace + tag.text());
 	}
 	return tags;
 }
@@ -901,7 +1002,7 @@ QColor Image::color() const
 	// Blacklisted
 	QStringList detected = m_profile->getBlacklist().match(tokens(m_profile));
 	if (!detected.isEmpty()) {
-		return { 0, 0, 0 };
+		return QColor(m_settings->value("Coloring/Borders/blacklisteds", "#000000").toString());
 	}
 
 	// Favorited (except for exact favorite search)
@@ -910,7 +1011,7 @@ QColor Image::color() const
 		if (!m_parent->search().contains(tag.text())) {
 			for (const Favorite &fav : favorites) {
 				if (fav.getName() == tag.text()) {
-					return { 255, 192, 203 };
+					return QColor(m_settings->value("Coloring/Borders/favorites", "#ffc0cb").toString());
 				}
 			}
 		}
@@ -1183,6 +1284,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("photo_set", Token(details["photo_set"], "keepAll", "unknown", "multiple"));
 	tokens.insert("species", Token(details["species"], "keepAll", "unknown", "multiple"));
 	tokens.insert("meta", Token(details["meta"], "keepAll", "none", "multiple"));
+	tokens.insert("lore", Token(details["lore"], "keepAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
 	tokens.insert("allo", Token(details["allos"].join(' ')));
 	tokens.insert("tags", Token(QVariant::fromValue(tags)));
@@ -1214,14 +1316,59 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	return tokens;
 }
 
-void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count, bool basic)
+QString Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count, bool basic)
 {
 	static const QList<SaveResult> md5Results { SaveResult::Moved, SaveResult::Copied, SaveResult::Shortcut, SaveResult::Linked, SaveResult::Saved };
-	postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
+	return postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
 }
 
 bool Image::isValid() const
 {
 	return !url(Image::Size::Thumbnail).isEmpty()
 		|| !m_name.isEmpty();
+}
+
+/**
+ * Find the biggest media available in this image under the given size. Defaults to the thumbnail if none is found.
+ *
+ * @param size The bounding size not to exceed.
+ * @return The biggest media available in this image under this size.
+ */
+const ImageSize &Image::mediaForSize(const QSize &size)
+{
+	QSharedPointer<ImageSize> ret;
+
+	// Find the biggest media smaller than the given size
+	for (const QSharedPointer<ImageSize> &media : m_allSizes) {
+		if (media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
+			ret = media;
+		}
+	}
+
+	// Default to the thumbnail if no media was found
+	if (ret.isNull()) {
+		ret = m_sizes[Image::Thumbnail];
+	}
+
+	return *ret;
+}
+
+QList<QPair<QString, int>> Image::ugoiraFrameInformation() const
+{
+	// Ensure the ugoira metadata is loaded first
+	const QVariant ugoiraMetadata = m_data.value("ugoira_metadata");
+	if (!ugoiraMetadata.isValid() || ugoiraMetadata.isNull()) {
+		return {};
+	}
+
+	QList<QPair<QString, int>> frameInformation;
+
+	const auto frames = ugoiraMetadata.toMap()["frames"].toList();
+	for (const QVariant &frame : frames) {
+		const auto obj = frame.toMap();
+		const QString file = obj["file"].isNull() ? "" : obj["file"].toString();
+		frameInformation.append({file, obj["delay"].toInt()});
+	}
+
+	return frameInformation;
 }

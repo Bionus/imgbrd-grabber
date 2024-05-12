@@ -31,7 +31,7 @@ RenameExisting2::~RenameExisting2()
 	delete ui;
 }
 
-void RenameExisting2::on_buttonCancel_clicked()
+void RenameExisting2::cancel()
 {
 	emit rejected();
 	close();
@@ -52,7 +52,7 @@ void RenameExisting2::deleteDir(const QString &path)
 	}
 }
 
-void RenameExisting2::on_buttonOk_clicked()
+void RenameExisting2::nextStep()
 {
 	// Move all images
 	for (const RenameExistingFile &image : qAsConst(m_details)) {

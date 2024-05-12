@@ -5,12 +5,11 @@ import QtQuick.Layouts 1.12
 Page {
     id: root
 
-    signal accepted(string source)
-    signal rejected()
+    signal back()
     signal addSource()
     signal editSource(var source)
 
-    property string currentSource
+    property string activeSource
     property var sources
 
     header: ToolBar {
@@ -18,8 +17,14 @@ Page {
             anchors.fill: parent
 
             ToolButton {
+                visible: mainStackView.depth > 1
                 icon.source: "/images/icons/back.png"
-                onClicked: root.accepted(buttonGroup.checkedButton.url)
+                onClicked: root.back()
+            }
+            ToolButton {
+                visible: mainStackView.depth <= 1
+                icon.source: "/images/icons/menu.png"
+                onClicked: drawer.open()
             }
 
             Label {
@@ -52,7 +57,7 @@ Page {
                 property string url: modelData.url
 
                 width: parent.width
-                checked: modelData.url === currentSource
+                checked: modelData.url === activeSource
                 text: modelData.name || modelData.url
                 ButtonGroup.group: buttonGroup
                 height: 30 // from 40
@@ -65,7 +70,7 @@ Page {
                     size: 18 // from 28
                 }
 
-                onCheckedChanged: if (checked) currentSource = modelData.url
+                onCheckedChanged: if (checked) activeSource = modelData.url
             }
 
             ToolButton {
@@ -74,13 +79,6 @@ Page {
 
                 onClicked: root.editSource(modelData)
             }
-        }
-    }
-
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-            root.accepted(buttonGroup.checkedButton.url)
-            event.accepted = true
         }
     }
 }

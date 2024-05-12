@@ -11,6 +11,7 @@
 #include "tags/tag-type-with-id.h"
 
 
+class ApiEndpoint;
 class Image;
 class Page;
 class Pool;
@@ -120,6 +121,7 @@ class Api : public QObject
 		virtual int maxLimit() const = 0;
 		virtual QStringList modifiers() const = 0;
 		virtual QStringList forcedTokens() const = 0;
+		virtual QMap<QString, ApiEndpoint*> endpoints() const = 0;
 
 	protected:
 		QSharedPointer<Image> parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap identity, QVariantMap data, int position, const QList<Tag> &tags = QList<Tag>()) const;

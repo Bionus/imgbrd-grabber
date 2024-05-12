@@ -34,7 +34,7 @@ void FixedSizeGridLayout::addItem(QLayoutItem *item)
 
 void FixedSizeGridLayout::insertItem(int index, QLayoutItem *item)
 {
-	if (index < 0) {
+	if (index < 0 || index > m_items.count()) {
 		index = m_items.count();
 	}
 
@@ -61,7 +61,7 @@ QLayoutItem *FixedSizeGridLayout::itemAt(int index) const
 QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 {
 	if (index >= 0 && index < m_items.size()) {
-		auto item = m_items.takeAt(index);
+		auto *item = m_items.takeAt(index);
 		invalidate();
 		return item;
 	}

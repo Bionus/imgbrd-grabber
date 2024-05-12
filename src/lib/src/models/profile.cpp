@@ -12,7 +12,7 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/download-query-manager.h"
-#include "exiftool.h"
+#include "external/exiftool.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
@@ -124,8 +124,8 @@ Profile::Profile(QString path)
 
 	// Load MD5s
 	m_md5s = QFile::exists(m_path + "/md5s.sqlite") || !QFile::exists(m_path + "/md5s.txt")
-		? (Md5Database*) new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings)
-		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
+		? static_cast<Md5Database*>(new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings))
+		: static_cast<Md5Database*>(new Md5DatabaseText(m_path + "/md5s.txt", m_settings));
 
 	// Load auto-complete
 	QFile fileAutoComplete(savePath("words.txt", true, false));
@@ -194,18 +194,9 @@ Profile::Profile(QString path)
 	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
 	for (const QString &url : sourceRegistries) {
 		auto *sourceRegistry = new SourceRegistry(url);
-		auto receiver = new QObject(this);
-		connect(sourceRegistry, &SourceRegistry::loaded, receiver, [=](bool ok) {
-			receiver->deleteLater();
-			if (ok) {
-				m_sourceRegistries.append(sourceRegistry);
-				emit sourceRegistriesChanged();
-			} else {
-				log(QStringLiteral("Error loading source registry `%1`").arg(url), Logger::Warning);
-				sourceRegistry->deleteLater();
-			}
-		});
 		sourceRegistry->load();
+		m_sourceRegistries.append(sourceRegistry);
+		emit sourceRegistriesChanged();
 	}
 }
 
@@ -435,6 +426,7 @@ void Profile::addMd5(const QString &md5, const QString &path)
 /**
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
+ * @param   path    The specific path to remove (optional).
  */
 void Profile::removeMd5(const QString &md5, const QString &path)
 {
@@ -529,6 +521,7 @@ void Profile::syncSourceRegistries()
 		sourceRegistries.append(sourceRegistry->jsonUrl());
 	}
 	m_settings->setValue("sourceRegistries", sourceRegistries);
+	m_settings->sync();
 }
 
 

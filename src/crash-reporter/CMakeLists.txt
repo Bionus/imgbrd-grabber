@@ -1,7 +1,7 @@
 project(CrashReporter)
 
-find_package(Qt5 COMPONENTS Gui Widgets REQUIRED)
-set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Gui Qt6::Widgets)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.ui" "resources/*.qrc")
 include_directories("src/")

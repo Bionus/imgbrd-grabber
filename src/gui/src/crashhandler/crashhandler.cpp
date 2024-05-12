@@ -50,14 +50,14 @@ bool DumpCallback(const char* _dump_dir,const char* _minidump_id,void *context, 
 #endif
 {
 	QString dir, mid;
-	Q_UNUSED(context);
+	Q_UNUSED(context)
 	#if defined(Q_OS_WIN)
 		dir = QString::fromWCharArray(_dump_dir);
 		mid = QString::fromWCharArray(_minidump_id);
-		Q_UNUSED(_dump_dir);
-		Q_UNUSED(_minidump_id);
-		Q_UNUSED(assertion);
-		Q_UNUSED(exinfo);
+		Q_UNUSED(_dump_dir)
+		Q_UNUSED(_minidump_id)
+		Q_UNUSED(assertion)
+		Q_UNUSED(exinfo)
 	#elif defined(Q_OS_LINUX)
 		dir = QString(md.directory().c_str());
 		mid = QString::number(md.fd());

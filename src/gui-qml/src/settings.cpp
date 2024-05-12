@@ -33,7 +33,7 @@ QStringList Settings::childKeys(const QString &parent)
 	if (!parent.isEmpty()) {
 		m_settings->beginGroup(parent);
 	}
-	const QStringList ret = m_settings->childKeys();
+	QStringList ret = m_settings->childKeys();
 	if (!parent.isEmpty()) {
 		m_settings->endGroup();
 	}

@@ -16,6 +16,7 @@ ApplicationWindow {
     title: "Grabber"
 
     property string currentPage: "search"
+    property var activeSite: backend.sites.filter(site => site.url === gSettings.activeSource.value)[0]
 
     Material.theme: gSettings.appearance_materialTheme.value
     Material.primary: gSettings.appearance_materialPrimary.value
@@ -113,16 +114,16 @@ ApplicationWindow {
 
             SearchScreen {
                 id: searchScreen
-                visible: currentPage == "search"
+                visible: currentPage === "search"
                 anchors.fill: parent
-                site: gSettings.activeSource.value
+                site: activeSite
 
                 onOpenSources: mainStackView.push(sourcesScreen)
             }
 
             FavoritesScreen {
                 id: favoritesScreen
-                visible: currentPage == "favorites"
+                visible: currentPage === "favorites"
                 anchors.fill: parent
                 favorites: backend.favorites
 
@@ -132,9 +133,21 @@ ApplicationWindow {
                 }
             }
 
+            SourcesScreen {
+                visible: currentPage === "sources"
+                anchors.fill: parent
+                sources: backend.sites
+                activeSource: gSettings.activeSource.value
+
+                onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
+                onBack: mainStackView.pop()
+                onAddSource: mainStackView.push(addSourceScreen)
+                onEditSource: mainStackView.push(editSourceScreen, { site: activeSite })
+            }
+
             LogScreen {
                 id: logScreen
-                visible: currentPage == "log"
+                visible: currentPage === "log"
                 anchors.fill: parent
             }
 
@@ -160,24 +173,25 @@ ApplicationWindow {
             }
         }
 
-        GalleryScreen {
+        Component {
             id: galleryScreen
-            visible: false
-            site: gSettings.activeSource.value
 
-            onBack: mainStackView.pop()
+            GalleryScreen {
+                site: activeSite
+                onBack: mainStackView.pop()
+            }
         }
 
         SourcesScreen {
             id: sourcesScreen
             visible: false
             sources: backend.sites
-            currentSource: gSettings.activeSource.value
+            activeSource: gSettings.activeSource.value
 
-            onAccepted: { gSettings.activeSource.setValue(source); mainStackView.pop() }
-            onRejected: mainStackView.pop()
+            onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
+            onBack: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
-            onEditSource: mainStackView.push(editSourceScreen, { site: source })
+            onEditSource: mainStackView.push(editSourceScreen, { site: activeSite })
         }
 
         AddSourceScreen {
@@ -204,9 +218,9 @@ ApplicationWindow {
         }
 
         property double backPressed: 0
-        Keys.onReleased: {
+        Keys.onReleased: event => {
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-                var now = new Date().getTime()
+                const now = new Date().getTime()
                 if (mainStackView.depth > 1) {
                     mainStackView.pop()
                 } else if (currentPage !== "search") {

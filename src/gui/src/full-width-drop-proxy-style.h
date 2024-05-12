@@ -12,7 +12,7 @@ class QWidget;
 class FullWidthDropProxyStyle : public QProxyStyle
 {
 	public:
-		FullWidthDropProxyStyle(QStyle *style = nullptr);
+		explicit FullWidthDropProxyStyle(QStyle *style = nullptr);
 		void drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const override;
 };
 

@@ -13,6 +13,7 @@ TEST_CASE("TagNameFormat")
 		REQUIRE(format.formatted(QStringList() << "test") == QString("test"));
 		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("test_tag"));
 		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("test_tag"));
+		REQUIRE(format.formatted(QStringList() << "" << "Test" << "") == QString("_test_"));
 	}
 
 	SECTION("UpperFirst")
@@ -23,6 +24,7 @@ TEST_CASE("TagNameFormat")
 		REQUIRE(format.formatted(QStringList() << "test") == QString("Test"));
 		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("Test_tag"));
 		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("Test_tag"));
+		REQUIRE(format.formatted(QStringList() << "" << "Test" << "") == QString("_test_"));
 	}
 
 	SECTION("Upper")
@@ -33,6 +35,7 @@ TEST_CASE("TagNameFormat")
 		REQUIRE(format.formatted(QStringList() << "test") == QString("Test"));
 		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("Test_Tag"));
 		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("Test_Tag"));
+		REQUIRE(format.formatted(QStringList() << "" << "Test" << "") == QString("_Test_"));
 	}
 
 	SECTION("Caps")
@@ -43,15 +46,17 @@ TEST_CASE("TagNameFormat")
 		REQUIRE(format.formatted(QStringList() << "test") == QString("TEST"));
 		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("TEST_TAG"));
 		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("TEST_TAG"));
+		REQUIRE(format.formatted(QStringList() << "" << "Test" << "") == QString("_TEST_"));
 	}
 
 	SECTION("Unknown")
 	{
-		TagNameFormat format((TagNameFormat::CaseFormat) 123, " ");
+		TagNameFormat format(static_cast<TagNameFormat::CaseFormat>(123), " ");
 
 		REQUIRE(format.formatted(QStringList()) == QString(""));
 		REQUIRE(format.formatted(QStringList() << "test") == QString("test"));
 		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("test tag"));
 		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("Test tAG"));
+		REQUIRE(format.formatted(QStringList() << "" << "Test" << "") == QString(" Test "));
 	}
 }

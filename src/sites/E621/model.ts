@@ -32,7 +32,7 @@ function parseImage(raw: any): IImage | null {
     const img = Grabber.mapFields(raw, imgMap);
 
     img.created_at = Math.floor(Date.parse(raw.created_at) / 1000);
-    img.has_comments = raw.comment_count > 0 ? true : false;
+    img.has_comments = raw.comment_count > 0;
 
     // Determine flags
     img.status = "active";

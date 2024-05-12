@@ -50,7 +50,7 @@ class SearchTab : public QWidget
 		QStringList postFilter(bool includeGlobal = false) const;
 		virtual void setTags(const QString &tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
-		void setSources(const QList<Site*> &sources);
+		virtual void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(const QStringList &postFilter);

@@ -7,8 +7,8 @@ if(DEFINED HEADLESS)
 	add_definitions(-DHEADLESS=1)
 endif()
 
-find_package(Qt5 COMPONENTS Gui Test Widgets REQUIRED)
-set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Test Qt5::Widgets)
+find_package(Qt6 COMPONENTS Core Gui Test Widgets REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Gui Qt6::Test Qt6::Widgets)
 
 # Sources
 file(GLOB_RECURSE SOURCES "src/*.cpp" "../../tests/src/*.cpp")

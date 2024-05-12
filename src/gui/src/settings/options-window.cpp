@@ -14,13 +14,16 @@
 #include <QSqlDatabase>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QStyleFactory>
 #include <QtConcurrent>
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
 #include "backup.h"
 #include "custom-buttons.h"
-#include "exiftool.h"
+#include "external/exiftool.h"
+#include "external/ffmpeg.h"
+#include "external/image-magick.h"
 #include "functions.h"
 #include "filename/conditional-filename.h"
 #include "helpers.h"
@@ -42,7 +45,7 @@
 #include "viewer/viewer-window-buttons.h"
 
 
-void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
+void disableItem(QComboBox *combo, int index, const QString &toolTip = {}) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
 	QStandardItem *item = model->item(index);
 	item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
@@ -110,6 +113,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings->value("source_3", "regex").toString()));
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
+	#if defined(USE_WEBENGINE)
+		ui->checkUseQtUserAgent->setChecked(settings->value("useQtUserAgent", true).toBool());
+	#else
+		ui->checkUseQtUserAgent->setChecked(false);
+		ui->checkUseQtUserAgent->setDisabled(true);
+	#endif
+	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString());
 
 	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
@@ -130,11 +140,70 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL | Qt::Key_Y));
 	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N));
 
+	// FFmpeg version
+	QFuture<QString> ffmpegVersion = QtConcurrent::run([=]() {
+		return FFmpeg::version();
+	});
+	auto *ffmpegVersionWatcher = new QFutureWatcher<QString>(this);
+	connect(ffmpegVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
+		const QString &version = ffmpegVersion.result();
+		ui->labelConversionFFmpegVersion->setText(version.isEmpty() ? tr("FFmpeg not found") : version);
+		if (version.isEmpty()) {
+			ui->labelConversionFFmpegVersion->setStyleSheet("color: red");
+			disableItem(ui->comboConversionImageBackend, 1);
+		}
+	});
+	ffmpegVersionWatcher->setFuture(ffmpegVersion);
+
+	// ImageMagick version
+	QFuture<QString> imageMagickVersion = QtConcurrent::run([=]() {
+		return ImageMagick::version();
+	});
+	auto *imageMagickVersionWatcher = new QFutureWatcher<QString>(this);
+	connect(imageMagickVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
+		const QString &version = imageMagickVersion.result();
+		ui->labelConversionImageMagickVersion->setText(version.isEmpty() ? tr("ImageMagick not found") : version);
+		if (version.isEmpty()) {
+			ui->labelConversionImageMagickVersion->setStyleSheet("color: red");
+			disableItem(ui->comboConversionImageBackend, 0);
+		}
+	});
+	imageMagickVersionWatcher->setFuture(imageMagickVersion);
+
+	// Video conversion
+	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
+	ui->checkConversionFFmpegConvertWebmToMp4->setChecked(settings->value("Save/FFmpegConvertWebmToMp4", false).toBool());
+
+	// Image conversion
+	ui->comboConversionImageBackend->setCurrentText(settings->value("Save/ImageConversionBackend", "ImageMagick").toString());
+	settings->beginGroup("Save/ImageConversion");
+	for (const QString &from : settings->childGroups()) {
+		settings->beginGroup(from);
+		const QString to = settings->value("to").toString();
+		settings->endGroup();
+
+		auto *leFrom = new QLineEdit(from, this);
+		auto *leTo = new QLineEdit(to, this);
+		m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
+
+		auto *layout = new QHBoxLayout();
+		layout->addWidget(leFrom);
+		layout->addWidget(leTo);
+		ui->layoutConversionImageList->addLayout(layout);
+	}
+	settings->endGroup();
+
+	// Ugoira conversion
+	ui->checkConversionUgoiraEnabled->setChecked(settings->value("Save/ConvertUgoira", false).toBool());
+	ui->comboConversionUgoiraTargetExtension->setCurrentText(settings->value("Save/ConvertUgoiraFormat", "gif").toString().toUpper());
+	ui->checkConversionUgoiraDelete->setChecked(settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool());
+
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
 		ui->groupMetadataPropsys->setEnabled(false);
 	#else
 		ui->lineMetadataPropsysExtensions->setText(settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString());
+		ui->checkMetadataPropsysClear->setChecked(settings->value("Save/MetadataPropsysClear", false).toBool());
 		const QList<QPair<QString, QString>> metadataPropsys = getMetadataPropsys(settings);
 		for (const auto &pair : metadataPropsys) {
 			auto *leKey = new QLineEdit(pair.first, this);
@@ -159,6 +228,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	watcher->setFuture(future);
 
 	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
+	ui->checkMetadataExiftoolClear->setChecked(settings->value("Save/MetadataExiftoolClear", false).toBool());
 	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
 	for (const auto &pair : metadataExiftool) {
 		auto *leKey = new QLineEdit(pair.first, this);
@@ -174,6 +244,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	// Blacklist
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
+	ui->checkWarnBlacklisted->setChecked(settings->value("warnblacklisted", true).toBool());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	new SearchSyntaxHighlighter(false, ui->textBlacklist->document());
 
@@ -196,6 +267,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings->value("resizeInsteadOfCropping", true).toBool());
 	ui->spinThumbnailUpscale->setValue(qRound(settings->value("thumbnailUpscale", 1.0).toDouble() * 100));
+	ui->checkThumbnailSmartSize->setChecked(settings->value("thumbnailSmartSize", true).toBool());
 	ui->checkAutocompletion->setChecked(settings->value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 	QStringList infiniteScroll { "disabled", "button", "scroll" };
@@ -266,7 +338,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
+		auto *tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "General" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
@@ -275,6 +347,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		tagsTree->addChild(new QTreeWidgetItem({ "Photo set" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Species" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Meta" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Lore" }, tagsTree->type()));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "general", false, "", "", " ", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "artist", false, "anonymous", "multiple artists", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "copyright", true, "misc", "crossover", "+", this));
@@ -283,6 +356,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "photo_set", false, "unknown", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", "+", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "lore", false, "none", "multiple", "+", this));
 		const int tagsStackIndex = ui->stackedWidget->indexOf(ui->pageTags);
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
 			ui->stackedWidget->insertWidget(i + tagsStackIndex + 1, m_tokenSettings[i]);
@@ -306,11 +380,17 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	}
 
 	// Themes
-	QStringList themes = m_themeLoader->getAllThemes();
+	const QStringList themes = m_themeLoader->getAllThemes();
 	for (const QString &theme : themes) {
 		ui->comboTheme->addItem(theme, theme);
 	}
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
+	const QStringList baseStyles = QStyleFactory::keys();
+	const QString defaultStyle = !baseStyles.isEmpty() ? baseStyles.first() : "";
+	for (const QString &style : baseStyles) {
+		ui->comboBaseStyle->addItem(style, style);
+	}
+	ui->comboBaseStyle->setCurrentText(settings->value("baseStyle", defaultStyle).toString());
 
 	ui->checkViewerSingleWindow->setChecked(settings->value("Viewer/singleWindow", false).toBool());
 	const QStringList positions { "top", "left", "auto" };
@@ -410,6 +490,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringKeptForLater->setFont(qFontFromString(settings->value("keptForLater").toString()));
 			ui->lineColoringBlacklisteds->setFont(qFontFromString(settings->value("blacklisteds").toString()));
 			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
+		settings->endGroup();
+		settings->beginGroup("Borders");
+			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffc0cb").toString());
+			ui->lineColoringBlacklistedsBorder->setText(settings->value("blacklisteds", "#000000").toString());
 		settings->endGroup();
 	settings->endGroup();
 
@@ -536,7 +620,7 @@ void OptionsWindow::addFilename(const QString &condition, const QString &filenam
 	m_filenamesFilenames.append(leFilename);
 	m_filenamesFolders.append(leFolder);
 
-	auto *layout = new QHBoxLayout(this);
+	auto *layout = new QHBoxLayout();
 	layout->addWidget(leCondition);
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
@@ -558,6 +642,18 @@ void OptionsWindow::on_buttonMetadataExiftoolAdd_clicked()
 	auto *leValue = new QLineEdit(this);
 	ui->layoutMetadataExiftool->addRow(leKey, leValue);
 	m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+}
+
+void OptionsWindow::on_buttonConversionImageListAdd_clicked()
+{
+	auto *leFrom = new QLineEdit(this);
+	auto *leTo = new QLineEdit(this);
+	m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
+
+	auto *layout = new QHBoxLayout();
+	layout->addWidget(leFrom);
+	layout->addWidget(leTo);
+	ui->layoutConversionImageList->addLayout(layout);
 }
 
 
@@ -618,8 +714,8 @@ void OptionsWindow::showLogFiles(QSettings *settings)
 	auto logFiles = getExternalLogFiles(settings);
 	auto *mapperEditLogFile = new QSignalMapper(this);
 	auto *mapperRemoveLogFile = new QSignalMapper(this);
-	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
-	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
+	connect(mapperEditLogFile, &QSignalMapper::mappedInt, this, &OptionsWindow::editLogFile);
+	connect(mapperRemoveLogFile, &QSignalMapper::mappedInt, this, &OptionsWindow::removeLogFile);
 	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
 		const int i = it.key();
 		auto logFile = it.value();
@@ -705,10 +801,10 @@ void OptionsWindow::showWebServices()
 	auto *mapperRemoveWebService = new QSignalMapper(this);
 	auto *mapperMoveUpWebService = new QSignalMapper(this);
 	auto *mapperMoveDownWebService = new QSignalMapper(this);
-	connect(mapperEditWebService, SIGNAL(mapped(int)), this, SLOT(editWebService(int)));
-	connect(mapperRemoveWebService, SIGNAL(mapped(int)), this, SLOT(removeWebService(int)));
-	connect(mapperMoveUpWebService, SIGNAL(mapped(int)), this, SLOT(moveUpWebService(int)));
-	connect(mapperMoveDownWebService, SIGNAL(mapped(int)), this, SLOT(moveDownWebService(int)));
+	connect(mapperEditWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::editWebService);
+	connect(mapperRemoveWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::removeWebService);
+	connect(mapperMoveUpWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::moveUpWebService);
+	connect(mapperMoveDownWebService, &QSignalMapper::mappedInt, this, &OptionsWindow::moveDownWebService);
 
 	m_webServicesIds.clear();
 	for (int j = 0; j < m_webServices.count(); ++j) {
@@ -717,35 +813,35 @@ void OptionsWindow::showWebServices()
 		m_webServicesIds.insert(id, j);
 
 		QIcon icon = webService.icon();
-		QLabel *labelIcon = new QLabel();
+		auto *labelIcon = new QLabel();
 		labelIcon->setPixmap(icon.pixmap(QSize(16, 16)));
 		labelIcon->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 		ui->layoutWebServices->addWidget(labelIcon, j, 0);
 
-		QLabel *label = new QLabel(webService.name());
+		auto *label = new QLabel(webService.name());
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 		ui->layoutWebServices->addWidget(label, j, 1);
 
 		if (j > 0) {
-			QPushButton *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), QString());
+			auto *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), QString());
 			mapperMoveUpWebService->setMapping(buttonMoveUp, id);
 			connect(buttonMoveUp, SIGNAL(clicked(bool)), mapperMoveUpWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveUp, j, 2);
 		}
 
 		if (j < m_webServices.count() - 1) {
-			QPushButton *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), QString());
+			auto *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), QString());
 			mapperMoveDownWebService->setMapping(buttonMoveDown, id);
 			connect(buttonMoveDown, SIGNAL(clicked(bool)), mapperMoveDownWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveDown, j, 3);
 		}
 
-		QPushButton *buttonEdit = new QPushButton(tr("Edit"));
+		auto *buttonEdit = new QPushButton(tr("Edit"));
 		mapperEditWebService->setMapping(buttonEdit, id);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonEdit, j, 4);
 
-		QPushButton *buttonDelete = new QPushButton(tr("Remove"));
+		auto *buttonDelete = new QPushButton(tr("Remove"));
 		mapperRemoveWebService->setMapping(buttonDelete, id);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
@@ -950,10 +1046,14 @@ void OptionsWindow::on_lineColoringGenerals_textChanged()
 { setColor(ui->lineColoringGenerals); }
 void OptionsWindow::on_lineColoringFavorites_textChanged()
 { setColor(ui->lineColoringFavorites); }
+void OptionsWindow::on_lineColoringFavoritesBorder_textChanged()
+{ setColor(ui->lineColoringFavoritesBorder); }
 void OptionsWindow::on_lineColoringKeptForLater_textChanged()
 { setColor(ui->lineColoringKeptForLater); }
 void OptionsWindow::on_lineColoringBlacklisteds_textChanged()
 { setColor(ui->lineColoringBlacklisteds); }
+void OptionsWindow::on_lineColoringBlacklistedsBorder_textChanged()
+{ setColor(ui->lineColoringBlacklistedsBorder); }
 void OptionsWindow::on_lineColoringIgnoreds_textChanged()
 { setColor(ui->lineColoringIgnoreds); }
 void OptionsWindow::on_lineBorderColor_textChanged()
@@ -977,10 +1077,14 @@ void OptionsWindow::on_buttonColoringGeneralsColor_clicked()
 { setColor(ui->lineColoringGenerals, true); }
 void OptionsWindow::on_buttonColoringFavoritesColor_clicked()
 { setColor(ui->lineColoringFavorites, true); }
+void OptionsWindow::on_buttonColoringFavoritesBorderColor_clicked()
+{ setColor(ui->lineColoringFavoritesBorder, true); }
 void OptionsWindow::on_buttonColoringKeptForLaterColor_clicked()
 { setColor(ui->lineColoringKeptForLater, true); }
 void OptionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 { setColor(ui->lineColoringBlacklisteds, true); }
+void OptionsWindow::on_buttonColoringBlacklistedsBorderColor_clicked()
+{ setColor(ui->lineColoringBlacklistedsBorder, true); }
 void OptionsWindow::on_buttonColoringIgnoredsColor_clicked()
 { setColor(ui->lineColoringIgnoreds, true); }
 void OptionsWindow::on_buttonBorderColor_clicked()
@@ -1065,6 +1169,9 @@ void OptionsWindow::save()
 		}
 		settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
 	}
+	const QString baseStyle = ui->comboBaseStyle->currentText();
+	qApp->setStyle(baseStyle);
+	settings->setValue("baseStyle", baseStyle);
 
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("add", ui->lineAdd->text());
@@ -1081,6 +1188,8 @@ void OptionsWindow::save()
 	settings->setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings->setValue("source_4", sources.at(ui->comboSource4->currentIndex()));
 	settings->setValue("tagsautoadd", ui->spinAutoTagAdd->value());
+	settings->setValue("useQtUserAgent", ui->checkUseQtUserAgent->isChecked());
+	settings->setValue("userAgent", ui->lineUserAgent->text());
 	const QStringList starts { "none", "loadfirst", "restore" };
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());
@@ -1137,6 +1246,7 @@ void OptionsWindow::save()
 		blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 	}
 	m_profile->setBlacklistedTags(blacklist);
+	settings->setValue("warnblacklisted", ui->checkWarnBlacklisted->isChecked());
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Ignored tags
@@ -1158,6 +1268,7 @@ void OptionsWindow::save()
 
 	settings->setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
 	settings->setValue("thumbnailUpscale", static_cast<double>(ui->spinThumbnailUpscale->value()) / 100.0);
+	settings->setValue("thumbnailSmartSize", ui->checkThumbnailSmartSize->isChecked());
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	const QStringList infiniteScroll { "disabled", "button", "scroll" };
@@ -1232,7 +1343,33 @@ void OptionsWindow::save()
 			tokenSettings->save();
 		}
 
+		// Video conversion
+		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
+		settings->setValue("FFmpegConvertWebmToMp4", ui->checkConversionFFmpegConvertWebmToMp4->isChecked());
+
+		// Image conversion
+		settings->setValue("ImageConversionBackend", ui->comboConversionImageBackend->currentText());
+		settings->beginGroup("ImageConversion");
+		settings->remove("");
+		for (int i = 0, j = 0; i < m_imageConversion.count(); ++i) {
+			const QString &from = m_imageConversion[i].first->text();
+			const QString &to = m_imageConversion[i].second->text();
+			if (!from.isEmpty() && !to.isEmpty()) {
+				settings->beginGroup(from.toUpper());
+				settings->setValue("to", to.toUpper());
+				settings->endGroup();
+				++j;
+			}
+		}
+		settings->endGroup();
+
+		// Ugoira conversion
+		settings->setValue("ConvertUgoira", ui->checkConversionUgoiraEnabled->isChecked());
+		settings->setValue("ConvertUgoiraFormat", ui->comboConversionUgoiraTargetExtension->currentText().toLower());
+		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());
+
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
+		settings->setValue("MetadataPropsysClear", ui->checkMetadataPropsysClear->isChecked());
 		settings->beginWriteArray("MetadataPropsys");
 		for (int i = 0, j = 0; i < m_metadataPropsys.count(); ++i) {
 			const QString &key = m_metadataPropsys[i].first->text();
@@ -1247,6 +1384,7 @@ void OptionsWindow::save()
 		settings->endArray();
 
 		settings->setValue("MetadataExiftoolExtensions", ui->lineMetadataExiftoolExtensions->text());
+		settings->setValue("MetadataExiftoolClear", ui->checkMetadataExiftoolClear->isChecked());
 		settings->beginWriteArray("MetadataExiftool");
 		for (int i = 0, j = 0; i < m_metadataExiftool.count(); ++i) {
 			const QString &key = m_metadataExiftool[i].first->text();
@@ -1385,6 +1523,10 @@ void OptionsWindow::save()
 			settings->setValue("keptForLater", ui->lineColoringKeptForLater->font().toString());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->font().toString());
+		settings->endGroup();
+		settings->beginGroup("Borders");
+			settings->setValue("favorites", ui->lineColoringFavoritesBorder->text());
+			settings->setValue("blacklisteds", ui->lineColoringBlacklistedsBorder->text());
 		settings->endGroup();
 	settings->endGroup();
 
@@ -1622,7 +1764,7 @@ QList<ButtonState> buildButtonState(ViewerWindowButtons::SaveState saveState, co
 
 void OptionsWindow::saveButtonSettings(QSettings *settings)
 {
-	/* Note: enums make ButtonState's type more clear to read but it's probably safer to hard code unsigned shorts.	*
+	/* Note: enums make ButtonState's type clearer to read, but it's probably safer to hard code unsigned shorts.	*
 	 * This might eliminate the header dependency and enums should be logically ordered anyway.			*/
 
 	QList<ButtonSettings> buttons;
@@ -1631,37 +1773,37 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	// Prev
 	buttons.append(ButtonSettings {CustomButtons::IsButtonPrev, "Prev",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonPrev->text(), ViewerWindowButtons::DefaultPrevState),
-		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonPrevPosition->value(),
-		(unsigned short) ui->spinButtonPrevWidth->value()
+		ui->checkButtonPrev->checkState() != Qt::Unchecked,
+		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonPrevPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonPrevWidth->value())
 	});
 
 	// Next
 	buttons.append(ButtonSettings {CustomButtons::IsButtonNext, "Next",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonNext->text(), ViewerWindowButtons::DefaultNextState),
-		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonNext->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonNextPosition->value(),
-		(unsigned short) ui->spinButtonNextWidth->value()
+		ui->checkButtonNext->checkState() != Qt::Unchecked,
+		ui->checkButtonNext->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonNextPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonNextWidth->value())
 	});
 
 	// Details
 	buttons.append(ButtonSettings {CustomButtons::IsButtonDetails, "Details",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonDetails->text(), ViewerWindowButtons::DefaultDetailsState),
-		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonDetailsPosition->value(),
-		(unsigned short) ui->spinButtonDetailsWidth->value()
+		ui->checkButtonDetails->checkState() != Qt::Unchecked,
+		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonDetailsPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonDetailsWidth->value())
 	});
 
 	// Save as
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveAs, "SaveAs",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonSaveAs->text(), ViewerWindowButtons::DefaultSaveAsState),
-		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveAsPosition->value(),
-		(unsigned short) ui->spinButtonSaveAsWidth->value()
+		ui->checkButtonSaveAs->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveAsPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveAsWidth->value())
 	});
 
 	// Save
@@ -1675,10 +1817,10 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveStateExistsDisk);
 	states.append(ViewerWindowButtons::DefaultSaveStateDelete);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSave, "Save", states,
-		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSave->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSavePosition->value(),
-		(unsigned short) ui->spinButtonSaveWidth->value()
+		ui->checkButtonSave->checkState() != Qt::Unchecked,
+		ui->checkButtonSave->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSavePosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveWidth->value())
 	});
 
 	// Save and quit
@@ -1686,19 +1828,19 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveNQuitStateSaving);
 	states.append(ViewerWindowButtons::DefaultSaveNQuitStateClose);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit, "SaveNQuit", states,
-		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveNQuitPosition->value(),
-		(unsigned short) ui->spinButtonSaveNQuitWidth->value()
+		ui->checkButtonSaveNQuit->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitWidth->value())
 	});
 
 	// Open
 	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen, "Open",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonOpen->text(), ViewerWindowButtons::DefaultOpenState),
-		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenPosition->value(),
-		(unsigned short) ui->spinButtonOpenWidth->value()
+		ui->checkButtonOpen->checkState() != Qt::Unchecked,
+		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonOpenPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonOpenWidth->value())
 	});
 
 	// Save (fav)
@@ -1712,10 +1854,10 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveFavStateExistsDisk);
 	states.append(ViewerWindowButtons::DefaultSaveFavStateDelete);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, "SaveFav", states,
-		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveFavPosition->value(),
-		(unsigned short) ui->spinButtonSaveFavWidth->value()
+		ui->checkButtonSaveFav->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveFavPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveFavWidth->value())
 	});
 
 	// Save and quit (fav)
@@ -1723,19 +1865,19 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	states.append(ViewerWindowButtons::DefaultSaveNQuitFavStateSaving);
 	states.append(ViewerWindowButtons::DefaultSaveNQuitFavStateClose);
 	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, "SaveNQuitFav", states,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveNQuitFavPosition->value(),
-		(unsigned short) ui->spinButtonSaveNQuitFavWidth->value()
+		ui->checkButtonSaveNQuitFav->checkState() != Qt::Unchecked,
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitFavPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonSaveNQuitFavWidth->value())
 	});
 
 	// Open (fav)
 	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, "OpenFav",
 		buildButtonState(ViewerWindowButtons::SaveState::Save, ui->lineButtonOpenFav->text(), ViewerWindowButtons::DefaultOpenFavState),
-		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenFavPosition->value(),
-		(unsigned short) ui->spinButtonOpenFavWidth->value()
+		ui->checkButtonOpenFav->checkState() != Qt::Unchecked,
+		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked,
+		static_cast<unsigned short>(ui->spinButtonOpenFavPosition->value()),
+		static_cast<unsigned short>(ui->spinButtonOpenFavWidth->value())
 	});
 
 	// Write settings
@@ -1786,7 +1928,7 @@ void OptionsWindow::checkAllSpinners()
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
 		// Set the alert style on relevant spinners
-		for (auto it : numberMatches) {
+		for (auto *it : numberMatches) {
 			it->setStyleSheet(alarmStyle.c_str());
 		}
 	}

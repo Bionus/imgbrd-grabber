@@ -8,7 +8,7 @@ permalink: /docs/
 
 * [Install steps for Windows](install/windows.md)
 * [Install steps for Linux](install/linux.md)
-* [Install steps for MacOS](install/macos.md)
+* [Install steps for macOS](install/macos.md)
 * [Install steps for Android](install/android.md)
 
 ## Usage

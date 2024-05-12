@@ -37,7 +37,7 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 	FileDeleter settingsDeleter(settings.fileName());
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);
@@ -109,7 +109,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	}
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);
@@ -179,7 +179,7 @@ QList<Tag> getTags(const QString &source, const QString &site, const QString &fo
 	}
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);

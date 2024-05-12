@@ -29,24 +29,31 @@ theme:
     - content.action.edit
     - content.action.view
     - content.code.copy
+    - content.tooltips
 
   language: en
   logo: assets/img/icon.png
   favicon: assets/favicon.ico
 
   palette:
-    - scheme: default
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: indigo
       accent: orange
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - scheme: slate
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       primary: indigo
       accent: orange
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: Switch to system preference
 
   # Custom
   grabber:
@@ -72,6 +79,8 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
       permalink: '¶'
 
@@ -117,9 +126,9 @@ nav:
         - Introduction: docs/commands/index.md
         - docs/commands/szurubooru.md
         - docs/commands/danbooru.md
+        - docs/commands/shimmie.md
         - docs/commands/my-imouto.md
         - docs/commands/gelbooru.md
-        - docs/commands/shimmie.md
       - docs/compilation.md
       - docs/cli.md
       - docs/portable-version.md

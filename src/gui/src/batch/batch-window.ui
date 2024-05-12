@@ -51,7 +51,7 @@
       <item>
        <widget class="QTableWidget" name="tableWidget">
         <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
+         <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
         </property>
         <property name="showDropIndicator" stdset="0">
          <bool>false</bool>
@@ -60,10 +60,10 @@
          <bool>false</bool>
         </property>
         <property name="verticalScrollMode">
-         <enum>QAbstractItemView::ScrollPerPixel</enum>
+         <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
         </property>
         <property name="horizontalScrollMode">
-         <enum>QAbstractItemView::ScrollPerPixel</enum>
+         <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
         </property>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
@@ -72,7 +72,7 @@
          <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>20</number>
+         <number>24</number>
         </attribute>
         <column>
          <property name="text">
@@ -336,10 +336,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonDetails</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>BatchWindow</receiver>
+   <slot>toggleDetails(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>495</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>copyToClipboard()</slot>
   <slot>pause()</slot>
   <slot>skip()</slot>
+  <slot>toggleDetails(bool)</slot>
  </slots>
 </ui>

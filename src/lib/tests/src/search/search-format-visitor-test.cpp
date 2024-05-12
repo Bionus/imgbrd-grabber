@@ -7,6 +7,8 @@
 
 TEST_CASE("SearchFormatVisitor")
 {
+	TagNameFormat tagFormat(TagNameFormat::CaseFormat::Lower, "_");
+
 	SECTION("OrOnly")
 	{
 		auto *search = new SearchNodeOp(
@@ -23,10 +25,10 @@ TEST_CASE("SearchFormatVisitor")
 		SearchFormat formatParenAnd({ " ", "" }, { " || ", "" }, true, SearchFormat::And);
 		SearchFormat formatNoParenAnd({ " ", "" }, { " || ", "" }, false, SearchFormat::And);
 
-		REQUIRE(SearchFormatVisitor(formatNoParenOr).run(*search) == QString("a b || c"));
-		REQUIRE(SearchFormatVisitor(formatParenAnd).run(*search) == QString("a (b || c)"));
+		REQUIRE(SearchFormatVisitor(formatNoParenOr, tagFormat).run(*search) == QString("a b || c"));
+		REQUIRE(SearchFormatVisitor(formatParenAnd, tagFormat).run(*search) == QString("a (b || c)"));
 
-		SearchFormatVisitor errorVisitor(formatNoParenAnd);
+		SearchFormatVisitor errorVisitor(formatNoParenAnd, tagFormat);
 		REQUIRE(errorVisitor.run(*search) == QString());
 		REQUIRE(errorVisitor.error() == QString("A parenthesis is required but the format does not support it"));
 
@@ -49,10 +51,10 @@ TEST_CASE("SearchFormatVisitor")
 		SearchFormat formatParenAnd({ " & ", "" }, { " | ", "" }, true, SearchFormat::And);
 		SearchFormat formatNoParenAnd({ " & ", "" }, { " | ", "" }, false, SearchFormat::And);
 
-		REQUIRE(SearchFormatVisitor(formatNoParenOr).run(*search) == QString("a & b | c"));
-		REQUIRE(SearchFormatVisitor(formatParenAnd).run(*search) == QString("a & (b | c)"));
+		REQUIRE(SearchFormatVisitor(formatNoParenOr, tagFormat).run(*search) == QString("a & b | c"));
+		REQUIRE(SearchFormatVisitor(formatParenAnd, tagFormat).run(*search) == QString("a & (b | c)"));
 
-		SearchFormatVisitor errorVisitor(formatNoParenAnd);
+		SearchFormatVisitor errorVisitor(formatNoParenAnd, tagFormat);
 		REQUIRE(errorVisitor.run(*search) == QString());
 		REQUIRE(errorVisitor.error() == QString("A parenthesis is required but the format does not support it"));
 
@@ -75,10 +77,10 @@ TEST_CASE("SearchFormatVisitor")
 		SearchFormat formatParenAnd({ " ", "" }, { " ", "~" }, true, SearchFormat::And);
 		SearchFormat formatNoParenAnd({ " ", "" }, { " ", "~" }, false, SearchFormat::And);
 
-		REQUIRE(SearchFormatVisitor(formatNoParenOr).run(*search) == QString("a ~b ~c"));
-		REQUIRE(SearchFormatVisitor(formatParenAnd).run(*search) == QString("a (~b ~c)"));
+		REQUIRE(SearchFormatVisitor(formatNoParenOr, tagFormat).run(*search) == QString("a ~b ~c"));
+		REQUIRE(SearchFormatVisitor(formatParenAnd, tagFormat).run(*search) == QString("a (~b ~c)"));
 
-		SearchFormatVisitor errorVisitor(formatNoParenAnd);
+		SearchFormatVisitor errorVisitor(formatNoParenAnd, tagFormat);
 		REQUIRE(errorVisitor.run(*search) == QString());
 		REQUIRE(errorVisitor.error() == QString("A parenthesis is required but the format does not support it"));
 

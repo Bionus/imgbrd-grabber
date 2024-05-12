@@ -78,9 +78,22 @@ void ImageDownloader::setBlacklist(Blacklist *blacklist)
 
 void ImageDownloader::save()
 {
+	// Try to build a path first if we don't need tags for the filename, to check for the "same dir" MD5 setting
+	const int filenameTagLevel = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
+	const bool filenameNeedExactTags = filenameTagLevel == 2 || (filenameTagLevel == 1 && m_image->hasUnknownTag());
+	const QString md5Path = !filenameNeedExactTags ? m_image->paths(m_filename, m_path, m_count).first() : QString();
+
+	// We don't need to load the image details of files already in the MD5 list and that should be skipped
+	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
+	if (md5action == "ignore" && !m_force) {
+		loadedSave(Image::LoadTagsResult::Ok);
+		return;
+	}
+
 	// Always load details if the API doesn't provide the file URL in the listing page
 	const QStringList forcedTokens = m_image->parentSite()->getApis().first()->forcedTokens();
 	const bool needFileUrl = forcedTokens.contains("*") || forcedTokens.contains("file_url");
+	const bool needUgoiraData = m_image->extension() == QStringLiteral("zip") && m_profile->getSettings()->value("Save/ConvertUgoira", false).toBool();
 
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
@@ -88,7 +101,7 @@ void ImageDownloader::save()
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
-	if (!blacklistNeedTags && !needFileUrl && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
+	if (!blacklistNeedTags && !needFileUrl && !needUgoiraData && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
@@ -230,7 +243,7 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		// If we don't need any loading, we can return already
 		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
-			QList<ImageSaveResult> preResult {{ m_temporaryPath, m_size, res }};
+			QList<ImageSaveResult> preResult {{ m_temporaryPath, m_size, res }}; // TODO(Bionus): this should use the MD5 path if possible
 
 			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Shortcut || res == Image::SaveResult::Linked) {
 				preResult = afterTemporarySave(res);
@@ -404,7 +417,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 		}
 		int maxHeight = settings->value("ImageSize/maxHeight", 1000).toInt();
 		if (maxHeightEnabled && resizeBox.height() > maxHeight) {
-			resizeBox.setWidth(maxHeight);
+			resizeBox.setHeight(maxHeight);
 		}
 		if (resizeBox != m_image->size(size)) {
 			QImage img(m_temporaryPath);
@@ -429,7 +442,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 
 	QList<ImageSaveResult> result;
 	for (const QString &file : qAsConst(m_paths)) {
-		const QString path = file + suffix;
+		QString path = file + suffix;
 
 		// Don't overwrite already existing files
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path))) {
@@ -475,10 +488,10 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 			}
 		}
 
-		result.append({ path, size, saveResult });
 		if (m_postSave) {
-			m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
+			path = m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
 		}
+		result.append({ path, size, saveResult });
 	}
 
 	if (!moved) {

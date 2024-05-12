@@ -1,14 +1,14 @@
 #include "qt-google-analytics.h"
 #include <QCoreApplication>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QOperatingSystemVersion>
 #include <QRandomGenerator>
 #include <QSettings>
 #include <QString>
 #include <QUrl>
 #include <QUrlQuery>
 #include <QVariant>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QOperatingSystemVersion>
 #include "chromium-user-agent.h"
 
 #ifdef QT_GUI_LIB
@@ -46,7 +46,7 @@ QtGoogleAnalytics::QtGoogleAnalytics(QObject *parent)
 		m_clientId = settings.value(CLIENT_ID_SETTINGS_KEY).toString();
 	}
 
-	m_userAgent = userAgent();
+	m_generatedUserAgent = generateUserAgent();
 }
 
 QtGoogleAnalytics::QtGoogleAnalytics(const QString &measurementId, QObject *parent)
@@ -95,6 +95,19 @@ QVariantMap QtGoogleAnalytics::userProperties() const
 	return m_userProperties;
 }
 
+void QtGoogleAnalytics::setUserAgent(const QString &userAgent)
+{
+	if (m_userAgent != userAgent) {
+		m_userAgent = userAgent;
+		emit userAgentChanged();
+	}
+}
+
+QString QtGoogleAnalytics::userAgent() const
+{
+	return m_userAgent;
+}
+
 void QtGoogleAnalytics::setDebugModeEnabled(bool debugModeEnabled)
 {
 	if (m_debugModeEnabled != debugModeEnabled) {
@@ -137,6 +150,7 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 		{ "uapv", m_uach.platformVersion() },
 		{ "uaw", m_uach.wow64() ? "1" : "0" },
 	};
+
 	if (!m_userId.isEmpty()) {
 		query.addQueryItem("uid", m_userId);
 	}
@@ -153,7 +167,7 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 		query.addQueryItem("_fv", "1");
 	}
 
-	// Events
+	// Event parameters
 	for (auto it = parameters.constBegin(); it != parameters.constEnd(); ++it) {
 		if (it.value().type() == QVariant::Type::Int) {
 			query.addQueryItem("epn." + it.key(), QString::number(it.value().toInt()));
@@ -175,7 +189,7 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-	request.setHeader(QNetworkRequest::UserAgentHeader, m_userAgent);
+	request.setHeader(QNetworkRequest::UserAgentHeader, m_userAgent.isEmpty() ? m_generatedUserAgent : m_userAgent);
 	m_uach.setRequestHeaders(request);
 
 	QNetworkReply *reply = m_networkAccessManager->post(request, QByteArray());
@@ -199,7 +213,7 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 	}
 #endif
 
-QString QtGoogleAnalytics::userAgent() const
+QString QtGoogleAnalytics::generateUserAgent() const
 {
 	#if defined(Q_OS_ANDROID)
 		// On Android, just use System.getProperty("http.agent")

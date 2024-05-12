@@ -1,6 +1,6 @@
 package org.bionus.grabber;
 
-import org.qtproject.qt5.android.QtNative;
+import org.qtproject.qt.android.QtNative;
 
 import java.io.File;
 import java.lang.String;
@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 public class ShareUtils
 {

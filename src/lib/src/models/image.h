@@ -51,10 +51,10 @@ class Image : public QObject, public Downloadable
 		int value() const;
 		QString md5() const;
 		const QList<Tag> &tags() const;
-		QStringList tagsString() const;
+		QStringList tagsString(bool namespaces = false) const;
 		const QList<Pool> &pools() const;
 		qulonglong id() const;
-		QVariantMap identity() const;
+		QVariantMap identity(bool id = false) const;
 		int fileSize() const;
 		int width() const;
 		int height() const;
@@ -89,6 +89,8 @@ class Image : public QObject, public Downloadable
 		void setPromoteDetailParsWarn(bool);
 		bool isValid() const;
 		Profile *getProfile() const { return m_profile; }
+		const ImageSize &mediaForSize(const QSize &size);
+		QList<QPair<QString, int>> ugoiraFrameInformation() const;
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -108,7 +110,7 @@ class Image : public QObject, public Downloadable
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;
 		SaveResult preSave(const QString &path, Size size) override;
-		void postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count, bool basic = false) override;
+		QString postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count, bool basic = false) override;
 
 		// Tokens
 		template <typename T>
@@ -124,12 +126,13 @@ class Image : public QObject, public Downloadable
 	protected:
 		void init();
 		QString md5forced() const;
-		void postSaving(const QString &path, Size size, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
+		QString postSaving(const QString &path, Size size, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
 
 	public slots:
 		void loadDetails(bool rateLimit = false);
 		void abortTags();
 		void parseDetails();
+		void parseUgoiraDetails();
 
 	signals:
 		void finishedLoadingPreview();
@@ -140,6 +143,7 @@ class Image : public QObject, public Downloadable
 		Profile *m_profile;
 		Page *m_parent = nullptr;
 		QUrl m_url;
+		QString m_extension;
 		QUrl m_pageUrl;
 		QUrl m_parentUrl;
 		QSettings *m_settings;
@@ -166,6 +170,7 @@ class Image : public QObject, public Downloadable
 		QString mutable m_md5;
 		QSharedPointer<Image> m_parentGallery;
 		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
+		QList<QSharedPointer<ImageSize>> m_allSizes;
 		QList<Tag> m_tags;
 		QList<Pool> m_pools;
 		QStringList m_sources;
@@ -177,7 +182,5 @@ class Image : public QObject, public Downloadable
 };
 
 Q_DECLARE_METATYPE(Image)
-Q_DECLARE_METATYPE(Image::SaveResult)
-Q_DECLARE_METATYPE(Image::LoadTagsResult)
 
 #endif // IMAGE_H

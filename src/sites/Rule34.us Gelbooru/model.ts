@@ -5,12 +5,18 @@ function completeImage(img: IImage): IImage {
             .replace("/thumbnail_", "/");
     }
 
+    // Use the "video.rule34.us" server for videos to not get CloudFlare hot-linking error
+    const isVideo = img.tags && (img.tags as unknown as string).indexOf("video") !== -1;
+    if (isVideo && img.file_url && img.file_url.indexOf("//img") !== -1) {
+        img.file_url = img.file_url.replace(/\/\/img\d+\./, "//video.");
+    }
+
     return img;
 }
 
 export const source: ISource = {
     name: "Modified Gelbooru (0.1)",
-    modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating"],
+    modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating", "sort:score"],
     tagFormat: {
         case: "lower",
         wordSeparator: "_",
@@ -51,7 +57,7 @@ export const source: ISource = {
                 parse: (src: string): IParsedDetails => {
                     return {
                         tags: Grabber.regexToTags('<li><a[^>]*>\\+</a><a [^>]*>-</a> <span [^>]*>\\? <a href="[^"]*">(?<name>[^<]+)</a> (?<count>\\d+)</span></li>', src),
-                        imageUrl: Grabber.regexToConst("url", '<img[^>]+src="([^"]+)"[^>]+onclick="Note\\.toggle\\(\\);"[^>]*/>', src),
+                        imageUrl: Grabber.regexToConst("url", '<a href="(?<url>[^"]+)"><li[^>]*>Original</li></a>', src),
                     };
                 },
             },

@@ -22,6 +22,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "network/network-reply.h"
+#include "ui/QAffiche.h"
 #include "ui/QBouton.h"
 
 
@@ -30,7 +31,14 @@ QMovie *ImagePreview::m_loadingMovie = nullptr;
 ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Profile *profile, DownloadQueue *downloadQueue, MainWindow *mainWindow, QObject *parent)
 	: QObject(parent), m_image(image), m_container(container), m_profile(profile), m_downloadQueue(downloadQueue), m_mainWindow(mainWindow)
 {
-	m_thumbnailUrl = image->url(Image::Size::Thumbnail);
+	if (m_profile->getSettings()->value("thumbnailSmartSize", true).toBool()) {
+		const qreal upscale = m_profile->getSettings()->value("thumbnailUpscale", 1.0).toDouble();
+		const int imageSize = qFloor(150 * upscale);
+		m_thumbnailUrl = image->mediaForSize(QSize(imageSize, imageSize)).url;
+	} else {
+		m_thumbnailUrl = image->url(Image::Size::Thumbnail);
+	}
+
 	m_name = image->name();
 	m_counter = image->counter();
 
@@ -199,14 +207,17 @@ void ImagePreview::finishedLoading()
 		}
 
 		connect(l, SIGNAL(appui(int)), this, SIGNAL(clicked()));
-		connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggledWithId(int, bool, bool)));
+		connect(l, SIGNAL(toggled(int,bool,bool)), this, SLOT(toggledWithId(int,bool,bool)));
 
 		layout->addWidget(l);
 		m_bouton = l;
 	}
 
 	if (!m_name.isEmpty()) {
-		layout->addWidget(new QLabel(m_name));
+		auto *label = new QAffiche(0);
+		label->setText(m_name);
+		connect(label, SIGNAL(clicked(int)), this, SIGNAL(clicked()));
+		layout->addWidget(label);
 	}
 
 	emit finished();
@@ -214,7 +225,7 @@ void ImagePreview::finishedLoading()
 
 void ImagePreview::toggledWithId(int id, bool toggle, bool range)
 {
-	Q_UNUSED(id);
+	Q_UNUSED(id)
 
 	emit toggled(toggle, range);
 }
@@ -285,7 +296,7 @@ void ImagePreview::contextSaveImage()
 		const QString fn = settings->value("Save/filename").toString();
 		const QString path = settings->value("Save/path").toString();
 
-		auto downloader = new ImageDownloader(m_profile, m_image, fn, path, 1, true, true, m_downloadQueue);
+		auto *downloader = new ImageDownloader(m_profile, m_image, fn, path, 1, true, true, m_downloadQueue);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 		m_downloadQueue->add(DownloadQueue::Manual, downloader);
 	}
@@ -330,7 +341,7 @@ void ImagePreview::contextSaveImageAs()
 		if (!tmpPath.isEmpty()) {
 			QFile::rename(tmpPath, path);
 		} else {
-			auto downloader = new ImageDownloader(m_profile, m_image, { path }, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
+			auto *downloader = new ImageDownloader(m_profile, m_image, { path }, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
 			connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 			m_downloadQueue->add(DownloadQueue::Manual, downloader);
 		}
@@ -341,11 +352,11 @@ void ImagePreview::contextSaveImageAs()
 
 void ImagePreview::contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 	setDownloadProgress(v1, v2);
 }
 
 void ImagePreview::setCustomContextMenu(std::function<void (QMenu *, const QSharedPointer<Image> &)> customContextMenu)
 {
-	m_customContextMenu = customContextMenu;
+	m_customContextMenu = std::move(customContextMenu);
 }

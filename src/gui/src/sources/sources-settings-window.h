@@ -34,6 +34,8 @@ class SourcesSettingsWindow : public QDialog
 		void setLoginType(int index);
 		void testLogin();
 		void loginTested(Site *site, Site::LoginResult result);
+		void openInWebView();
+		void clearOtherCookies();
 
 	signals:
 		void siteDeleted(Site *site);

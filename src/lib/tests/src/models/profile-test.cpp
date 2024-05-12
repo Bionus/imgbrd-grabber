@@ -19,11 +19,11 @@ TEST_CASE("Profile")
 	};
 
 	QFile::remove("tests/resources/favorites.json");
-	QFile f("tests/resources/favorites.txt");
-	f.open(QFile::WriteOnly | QFile::Text);
-	f.write(Favorite("tag_1", 20, dates[0]).toString().toUtf8() + "\r\n");
-	f.write(Favorite("tag_2", 100, dates[1]).toString().toUtf8() + "\r\n");
-	f.close();
+	QFile f1("tests/resources/favorites.txt");
+	f1.open(QFile::WriteOnly | QFile::Text);
+	f1.write(Favorite("tag_1", 20, dates[0]).toString().toUtf8() + "\r\n");
+	f1.write(Favorite("tag_2", 100, dates[1]).toString().toUtf8() + "\r\n");
+	f1.close();
 
 	QFile f2("tests/resources/md5s.txt");
 	f2.open(QFile::WriteOnly | QFile::Text);

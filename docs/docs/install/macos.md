@@ -22,7 +22,7 @@ title: MacOS
 3. Open the `.dmg` file
 4. Drag and drop the `Grabber.app` file to your `Applications` directory
 5. Eject and remove the `.dmg` file
-5. Launch Grabber via Launchpad
+6. Launch Grabber via Launchpad
 
 !!! warning
 

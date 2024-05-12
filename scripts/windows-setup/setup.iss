@@ -8,7 +8,7 @@
 #define SrcDir RootDir + "\src"
 
 #ifndef QtDir
-# define QtDir "C:\Qt\Qt5.15.1\5.15.1\msvc2019_64\bin"
+# define QtDir "C:\Qt\Qt6.5.0\6.5.0\msvc2019_64\bin"
 #endif
 #define QtPlugins QtDir + "\..\plugins"
 #define QtLib QtDir + "\..\lib"
@@ -22,11 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.11.2"
-#endif
-
-#ifndef QtApngDll
-# define QtApngDll QtPlugins + "\imageformats\qapng.dll"
+# define MyAppVersion "7.12.0"
 #endif
 
 #define PlatformNamePrefix ""
@@ -99,29 +95,28 @@ Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: 
 Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
 Source: "{#SrcDir}\dist\common\words.txt";      DestDir: "{app}";
-Source: "{#OpenSSLDir}\libcrypto-1_1.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#OpenSSLDir}\libcrypto-1_1-x64.dll";  DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#OpenSSLDir}\libssl-1_1.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#OpenSSLDir}\libssl-1_1-x64.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
+Source: "{#OpenSSLDir}\libcrypto-3.dll";        DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libcrypto-3-x64.dll";    DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libssl-3.dll";           DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libssl-3-x64.dll";       DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\D3Dcompiler_47.dll";          DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\opengl32sw.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\libmysql.dll";             DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Multimedia.dll";           DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5MultimediaWidgets.dll";    DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Network.dll";              DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5NetworkAuth.dll";          DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5OpenGL.dll";               DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5PrintSupport.dll";         DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Qml.dll";                  DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtLib}\qscintilla2_qt6.dll";         DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Multimedia.dll";           DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6MultimediaWidgets.dll";    DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Network.dll";              DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6NetworkAuth.dll";          DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6OpenGL.dll";               DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6PrintSupport.dll";         DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Qml.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Sql.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
@@ -132,8 +127,6 @@ Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\cras
 Source: "{#BuildDir}\crash-reporter\languages\PortugueseBrazilian.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtPlugins}\imageformats\qdds.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qico.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -143,6 +136,9 @@ Source: "{#QtPlugins}\imageformats\qtga.dll";   DestDir: "{app}\imageformats"; F
 Source: "{#QtPlugins}\imageformats\qtiff.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwbmp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwebp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtPlugins}\tls\qschannelbackend.dll";DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtPlugins}\tls\qopensslbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtPlugins}\tls\qcertonlybackend.dll";DestDir: "{app}\tls"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
@@ -157,10 +153,7 @@ Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\langua
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_ru.qm";   DestDir: "{app}\languages\qt"; DestName: "Russian.qm"; Flags: ignoreversion
-Source: "{#QtPlugins}\mediaservice\dsengine.dll";  DestDir: "{app}\mediaservice"; Flags: ignoreversion; OnlyBelowVersion: 6.0.6
-Source: "{#QtPlugins}\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion; MinVersion: 6.0.6
-Source: "{#QtPlugins}\platforms\qminimal.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "{#QtPlugins}\platforms\qoffscreen.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtPlugins}\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlite.dll";     DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
@@ -290,6 +283,31 @@ Type: files; Name: "{app}\libgcc_s_dw2-1.dll"
 Type: files; Name: "{app}\libeay32.dll"
 Type: files; Name: "{app}\libssl32.dll"
 Type: files; Name: "{app}\ssleay32.dll"
+; OpenSSL 1.1 DLLs (Qt 6.5 moved to OpenSSL 3)
+Type: files; Name: "{app}\libcrypto-1_1.dll"
+Type: files; Name: "{app}\libcrypto-1_1-x64.dll"
+Type: files; Name: "{app}\libssl-1_1.dll"
+Type: files; Name: "{app}\libssl-1_1-x64.dll"
+; Qt5 DLLs
+Type: files; Name: "{app}\qscintilla2_qt5.dll"
+Type: files; Name: "{app}\libEGL.dll"
+Type: files; Name: "{app}\libGLESv2.dll"
+Type: files; Name: "{app}\Qt5Concurrent.dll"
+Type: files; Name: "{app}\Qt5Core.dll"
+Type: files; Name: "{app}\Qt5Gui.dll"
+Type: files; Name: "{app}\Qt5Multimedia.dll"
+Type: files; Name: "{app}\Qt5MultimediaWidgets.dll"
+Type: files; Name: "{app}\Qt5Network.dll"
+Type: files; Name: "{app}\Qt5NetworkAuth.dll"
+Type: files; Name: "{app}\Qt5OpenGL.dll"
+Type: files; Name: "{app}\Qt5PrintSupport.dll"
+Type: files; Name: "{app}\Qt5Qml.dll"
+Type: files; Name: "{app}\Qt5Sql.dll"
+Type: files; Name: "{app}\Qt5Svg.dll"
+Type: files; Name: "{app}\Qt5Widgets.dll"
+Type: files; Name: "{app}\Qt5WinExtras.dll"
+Type: files; Name: "{app}\Qt5Xml.dll"
+Type: files; Name: "{app}\imageformats\qdds.dll"
 ; Qt4 DLLs
 Type: files; Name: "{app}\QtCore4.dll"
 Type: files; Name: "{app}\QtGui4.dll"

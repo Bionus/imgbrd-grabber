@@ -18,7 +18,7 @@ Flickable {
     contentHeight: imageContainer.height
 
     function recalculateSize() {
-        var scale = Math.min(flickable.width / image.width, flickable.height / image.height)
+        const scale = Math.min(flickable.width / image.width, flickable.height / image.height)
         image.scale = scale * currentZoom
         pinchArea.minScale = scale
         pinchArea.maxScale = scale * zoomSteps[zoomSteps.length - 1]
@@ -40,7 +40,7 @@ Flickable {
             fillMode: Image.PreserveAspectFit
             anchors.centerIn: parent
 
-            onStatusChanged: if (status == Image.Ready) recalculateSize()
+            onStatusChanged: if (status === Image.Ready) recalculateSize()
         }
     }
 
@@ -67,13 +67,13 @@ Flickable {
 
             image.scale = pinchArea.minScale * currentZoom
 
-            if (currentZoomStep == 0) {
+            if (currentZoomStep === 0) {
                 flickable.returnToBounds()
             }
         }
 
         onWheel: {
-            var newZoom = currentZoom + zoomScrollStep * (wheel.angleDelta.y / 120)
+            const newZoom = currentZoom + zoomScrollStep * (wheel.angleDelta.y / 120)
             currentZoom = Math.max(1.0, Math.min(zoomSteps[zoomSteps.length - 1], newZoom))
 
             if (wheel.angleDelta.y > 0) {

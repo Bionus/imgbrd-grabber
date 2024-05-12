@@ -71,7 +71,7 @@
 
 /* General */
 
-article h1:first-child
+article h1:first-child,
 article, h2:first-child {
 	margin-top: 0;
 }

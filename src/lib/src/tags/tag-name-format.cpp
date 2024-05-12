@@ -13,6 +13,7 @@ TagNameFormat &TagNameFormat::Normalized()
 	return normalized;
 }
 
+
 TagNameFormat::CaseFormat TagNameFormat::caseFormat() const
 {
 	return m_caseFormat;
@@ -22,6 +23,7 @@ QString TagNameFormat::wordSeparator() const
 {
 	return m_wordSeparator;
 }
+
 
 QString TagNameFormat::formatted(const QStringList &words) const
 {
@@ -61,7 +63,7 @@ QString TagNameFormat::formatted(const QString &word, int index) const
 		case TagNameFormat::UpperFirst:
 		{
 			auto res = word.toLower();
-			if (index == 0 || m_caseFormat == TagNameFormat::Upper) {
+			if ((index == 0 || m_caseFormat == TagNameFormat::Upper) && res.length() > 0) {
 				res[0] = res[0].toUpper();
 			}
 			return res;

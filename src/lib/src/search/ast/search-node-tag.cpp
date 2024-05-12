@@ -3,9 +3,14 @@
 #include "search/ast/search-visitor.h"
 
 
-SearchNodeTag::SearchNodeTag(Tag tag)
-	: tag(std::move(tag))
+SearchNodeTag::SearchNodeTag(const Tag &tag)
+	: SearchNodeTag(tag.text().split(' '))
 {}
+
+SearchNodeTag::SearchNodeTag(QStringList words)
+	: tag(std::move(words))
+{}
+
 
 void SearchNodeTag::accept(SearchVisitor &v) const
 {

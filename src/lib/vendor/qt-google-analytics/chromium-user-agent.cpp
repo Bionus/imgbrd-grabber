@@ -42,8 +42,9 @@ QString GetUserAgentPlatform()
 		return "Linux; ";
 	#elif defined(Q_OS_IOS)
 		return IsTablet() ? "iPad; " : "iPhone; ";
+	#else
+		return {};
 	#endif
-	return {};
 }
 
 // https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:content/common/user_agent.cc;l=211;drc=31d99ff4aa0cc0b75063325ff243e911516a5a6a
@@ -82,8 +83,9 @@ QString GetOSVersion()
 		const QString model = QJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString();
 		const QString android_info_str = model.isEmpty() ? "" : QString("; %1").arg(model);
 		return QString("%1%2").arg(android_version_str).arg(android_info_str);
+	#else
+		return {};
 	#endif
-	return {};
 }
 
 // https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:content/common/user_agent.cc;l=101;drc=31d99ff4aa0cc0b75063325ff243e911516a5a6a
@@ -94,7 +96,6 @@ QString BuildCpuInfo()
 	#elif defined(Q_OS_IOS)
 		return IsTablet() ? "iPad" : "iPhone";
 	#elif defined(Q_OS_WIN)
-
 		if (IsWowX86OnAMD64()) {
 			return "WOW64";
 		} else {
@@ -114,8 +115,9 @@ QString BuildCpuInfo()
 		} else {
 			return unixinfo.machine;
 		}
+	#else
+		return {};
 	#endif
-	return {};
 }
 
 // https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:content/common/user_agent.cc;l=269;drc=31d99ff4aa0cc0b75063325ff243e911516a5a6a
@@ -137,8 +139,9 @@ QString BuildOSCpuInfoFromOSVersionAndCpuType(const QString &os_version, const Q
 		struct utsname unixinfo;
 		uname(&unixinfo);
 		return QString("%1 %2").arg(unixinfo.sysname, cpu_type);
+	#else
+		return {};
 	#endif
-	return {};
 }
 
 // https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:content/common/user_agent.cc;l=261;drc=31d99ff4aa0cc0b75063325ff243e911516a5a6a

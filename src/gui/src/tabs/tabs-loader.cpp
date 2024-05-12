@@ -40,8 +40,8 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, QVariant 
 		f.close();
 
 		QStringList tabs = links.split("\r\n");
-		for (int j = 0; j < tabs.size(); j++) {
-			QStringList infos = tabs[j].split("¤");
+		for (const QString &tab : tabs) {
+			QStringList infos = tab.split("¤");
 			if (infos.size() > 3) {
 				if (infos[infos.size() - 1] == "pool") {
 					auto *tab = new PoolTab(profile, downloadQueue, parent);
@@ -130,7 +130,7 @@ SearchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, DownloadQueue
 bool TabsLoader::save(const QString &path, QList<SearchTab*> &allTabs, QWidget *currentTab)
 {
 	QJsonArray tabsJson;
-	for (auto tab : allTabs) {
+	for (auto *tab : allTabs) {
 		QJsonObject tabJson;
 		tab->write(tabJson);
 		tabsJson.append(tabJson);

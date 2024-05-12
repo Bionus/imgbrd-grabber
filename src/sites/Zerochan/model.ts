@@ -21,9 +21,22 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+const sortMap: Record<string, string> = {
+    "fav-all-time": "fav&t=0",
+    "fav-3-months": "fav&t=2",
+    "fav-1-week": "fav&t=1",
+}
+const meta: ISource["meta"] = {
+    order: {
+        type: "options",
+        options: ["id", "fav", "fav-all-time", "fav-3-months", "fav-1-week", "random"],
+        default: "id",
+    },
+};
+
 export const source: ISource = {
     name: "Zerochan",
-    modifiers: [],
+    modifiers: ["order:id", "order:fav", "order:fav-all-time", "order:fav-3-months", "order:fav-1-week", "order:random"],
     forcedTokens: ["filename", "date"],
     tagFormat: {
         case: "upper",
@@ -32,6 +45,7 @@ export const source: ISource = {
     searchFormat: {
         and: ", ",
     },
+    meta,
     auth: {
         session: {
             type: "post",
@@ -71,8 +85,10 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
+                        const search = Grabber.parseSearchQuery(query.search, meta);
+                        const sortPart = search.order ? (search.order in sortMap ? sortMap[search.order] : search.order) : "id";
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                        return "/" + formatSearch(query.search) + "?s=id&xml&" + pagePart;
+                        return "/" + formatSearch(search.query) + "?s=" + sortPart + "&xml&" + pagePart;
                     } catch (e: any) {
                         return { error: e.message };
                     }
@@ -121,8 +137,10 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
+                        const search = Grabber.parseSearchQuery(query.search, meta);
+                        const sortPart = search.order ? (search.order in sortMap ? sortMap[search.order] : search.order) : "id";
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                        return "/" + formatSearch(query.search) + "?" + pagePart;
+                        return "/" + formatSearch(search.query) + "?s=" + sortPart + "&" + pagePart;
                     } catch (e: any) {
                         return { error: e.message };
                     }

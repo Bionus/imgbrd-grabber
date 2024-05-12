@@ -14,17 +14,19 @@ class Favorite
 {
 	public:
 		explicit Favorite(QString name);
-		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "", QStringList postFiltering = {}, QList<Site*> sites = {});
-		Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath = "", QStringList postFiltering = {}, QList<Site*> sites = {});
+		Favorite(QString name, int note, QDateTime lastViewed, QMap<QString, QVariantMap> lastImages = {}, QString imagePath = "", QStringList postFiltering = {}, QList<Site*> sites = {});
+		Favorite(QString name, int note, QDateTime lastViewed, QMap<QString, QVariantMap> lastImages, QList<Monitor> monitors, QString imagePath = "", QStringList postFiltering = {}, QList<Site*> sites = {});
 
 		// Getters and setters
 		void setNote(int note);
 		void setLastViewed(const QDateTime &lastViewed);
+		void setLastImage(const QString &site, const QVariantMap &lastImage);
 		void setImagePath(const QString &imagePath);
 		void setPostFiltering(const QStringList &postFiltering);
 		void setSites(const QList<Site*> &sites);
 		int getNote() const;
 		QDateTime getLastViewed() const;
+		QMap<QString, QVariantMap> getLastImages() const { return m_lastImages; };
 		QString getImagePath() const;
 		QList<Monitor> &getMonitors();
 		QStringList getPostFiltering() const;
@@ -53,6 +55,7 @@ class Favorite
 		QString m_name;
 		int m_note;
 		QDateTime m_lastViewed;
+		QMap<QString, QVariantMap> m_lastImages;
 		QList<Monitor> m_monitors;
 		QString m_imagePath;
 		QStringList m_postFiltering;

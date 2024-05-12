@@ -35,11 +35,18 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist()));
 	}
 
-	// Ignore
+	// Ignored tags
 	if (profile->getIgnored().contains(m_tag, Qt::CaseInsensitive)) {
 		addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore()));
 	} else {
 		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore()));
+	}
+
+	// Removed tags
+	if (profile->getRemovedTags().contains(m_tag)) {
+		addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't remove"), this, &TagContextMenu::unremove);
+	} else {
+		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Remove"), this, &TagContextMenu::remove);
 	}
 	addSeparator();
 
@@ -47,6 +54,7 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 	addAction(QIcon(":/images/icons/copy.png"), tr("Copy tag"), this, SLOT(copyTagToClipboard()));
 	if (!allTags.isEmpty()) {
 		addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
+		addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags (with namespaces)"), this, SLOT(copyAllTagsWithNamespacesToClipboard()));
 	}
 	addSeparator();
 
@@ -92,6 +100,15 @@ void TagContextMenu::unignore()
 	m_profile->removeIgnored(m_tag);
 }
 
+void TagContextMenu::remove()
+{
+	m_profile->getRemovedTags().add(m_tag);
+}
+void TagContextMenu::unremove()
+{
+	m_profile->getRemovedTags().remove(m_tag);
+}
+
 void TagContextMenu::blacklist()
 {
 	m_profile->addBlacklistedTag(m_tag);
@@ -125,6 +142,17 @@ void TagContextMenu::copyAllTagsToClipboard()
 	tags.reserve(m_allTags.count());
 	for (const Tag &tag : qAsConst(m_allTags)) {
 		tags.append(tag.text());
+	}
+
+	QApplication::clipboard()->setText(tags.join(' '));
+}
+void TagContextMenu::copyAllTagsWithNamespacesToClipboard()
+{
+	QStringList tags;
+	tags.reserve(m_allTags.count());
+	for (const Tag &tag : qAsConst(m_allTags)) {
+		const QString nspace = !tag.type().isUnknown() ? tag.type().name() + ":" : QString();
+		tags.append(nspace + tag.text());
 	}
 
 	QApplication::clipboard()->setText(tags.join(' '));

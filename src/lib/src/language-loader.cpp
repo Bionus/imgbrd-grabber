@@ -15,7 +15,6 @@ LanguageLoader::LanguageLoader(QString path)
 QMap<QString, QString> LanguageLoader::getAllLanguages() const
 {
 	QSettings fullLanguages(m_path + "languages.ini", QSettings::IniFormat);
-	fullLanguages.setIniCodec("UTF-8");
 
 	QStringList languageFiles = QDir(m_path).entryList({ QStringLiteral("*.qm") }, QDir::Files);
 	QMap<QString, QString> languages;

@@ -6,8 +6,8 @@
 #include "printers/printer.h"
 
 
-GetDetailsCliCommand::GetDetailsCliCommand(Profile *profile, Printer *printer, const QList<Site*> &sites, const QString &pageUrl, QObject *parent)
-	: CliCommand(parent), m_profile(profile), m_printer(printer), m_sites(sites), m_pageUrl(pageUrl)
+GetDetailsCliCommand::GetDetailsCliCommand(Profile *profile, Printer *printer, const QList<Site*> &sites, QString pageUrl, QObject *parent)
+	: CliCommand(parent), m_profile(profile), m_printer(printer), m_sites(sites), m_pageUrl(std::move(pageUrl)), m_image(nullptr)
 {}
 
 bool GetDetailsCliCommand::validate()

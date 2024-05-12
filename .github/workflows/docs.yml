@@ -19,16 +19,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           key: mkdocs-material-${{ env.cache_id }}
           path: .cache
@@ -36,12 +36,9 @@ jobs:
             mkdocs-material-
 
       - name: Install Python dependencies
-        run: pip install mkdocs-material==9.2.0b3 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
+        run: pip install mkdocs-material==9.5 mkdocs-awesome-pages-plugin mkdocs-macros-plugin mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
 
-      - name: Patch blog dates to support datetimes
-        run: sed -i 's|date.fromisoformat|datetime.fromisoformat|' $(pip show mkdocs-material | grep Location | cut -d ' ' -f 2)/material/plugins/blog/plugin.py
-
-      - name: Deploy to Github Pages
+      - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

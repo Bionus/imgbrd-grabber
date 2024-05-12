@@ -93,10 +93,10 @@
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>
@@ -168,5 +168,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonHelpClassic</sender>
+   <signal>clicked()</signal>
+   <receiver>FilenameWindow</receiver>
+   <slot>helpClassic()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>380</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>403</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonHelpJavascript</sender>
+   <signal>clicked()</signal>
+   <receiver>FilenameWindow</receiver>
+   <slot>helpJavascript()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>387</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>helpClassic()</slot>
+  <slot>helpJavascript()</slot>
+ </slots>
 </ui>

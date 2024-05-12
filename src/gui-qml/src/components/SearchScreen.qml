@@ -1,7 +1,6 @@
 import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
-import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
@@ -14,7 +13,7 @@ Page {
     signal openSources()
 
     property int page: 1
-    property string site
+    property var site
     property bool infiniteScroll: gSettings.resultsInfiniteScroll.value
     property var results
     property bool queryChanged: false
@@ -23,10 +22,11 @@ Page {
     TagSearchLoader {
         id: pageLoader
 
-        site: searchTab.site
+        site: searchTab.site.url
         query: textFieldSearch.text
         page: searchTab.page
         perPage: 20
+        endpoint: site.endpoints[comboEndpoint.currentIndex].id
         postFilter: textFieldPostFiltering.text
         profile: backend.profile
 
@@ -100,6 +100,18 @@ Page {
             Layout.fillWidth: true
             visible: textFieldSearch.isOpen
 
+            ComboBox {
+                id: comboEndpoint
+                visible: gSettings.v8.value
+                model: site.endpoints.map(endpoint => endpoint.name)
+
+                Layout.fillWidth: true
+                implicitHeight: 40
+                topInset: 0
+                bottomInset: 0
+                background: Rectangle {}
+            }
+
             Item {
                 Layout.fillWidth: true
                 height: 40
@@ -137,7 +149,7 @@ Page {
                     enabled: pageLoader.query !== ""
                     onClicked: isFavorited
                         ? backend.removeFavorite(pageLoader.query)
-                        : backend.addFavorite(pageLoader.query, searchTab.site)
+                        : backend.addFavorite(pageLoader.query, searchTab.site.url)
                 }
 
                 Item {
@@ -171,7 +183,7 @@ Page {
             }
 
             Loading {
-                visible: pageLoader.status == TagSearchLoader.Loading
+                visible: pageLoader.status === TagSearchLoader.Loading
                 anchors.fill: parent
             }
         }
@@ -180,6 +192,7 @@ Page {
             spacing: 0
             Layout.fillWidth: true
             Layout.fillHeight: false
+            //Layout.preferredHeight: 40
 
             Button {
                 id: prevButton
@@ -190,6 +203,7 @@ Page {
                 enabled: pageLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page--
@@ -197,15 +211,21 @@ Page {
                 }
             }
 
-            Button {
-                id: sourcesButton
-                background.anchors.fill: sourcesButton
-                text: qsTr("Sources")
+            Label {
+                text: pageLoader.status === TagSearchLoader.Ready
+                    ? (results.length > 0
+                        ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(pageLoader.pageCount).arg(results.length).arg(pageLoader.imageCount)
+                        : qsTr("No result"))
+                    : ''
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                rightPadding: sourcesButton.width
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Material.elevation: 0
 
-                onClicked: searchTab.openSources()
+                background: Rectangle {
+                    color: nextButton.background.color
+                }
             }
 
             Button {
@@ -217,6 +237,7 @@ Page {
                 enabled: pageLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page++

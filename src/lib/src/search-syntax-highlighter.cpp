@@ -22,12 +22,12 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 	if (!full) {
 		// Meta other format "unknown_meta:value"
 		rule.pattern = QRegularExpression("(?: |^)([^:]+):([^: ][^ ]*)?(?: |$)");
-		rule.format.setForeground(QColor("#ff0000")); // red
+		rule.format.setForeground(Qt::red);
 		highlightingRules.append(rule);
 	} else {
 		// MD5 format "qdrg15sdfgs1d2f1gs3dfg"
 		rule.pattern = QRegularExpression("(?: |^)([0-9A-F]{32})(?: |$)", QRegularExpression::CaseInsensitiveOption);
-		rule.format.setForeground(QColor("#800080")); // purple
+		rule.format.setForeground(Qt::darkMagenta);
 		highlightingRules.append(rule);
 
 		// URL format "http://..."
@@ -38,17 +38,17 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 
 	// Meta format "meta:value"
 	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?(?: |$)", QRegularExpression::CaseInsensitiveOption);
-	rule.format.setForeground(QColor("#a52a2a")); // brown
+	rule.format.setForeground(QColor(165, 42, 42)); // brown
 	highlightingRules.append(rule);
 
 	if (m_profile != nullptr) {
 		// Favorites format "favorited_tag"
-		rule.format.setForeground(QColor("#ffc0cb")); // pink
+		rule.format.setForeground(QColor(255, 192, 203)); // pink
 		highlightingRules.append(rule);
 		m_favoritesRule = &highlightingRules.last();
 
 		// Favorites format "kfl_tag"
-		rule.format.setForeground(QColor("#000000")); // black
+		rule.format.setForeground(Qt::black);
 		highlightingRules.append(rule);
 		m_kflRule = &highlightingRules.last();
 

@@ -102,11 +102,11 @@ class ViewerWindow : public QWidget
 		void previous();
 
 	protected:
-		void closeEvent(QCloseEvent *) override;
-		void resizeEvent(QResizeEvent *) override;
-		void showEvent(QShowEvent *) override;
-		void mouseReleaseEvent(QMouseEvent *) override;
-		void wheelEvent(QWheelEvent *) override;
+		void closeEvent(QCloseEvent *event) override;
+		void resizeEvent(QResizeEvent *event) override;
+		void showEvent(QShowEvent *event) override;
+		void mouseReleaseEvent(QMouseEvent *event) override;
+		void wheelEvent(QWheelEvent *event) override;
 		void draw();
 
 	private:

@@ -5,7 +5,7 @@ title: Portable version
 
 ## Introduction
 
-If you want to be able to use the program anywhere without installation, for example on an USB drive, you can make it a portable application.
+If you want to be able to use the program anywhere without installation, for example on a USB drive, you can make it a portable application.
 
 
 ## How-to

@@ -10,7 +10,7 @@ AuthConstField::AuthConstField(QString key, QString value)
 
 QString AuthConstField::value(MixedSettings *settings) const
 {
-	Q_UNUSED(settings);
+	Q_UNUSED(settings)
 
 	return m_value;
 }

@@ -34,7 +34,7 @@ TEST_CASE("BatchDownloader")
 	siteSettings.sync();
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
@@ -46,7 +46,7 @@ TEST_CASE("BatchDownloader")
 
 	SECTION("Single image download")
 	{
-		auto img = QSharedPointer<Image>(new Image(site, {{ "file_url", "http://test.com/img/filename.jpg" }}, profile));
+		auto img = QSharedPointer<Image>(new Image(site, {{ "file_url", "https://test.com/img/filename.jpg" }}, profile));
 		DownloadQueryImage query(img, site, "out.jpg", "tests/resources/tmp");
 
 		SECTION("Valid")

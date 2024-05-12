@@ -13,7 +13,7 @@
 
 
 SearchImagesCliCommand::SearchImagesCliCommand(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sites, int page, int perPage, QString filename, QString folder, int max, bool login, bool noDuplicates, bool getBlacklisted, QObject *parent)
-	: SearchCliCommand(profile, std::move(tags), std::move(postFiltering), std::move(sites), page, perPage, parent), m_filename(filename), m_folder(folder), m_max(max), m_login(login), m_noDuplicates(noDuplicates), m_getBlacklisted(getBlacklisted)
+	: SearchCliCommand(profile, std::move(tags), std::move(postFiltering), std::move(sites), page, perPage, parent), m_filename(std::move(filename)), m_folder(std::move(folder)), m_max(max), m_login(login), m_noDuplicates(noDuplicates), m_getBlacklisted(getBlacklisted)
 {}
 
 bool SearchImagesCliCommand::validate()
@@ -78,7 +78,7 @@ void SearchImagesCliCommand::loadMoreDetails(const QList<QSharedPointer<Image>> 
 	int runningRequests = 0;
 
 	QEventLoop loop;
-	for (auto& image : images) {
+	for (const auto &image : images) {
 		while (runningRequests >= requestsLimit) {
 			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 		}

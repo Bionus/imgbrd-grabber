@@ -39,14 +39,14 @@ class QAffiche : public QLabel
 		void mouseOut(const QString &);
 
 	protected:
-		// void paintEvent(QPaintEvent*);
-		void mouseDoubleClickEvent(QMouseEvent*) override;
-		void mousePressEvent(QMouseEvent*) override;
-		void mouseReleaseEvent(QMouseEvent*) override;
-		void enterEvent(QEvent*) override;
-		void leaveEvent(QEvent*) override;
-		void resizeEvent(QResizeEvent*) override;
-		bool hitLabel(QPoint p);
+		// void paintEvent(QPaintEvent *event);
+		void mouseDoubleClickEvent(QMouseEvent *event) override;
+		void mousePressEvent(QMouseEvent *event) override;
+		void mouseReleaseEvent(QMouseEvent *event) override;
+		void enterEvent(QEnterEvent *event) override;
+		void leaveEvent(QEvent *event) override;
+		void resizeEvent(QResizeEvent *event) override;
+		bool hitLabel(QPoint point);
 		bool m_pressed;
 		QVariant m_id;
 		int m_border;

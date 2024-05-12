@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>619</height>
+    <width>747</width>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,11 +21,11 @@
    <item row="1" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <widget class="QTreeWidget" name="treeWidget">
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
       </property>
       <property name="autoScroll">
        <bool>true</bool>
@@ -96,6 +96,11 @@
        <item>
         <property name="text">
          <string>Image size</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Format conversion</string>
         </property>
        </item>
       </item>
@@ -203,7 +208,7 @@
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
         <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label">
@@ -425,7 +430,7 @@
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
         <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_9">
@@ -627,6 +632,30 @@
           </property>
          </widget>
         </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkUseQtUserAgent">
+          <property name="text">
+           <string>Use Qt default User-Agent</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="labelUserAgent">
+          <property name="text">
+           <string>User-Agent</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QLineEdit" name="lineUserAgent">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSourcesRegistries">
@@ -659,7 +688,7 @@
         <item>
          <spacer name="verticalSpacer_7">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -674,7 +703,7 @@
       <widget class="QWidget" name="pageSave">
        <layout class="QFormLayout" name="formLayout_17">
         <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="checkDownloadOriginals">
@@ -867,12 +896,15 @@
         <item row="9" column="0">
          <widget class="QLabel" name="label_84">
           <property name="text">
-           <string>Automatic redownload</string>
+           <string>Retry failed downloads</string>
           </property>
          </widget>
         </item>
         <item row="9" column="1">
          <widget class="QSpinBox" name="spinAutomaticRetries">
+          <property name="suffix">
+           <string> time(s)</string>
+          </property>
           <property name="maximum">
            <number>100</number>
           </property>
@@ -1127,33 +1159,33 @@
         <item>
          <widget class="QScrollArea" name="scrollArea">
           <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Shape::NoFrame</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
+           <enum>QFrame::Shadow::Plain</enum>
           </property>
           <property name="lineWidth">
            <number>0</number>
           </property>
           <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
+           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
           </property>
           <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustToContents</enum>
+           <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
           <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
           </property>
           <widget class="QWidget" name="scrollAreaWidgetContents">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>476</width>
+             <height>475</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1178,7 +1210,7 @@
             <item>
              <spacer name="verticalSpacer">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -1224,7 +1256,7 @@
         <item>
          <spacer name="verticalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -1244,16 +1276,6 @@
            <string>Windows Property System</string>
           </property>
           <layout class="QFormLayout" name="formLayout_15">
-           <item row="1" column="0" colspan="2">
-            <layout class="QFormLayout" name="layoutMetadataPropsys"/>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QPushButton" name="buttonMetadataPropsysAdd">
-             <property name="text">
-              <string>Add new property</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="labelMetadataPropsysExtensions">
              <property name="text">
@@ -1264,6 +1286,23 @@
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineMetadataPropsysExtensions"/>
            </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonMetadataPropsysAdd">
+             <property name="text">
+              <string>Add new property</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMetadataPropsysClear">
+             <property name="text">
+              <string>Clear existing metadata</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataPropsys"/>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1273,26 +1312,6 @@
            <string>Exiftool</string>
           </property>
           <layout class="QFormLayout" name="formLayout_23">
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelMetadataExiftoolExtensions">
-             <property name="text">
-              <string>Extensions</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineMetadataExiftoolExtensions"/>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
-           </item>
-           <item row="3" column="0" colspan="2">
-            <widget class="QPushButton" name="buttonMetadataExiftoolAdd">
-             <property name="text">
-              <string>Add new property</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="labelMetadataExiftoolVersionLabel">
              <property name="text">
@@ -1306,6 +1325,33 @@
               <string>Loading...</string>
              </property>
             </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelMetadataExiftoolExtensions">
+             <property name="text">
+              <string>Extensions</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineMetadataExiftoolExtensions"/>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonMetadataExiftoolAdd">
+             <property name="text">
+              <string>Add new property</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMetadataExiftoolClear">
+             <property name="text">
+              <string>Clear existing metadata</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
            </item>
           </layout>
          </widget>
@@ -1393,7 +1439,7 @@
         <item>
          <spacer name="verticalSpacer_4">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -1405,10 +1451,164 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="pageFormatConversion">
+       <layout class="QFormLayout" name="formLayout_28">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelConversionFFmpegVersionLabel">
+          <property name="text">
+           <string>FFmpeg version</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="labelConversionFFmpegVersion">
+          <property name="text">
+           <string>Loading...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelConversionImageMagickVersionLabel">
+          <property name="text">
+           <string>ImageMagick version</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="labelConversionImageMagickVersion">
+          <property name="text">
+           <string>Loading...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupConversionVideo">
+          <property name="title">
+           <string>Video conversion</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_27">
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionFFmpegRemuxWebmToMp4">
+             <property name="text">
+              <string>Remux WEBM files to MP4 when possible</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionFFmpegConvertWebmToMp4">
+             <property name="text">
+              <string>Convert WEBM files to MP4</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupConversionImage">
+          <property name="title">
+           <string>Image conversion</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_30">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelConversionImageBackend">
+             <property name="text">
+              <string>Back-end</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="comboConversionImageBackend">
+             <item>
+              <property name="text">
+               <string notr="true">ImageMagick</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">FFmpeg</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <layout class="QVBoxLayout" name="layoutConversionImageList"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonConversionImageListAdd">
+             <property name="text">
+              <string>Add new image conversion</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupConversionUgoira">
+          <property name="title">
+           <string>Ugoira (ZIP) conversion</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_29">
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionUgoiraEnabled">
+             <property name="text">
+              <string>Convert ugoira ZIP files</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelConversionUgoiraTargetExtension">
+             <property name="text">
+              <string>Target format</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="comboConversionUgoiraTargetExtension">
+             <item>
+              <property name="text">
+               <string>GIF</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>WEBM</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>APNG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>WEBP</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>MKV</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionUgoiraDelete">
+             <property name="text">
+              <string>Delete original file on success</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageInterface">
        <layout class="QFormLayout" name="formLayout_7">
         <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="0">
          <widget class="QLabel" name="labelTheme">
@@ -1420,14 +1620,14 @@
         <item row="0" column="1">
          <widget class="QComboBox" name="comboTheme"/>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="labelThumbnailUpscale">
           <property name="text">
            <string>Thumbnail scaling</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QSpinBox" name="spinThumbnailUpscale">
           <property name="suffix">
            <string>%</string>
@@ -1440,14 +1640,24 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkThumbnailSmartSize">
+          <property name="text">
+           <string>Use bigger thumbnail sizes as needed when available</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
          <widget class="QLabel" name="label_26">
           <property name="text">
            <string>Favorites display</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="4" column="1">
          <widget class="QComboBox" name="comboFavoritesDisplay">
           <item>
            <property name="text">
@@ -1486,14 +1696,14 @@
           </item>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_39">
           <property name="text">
            <string>Hide favorites</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinHideFavorites">
           <property name="maximum">
            <number>1000</number>
@@ -1503,7 +1713,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_40">
           <property name="font">
            <font>
@@ -1518,14 +1728,14 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_41">
           <property name="text">
            <string>Source's type display</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="7" column="1">
          <widget class="QComboBox" name="comboSources">
           <item>
            <property name="text">
@@ -1549,14 +1759,14 @@
           </item>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_42">
           <property name="text">
            <string>Displayed letters</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QComboBox" name="comboSourcesLetters">
@@ -1592,7 +1802,7 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_43">
           <property name="font">
            <font>
@@ -1607,48 +1817,58 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
          <widget class="QCheckBox" name="checkPreloadAllTabs">
           <property name="text">
            <string>Preload all tabs when restoring a previous session</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="labelAcceptDialogue">
-          <property name="text">
-           <string>Accept dialogue</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QKeySequenceEdit" name="keyAcceptDialogue">
-          <property name="keySequence">
-           <string>Ctrl+N</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="labelDeclineDialogue">
-          <property name="text">
-           <string>Decline dialogue</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <widget class="QKeySequenceEdit" name="keyDeclineDialogue">
-          <property name="keySequence">
-           <string>Ctrl+N</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkScaleFontSize">
           <property name="text">
            <string>Scale font size</string>
           </property>
           <property name="checked">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="labelAcceptDialogue">
+          <property name="text">
+           <string>Accept dialogue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QKeySequenceEdit" name="keyAcceptDialogue">
+          <property name="keySequence">
+           <string>Ctrl+N</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0">
+         <widget class="QLabel" name="labelDeclineDialogue">
+          <property name="text">
+           <string>Decline dialogue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="1">
+         <widget class="QKeySequenceEdit" name="keyDeclineDialogue">
+          <property name="keySequence">
+           <string>Ctrl+N</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="comboBaseStyle"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelBaseStyle">
+          <property name="text">
+           <string>Base style</string>
           </property>
          </widget>
         </item>
@@ -1825,7 +2045,7 @@
         <item>
          <widget class="QScrollArea" name="scrollArea_3">
           <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Shape::NoFrame</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
@@ -2132,7 +2352,7 @@
             <item>
              <spacer name="verticalSpacer_5">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -2532,10 +2752,10 @@
         <item>
          <widget class="QScrollArea" name="scrollArea_4">
           <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Shape::NoFrame</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
+           <enum>QFrame::Shadow::Plain</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
@@ -2590,7 +2810,7 @@
                <item>
                 <spacer name="horizontalSpacer">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2615,7 +2835,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="showGroupSeparator" stdset="0">
                   <bool>false</bool>
@@ -2634,7 +2854,7 @@
                <item>
                 <spacer name="horizontalSpacer_2">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2666,7 +2886,7 @@
                <item>
                 <spacer name="horizontalSpacer_21">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2735,7 +2955,7 @@
                <item>
                 <spacer name="horizontalSpacer_3">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2757,7 +2977,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -2776,7 +2996,7 @@
                <item>
                 <spacer name="horizontalSpacer_12">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2808,7 +3028,7 @@
                <item>
                 <spacer name="horizontalSpacer_22">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2871,7 +3091,7 @@
                <item>
                 <spacer name="horizontalSpacer_4">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2893,7 +3113,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -2912,7 +3132,7 @@
                <item>
                 <spacer name="horizontalSpacer_13">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2944,7 +3164,7 @@
                <item>
                 <spacer name="horizontalSpacer_23">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3010,7 +3230,7 @@
                <item>
                 <spacer name="horizontalSpacer_5">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3032,7 +3252,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3051,7 +3271,7 @@
                <item>
                 <spacer name="horizontalSpacer_14">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3083,7 +3303,7 @@
                <item>
                 <spacer name="horizontalSpacer_24">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3149,7 +3369,7 @@
                <item>
                 <spacer name="horizontalSpacer_6">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3171,7 +3391,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3190,7 +3410,7 @@
                <item>
                 <spacer name="horizontalSpacer_15">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3222,7 +3442,7 @@
                <item>
                 <spacer name="horizontalSpacer_25">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3288,7 +3508,7 @@
                <item>
                 <spacer name="horizontalSpacer_7">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3310,7 +3530,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3329,7 +3549,7 @@
                <item>
                 <spacer name="horizontalSpacer_16">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3361,7 +3581,7 @@
                <item>
                 <spacer name="horizontalSpacer_26">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3427,7 +3647,7 @@
                <item>
                 <spacer name="horizontalSpacer_8">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3449,7 +3669,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3468,7 +3688,7 @@
                <item>
                 <spacer name="horizontalSpacer_17">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3500,7 +3720,7 @@
                <item>
                 <spacer name="horizontalSpacer_27">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3566,7 +3786,7 @@
                <item>
                 <spacer name="horizontalSpacer_9">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3588,7 +3808,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3607,7 +3827,7 @@
                <item>
                 <spacer name="horizontalSpacer_18">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3639,7 +3859,7 @@
                <item>
                 <spacer name="horizontalSpacer_28">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3705,7 +3925,7 @@
                <item>
                 <spacer name="horizontalSpacer_10">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3727,7 +3947,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3746,7 +3966,7 @@
                <item>
                 <spacer name="horizontalSpacer_19">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3778,7 +3998,7 @@
                <item>
                 <spacer name="horizontalSpacer_29">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3844,7 +4064,7 @@
                <item>
                 <spacer name="horizontalSpacer_11">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3866,7 +4086,7 @@
                   <string>Ascending from left to right</string>
                  </property>
                  <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                  <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
                  </property>
                  <property name="suffix">
                   <string/>
@@ -3885,7 +4105,7 @@
                <item>
                 <spacer name="horizontalSpacer_20">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3917,7 +4137,7 @@
                <item>
                 <spacer name="horizontalSpacer_30">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -3952,7 +4172,7 @@
             <item>
              <spacer name="verticalSpacer_6">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -3985,7 +4205,7 @@
         <item>
          <widget class="QScrollArea" name="scrollArea_2">
           <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Shape::NoFrame</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
@@ -4534,6 +4754,62 @@
           </item>
          </layout>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labelColoringSpecies">
+          <property name="text">
+           <string>Species</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringSpecies">
+          <item>
+           <widget class="QLineEdit" name="lineColoringSpecies"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringSpeciesColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringSpeciesFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelColoringMetas">
+          <property name="text">
+           <string>Metas</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringMetas">
+          <item>
+           <widget class="QLineEdit" name="lineColoringMetas"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
         <item row="6" column="0">
          <widget class="QLabel" name="labelColoringModels">
           <property name="text">
@@ -4598,107 +4874,55 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringFavorites">
-          <item>
-           <widget class="QLineEdit" name="lineColoringFavorites"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringFavoritesColor">
+         <layout class="QFormLayout" name="layoutColoringFavorites">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelColoringFavoritesTags">
             <property name="text">
-             <string>Color</string>
+             <string>Tags</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringFavoritesFont">
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringFavoritesTags">
+            <item>
+             <widget class="QLineEdit" name="lineColoringFavorites"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringFavoritesColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringFavoritesFont">
+              <property name="text">
+               <string>Font</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelColoringFavoritesBorder">
             <property name="text">
-             <string>Font</string>
+             <string>Border</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="labelColoringBlacklisteds">
-          <property name="text">
-           <string>Blacklisted</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringBlacklisteds">
-          <item>
-           <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="labelColoringIgnoreds">
-          <property name="text">
-           <string>Ignored</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
-          <item>
-           <widget class="QLineEdit" name="lineColoringIgnoreds"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringIgnoredsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringIgnoredsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="labelColoringSpecies">
-          <property name="text">
-           <string>Species</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringSpecies">
-          <item>
-           <widget class="QLineEdit" name="lineColoringSpecies"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringSpeciesColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringSpeciesFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringFavoritesBorder">
+            <item>
+             <widget class="QLineEdit" name="lineColoringFavoritesBorder"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringFavoritesBorderColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -4730,27 +4954,87 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="labelColoringMetas">
+        <item row="10" column="0">
+         <widget class="QLabel" name="labelColoringBlacklisteds">
           <property name="text">
-           <string>Metas</string>
+           <string>Blacklisted</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <layout class="QHBoxLayout" name="layoutColoringMetas">
+        <item row="10" column="1">
+         <layout class="QFormLayout" name="layoutColoringBlacklisteds">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelColoringBlacklistedsTags">
+            <property name="text">
+             <string>Tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelColoringBlacklistedsBorder">
+            <property name="text">
+             <string>Border</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringBlacklistedsTags">
+            <item>
+             <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
+              <property name="text">
+               <string>Font</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="layoutColoringBlacklistedsBorder">
+            <item>
+             <widget class="QLineEdit" name="lineColoringBlacklistedsBorder"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringBlacklistedsBorderColor">
+              <property name="text">
+               <string>Color</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="labelColoringIgnoreds">
+          <property name="text">
+           <string>Ignored</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
           <item>
-           <widget class="QLineEdit" name="lineColoringMetas"/>
+           <widget class="QLineEdit" name="lineColoringIgnoreds"/>
           </item>
           <item>
-           <widget class="QPushButton" name="buttonColoringMetasColor">
+           <widget class="QPushButton" name="buttonColoringIgnoredsColor">
             <property name="text">
              <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="buttonColoringMetasFont">
+           <widget class="QPushButton" name="buttonColoringIgnoredsFont">
             <property name="text">
              <string>Font</string>
             </property>
@@ -4765,17 +5049,17 @@
        <zorder>labelColoringModels</zorder>
        <zorder>labelColoringGenerals</zorder>
        <zorder>labelColoringFavorites</zorder>
-       <zorder>labelColoringBlacklisteds</zorder>
        <zorder>labelColoringIgnoreds</zorder>
        <zorder>labelColoringCircles</zorder>
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
        <zorder>labelColoringMetas</zorder>
+       <zorder>labelColoringBlacklisteds</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">
         <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_3">
@@ -4963,21 +5247,16 @@
         <item>
          <widget class="QCheckBox" name="checkHideBlacklisted">
           <property name="text">
-           <string>Ignore images containing a blacklisted tag</string>
+           <string>Hide images containing a blacklisted tag from results</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="labelHideBlacklisted">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
+         <widget class="QCheckBox" name="checkWarnBlacklisted">
           <property name="text">
-           <string>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</string>
+           <string>Warn before opening images containing a blacklisted tag</string>
           </property>
-          <property name="wordWrap">
+          <property name="checked">
            <bool>true</bool>
           </property>
          </widget>
@@ -5276,7 +5555,7 @@
               <item row="4" column="1">
                <widget class="QLineEdit" name="lineProxyPassword">
                 <property name="echoMode">
-                 <enum>QLineEdit::Password</enum>
+                 <enum>QLineEdit::EchoMode::Password</enum>
                 </property>
                </widget>
               </item>
@@ -5310,7 +5589,7 @@
         <item>
          <spacer name="verticalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -5557,7 +5836,7 @@
         <item>
          <spacer name="verticalSpacer_8">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -5575,10 +5854,10 @@
    <item row="2" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>
@@ -5841,12 +6120,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>635</x>
-     <y>100</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>635</x>
-     <y>127</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5857,12 +6136,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>635</x>
-     <y>100</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>635</x>
-     <y>154</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5873,8 +6152,8 @@
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>474</x>
-     <y>35</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>661</x>
@@ -5889,12 +6168,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>474</x>
-     <y>29</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>87</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5905,7 +6184,7 @@
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>720</x>
+     <x>584</x>
      <y>97</y>
     </hint>
     <hint type="destinationlabel">
@@ -5921,12 +6200,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>623</x>
-     <y>68</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>114</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5937,12 +6216,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>584</x>
-     <y>453</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>584</x>
-     <y>480</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -5953,8 +6232,8 @@
    <slot>addSourceRegistry()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>719</x>
-     <y>71</y>
+     <x>584</x>
+     <y>81</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
@@ -5969,8 +6248,8 @@
    <slot>backupGenerate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>513</x>
-     <y>29</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>735</x>
@@ -5985,12 +6264,76 @@
    <slot>backupRestore()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>706</x>
-     <y>68</y>
+     <x>336</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>749</x>
+     <x>742</x>
      <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkUseQtUserAgent</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineUserAgent</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>263</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>720</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkHideBlacklisted</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkWarnBlacklisted</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>336</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>336</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkConversionUgoiraEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboConversionUgoiraTargetExtension</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>138</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkConversionUgoiraEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkConversionUgoiraDelete</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>

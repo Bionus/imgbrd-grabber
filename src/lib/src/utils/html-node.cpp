@@ -138,6 +138,8 @@ QStringList HtmlNode::pathIds() const
 
 lxb_status_t find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx)
 {
+	Q_UNUSED(spec)
+
 	auto *ret = static_cast<QList<HtmlNode>*>(ctx);
 	ret->append(HtmlNode(node));
 	return LXB_STATUS_OK;

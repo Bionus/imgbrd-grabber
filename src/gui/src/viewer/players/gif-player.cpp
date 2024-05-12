@@ -1,12 +1,13 @@
 #include "gif-player.h"
 #include <QFileInfo>
 #include <QMovie>
+#include <QSettings>
 #include <QStyle>
 #include "ui_gif-player.h"
 
 
-GifPlayer::GifPlayer(bool showControls, Qt::Alignment alignment, QWidget *parent)
-	: Player(parent), ui(new Ui::GifPlayer)
+GifPlayer::GifPlayer(QSettings *settings, Qt::Alignment alignment, QWidget *parent)
+	: Player(parent), ui(new Ui::GifPlayer), m_settings(settings)
 {
 	ui->setupUi(this);
 
@@ -17,7 +18,7 @@ GifPlayer::GifPlayer(bool showControls, Qt::Alignment alignment, QWidget *parent
 
 	ui->label->setAlignment(alignment);
 
-	if (showControls) {
+	if (m_settings->value("Viewer/showGifPlayerControls", true).toBool()) {
 		ui->buttonPlayPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
 		connect(ui->buttonPlayPause, &QToolButton::clicked, this, &GifPlayer::playPause);
 		connect(ui->sliderPosition, &QSlider::valueChanged, this, &GifPlayer::seek);

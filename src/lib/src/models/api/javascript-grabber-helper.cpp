@@ -120,7 +120,7 @@ QJSValue JavascriptGrabberHelper::parseXML(const QString &txt) const
 	int errorLine, errorColumn;
 	if (!doc.setContent(txt, false, &errorMsg, &errorLine, &errorColumn)) {
 		log(QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error);
-		return QJSValue(QJSValue::UndefinedValue);
+		return QJSValue::UndefinedValue;
 	}
 
 	return _parseXMLRec(doc);
@@ -130,7 +130,7 @@ QJSValue JavascriptGrabberHelper::parseHTML(const QString &html, bool fragment) 
 {
 	const JavascriptHtmlDocument *doc = JavascriptHtmlDocument::fromString(m_engine, html, fragment);
 	if (doc == nullptr) {
-		return QJSValue(QJSValue::UndefinedValue);
+		return QJSValue::UndefinedValue;
 	}
 	return m_engine.newQObject((QObject*) doc);
 }
