@@ -81,7 +81,8 @@ void ImageDownloader::save()
 	// Try to build a path first if we don't need tags for the filename, to check for the "same dir" MD5 setting
 	const int filenameTagLevel = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const bool filenameNeedExactTags = filenameTagLevel == 2 || (filenameTagLevel == 1 && m_image->hasUnknownTag());
-	const QString md5Path = !filenameNeedExactTags ? m_image->paths(m_filename, m_path, m_count).first() : QString();
+	const QStringList paths = m_image->paths(m_filename, m_path, m_count);
+	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty() ? paths.first() : QString();
 
 	// We don't need to load the image details of files already in the MD5 list and that should be skipped
 	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
