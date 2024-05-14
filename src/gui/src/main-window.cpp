@@ -544,7 +544,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 	auto *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8, 8));
-		connect(closeTab, &QPushButton::clicked, w, &SearchTab::deleteLater);
+		connect(closeTab, &QPushButton::clicked, w, &SearchTab::close);
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 
 	if (!background) {
