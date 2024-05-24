@@ -1025,7 +1025,8 @@ void DownloadsTab::getAllCancel()
 	if (m_currentPackLoader != nullptr) {
 		m_currentPackLoader->abort();
 	}
-	for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
+	const auto downloaders = m_getAllImageDownloaders; // Local copy to avoid writes during iteration
+	for (auto it = downloaders.constBegin(); it != downloaders.constEnd(); ++it) {
 		it.value()->abort();
 	}
 	m_getAll = false;
@@ -1038,7 +1039,8 @@ void DownloadsTab::getAllSkip()
 	log(QStringLiteral("Skipping downloads..."), Logger::Info);
 
 	int count = m_getAllDownloading.count();
-	for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
+	const auto downloaders = m_getAllImageDownloaders; // Local copy to avoid writes during iteration
+	for (auto it = downloaders.constBegin(); it != downloaders.constEnd(); ++it) {
 		it.value()->abort();
 	}
 	m_getAllSkippedImages.append(m_getAllDownloading);
@@ -1165,7 +1167,8 @@ void DownloadsTab::getAllPause()
 		if (m_currentPackLoader != nullptr) {
 			m_currentPackLoader->abort();
 		}
-		for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
+		const auto downloaders = m_getAllImageDownloaders; // Local copy to avoid writes during iteration
+		for (auto it = downloaders.constBegin(); it != downloaders.constEnd(); ++it) {
 			it.value()->abort();
 		}
 	} else {
