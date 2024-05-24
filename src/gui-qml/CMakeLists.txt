@@ -4,8 +4,8 @@ add_definitions(-DGUI=1)
 add_subdirectory(languages)
 
 # Qt libraries
-find_package(Qt6 COMPONENTS Core Quick Multimedia Network ShaderTools REQUIRED)
-set(QT_LIBRARIES Qt6::Core Qt6::Quick Qt6::Multimedia Qt6::Network)
+find_package(Qt6 COMPONENTS Core Quick Multimedia Network ShaderTools Sql REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Quick Qt6::Multimedia Qt6::Network Qt6::Sql)
 
 # Android specials
 if(ANDROID)
