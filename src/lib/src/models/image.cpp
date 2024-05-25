@@ -786,9 +786,27 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		}
 	}
 
+	QString ext = extension();
+
 	// Keep original date
 	if (m_settings->value("Save/keepDate", true).toBool()) {
 		setFileCreationDate(path, createdAt());
+	}
+
+	// Guess extension from file header
+	if (m_settings->value("Save/headerDetection", true).toBool() && getExtension(path) == ext) {
+		const QString headerExt = getExtensionFromHeader(path);
+		if (headerExt != ext) {
+			log(QStringLiteral("Invalid file extension (%1 to %2) for `%3`").arg(ext, headerExt, path), Logger::Info);
+			const QFileInfo info(path);
+			const QString newPath = info.path() + QDir::separator() + info.completeBaseName() + "." + headerExt;
+			if (!QFile::rename(path, newPath)) {
+				log(QStringLiteral("Error renaming from `%1` to `%2`").arg(path, newPath), Logger::Error);
+			} else {
+				path = QDir::toNativeSeparators(newPath);
+				ext = headerExt;
+			}
+		}
 	}
 
 	// Commands
@@ -806,8 +824,6 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	if (startCommands) {
 		commands.after();
 	}
-
-	QString ext = extension();
 
 	// FFmpeg
 	if (ext == QStringLiteral("webm")) {

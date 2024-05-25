@@ -68,6 +68,7 @@ QList<QPair<QString, QString>> getMetadataPropsys(QSettings *settings);
 QList<QPair<QString, QString>> getMetadataExiftool(QSettings *settings);
 
 QStringList removeWildards(const QStringList &elements, const QStringList &remove);
+QString getExtensionFromHeader(const QString &path);
 QString getExtensionFromHeader(const QByteArray &data12);
 
 void setTestModeEnabled(bool testMode);

@@ -811,6 +811,19 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 }
 
 
+QString getExtensionFromHeader(const QString &path)
+{
+	// Read the first 12 bytes from the file
+	QFile f(path);
+	if (!f.open(QFile::ReadOnly)) {
+		return QString();
+	}
+	const QByteArray data12 = f.read(12);
+	f.close();
+
+	return getExtensionFromHeader(data12);
+}
+
 QString getExtensionFromHeader(const QByteArray &data12)
 {
 	const QByteArray data8 = data12.left(8);
