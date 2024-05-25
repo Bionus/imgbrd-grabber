@@ -1,5 +1,6 @@
 #include <QDir>
 #include <QGuiApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSettings>
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+	app.setWindowIcon(QIcon(":/images/icon.png"));
 
 	Logger::getInstance().initialize();
 

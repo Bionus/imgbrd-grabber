@@ -13,7 +13,7 @@ if(ANDROID)
 endif()
 
 # Input
-file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
+file(GLOB_RECURSE SOURCES "src/*" "resources/*.rc" "resources/*.qrc" "vendor/windows/*")
 file(GLOB_RECURSE SHADERS RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "src/*.frag")
 include_directories("src/" "../lib/src/" "../lib/" "..")
 
