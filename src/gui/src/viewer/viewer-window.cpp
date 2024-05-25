@@ -1420,9 +1420,13 @@ void ViewerWindow::openFile(bool now)
 
 void ViewerWindow::mouseReleaseEvent(QMouseEvent *event)
 {
+	// Close the window on middle click if the setting is enabled
 	if (event->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool()) {
-		close();
-		return;
+		// Ignore middle click events in the tag area
+		if (!m_labelTagsLeft->rect().contains(event->pos()) && !m_labelTagsTop->rect().contains(event->pos())) {
+			close();
+			return;
+		}
 	}
 
 	QWidget::mouseReleaseEvent(event);
