@@ -683,7 +683,7 @@ void MainWindow::closeCurrentTab()
 
 	// Non-closable tabs have a maximum width of 16777214 (default: 16777215)
 	if (tab != nullptr && !tab->isLocked() && currentTab->maximumWidth() != 16777214) {
-		currentTab->deleteLater();
+		currentTab->close();
 	}
 }
 
