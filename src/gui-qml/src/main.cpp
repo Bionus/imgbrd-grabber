@@ -21,6 +21,7 @@
 #include "models/qml-site.h"
 #include "settings.h"
 #include "share/share-utils.h"
+#include "notifications/notification-utils.h"
 #include "statusbar.h"
 #include "syntax-highlighter-helper.h"
 #include "update-checker.h"
@@ -104,6 +105,9 @@ int main(int argc, char *argv[])
 
 	ShareUtils shareUtils(nullptr);
 	engine.rootContext()->setContextProperty("shareUtils", &shareUtils);
+
+	NotificationUtils notificationUtils(nullptr);
+	engine.rootContext()->setContextProperty("notificationUtils", &notificationUtils);
 
 	MainScreen mainScreen(&profile, &shareUtils, &engine);
 	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);
