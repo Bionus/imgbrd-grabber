@@ -11,7 +11,7 @@ class ShareUtils : public QQuickItem
 	Q_OBJECT
 
 	public:
-		explicit ShareUtils(QQuickItem *parent = 0);
+		explicit ShareUtils(QQuickItem *parent = nullptr);
 
 	public slots:
 		void share(const QString &text);

@@ -6,7 +6,7 @@
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), m_id(std::move(id)), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(std::move(color)), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter(QString())
+	: QPushButton(parent), m_id(std::move(id)), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter(QString())
 {}
 
 void QBouton::scale(const QPixmap &image, QSize bounds)
@@ -118,7 +118,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 
 		const QPen pen(Qt::black, 1);
 		painter.setPen(pen);
-		painter.fillPath(path, QColor(255, 0, 0));
+		painter.fillPath(path, Qt::red);
 		painter.drawPath(path);
 
 		painter.setPen(QPen(Qt::white));

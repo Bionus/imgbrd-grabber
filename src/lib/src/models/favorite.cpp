@@ -13,19 +13,21 @@
 
 
 Favorite::Favorite(QString name)
-	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), QString())
+	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), {}, QString())
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath, QStringList postFiltering, QList<Site*> sites)
-	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath), std::move(postFiltering), std::move(sites))
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QMap<QString, QVariantMap> lastImages, QString imagePath, QStringList postFiltering, QList<Site*> sites)
+	: Favorite(std::move(name), note, std::move(lastViewed), std::move(lastImages), QList<Monitor>(), std::move(imagePath), std::move(postFiltering), std::move(sites))
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath, QStringList postFiltering, QList<Site*> sites)
-	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sites))
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QMap<QString, QVariantMap> lastImages, QList<Monitor> monitors, QString imagePath, QStringList postFiltering, QList<Site*> sites)
+	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_lastImages(std::move(lastImages)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sites))
 {}
 
 void Favorite::setImagePath(const QString &imagePath)
 { m_imagePath = imagePath; }
 void Favorite::setLastViewed(const QDateTime &lastViewed)
 { m_lastViewed = lastViewed; }
+void Favorite::setLastImage(const QString &site, const QVariantMap &lastImage)
+{ m_lastImages[site] = lastImage; }
 void Favorite::setNote(int note)
 { m_note = note; }
 void Favorite::setPostFiltering(const QStringList &postFiltering)
@@ -93,7 +95,7 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 		thumbPath = ":/images/noimage.png";
 	}
 
-	return Favorite(tag, note, lastViewed, thumbPath);
+	return Favorite(tag, note, lastViewed, {}, thumbPath);
 }
 
 void Favorite::toJson(QJsonObject &json) const
@@ -118,10 +120,18 @@ void Favorite::toJson(QJsonObject &json) const
 
 	if (!m_sites.isEmpty()) {
 		QStringList sites;
-		for (auto site : m_sites) {
+		for (auto *site : m_sites) {
 			sites.append(site->url());
 		}
 		json["sites"] = QJsonArray::fromStringList(sites);
+	}
+
+	if (!m_lastImages.isEmpty()) {
+		QJsonObject lastImages;
+		for (auto it = m_lastImages.constBegin(); it != m_lastImages.constEnd(); ++it) {
+			lastImages[it.key()] = QJsonObject::fromVariantMap(it.value());
+		}
+		json["lastImages"] = lastImages;
 	}
 }
 Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profile *profile)
@@ -170,7 +180,16 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profil
 		}
 	}
 
-	return Favorite(tag, note, lastViewed, monitors, thumbPath, postFiltering, sites);
+	// Last images
+	QMap<QString, QVariantMap> lastImages;
+	if (json.contains("lastImages")) {
+		const QJsonObject obj = json["lastImages"].toObject();
+		for (auto it = obj.constBegin(); it != obj.constEnd(); ++it) {
+			lastImages[it.key()] = it.value().toObject().toVariantMap();
+		}
+	}
+
+	return Favorite(tag, note, lastViewed, lastImages, monitors, thumbPath, postFiltering, sites);
 }
 
 bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)

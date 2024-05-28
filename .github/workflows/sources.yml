@@ -16,7 +16,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
 
       - name: Install sites dependencies
         working-directory: src/sites
@@ -33,7 +38,7 @@ jobs:
         run: ./scripts/package-sources.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: sources
           path: |
@@ -48,13 +53,13 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: sources
 
       - name: Get date for body
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+        run: echo "date=$(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_OUTPUT
 
       - name: Upload result
         uses: ncipollo/release-action@v1
@@ -67,12 +72,12 @@ jobs:
           prerelease: true
           artifacts: metadata.json,sources_packages/*.zip
           body: |
-            Automatically uploaded by Github actions.
+            Automatically uploaded by GitHub actions.
 
             **Head:** ${{ github.sha }}
             **Date:** ${{ steps.date.outputs.date }}
 
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@v4
         with:
           failOnError: false
           name: sources

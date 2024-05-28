@@ -41,7 +41,7 @@ OAuth1Login::OAuth1Login(OAuth1Auth *auth, Site *site, NetworkManager *manager, 
 	m_oauth1->setTokenCredentialsUrl(m_site->fixUrl(m_auth->tokenCredentialsUrl()));
 
 	// Automatically open browser when necessary
-	QObject::connect(m_oauth1, &QOAuth1::authorizeWithBrowser, [=](QUrl url) {
+	QObject::connect(m_oauth1, &QOAuth1::authorizeWithBrowser, [=](const QUrl &url) {
 		log(QStringLiteral("[%1] Login with OAuth1 via browser `%2`").arg(m_site->url(), url.toString()), Logger::Info);
 		QDesktopServices::openUrl(url);
 	});

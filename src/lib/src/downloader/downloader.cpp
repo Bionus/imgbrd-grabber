@@ -25,7 +25,7 @@ void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
 	QEventLoop loop;
 	int requestsLimit = 5;  // simultan requests
 	int runningRequests = 0;
-	for (auto& image : images) {
+	for (const auto &image : images) {
 		while (runningRequests >= requestsLimit) {
 			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 		}
@@ -95,8 +95,8 @@ void Downloader::getPageTags()
 	const auto pages = getAllPagesTags();
 
 	QList<Tag> list;
-	for (auto p : pages) {
-		const QList<Tag> &pageTags = p->tags();
+	for (auto *page : pages) {
+		const QList<Tag> &pageTags = page->tags();
 		for (const Tag &tag : pageTags) {
 			bool found = false;
 			for (auto &t : list) {

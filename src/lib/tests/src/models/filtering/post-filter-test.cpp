@@ -41,13 +41,13 @@ TEST_CASE("PostFilter")
 	details["has_children"] = "true";
 	details["has_note"] = "true";
 	details["has_comments"] = "true";
-	details["file_url"] = "http://test.com/img/oldfilename.jpg?123456";
-	details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
-	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+	details["file_url"] = "https://test.com/img/oldfilename.jpg?123456";
+	details["sample_url"] = "https://test.com/sample/oldfilename.jpg";
+	details["preview_url"] = "https://test.com/preview/oldfilename.jpg";
 	details["page_url"] = "";
 	details["width"] = "800";
 	details["height"] = "600";
-	details["source"] = "http://google.com/toto/toto.jpg";
+	details["source"] = "https://google.com/toto/toto.jpg";
 	details["tags_general"] = "tag1 tag2 tag3 ";
 	details["tags_artist"] = "artist1 ";
 	details["tags_copyright"] = "copyright1 copyright2 ";
@@ -59,7 +59,7 @@ TEST_CASE("PostFilter")
 	details["file_size"] = "358400";
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
@@ -88,12 +88,12 @@ TEST_CASE("PostFilter")
 		QStringList filters;
 
 		// No match
-		filters = PostFilter(QStringList() << "rating:s" << "rating:safe" << "source:http://google.com").match(tokens);
+		filters = PostFilter(QStringList() << "rating:s" << "rating:safe" << "source:https://google.com").match(tokens);
 		REQUIRE(filters == QStringList());
 
 		// All match
-		filters = PostFilter(QStringList() << "rating:e" << "rating:explicit" << "source:http://test.com").match(tokens);
-		REQUIRE(filters == QStringList() << "image is not \"explicit\"" << "image is not \"explicit\"" << "image's source does not starts with \"http://test.com\"");
+		filters = PostFilter(QStringList() << "rating:e" << "rating:explicit" << "source:https://test.com").match(tokens);
+		REQUIRE(filters == QStringList() << "image is not \"explicit\"" << "image is not \"explicit\"" << "image's source does not starts with \"https://test.com\"");
 	}
 
 	SECTION("FilterInvert")

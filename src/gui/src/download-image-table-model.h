@@ -13,7 +13,7 @@ class DownloadImageTableModel : public QAbstractTableModel
 	Q_OBJECT
 
 	public:
-		DownloadImageTableModel(QList<DownloadQueryImage> &downloads, QObject *parent = nullptr);
+		explicit DownloadImageTableModel(QList<DownloadQueryImage> &downloads, QObject *parent = nullptr);
 
 		// Data
 		int rowCount(const QModelIndex &parent = {}) const override;

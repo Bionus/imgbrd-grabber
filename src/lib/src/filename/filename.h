@@ -89,7 +89,7 @@ class Filename
 
 		int needExactTags(Site *site, QSettings *settings, const QString &api = "") const;
 
-		QList<QMap<QString, Token>> expandTokens(QMap<QString, Token> tokens, QSettings *settings) const;
+		QList<QMap<QString, Token>> expandTokens(const QMap<QString, Token> &tokens, QSettings *settings) const;
 		int needExactTags(const QStringList &forcedTokens = {}, const QStringList &customTokens = {}) const;
 
 	protected:

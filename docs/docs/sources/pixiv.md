@@ -32,5 +32,5 @@ The date format is `YYYY-MM-DD`.
 Pixiv removed username/password authentication.
 As such, you need to use OAuth access and refresh tokens directly.
 
-Here's an useful Python script that allows you to do exactly that:  
+Here's a useful Python script that allows you to do exactly that:  
 <https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde>

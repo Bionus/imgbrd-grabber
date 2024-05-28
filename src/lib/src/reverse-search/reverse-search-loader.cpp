@@ -19,7 +19,7 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 		ret.insert(3, ReverseSearchEngine(3, savePath("webservices/3.ico"), "Google", "https://www.google.com/searchbyimage?image_url={url}", 3));
 		ret.insert(4, ReverseSearchEngine(4, savePath("webservices/4.ico"), "TinEye", "https://www.tineye.com/search/?url={url}", 4));
 		ret.insert(5, ReverseSearchEngine(5, savePath("webservices/5.ico"), "Yandex", "https://yandex.ru/images/search?rpt=imageview&img_url={url}", 5));
-		ret.insert(6, ReverseSearchEngine(6, savePath("webservices/6.ico"), "waifu2x", "http://waifu2x.udp.jp/index.html?url={url}", 6));
+		ret.insert(6, ReverseSearchEngine(6, savePath("webservices/6.ico"), "waifu2x", "https://waifu2x.udp.jp/index.html?url={url}", 6));
 	}
 
 	// Load groups

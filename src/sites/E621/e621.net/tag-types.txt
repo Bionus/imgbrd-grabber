@@ -4,3 +4,4 @@
 4,character
 5,species
 7,meta
+8,lore

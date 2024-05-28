@@ -94,6 +94,7 @@ function parseImage(image: any, fromGallery: boolean): IImage {
     };
 
     const img = Grabber.mapFields(image, map);
+    img.identity = {"id": img["id"]};
     if (image["age_limit"] === "all-age") {
         img.rating = "safe";
     } else if (image["age_limit"] === "r18") {
@@ -286,6 +287,21 @@ export const source: ISource = {
                     return img;
                 },
             },
+            endpoints: {
+                ugoira_details: {
+                    input: {
+                        id: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"id", number>): string => {
+                        return "https://app-api.pixiv.net/v1/ugoira/metadata?illust_id=" + String(query.id);
+                    },
+                    parse: (src: string): IParsedUgoiraDetails => {
+                        return JSON.parse(src)["ugoira_metadata"];
+                    },
+                }
+            }
         },
     },
 };

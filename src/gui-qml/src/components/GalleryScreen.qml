@@ -1,7 +1,6 @@
 import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
-import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
@@ -14,7 +13,7 @@ Page {
     signal back()
 
     property int page: 1
-    property string site
+    property var site
     property var gallery
     property bool infiniteScroll: gSettings.resultsInfiniteScroll.value
     property var results
@@ -23,11 +22,11 @@ Page {
     GallerySearchLoader {
         id: galleryLoader
 
-        site: root.site
+        profile: backend.profile
+        site: root.site.url
         gallery: root.gallery.image
         page: root.page
         perPage: 20
-        profile: backend.profile
 
         onGalleryChanged: galleryLoader.load()
         onResultsChanged: {
@@ -98,7 +97,7 @@ Page {
             }
 
             Loading {
-                visible: galleryLoader.status == TagSearchLoader.Loading
+                visible: galleryLoader.status === TagSearchLoader.Loading
                 anchors.fill: parent
             }
         }
@@ -114,9 +113,10 @@ Page {
                 width: 40
                 icon.source: "/images/icons/previous.png"
                 visible: !infiniteScroll
-                enabled: query !== "" && page > 1
+                enabled: galleryLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page--
@@ -124,8 +124,20 @@ Page {
                 }
             }
 
-            Item {
+            Label {
+                text: galleryLoader.status === TagSearchLoader.Ready
+                    ? (results.length > 0
+                        ? qsTr("Page %1 of %2\n(%3 of %4)").arg(page).arg(galleryLoader.pageCount).arg(results.length).arg(galleryLoader.imageCount)
+                        : qsTr("No result"))
+                    : ''
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                background: Rectangle {
+                    color: nextButton.background.color
+                }
             }
 
             Button {
@@ -134,9 +146,10 @@ Page {
                 width: 40
                 icon.source: "/images/icons/next.png"
                 visible: !infiniteScroll
-                enabled: query !== ""
+                enabled: galleryLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0
+                Material.roundedScale: Material.NotRounded
 
                 onClicked: {
                     page++

@@ -21,7 +21,9 @@ class SearchFormat
 
 		SearchFormat() = default;
 		SearchFormat(SearchFormatType andOp, SearchFormatType orOp, bool parenthesis, Precedence precedence);
+		static SearchFormat &Normalized();
 
+		// Getters
 		const SearchFormatType &andOp() const;
 		const SearchFormatType &orOp() const;
 		bool parenthesis() const;

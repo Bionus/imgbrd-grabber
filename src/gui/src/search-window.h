@@ -29,7 +29,7 @@ class SearchWindow : public QDialog
 	public slots:
 		void setDate(QDate d);
 		void accept() override;
-		void on_buttonImage_clicked();
+		void loadImage();
 
 	signals:
 		void accepted(const QString &search);

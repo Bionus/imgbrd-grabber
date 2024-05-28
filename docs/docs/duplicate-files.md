@@ -32,9 +32,9 @@ There are two settings that control this behavior in Grabber, both located in th
 The available options for both of those settings are:
 
 * **Save**: download and save the image twice (as if it were not a duplicate)
-* **Copy**: save the image twice, but copy it from the original image to prevent an useless download
+* **Copy**: save the image twice, but copy it from the original image to prevent a useless download
 * **Move**: move the original image to the duplicate location (useful for example if you're re-downloading an image that has changed a few tags)
-* **Shortcut** / **Symbolic link**: create a [shortcut](https://en.wikipedia.org/wiki/Shortcut_(computing)) or [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (depending on your platform) with the duplicate image's name, pointing to the original image (useful if you often have duplicates in different folders, with each folder having an useful meaning)
+* **Shortcut** / **Symbolic link**: create a [shortcut](https://en.wikipedia.org/wiki/Shortcut_(computing)) or [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (depending on your platform) with the duplicate image's name, pointing to the original image (useful if you often have duplicates in different folders, with each folder having a useful meaning)
 * **Hard link**: creates a [hard link](https://en.wikipedia.org/wiki/Hard_link) with the duplicate image's name, pointing to the original image (similar to a shortcut / symbolic link)
 * **Don't save**: skip duplicate images
 

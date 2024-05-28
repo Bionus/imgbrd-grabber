@@ -131,14 +131,14 @@ function parseDetails(src: string): IParsedDetails {
     }
     return {
         tags,
-        imageUrl: Grabber.regexToConst("url", "<img.+?id=['\"]main_image['\"] src=['\"](?<url>[^']+)['\"][^>]*>", src),
+        imageUrl: Grabber.regexToConst("url", "<img.+?id=['\"]main_image['\"] src=['\"](?<url>[^'\"]+)['\"][^>]*>", src),
         createdAt: Grabber.regexToConst("date", "<time datetime=['\"](?<date>[^'\"]+)['\"]>", src),
     };
 }
 
 export const source: ISource = {
     name: "Shimmie",
-    modifiers: [],
+    modifiers: ["score:", "date:", "order:score", "order:score_asc", "order:score_desc", "downvote:", "upvote:"],
     forcedTokens: ["filename", "date"],
     tagFormat: {
         case: "lower",
@@ -264,7 +264,7 @@ export const source: ISource = {
                         : Grabber.regexToConst("page", "<a href=['\"]/post/list(?:/[^/]+)?/(?<page>\\d*)['\"]>Last</a>", src);
                     return {
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<name>[^<]+)</a>[^<]*</li>|<a class=[\'"]tag_name[\'"] href=[\'"]([^\'"]+)(?:/1)?[\'"]>(?<name_2>[^<]+)</a>(?:</td><td class=[\'"]tag_count_cell[\'"]>[^<]*<span class=[\'"]tag_count[\'"]>(?<count>\\d+)</span>)?', src),
-                        images: Grabber.regexToImages("<a(?: class=['\"][^'\"]*['\"])? href=['\"][^'\">]*/post/view/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?<image><img(?: id=['\"](?:[^'\"]*)['\"])? title=['\"](?<tags>[^'\"/]*)(?:(?: // |\\n)(?<width>[^'\"/]+?)x(?<height>[^'\"/]+?) // (?<file_size>[^'\"/]*?)(?: // (?<ext>[^'\"/]*?))?)?(?:\\s+[^'\"/]*)?['\"] alt=['\"][^'\"]*['\"](?: height=['\"][^'\"]*['\"])? width=['\"][^'\"]*['\"](?: height=['\"][^'\"]*['\"])?[^>]*(?:src|data-original)=['\"](?<preview_url>[^'\"]*(?:/_thumbs/(?<md5>[^/]*)/[^'\"]*\\.jpg|/thumb/(?<md5_2>[^'\"]*)\\.jpg|questionable\\.jpg|/thumbs/[^/]{2}/(?<md5_5>[^'\"]+)(?:\\.jpg)?))['\"][^>]*>).*?</a>|<a href=['\"][^'\">]*/i(?<id_2>[^'\"]+)['\"](?: class=['\"][^'\"]*['\"])?[^>]*>[^<]*(?<image_2><img(?: id=['\"](?:[^'\"]*)['\"])? src=['\"](?<preview_url_2>[^'\"]*(?:/_thumbs/(?<md5_3>[^'\"]*)(?:_th)?\\.jpg|/thumb/(?<md5_4>[^'\"]*)\\.jpg|questionable\\.jpg|/thumbs/[^/]{2}/(?<md5_6>[^'\"]+)(?:\\.jpg)?))['\"] title=['\"](?<tags_2>[^'\"/]+) // (?<width_2>[^'\"]+)x(?<height_2>[^'\"]+) // (?<file_size_2>[^'\"]*)(?: // (?<ext_2>[^'\"]*))?['\"] alt=['\"][^'\"]*['\"] ?/?>)[^<]*</a>", src).map(completeImage),
+                        images: Grabber.regexToImages("<a(?: class=['\"][^'\"]*['\"])? href=['\"][^'\">]*/post/view/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?<image><img(?: id=['\"](?:[^'\"]*)['\"])? title=['\"](?<tags>[^'\"/]*)(?:(?: // |\\n)(?<width>[^'\"/]+?)x(?<height>[^'\"/]+?) // (?<file_size>[^'\"/]*?)(?: // (?<ext>[^'\"/]*?))?)?(?:\\s+[^'\"/]*)?['\"] alt=['\"][^'\"]*['\"](?: height=['\"](?<preview_height>[^'\"]*)['\"])? width=['\"](?<preview_width>[^'\"]*)['\"](?: height=['\"](?<preview_height_2>[^'\"]*)['\"])?[^>]*(?:src|data-original)=['\"](?<preview_url>[^'\"]*(?:/_thumbs/(?<md5>[^/]*)/[^'\"]*\\.jpg|/thumb/(?<md5_2>[^'\"]*)\\.jpg|questionable\\.jpg|/thumbs/[^/]{2}/(?<md5_5>[^'\"]+)(?:\\.jpg)?))['\"][^>]*>).*?</a>(?:<br\\s*/?><a href=['\"](?<file_url>[^'\"]+)['\"][^>]*>File Only)?|<a href=['\"][^'\">]*/i(?<id_2>[^'\"]+)['\"](?: class=['\"][^'\"]*['\"])?[^>]*>[^<]*(?<image_2><img(?: id=['\"](?:[^'\"]*)['\"])? src=['\"](?<preview_url_2>[^'\"]*(?:/_thumbs/(?<md5_3>[^'\"]*)(?:_th)?\\.jpg|/thumb/(?<md5_4>[^'\"]*)\\.jpg|questionable\\.jpg|/thumbs/[^/]{2}/(?<md5_6>[^'\"]+)(?:\\.jpg)?))['\"] title=['\"](?<tags_2>[^'\"/]+) // (?<width_2>[^'\"]+)x(?<height_2>[^'\"]+) // (?<file_size_2>[^'\"]*)(?: // (?<ext_2>[^'\"]*))?['\"] alt=['\"][^'\"]*['\"] ?/?>)[^<]*</a>", src).map(completeImage),
                         pageCount,
                     };
                 },

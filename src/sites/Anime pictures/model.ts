@@ -1,10 +1,38 @@
-function noWebp(url: string): string {
-    return url.replace(/(\.\w{3,4})\.webp/, "$1");
+const jsonMap = {
+    "created_at": "pubtime",
+    "preview_url": "small_preview",
+    "width": "width",
+    "md5": "md5",
+    "height": "height",
+    "id": "id",
+    "score": "score_number",
+    "sample_url": "big_preview",
+    "ext": "ext",
+    "file_size": "size",
+};
+
+function noWebpAvif(url: string): string {
+    return url.replace(/(\.\w{3,4})\.(?:webp|avif)/, "$1");
 }
 
-function completeImage(img: IImage): IImage {
+function completeImage(img: IImage, raw: any): IImage {
+    // Replace ".jpg" by just "jpg" in the extension
     if (img.ext && img.ext[0] === ".") {
         img.ext = img.ext.substring(1);
+    }
+
+    // Remove the ".webp" and ".avif" suffix to previews
+    img.sample_url = noWebpAvif(img.sample_url || "");
+    img.preview_url = noWebpAvif(img.preview_url || "");
+
+    // If no URL is passed at all, build it ourselves
+    if (!img.preview_url && !img.sample_url && !img.file_url) {
+        const domain = "anime-pictures.net";
+        const md5Part = img.md5?.substring(0, 3) + "/" + img.md5;
+        const previewExt = raw["have_alpha"] === true ? "png" : "jpg";
+        img.preview_url = `//cdn.${domain}/previews/${md5Part}_sp.${previewExt}`;
+        img.sample_url = `//cdn.${domain}/previews/${md5Part}_bp.${previewExt}`;
+        img.file_url = `//images.${domain}/${md5Part}.${img.ext}`;
     }
 
     if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
@@ -13,12 +41,12 @@ function completeImage(img: IImage): IImage {
             .replace("_sp.", "_bp.");
     }
 
-    img.sample_url = noWebp(img.sample_url || "");
-    img.preview_url = noWebp(img.preview_url || "");
-    img.file_url = img.sample_url
-        .replace(/\/cdn\./, "/images.")
-        .replace(/\/previews\//, "/")
-        .replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
+    if ((!img.file_url || img.file_url.length < 5) && img.sample_url && img.sample_url.length >= 5) {
+        img.file_url = img.sample_url
+            .replace(/\/cdn\./, "/images.")
+            .replace(/\/previews\//, "/")
+            .replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
+    }
 
     return img;
 }
@@ -123,27 +151,14 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.page, query.search, previous) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
+                    return "/api/v3/posts?page=" + page + "&" + searchToUrl(query.page, query.search, previous) + "&posts_per_page=" + opts.limit + "&lang=en";
                 },
                 parse: (src: string): IParsedSearch => {
-                    const map = {
-                        "created_at": "pubtime",
-                        "preview_url": "small_preview",
-                        "width": "width",
-                        "md5": "md5",
-                        "height": "height",
-                        "id": "id",
-                        "score": "score_number",
-                        "sample_url": "big_preview",
-                        "ext": "ext",
-                        "file_size": "size",
-                    };
-
                     const data = JSON.parse(src);
 
                     const images: IImage[] = [];
                     for (const image of data.posts) {
-                        images.push(completeImage(Grabber.mapFields(image, map)));
+                        images.push(completeImage(Grabber.mapFields(image, jsonMap), image));
                     }
 
                     return {
@@ -155,27 +170,23 @@ export const source: ISource = {
             },
             details: {
                 url: (id: string, md5: string): string => {
-                    return "/pictures/view_post/" + id + "?lang=en&type=json";
+                    return "/api/v3/posts/" + id + "?lang=en";
                 },
                 parse: (src: string): IParsedDetails => {
                     const data = JSON.parse(src);
 
-                    const tags: ITag[] = data["tags_full"].map((tag: any) => {
-                        return {
-                            name: tag["name"],
-                            count: tag["num"],
-                            typeId: tag["type"],
-                        };
-                    });
+                    const tags: ITag[] = data["tags"].map((tag: any) => ({
+                        name: tag["tag"]["tag"],
+                        count: tag["tag"]["num"],
+                        typeId: tag["tag"]["type"],
+                    }));
 
-                    const imgUrl: string = data["file_url"];
-                    const pos = imgUrl.lastIndexOf("/") + 1;
-                    const fn = imgUrl.substr(pos);
+                    const img: IImage = completeImage(Grabber.mapFields(data["post"], jsonMap), data["post"]);
 
                     return {
                         tags,
-                        createdAt: data["pubtime"],
-                        imageUrl: imgUrl.substr(0, pos) + (fn.indexOf(" ") !== -1 ? encodeURIComponent(fn) : fn),
+                        createdAt: data["post"]["pubtime"],
+                        imageUrl: img.file_url,
                     };
                 },
             },

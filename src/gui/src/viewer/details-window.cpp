@@ -26,8 +26,8 @@ void DetailsWindow::setImage(const QSharedPointer<Image> &image)
 		if (row.first.isEmpty() && row.second.isEmpty()) {
 			ui->formLayout->addItem(new QSpacerItem(10, 10));
 		} else {
-			const auto label = new QLabel(QString("<b>%1</b>").arg(row.first), this);
-			auto field = new QLabel(row.second, this);
+			auto *label = new QLabel(QString("<b>%1</b>").arg(row.first), this);
+			auto *field = new QLabel(row.second, this);
 			field->setWordWrap(true);
 			field->setOpenExternalLinks(true);
 			field->setTextInteractionFlags(Qt::TextBrowserInteraction);

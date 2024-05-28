@@ -23,8 +23,8 @@ class StartWindow : public QDialog
 	public slots:
 		void save();
 		void openOptions();
-		void on_buttonFolder_clicked();
-		void on_buttonFilenamePlus_clicked();
+		void chooseFolder();
+		void chooseFormat();
 
 	signals:
 		void sourceChanged(const QString &source);

@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 // #include <QMutexLocker>
 #include "functions.h"
+#include "javascript-api-endpoint.h"
 #include "js-helpers.h"
 #include "logger.h"
 #include "mixed-settings.h"
@@ -27,7 +28,16 @@ QString normalize(QString key)
 
 JavascriptApi::JavascriptApi(QJSEngine *engine, const QJSValue &source, QMutex *jsEngineMutex, const QString &key)
 	: Api(normalize(key)), m_engine(engine), m_source(source), m_key(key), m_engineMutex(jsEngineMutex)
-{}
+{
+	const QJSValue endpoints = m_source.property("apis").property(m_key).property("endpoints");
+	if (!endpoints.isUndefined() && endpoints.isObject()) {
+		QJSValueIterator endpointsIt(endpoints);
+		while (endpointsIt.hasNext()) {
+			endpointsIt.next();
+			m_endpoints[endpointsIt.name()] = new JavascriptApiEndpoint(this, m_engine, endpointsIt.value());
+		}
+	}
+}
 
 
 void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const
@@ -149,7 +159,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, const
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
-	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
+	QJSValue previous = QJSValue::UndefinedValue;
 	if (lastPage.page > 0) {
 		previous = m_engine->newObject();
 		previous.setProperty("page", lastPage.page);
@@ -234,11 +244,7 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 		}
 
 		if (key == QLatin1String("identity")) {
-			QJSValueIterator dit(val);
-			while (dit.hasNext()) {
-				dit.next();
-				identity[dit.name()] = dit.value().toVariant();
-			}
+			identity = jsToMap(val);
 		} else if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
 			tags = makeTags(val, site);
 		} else if (key == QLatin1String("tokens")) {
@@ -457,7 +463,7 @@ bool JavascriptApi::parseTagTypesErrors() const
 
 ParsedTagTypes JavascriptApi::parseTagTypes(const QString &source, int statusCode, Site *site) const
 {
-	Q_UNUSED(site);
+	Q_UNUSED(site)
 
 	ParsedTagTypes ret;
 
@@ -764,3 +770,6 @@ QStringList JavascriptApi::modifiers() const
 { return jsToStringList(getJsConst("modifiers")); }
 QStringList JavascriptApi::forcedTokens() const
 { return jsToStringList(getJsConst("forcedTokens")); }
+
+QMap<QString, ApiEndpoint*> JavascriptApi::endpoints() const
+{ return m_endpoints; }

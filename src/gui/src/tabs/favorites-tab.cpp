@@ -39,7 +39,7 @@ FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 		const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		m_favoritesLayout->setFixedWidth(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
 	}
-	QWidget *layoutWidget = new QWidget;
+	auto *layoutWidget = new QWidget;
 	layoutWidget->setLayout(m_favoritesLayout);
 	ui->layoutFavorites->addWidget(layoutWidget, 0, 0);
 
@@ -97,7 +97,7 @@ FavoritesTab::~FavoritesTab()
 	delete ui;
 }
 
-void FavoritesTab::closeEvent(QCloseEvent *e)
+void FavoritesTab::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->beginGroup("Favorites");
@@ -108,7 +108,7 @@ void FavoritesTab::closeEvent(QCloseEvent *e)
 	m_settings->sync();
 
 	emit closed(this);
-	e->accept();
+	event->accept();
 }
 
 
@@ -117,7 +117,7 @@ void FavoritesTab::updateFavorites()
 {
 	static const QStringList assoc { "name", "note", "lastviewed" };
 	const QString &order = assoc[ui->comboOrder->currentIndex()];
-	const bool reverse = (ui->comboAsc->currentIndex() == 1);
+	const bool reverse = ui->comboAsc->currentIndex() == 1;
 
 	if (order == "note") {
 		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote);
@@ -165,7 +165,7 @@ void FavoritesTab::updateFavorites()
 			const bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
 
 			QPixmap img = fav.getImage();
-			QBouton *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
+			auto *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
 				image->scale(img, QSize(imageSize, imageSize));
 				image->setFixedSize(dim, dim);
 				image->setFlat(true);
@@ -191,7 +191,7 @@ void FavoritesTab::updateFavorites()
 			label += "<br/>(" + QString::number(fav.getNote()) + " % - " + QLocale().toString(fav.getLastViewed().date(), QLocale::ShortFormat) + ")";
 		}
 
-		QAffiche *caption = new QAffiche(fav.getName(), 0, QColor(), this);
+		auto *caption = new QAffiche(fav.getName(), 0, QColor(), this);
 			caption->setText(label);
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
@@ -212,14 +212,23 @@ void FavoritesTab::updateFavorites()
 void FavoritesTab::load()
 {
 	updateTitle();
+	m_newLastImages.clear();
 
 	loadTags(m_currentTags.trimmed().split(' ', Qt::SkipEmptyParts));
 }
 
 bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	bool dateOk = img->createdAt() > m_loadFavorite || img->createdAt().isNull();
-	return dateOk && SearchTab::validateImage(img, error);
+	bool dateOk = img->createdAt().isNull() || img->createdAt() > m_loadFavorite;
+
+	const QVariantMap lastIdentity = m_lastImages.value(img->parentSite()->url());
+	bool idOk = !lastIdentity.contains("id") || img->id() > lastIdentity["id"].toULongLong();
+
+	if (dateOk && idOk && !m_newLastImages.contains(img->parentSite()->url())) {
+		m_newLastImages[img->parentSite()->url()] = img->identity(true);
+	}
+
+	return dateOk && idOk && SearchTab::validateImage(img, error);
 }
 
 void FavoritesTab::write(QJsonObject &json) const
@@ -305,6 +314,7 @@ void FavoritesTab::loadFavorite(const QString &name)
 	Favorite fav = m_favorites[index];
 	m_currentTags = fav.getName();
 	m_loadFavorite = fav.getLastViewed();
+	m_lastImages = fav.getLastImages();
 	m_postFiltering->setPlainText(fav.getPostFiltering().join(' '));
 
 	if (!fav.getSites().isEmpty()) {
@@ -348,7 +358,7 @@ void FavoritesTab::viewed()
 
 	m_profile->emitFavorite();
 }
-void FavoritesTab::setFavoriteViewed(const QString &tag, QDateTime date)
+void FavoritesTab::setFavoriteViewed(const QString &tag, const QSharedPointer<Image> &img)
 {
 	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
@@ -359,14 +369,21 @@ void FavoritesTab::setFavoriteViewed(const QString &tag, QDateTime date)
 
 	Favorite &fav = m_favorites[index];
 
-	if (!date.isValid()) {
+	if (img.isNull()) {
 		fav.setLastViewed(QDateTime::currentDateTime());
 
 		for (Monitor &monitor : fav.getMonitors()) {
 			monitor.setCumulated(0, true);
 		}
+
+		for (auto it = m_newLastImages.constBegin(); it != m_newLastImages.constEnd(); ++it) {
+			fav.setLastImage(it.key(), it.value());
+		}
 	} else {
-		fav.setLastViewed(date);
+		if (img->createdAt().isValid()) {
+			fav.setLastViewed(img->createdAt());
+		}
+		fav.setLastImage(img->parentSite()->url(), img->identity(true));
 	}
 
 	DONE();
@@ -391,8 +408,8 @@ void FavoritesTab::favoriteProperties(const QString &name)
 	}
 
 	const Favorite fav = m_favorites[index];
-	auto fwin = new FavoriteWindow(m_profile, fav, this);
-	fwin->show();
+	auto *favoriteWindow = new FavoriteWindow(m_profile, fav, this);
+	favoriteWindow->show();
 }
 
 void FavoritesTab::focusSearch()
@@ -414,21 +431,21 @@ void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image>
 {
 	SearchTab::thumbnailContextMenu(menu, img);
 
-	if (m_currentTags.isEmpty() || !img->createdAt().isValid()) {
+	if (m_currentTags.isEmpty()) {
 		return;
 	}
 
 	QAction *first = menu->actions().first();
 
 	// Mark as "last viewed"
-	QAction *actionMarkAsLastViewed = new QAction(QIcon(":/images/icons/eye.png"), tr("Mark as last viewed"), menu);
+	auto *actionMarkAsLastViewed = new QAction(QIcon(":/images/icons/eye.png"), tr("Mark as last viewed"), menu);
 	connect(actionMarkAsLastViewed, &QAction::triggered, [this, img]() {
-		this->setFavoriteViewed(m_currentTags, img->createdAt());
+		this->setFavoriteViewed(m_currentTags, img);
 	});
 	menu->insertAction(first, actionMarkAsLastViewed);
 
 	// Choose selected image as favorite thumbnail
-	QAction *actionUseAsThumbnail = new QAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), menu);
+	auto *actionUseAsThumbnail = new QAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), menu);
 	connect(actionUseAsThumbnail, &QAction::triggered, [this, img]() {
 		const int index = m_favorites.indexOf(Favorite(m_currentTags));
 		if (index >= 0) {

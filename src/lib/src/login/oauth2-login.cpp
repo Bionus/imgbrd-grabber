@@ -27,7 +27,8 @@ OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, 
 {
 	m_accessToken = m_settings->value("auth/accessToken").toString();
 	m_refreshToken = m_settings->value("auth/refreshToken").toString();
-	m_expires = m_settings->value("auth/accessTokenExpiration").toDateTime();
+	m_accessTokenExpiration = m_settings->value("auth/accessTokenExpiration").toDateTime();
+	m_refreshTokenExpiration = m_settings->value("auth/refreshTokenExpiration").toDateTime();
 }
 
 bool OAuth2Login::isTestable() const
@@ -38,8 +39,9 @@ bool OAuth2Login::isTestable() const
 
 QString toUrlBase64(const QByteArray &data)
 {
+	static const QRegularExpression rxInvalidB64("=+$");
 	QString ret = data.toBase64();
-	ret.replace('+', '-').replace('/', '_').remove(QRegularExpression("=+$"));
+	ret.replace('+', '-').replace('/', '_').remove(rxInvalidB64);
 	return ret;
 }
 
@@ -122,8 +124,8 @@ void OAuth2Login::postRequest(QList<QStrP> body, QMap<QString, QByteArray> heade
 
 	// Build headers
 	m_site->setRequestHeaders(request);
-	for (const QString &key : headers.keys()) {
-		request.setRawHeader(key.toLatin1(), headers[key]);
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
+		request.setRawHeader(it.key().toLatin1(), it.value());
 	}
 
 	// Build body
@@ -201,10 +203,12 @@ void OAuth2Login::loginAuthorizationCode()
 
 			m_accessToken = flow->token();
 			m_refreshToken = flow->refreshToken();
-			m_expires = flow->expirationAt();
+			m_accessTokenExpiration = flow->expirationAt();
+			m_refreshTokenExpiration = QDateTime();
 			m_settings->setValue("auth/accessToken", m_accessToken);
 			m_settings->setValue("auth/refreshToken", m_refreshToken);
-			m_settings->setValue("auth/accessTokenExpiration", m_expires);
+			m_settings->setValue("auth/accessTokenExpiration", m_accessTokenExpiration);
+			m_settings->remove("auth/refreshTokenExpiration");
 
 			emit loggedIn(Result::Success);
 
@@ -224,7 +228,7 @@ void OAuth2Login::loginAuthorizationCode()
 
 	// PKCE challenge
 	if (m_auth->authType() == "pkce") {
-		flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QVariantMap *parameters) {
+		flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant> *parameters) {
 			if (stage == QAbstractOAuth::Stage::RequestingAuthorization) {
 				const QString codeChallenge = toUrlBase64(QCryptographicHash::hash(codeVerifier.toLatin1(), QCryptographicHash::Sha256));
 
@@ -265,13 +269,16 @@ void OAuth2Login::loginAuthorizationCode()
 
 void OAuth2Login::login()
 {
-	const QDateTime now = QDateTime::currentDateTime();
-	if (!m_refreshToken.isEmpty() && (!m_expires.isValid() || m_expires < now)) {
+	// If the current access token is invalid, but we have a valid refresh token, perform a refresh instead of a login flow
+	const QDateTime now = QDateTime::currentDateTimeUtc();
+	const bool validRefreshToken = !m_refreshToken.isEmpty() && (!m_refreshTokenExpiration.isValid() || m_accessTokenExpiration <= now);
+	if (validRefreshToken && (!m_accessTokenExpiration.isValid() || m_accessTokenExpiration <= now)) {
 		refresh(true);
 		return;
 	}
 
-	if (!m_accessToken.isEmpty()) {
+	// If we still have a valid access token, we can skip the login flow
+	if (!m_accessToken.isEmpty() && m_accessTokenExpiration > now) {
 		emit loggedIn(Result::Success);
 		return;
 	}
@@ -367,9 +374,12 @@ void OAuth2Login::refreshFinished()
 {
 	const bool ok = readResponse(m_refreshReply);
 	m_refreshing = false;
+
+	// If we're not doing a refresh triggered by a login flow, we can stop here and not emit anything
 	if (!m_refreshForLogin) {
 		return;
 	}
+
 	if (!ok) {
 		if (m_auth->authType() == "refresh_token") {
 			log(QStringLiteral("[%1] Refresh failed").arg(m_site->url()), Logger::Warning);
@@ -382,12 +392,46 @@ void OAuth2Login::refreshFinished()
 		m_settings->remove("auth/accessToken");
 		m_refreshToken.clear();
 		m_settings->remove("auth/refreshToken");
-		m_expires = QDateTime();
+		m_accessTokenExpiration = QDateTime();
 		m_settings->remove("auth/accessTokenExpiration");
+		m_refreshTokenExpiration = QDateTime();
+		m_settings->remove("auth/refreshTokenExpiration");
 		login();
 	} else {
 		emit loggedIn(Result::Success);
 	}
+}
+
+/**
+ * Extract the "exp" claim from a JSON Web Token.
+ * @param jwt The JWT to parse.
+ * @return The "exp" claim from the token, parsed as a datetime on success. A null datetime on error.
+ */
+QDateTime extractJwtExpiration(const QString &jwt)
+{
+	// Ignore strings that do not look like a JWT
+	if (jwt.count('.') != 2) {
+		return {};
+	}
+
+	// Parse the JWT payload as JSON
+	const QStringList parts = jwt.split('.');
+	const QJsonDocument jsonPayloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64(parts[1].toUtf8()));
+	if (jsonPayloadDoc.isNull()) {
+		return {};
+	}
+
+	// Extract the "exp" claim from the payload
+	const QJsonObject jsonPayload = jsonPayloadDoc.object();
+	const QJsonValue jsonExp = jsonPayload.value("exp");
+	if (!jsonExp.isUndefined()) {
+		QDateTime exp = QDateTime::fromSecsSinceEpoch(jsonExp.toInt(), Qt::UTC);
+		if (exp.isValid()) {
+			return exp;
+		}
+	}
+
+	return {};
 }
 
 bool OAuth2Login::readResponse(NetworkReply *reply)
@@ -430,33 +474,33 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 	if (jsonObject.contains("refresh_token")) {
 		m_refreshToken = jsonObject.value("refresh_token").toString();
+		m_refreshTokenExpiration = extractJwtExpiration(m_refreshToken);
 		m_settings->setValue("auth/refreshToken", m_refreshToken);
 		log(QStringLiteral("[%1] Successfully received OAuth2 refresh token '%2'").arg(m_site->url(), m_refreshToken), Logger::Debug);
+	}
 
-		bool expires = jsonObject.contains("expires");
-		bool expires_in = jsonObject.contains("expires_in");
-		if (expires || expires_in) {
-			int expiresSecond = jsonObject.value(expires ? "expires" : "expires_in").toInt();
-			m_expires = QDateTime::currentDateTime().addSecs(expiresSecond);
-		}
-		if (m_refreshToken.count('.') == 2) {
-			const QStringList parts = m_refreshToken.split('.');
-			const QJsonDocument jsonPayloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64(parts[1].toUtf8()));
-			if (!jsonPayloadDoc.isNull()) {
-				const QJsonObject jsonPayload = jsonPayloadDoc.object();
-				const QJsonValue jsonExp = jsonPayload.value("exp");
-				if (!jsonExp.isUndefined()) {
-					m_expires = QDateTime::fromSecsSinceEpoch(jsonExp.toInt(), Qt::UTC);
-				}
-			}
-		}
+	bool expires = jsonObject.contains("expires");
+	bool expires_in = jsonObject.contains("expires_in");
+	if (expires || expires_in) {
+		int expiresSecond = jsonObject.value(expires ? "expires" : "expires_in").toInt();
+		m_accessTokenExpiration = QDateTime::currentDateTime().addSecs(expiresSecond);
+	} else {
+		m_accessTokenExpiration = extractJwtExpiration(m_accessToken);
+	}
 
-		if (!m_expires.isNull()) {
-			const int expiresSecond = QDateTime::currentDateTime().secsTo(m_expires);
-			QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
-			log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_expires.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
-			m_settings->setValue("auth/accessTokenExpiration", m_expires);
-		}
+	if (!m_accessTokenExpiration.isNull()) {
+		const int expiresSecond = QDateTime::currentDateTime().secsTo(m_accessTokenExpiration);
+		QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
+		log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_accessTokenExpiration.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
+		m_settings->setValue("auth/accessTokenExpiration", m_accessTokenExpiration);
+	} else {
+		m_settings->remove("auth/accessTokenExpiration");
+	}
+
+	if (!m_refreshTokenExpiration.isNull()) {
+		m_settings->setValue("auth/refreshTokenExpiration", m_refreshTokenExpiration);
+	} else {
+		m_settings->remove("auth/refreshTokenExpiration");
 	}
 
 	return true;
@@ -464,8 +508,10 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 void OAuth2Login::complementRequest(QNetworkRequest *request) const
 {
-	// Trigger a token refresh in the background if the token is expired
-	if (!m_refreshToken.isEmpty() && (!m_expires.isValid() || m_expires < QDateTime::currentDateTime())) {
+	// Trigger a token refresh in the background if the access token is expired and we have a valid refresh token
+	const QDateTime now = QDateTime::currentDateTimeUtc();
+	const bool validRefreshToken = !m_refreshToken.isEmpty() && (!m_refreshTokenExpiration.isValid() || m_accessTokenExpiration <= now);
+	if (validRefreshToken && (!m_accessTokenExpiration.isValid() || m_accessTokenExpiration <= now)) {
 		const_cast<OAuth2Login*>(this)->refresh(false);
 	}
 

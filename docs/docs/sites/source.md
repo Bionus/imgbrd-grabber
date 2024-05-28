@@ -38,7 +38,7 @@ A source is defined by a folder containing three files:
 
 ## Utils
 
-The JS environment used by Grabber is not fully fledged. Therefore, there is an helper to help do a few things that are not easily possible otherwise: [JavaScript model helper](javascript-helper.md).
+The JS environment used by Grabber is not fully fledged. Therefore, there is a helper to help do a few things that are not easily possible otherwise: [JavaScript model helper](javascript-helper.md).
 
 Also, note that you can use the `console` commands as in JavaScript to generate logs in Grabber's console. Supported methods:
 
@@ -89,7 +89,7 @@ The goal of this function is to return the URL that lists the images for a given
 
 The main parameter, `query`, contains a `search` string containing the user's input, as well as a `page` number containing the page number the user wants to see.
 
-From this, the function must return a string representing the URL to load. Note that you shouldn't include the base URL / domain in that link. It's recommended to use a absolute path instead.
+From this, the function must return a string representing the URL to load. Note that you shouldn't include the base URL / domain in that link. It's recommended to use an absolute path instead.
 
 **Example**
 ```javascript
@@ -116,7 +116,7 @@ function(query) {
 **Returns:** (either)
 
 * `string`: an URL
-* `{ url: string, headers?: { [key: string]: string }`: an URL and headers
+* `{ url: string, headers?: { [key: string]: string }`: a URL and headers
 * `{ error?: string }`: an error
 
 #### Description

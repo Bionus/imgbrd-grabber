@@ -31,7 +31,8 @@ void SourceRegistry::jsonLoaded()
 
 	// Loading error
 	if (reply->error() != NetworkReply::NetworkError::NoError) {
-		log(QStringLiteral("Error loading source registry metadata (%1)").arg(reply->errorString()), Logger::Error);
+		log(QStringLiteral("Error loading source registry metadata (%1) from `%2`").arg(reply->errorString(), m_jsonUrl), Logger::Error);
+		m_isValid = false;
 		emit loaded(false);
 		return;
 	}
@@ -75,5 +76,6 @@ void SourceRegistry::jsonLoaded()
 		m_sources.insert(source.name, source);
 	}
 
+	m_isValid = true;
 	emit loaded(true);
 }

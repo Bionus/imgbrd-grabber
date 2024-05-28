@@ -2,21 +2,22 @@
 #include <QColor>
 #include <QPixmap>
 #include <QVariant>
+#include <utility>
 
 
 RenameExistingTableModel::RenameExistingTableModel(const QList<RenameExistingFile> &files, QString folder, QObject *parent)
-	: QAbstractTableModel(parent), m_files(files), m_folder(folder)
+	: QAbstractTableModel(parent), m_files(files), m_folder(std::move(folder))
 {}
 
 int RenameExistingTableModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return m_files.count();
 }
 
 int RenameExistingTableModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return 3;
 }
 

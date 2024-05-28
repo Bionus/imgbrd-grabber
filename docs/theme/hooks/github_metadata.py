@@ -10,7 +10,7 @@ context_latest_release = ContextVar("github_latest_release", default=None)
 
 
 def load_github_metadata() -> None:
-    """Load Github metadata from the API."""
+    """Load GitHub metadata from the API."""
 
     # Only load the metadata once
     if context_latest_release.get():
@@ -33,7 +33,7 @@ def load_github_metadata() -> None:
 def define_env(env) -> None:
     """Gives access to site.github inside Markdown pages using mkdocs-macros-plugin."""
 
-    # Ensure the Github metadata is loaded
+    # Ensure the GitHub metadata is loaded
     load_github_metadata()
 
     # Create the "site.github" container
@@ -49,7 +49,7 @@ def define_env(env) -> None:
 def on_page_context(context: Dict[str, Any], **kwargs) -> Optional[Dict[str, Any]]:
     """Gives access to site.github inside HTML pages using MkDocs hooks."""
 
-    # Ensure the Github metadata is loaded
+    # Ensure the GitHub metadata is loaded
     load_github_metadata()
 
     # Create the "site.github" container

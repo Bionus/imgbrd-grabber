@@ -4,17 +4,17 @@ add_definitions(-DGUI=1)
 add_subdirectory(languages)
 
 # Qt libraries
-find_package(Qt5 COMPONENTS Quick Network REQUIRED)
-set(QT_LIBRARIES Qt5::Core Qt5::Quick Qt5::Network)
+find_package(Qt6 COMPONENTS Core Quick Multimedia Network ShaderTools REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Quick Qt6::Multimedia Qt6::Network)
 
 # Android specials
 if(ANDROID)
-	find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
 # Input
 file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
+file(GLOB_RECURSE SHADERS RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "src/*.frag")
 include_directories("src/" "../lib/src/" "../lib/" "..")
 
 # StatusBar
@@ -41,20 +41,17 @@ else()
 	list(APPEND LIBS "WindowsApp.lib")
 endif()
 
-
-if(ANDROID)
-	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
-else()
-    add_executable(${PROJECT_NAME} ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
-endif()
-
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
+qt_add_executable(${PROJECT_NAME} ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_LIBRARIES} ${LIBS} lib)
+qt6_add_shaders(${PROJECT_NAME} "${PROJECT_NAME}_shaders" SILENT BATCHABLE PRECOMPILE OPTIMIZED PREFIX "/" FILES ${SHADERS})
 
 if(ANDROID)
 	# SSL
 	if(USE_SSL)
 		message(STATUS "Compiling with SSL support")
-		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/CMakeLists.txt")
+		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/android_openssl.cmake")
+		add_android_openssl_libraries(${PROJECT_NAME})
+		get_target_property(ANDROID_EXTRA_LIBS ${PROJECT_NAME} QT_ANDROID_EXTRA_LIBS)
 		message(STATUS "Android libs: ${ANDROID_EXTRA_LIBS}")
 	endif()
 
@@ -67,34 +64,35 @@ if(ANDROID)
 
 	# Add target for compiled assets
 	file(RELATIVE_PATH ANDROID_PACKAGE_SOURCES_REL ${CMAKE_CURRENT_LIST_DIR} ${ANDROID_PACKAGE_SOURCES})
+	find_program(XCOPY xcopy)
+	if(XCOPY)
+		set(COPY_SITES_CMD ${XCOPY} /I /E /Y /K /F /EXCLUDE:..\\sites\\exclude_xcopy.txt \"../sites\" \"${ANDROID_PACKAGE_SOURCES_REL}/assets/sites/\")
+	else()
+		set(COPY_SITES_CMD rsync -ar --exclude-from="../sites/exclude.txt" "../sites" "${ANDROID_PACKAGE_SOURCES_REL}/assets")
+	endif()
 	add_custom_target(android_copy_assets_qml
 		DEPENDS sites gui-qml_translations
-		COMMAND rsync -ar --exclude-from="../sites/exclude.txt" "../sites" "${ANDROID_PACKAGE_SOURCES_REL}/assets" WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		COMMAND ${COPY_SITES_CMD} WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 		COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
+	add_dependencies(${PROJECT_NAME} android_copy_assets_qml)
 
-	# Add target
-	include("qt-android-cmake/AddQtAndroidApk")
-	if(KEYSTORE_PASSWORD)
-		add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
-			NAME ${ANDROID_APP_NAME}
-			VERSION_CODE ${ANDROID_APP_VERSION_CODE}
-			PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
-			PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
-			KEYSTORE "${CMAKE_CURRENT_LIST_DIR}/../../release.jks" release
-			KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
-			DEPENDS ${ANDROID_EXTRA_LIBS})
-	else()
-		message(WARNING "No keystore password provided, APK signing disabled")
-		add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
-			NAME ${ANDROID_APP_NAME}
-			VERSION_CODE ${ANDROID_APP_VERSION_CODE}
-			PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
-			PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
-			DEPENDS ${ANDROID_EXTRA_LIBS})
+	# Set Android properties
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		QT_ANDROID_PACKAGE_SOURCE_DIR ${ANDROID_PACKAGE_SOURCES}
+		QT_ANDROID_VERSION_NAME ${ANDROID_APP_VERSION_NAME}
+		QT_ANDROID_VERSION_CODE ${ANDROID_APP_VERSION_CODE}
+	)
+	if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+		set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_DEPLOY_RELEASE ON)
 	endif()
-	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
+	# NAME ${ANDROID_APP_NAME}
+	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
 
-	# Override build.gradle
-	configure_file("${CMAKE_CURRENT_LIST_DIR}/../dist/android/build.gradle.in" "${QT_ANDROID_APP_BINARY_DIR}/build.gradle" @ONLY)
+	# Sign package if the keystore was provided
+	if(DEFINED ENV{QT_ANDROID_KEYSTORE_PATH})
+		set(QT_ANDROID_SIGN_APK ON)
+	else()
+		message(WARNING "No keystore provided, APK signing disabled")
+	endif()
 endif()

@@ -141,7 +141,7 @@ void ImageLoader::load()
 
 void ImageLoader::downloadProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 
 	m_progress = ((qreal) v1) / ((qreal) v2);
 	emit progressChanged();

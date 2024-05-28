@@ -6,10 +6,9 @@
 void TagFilterList::add(const QString &word)
 {
 	if (word.contains('*')) {
-		const QString pattern = QRegularExpression::wildcardToRegularExpression(word);
-		m_starTags.append(QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption));
+		m_starTags.insert(QRegularExpression::fromWildcard(word, Qt::CaseInsensitive));
 	} else {
-		m_rawTags.append(word);
+		m_rawTags.insert(word);
 	}
 }
 
@@ -17,6 +16,15 @@ void TagFilterList::add(const QStringList &words)
 {
 	for (const QString &word : words) {
 		add(word);
+	}
+}
+
+void TagFilterList::remove(const QString &word)
+{
+	if (word.contains('*')) {
+		m_starTags.remove(QRegularExpression::fromWildcard(word, Qt::CaseInsensitive));
+	} else {
+		m_rawTags.remove(word);
 	}
 }
 
@@ -48,4 +56,9 @@ QList<Tag> TagFilterList::filterTags(const QList<Tag> &tags) const
 	}
 
 	return ret;
+}
+
+bool TagFilterList::contains(const QString &word) const
+{
+	return m_rawTags.contains(word);
 }

@@ -63,17 +63,17 @@ PoolTab::~PoolTab()
 	delete ui;
 }
 
-void PoolTab::on_buttonSearch_clicked()
+void PoolTab::openSearchWindow()
 {
-	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_profile, this);
-	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
-	sw->show();
+	auto *searchWindow = new SearchWindow(m_search->toPlainText(), m_profile, this);
+	connect(searchWindow, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
+	searchWindow->show();
 }
 
-void PoolTab::closeEvent(QCloseEvent *e)
+void PoolTab::closeEvent(QCloseEvent *event)
 {
 	emit closed(this);
-	e->accept();
+	event->accept();
 }
 
 

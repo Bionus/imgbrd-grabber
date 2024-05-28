@@ -32,7 +32,7 @@ It pretty much only amounts to downloading the `docker-compose.yaml` file and do
 
 ### Install NodeJS
 
-You need NodeJS to be installed on your machine to use the upload script used by Grabber.
+You need Node.js to be installed on your machine to use the upload script used by Grabber.
 You can download it from [their website](https://nodejs.org/en/download/), or from a package manager [here](https://nodejs.org/en/download/package-manager/).
 
 
@@ -43,7 +43,7 @@ Download the [danbooru.js](danbooru.js) file into Grabber's installation folder.
 
 ### Install NodeJS global packages
 
-This script uses the NodeJS [axios](https://www.npmjs.com/package/axios) and [form-data](https://www.npmjs.com/package/form-data) packages, so you can install them with:
+This script uses the Node.js [axios](https://www.npmjs.com/package/axios) and [form-data](https://www.npmjs.com/package/form-data) packages, so you can install them with:
 ```bash
 npm install -g axios form-data
 ```
@@ -72,7 +72,7 @@ Make sure to replace `YOUR_USERNAME` by your Danbooru username, and `YOUR_API_KE
 
 If you want to open newly added images in your browser, you need to edit the `danbooru.js` file, and change `OPEN_BROWSER` from `false` to `true`.
 
-You'll also need to install the NodeJS [open](https://www.npmjs.com/package/open) package, that you can install with:
+You'll also need to install the Node.js [open](https://www.npmjs.com/package/open) package, that you can install with:
 ```bash
 npm install -g open
 ```

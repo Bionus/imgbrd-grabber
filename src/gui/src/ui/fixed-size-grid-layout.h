@@ -31,7 +31,7 @@ class FixedSizeGridLayout : public QLayout
 		int verticalSpacing() const;
 		Qt::Orientations expandingDirections() const override;
 		bool hasHeightForWidth() const override;
-		int heightForWidth(int) const override;
+		int heightForWidth(int width) const override;
 		QSize minimumSize() const override;
 		QSize sizeHint() const override;
 		void setGeometry(const QRect &rect) override;

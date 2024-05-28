@@ -174,7 +174,7 @@ void BatchDownloader::nextImage()
 	loadImage(img);
 }
 
-void BatchDownloader::loadImage(QSharedPointer<Image> img)
+void BatchDownloader::loadImage(const QSharedPointer<Image> &img)
 {
 	// If there is already a downloader for this image, we simply restart it
 	if (m_imageDownloaders.contains(img)) {
@@ -190,7 +190,7 @@ void BatchDownloader::loadImage(QSharedPointer<Image> img)
 	// Start loading and saving image
 	int count = m_counterSum + 1;
 	bool getBlacklisted = group == nullptr || group->getBlacklisted;
-	auto imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, this);
+	auto *imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, this);
 	if (!getBlacklisted) {
 		imgDownloader->setBlacklist(&m_profile->getBlacklist());
 	}

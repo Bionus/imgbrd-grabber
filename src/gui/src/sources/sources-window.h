@@ -37,7 +37,7 @@ class SourcesWindow : public QDialog
 
 	public slots:
 		void valid();
-		void closeEvent(QCloseEvent *) override;
+		void closeEvent(QCloseEvent *event) override;
 		void checkAll(int check = 2);
 		void addSite();
 		void settingsSite(const QString &site);

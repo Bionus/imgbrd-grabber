@@ -12,6 +12,7 @@ namespace Ui
 }
 
 
+class QSettings;
 class QWidget;
 
 class GifPlayer : public Player
@@ -19,8 +20,8 @@ class GifPlayer : public Player
 	Q_OBJECT
 
 	public:
-		explicit GifPlayer(bool showControls, Qt::Alignment alignment, QWidget *parent = nullptr);
-		~GifPlayer();
+		explicit GifPlayer(QSettings *settings, Qt::Alignment alignment, QWidget *parent = nullptr);
+		~GifPlayer() override;
 
 		bool supports(const QString &file) override;
 		void load(const QString &file) override;
@@ -34,6 +35,7 @@ class GifPlayer : public Player
 
 	private:
 		Ui::GifPlayer *ui;
+		QSettings *m_settings;
 		QStringList m_supportedFormats;
 		QMovie *m_movie = nullptr;
 		bool m_noSeek = false;

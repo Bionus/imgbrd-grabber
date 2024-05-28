@@ -11,6 +11,7 @@
 #include <QNetworkProxy>
 #include <QShortcut>
 #include <QStringList>
+#include <QStyleFactory>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QSysInfo>
 #endif
@@ -80,6 +81,9 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	m_themeLoader = new ThemeLoader(savePath("themes/", true, false), m_settings, this);
 	m_themeLoader->setTheme(m_settings->value("theme", "Default").toString());
+	const QStringList baseStyles = QStyleFactory::keys();
+	const QString defaultStyle = !baseStyles.isEmpty() ? (baseStyles.contains("windowsvista") ? "windowsvista" : baseStyles.first()) : "";
+	qApp->setStyle(m_settings->value("baseStyle", defaultStyle).toString());
 	ui->setupUi(this);
 
 	if (m_settings->value("Log/show", true).toBool()) {
@@ -169,10 +173,10 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	// System tray icon
 	if (m_settings->value("Monitoring/enableTray", false).toBool()) {
-		auto quitAction = new QAction(tr("&Quit"), this);
+		auto *quitAction = new QAction(tr("&Quit"), this);
 		connect(quitAction, &QAction::triggered, this, &MainWindow::trayClose);
 
-		auto trayIconMenu = new QMenu(this);
+		auto *trayIconMenu = new QMenu(this);
 		trayIconMenu->addAction(quitAction);
 
 		m_trayIcon = new QSystemTrayIcon(this);
@@ -189,12 +193,12 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_settings->beginGroup("Main/Shortcuts");
 		ui->actionClosetab->setShortcut(getKeySequence(m_settings, "keyCloseTab", Qt::CTRL | Qt::Key_W));
 
-		QShortcut *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL | Qt::Key_L), this);
+		auto *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL | Qt::Key_L), this);
 			connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
 
-		QShortcut *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL | Qt::Key_PageDown), this);
+		auto *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL | Qt::Key_PageDown), this);
 			connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
-		QShortcut *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL | Qt::Key_PageUp), this);
+		auto *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL | Qt::Key_PageUp), this);
 			connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
 
 		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL | Qt::Key_T));
@@ -272,7 +276,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// Monitors tab
 	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, this);
 	connect(m_monitoringCenter, &MonitoringCenter::notify, [this](const Monitor &monitor, const QString &msg) {
-		Q_UNUSED(monitor);
+		Q_UNUSED(monitor)
 		if (m_trayIcon != nullptr && m_trayIcon->isVisible()) {
 			m_trayIcon->showMessage(tr("Grabber monitoring"), msg, QSystemTrayIcon::Information);
 		}
@@ -309,20 +313,20 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	favoritesDock->tabChanged(m_favoritesTab);
 
 	// Tab corner widget
-	QWidget *cornerWidget = new QWidget(this);
-	QLayout *layout = new QHBoxLayout(cornerWidget);
+	auto *cornerWidget = new QWidget(this);
+	auto *layout = new QHBoxLayout(cornerWidget);
 	layout->setContentsMargins(0, 0, 6, 0);
 	layout->setSpacing(0);
 	ui->tabWidget->setCornerWidget(cornerWidget);
 
 	// Last tab button
-	QPushButton *lastTab = new QPushButton(QIcon(":/images/back.png"), "", this);
+	auto *lastTab = new QPushButton(QIcon(":/images/back.png"), "", this);
 		lastTab->setFlat(true);
 		lastTab->resize(QSize(15, 12));
 		layout->addWidget(lastTab);
 
 	// Add tab button
-	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
+	auto *add = new QPushButton(QIcon(":/images/add.png"), "", this);
 		add->setFlat(true);
 		add->resize(QSize(12, 12));
 		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
@@ -396,7 +400,7 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 
 void MainWindow::initialLoginsFinished()
 {
-	auto site = qobject_cast<Site*>(sender());
+	auto *site = qobject_cast<Site*>(sender());
 	disconnect(site, &Site::loggedIn, this, &MainWindow::initialLoginsFinished);
 
 	m_waitForLogin--;
@@ -537,10 +541,10 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 
 	m_tabSelector->updateCounter();
 
-	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
+	auto *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8, 8));
-		connect(closeTab, &QPushButton::clicked, w, &SearchTab::deleteLater);
+		connect(closeTab, &QPushButton::clicked, w, &SearchTab::close);
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 
 	if (!background) {
@@ -566,7 +570,7 @@ bool MainWindow::loadTabs(const QString &filename)
 	}
 
 	bool preload = m_settings->value("preloadAllTabs", false).toBool();
-	for (auto tab : qAsConst(tabs)) {
+	for (auto *tab : qAsConst(tabs)) {
 		addSearchTab(tab, true, false);
 		if (!preload) {
 			m_tabsWaitingForPreload.append(tab);
@@ -633,7 +637,7 @@ void MainWindow::restoreLastClosedTab()
 }
 void MainWindow::currentTabChanged(int tab)
 {
-	Q_UNUSED(tab);
+	Q_UNUSED(tab)
 
 	if (!m_loaded) {
 		return;
@@ -654,7 +658,7 @@ void MainWindow::setCurrentTab(QWidget *widget)
 	}
 
 	// Handle "normal" search tabs
-	auto searchTab = qobject_cast<SearchTab*>(widget);
+	auto *searchTab = qobject_cast<SearchTab*>(widget);
 	if (searchTab != nullptr) {
 		// The opening of the window does not always load all tabs, leaving some unloaded
 		if (m_tabsWaitingForPreload.contains(searchTab)) {
@@ -674,7 +678,7 @@ void MainWindow::setCurrentTab(QWidget *widget)
 
 void MainWindow::closeCurrentTab()
 {
-	auto currentTab = ui->tabWidget->currentWidget();
+	auto *currentTab = ui->tabWidget->currentWidget();
 	auto *tab = dynamic_cast<SearchTab*>(currentTab);
 
 	// Non-closable tabs have a maximum width of 16777214 (default: 16777215)
@@ -749,14 +753,14 @@ void MainWindow::changeEvent(QEvent *event)
 }
 
 // Save tabs and settings on close
-void MainWindow::closeEvent(QCloseEvent *e)
+void MainWindow::closeEvent(QCloseEvent *event)
 {
 	// Close to tray
 	bool tray = m_settings->value("Monitoring/enableTray", false).toBool();
 	bool closeToTray = m_settings->value("Monitoring/closeToTray", false).toBool();
 	if (tray && closeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible() && !m_closeFromTray) {
 		hide();
-		e->ignore();
+		event->ignore();
 		return;
 	}
 
@@ -779,7 +783,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 
 		// Don't close on "cancel"
 		if (response != QMessageBox::Yes) {
-			e->ignore();
+			event->ignore();
 			return;
 		}
 
@@ -810,7 +814,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 		m_trayIcon->hide();
 	}
 
-	e->accept();
+	event->accept();
 }
 
 void MainWindow::options()
@@ -910,7 +914,7 @@ void MainWindow::utilMd5DatabaseConverter()
 
 void MainWindow::tabContextMenuRequested(const QPoint &pos)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos)
 
 	int tabIndex = ui->tabWidget->tabBar()->tabAt(pos);
 
@@ -992,7 +996,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 
-	// Drop a text containing an URL
+	// Drop a text containing a URL
 	if (mimeData->hasText()) {
 		QString url = mimeData->text();
 		if (isUrl(url)) {
@@ -1019,7 +1023,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 
-	// Drop a text containing an URL
+	// Drop a text containing a URL
 	if (mimeData->hasText()) {
 		QString url = mimeData->text();
 		if (isUrl(url)) {

@@ -78,7 +78,7 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		auto *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL | Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
 		auto *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL | Qt::Key_W), this);
-			// Pointer name must not overlap with function name ("saveNQuit"...
+			// Pointer name must not overlap with function name ("saveNQuit"...)
 			connect(SNQ, SIGNAL(activated()), this, SLOT(saveNQuit()));
 		auto *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL | Qt::Key_O), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDir()));
@@ -134,12 +134,12 @@ ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPoi
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 
-	m_gifPlayer = new GifPlayer(m_settings->value("Viewer/showGifPlayerControls", true).toBool(), getAlignments("imagePositionAnimation"), this);
+	m_gifPlayer = new GifPlayer(m_settings, getAlignments("imagePositionAnimation"), this);
 	m_stackedWidget->addWidget(m_gifPlayer);
 
 	if (m_settings->value("Viewer/useVideoPlayer", true).toBool()) {
 		// getAlignments("imagePositionVideo")
-		m_videoPlayer = new VideoPlayer(m_settings->value("Viewer/showVideoPlayerControls", true).toBool(), this);
+		m_videoPlayer = new VideoPlayer(m_settings, this);
 		m_stackedWidget->addWidget(m_videoPlayer);
 	}
 
@@ -307,7 +307,7 @@ void ViewerWindow::configureButtons()
 		ui->buttonsLayout->addWidget(pushButton, row, effectivePosition, 1, bs.relativeWidth);
 	}
 
-	unsigned short biggestMaxRow, biggestMaxColPos = 0;
+	unsigned short biggestMaxRow = 0, biggestMaxColPos = 0;
 	for (unsigned short i = 0; i < maxColPos.size(); i++) {
 		unsigned short spanBack = spans.at(i).empty() ? 0 : spans.at(i).back();
 		if (maxColPos.at(i) + spanBack > biggestMaxColPos) {
@@ -1198,7 +1198,7 @@ void ViewerWindow::toggleSlideshow()
 	}
 }
 
-void ViewerWindow::resizeEvent(QResizeEvent *e)
+void ViewerWindow::resizeEvent(QResizeEvent *event)
 {
 	if (!m_resizeTimer.isActive()) {
 		m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000));
@@ -1207,10 +1207,10 @@ void ViewerWindow::resizeEvent(QResizeEvent *e)
 	m_resizeTimer.start(m_timeout);
 	update(true);
 
-	QWidget::resizeEvent(e);
+	QWidget::resizeEvent(event);
 }
 
-void ViewerWindow::closeEvent(QCloseEvent *e)
+void ViewerWindow::closeEvent(QCloseEvent *event)
 {
 	m_settings->setValue("Viewer/geometry", saveGeometry());
 	m_settings->setValue("Viewer/plus", m_drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
@@ -1223,12 +1223,12 @@ void ViewerWindow::closeEvent(QCloseEvent *e)
 		it.value()->deleteLater();
 	}
 
-	e->accept();
+	event->accept();
 }
 
-void ViewerWindow::showEvent(QShowEvent *e)
+void ViewerWindow::showEvent(QShowEvent *event)
 {
-	Q_UNUSED(e)
+	Q_UNUSED(event)
 
 	showThumbnail();
 }
@@ -1418,17 +1418,17 @@ void ViewerWindow::openFile(bool now)
 	m_pendingAction = PendingNothing;
 }
 
-void ViewerWindow::mouseReleaseEvent(QMouseEvent *e)
+void ViewerWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (e->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool()) {
+	if (event->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool()) {
 		close();
 		return;
 	}
 
-	QWidget::mouseReleaseEvent(e);
+	QWidget::mouseReleaseEvent(event);
 }
 
-void ViewerWindow::wheelEvent(QWheelEvent *e)
+void ViewerWindow::wheelEvent(QWheelEvent *event)
 {
 	if (m_settings->value("imageNavigateScroll", true).toBool()) {
 		// Ignore events triggered when reaching the bottom of the tag list
@@ -1438,11 +1438,11 @@ void ViewerWindow::wheelEvent(QWheelEvent *e)
 
 		// Ignore events if we already got one less than 500ms ago
 		if (m_lastWheelEvent.isValid() && m_lastWheelEvent.elapsed() <= 500) {
-			e->ignore();
+			event->ignore();
 		}
 		m_lastWheelEvent.start();
 
-		const int angle = e->angleDelta().y();
+		const int angle = event->angleDelta().y();
 		if (angle <= -120) { // Scroll down
 			next();
 			return;
@@ -1453,5 +1453,5 @@ void ViewerWindow::wheelEvent(QWheelEvent *e)
 		}
 	}
 
-	QWidget::wheelEvent(e);
+	QWidget::wheelEvent(event);
 }

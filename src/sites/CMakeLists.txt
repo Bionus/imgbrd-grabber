@@ -12,20 +12,24 @@ listFilterRegex(SOURCES "node_modules")
 add_custom_command(
 	OUTPUT NPM_modules
 	COMMAND npm install
+	COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/NPM_modules
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMENT "Installing npm packages..."
+	DEPENDS package.json
 )
-add_custom_target(sites_modules DEPENDS NPM_modules SOURCES package.json)
+add_custom_target(sites_modules DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/NPM_modules SOURCES package.json)
 
 # Transpiling TypeScript files into JavaScript
 add_custom_command(
 	OUTPUT JavaScript_sites
 	COMMAND npm run build
+	COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/JavaScript_sites
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMENT "Transpiling TypeScript sources into JavaScript..."
+	DEPENDS "${SOURCES}"
 )
 
-add_custom_target(sites DEPENDS JavaScript_sites SOURCES "${SOURCES}")
+add_custom_target(sites DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/JavaScript_sites SOURCES "${SOURCES}")
 add_dependencies(sites sites_modules)
 
 add_test(

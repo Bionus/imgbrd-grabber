@@ -14,7 +14,7 @@ class JavascriptHtmlDocument : public QObject
 
 	public:
 		JavascriptHtmlDocument(QJSEngine &engine, const HtmlNode &node);
-		static JavascriptHtmlDocument *fromString(QJSEngine &m_engine, const QString &html, bool fragment = false);
+		static JavascriptHtmlDocument *fromString(QJSEngine &engine, const QString &html, bool fragment = false);
 
 		Q_INVOKABLE QJSValue outerHTML() const;
 		Q_INVOKABLE QJSValue innerHTML() const;

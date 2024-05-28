@@ -14,6 +14,8 @@
 #include "cli-commands/get-page-tags-cli-command.h"
 #include "cli-commands/get-tags-cli-command.h"
 #include "cli-commands/load-tag-database-cli-command.h"
+#include "cli-commands/site/site-cli-command.h"
+#include "cli-commands/source-registry/source-registry-cli-command.h"
 #include "printers/json-printer.h"
 #include "printers/simple-printer.h"
 #include "logger.h"
@@ -22,11 +24,84 @@
 #include "models/site.h"
 
 
+/**
+ * New version of the CLI parser.
+ *
+ * @param app The Qt application.
+ * @param profile The current Grabber profile.
+ * @param defaultToGui Whether we should run in GUI unless an explicit CLI parameter is passed.
+ * @param params Used to forward CLI params to the GUI.
+ * @param positionalArgs Used to forward positional args to the GUI.
+ * @return -1 if it should continue in GUI mode, 0 on success, any other code on failure.
+ */
+int parseAndRunCliArgsV2(QCoreApplication *app, Profile *profile, bool defaultToGui, QMap<QString, QString> &params, QStringList &positionalArgs)
+{
+	QCommandLineCommandParser parser;
+	QCommandLineOption versionOpt = parser.addVersionOption();
+	parser.addHelpOptionOnly();
+
+	if (defaultToGui) {
+		parser.addOption(QCommandLineOption({"c", "cli"}, "Disable the GUI."));
+	}
+
+	parser.addCommand("source", "Manage sources");
+	parser.addCommand("source-registry", "Manage source registries");
+
+	parser.process(*app);
+
+	// Stop trying to parse CLI arguments if we're not running in CLI mode
+	if (defaultToGui && !parser.isSet("cli")) {
+		// TODO: set log level
+		// TODO: fill params & positionalArgs
+		Q_UNUSED(params)
+		Q_UNUSED(positionalArgs)
+		return -1;
+	}
+
+	// Get rid of the top-level CLI options since we don't want sub-parsers to have to deal with them
+	QStringList arguments = app->arguments();
+	arguments.removeAll("-c");
+	arguments.removeAll("--cli");
+
+	// Handle each specific command separately
+	QScopedPointer<CliCommand> cmd;
+	const QString command = parser.command();
+	if (command == "source") {
+		cmd.reset(new SiteCliCommand(arguments, profile));
+	}
+	if (command == "source-registry") {
+		cmd.reset(new SourceRegistryCliCommand(arguments, profile));
+	}
+
+	// If we're here, that means that help was requested or no command was passed
+	if (cmd == nullptr) {
+		// Handle the -v flag
+		if (parser.isSet(versionOpt)) {
+			parser.showVersion();
+			return 0;
+		}
+
+		parser.showHelp();
+		return 1;
+	}
+
+	// Actually run the command
+	return cmd->execute();
+}
+
+
 int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGui, QMap<QString, QString> &params, QStringList &positionalArgs)
 {
 	QSettings *settings = profile->getSettings();
 	QString dPath = settings->value("Save/path", "").toString();
 	QString dFilename = settings->value("Save/filename", "").toString();
+
+	// Go through the new CLI for the various commands supported by it
+	const QStringList args = app->arguments();
+	bool guessUseCLI = (defaultToGui && (args.contains("-c") || args.contains("--cli"))) || (!defaultToGui && !args.contains("-g") && !args.contains("--gui"));
+	if (guessUseCLI && (args.contains("source") || args.contains("source-registry"))) {
+		return parseAndRunCliArgsV2(app, profile, defaultToGui, params, positionalArgs);
+	}
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
@@ -100,12 +175,9 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 
 	// Log messages output and level
 	const bool verbose = parser.isSet(verboseOption);
-	#if !defined(QT_DEBUG)
-		Logger::setupMessageOutput(gui || verbose);
-	#endif
-	if (verbose) {
-		Logger::getInstance().setLogLevel(Logger::Debug);
-	}
+	Logger::setupMessageOutput(gui || verbose);
+	Logger::getInstance().setLogLevel(verbose ? Logger::Debug : Logger::Info);
+	Logger::getInstance().setConsoleOutputLevel(verbose ? Logger::Debug : Logger::Error);
 
 	// Stop here for GUI, but pass some information to the main window from the parser later
 	if (gui) {
@@ -166,8 +238,8 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 
 	QTextStream stream(stdout);
 	Printer *printer = parser.isSet(jsonOption)
-		? (Printer*) new JsonPrinter(&stream, profile)
-		: (Printer*) new SimplePrinter(&stream, parser.value(tagsFormatOption));
+		? static_cast<Printer*>(new JsonPrinter(&stream, profile))
+		: static_cast<Printer*>(new SimplePrinter(&stream, parser.value(tagsFormatOption)));
 
 	CliCommand *cmd = nullptr;
 
@@ -239,11 +311,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 		return 1;
 	}
 
-	QEventLoop loop;
-	QObject::connect(cmd, &CliCommand::finished, &loop, &QEventLoop::quit);
-	QTimer::singleShot(0, [cmd]() { cmd->run(); });
-	loop.exec();
-
+	int exitCode = cmd->execute();
 	cmd->deleteLater();
-	return 0;
+	return exitCode;
 }

@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import QtQuick.Dialogs 1.3
+import QtQuick.Dialogs
 
 import ".."
 
@@ -23,14 +23,13 @@ Item {
 
         onClicked: dialog.open()
 
-        FileDialog {
+        FolderDialog {
             id: dialog
 
             title: qsTr("Please choose a directory")
-            folder: setting.value
-            selectFolder: true
+            selectedFolder: setting.value
 
-            onAccepted: setting.setValue(backend.toLocalFile(dialog.fileUrl.toString()))
+            onAccepted: setting.setValue(backend.toLocalFile(dialog.selectedFolder.toString()))
         }
     }
 }

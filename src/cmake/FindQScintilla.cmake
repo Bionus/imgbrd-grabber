@@ -80,7 +80,7 @@ endif ()
 
 
 find_library ( QSCINTILLA_LIBRARY
-  NAMES qscintilla qscintilla2 libqscintilla2 qscintilla2_qt5
+  NAMES qscintilla qscintilla2 libqscintilla2 qscintilla2_qt5 qscintilla2_qt6
   HINTS ${QT_LIBRARY_DIR}
 )
 

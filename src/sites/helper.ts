@@ -1,8 +1,4 @@
-function addHelper(name: string, value: any): void {
-    Object.defineProperty(Grabber, name, { value });
-}
-
-addHelper("makeArray", (val: any, allowFalsy: boolean = false): any[] => {
+Grabber.makeArray = (val: any, allowFalsy: boolean = false): any[] => {
     if (!val && !allowFalsy) {
         return [];
     }
@@ -10,25 +6,25 @@ addHelper("makeArray", (val: any, allowFalsy: boolean = false): any[] => {
         return [ val ];
     }
     return val;
-});
+}
 
-addHelper("regexMatch", (regexp: string, src: string): any => {
+Grabber.regexMatch = (regexp: string, src: string): any => {
     const matches = Grabber.regexMatches(regexp, src);
     if (matches && matches.length > 0) {
         return matches[0];
     }
     return undefined;
-});
+}
 
-addHelper("mapObject", (obj: any, fn: (v: any) => any): any => {
+Grabber.mapObject = (obj: any, fn: (v: any) => any): any => {
     const ret: any = {};
     for (const k in obj) {
         ret[k] = fn(obj[k]);
     }
     return ret;
-});
+}
 
-addHelper("typedXML", (val: any) => {
+Grabber.typedXML = (val: any) => {
     if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
         const txt = val["#text"];
 
@@ -66,7 +62,7 @@ addHelper("typedXML", (val: any) => {
     }
 
     return val;
-});
+}
 
 /**
  * Set a value in an object using the dot ("a.b.c") path notation.
@@ -90,7 +86,7 @@ function _get(obj: any, path: string): any {
     return path.split(".").reduce((ctx, part) => ctx?.[part], obj);
 }
 
-addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
+Grabber.mapFields = (data: any, map: { [key: string]: string }): any => {
     const result: any = {};
     if (typeof data !== "object") {
         return result;
@@ -103,9 +99,9 @@ addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
         }
     }
     return result;
-});
+}
 
-addHelper("countToInt", (str: string): number | undefined => {
+Grabber.countToInt = (str: string): number | undefined => {
     if (!str) {
         return undefined;
     }
@@ -118,9 +114,9 @@ addHelper("countToInt", (str: string): number | undefined => {
         count = parseFloat(normalized);
     }
     return Math.round(count);
-});
+}
 
-addHelper("fileSizeToInt", (str: string): number => {
+Grabber.fileSizeToInt = (str: string | number): number => {
     if  (typeof str !== "string") {
         return str as any;
     }
@@ -137,9 +133,9 @@ addHelper("fileSizeToInt", (str: string): number => {
         return Math.round(val);
     }
     return parseInt(str, 10);
-});
+}
 
-addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | undefined, pageTransformer?: (page: number) => number): string => {
+Grabber.fixPageUrl = (url: string, page: number, previous: IPreviousSearch | undefined, pageTransformer?: (page: number) => number): string => {
     if (!pageTransformer) {
         pageTransformer = (p: number) => p;
     }
@@ -151,9 +147,9 @@ addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | 
         url = url.replace("{max+1}", previous.maxIdP1);
     }
     return url;
-});
+}
 
-addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string, pageTransformer?: (page: number) => number): string => {
+Grabber.pageUrl = (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string, pageTransformer?: (page: number) => number): string => {
     const pageLimit = pageTransformer ? pageTransformer(page) : page;
     if (pageLimit <= limit || limit < 0) {
         return Grabber.fixPageUrl(ifBelow, page, previous, pageTransformer);
@@ -165,9 +161,9 @@ addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit
         return Grabber.fixPageUrl(ifNext, page, previous, pageTransformer);
     }
     throw new Error("You need valid previous page information to browse that far");
-});
+}
 
-addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
+Grabber.regexToImages = (regexp: string, src: string): IImage[] => {
     const images: IImage[] = [];
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
@@ -186,18 +182,18 @@ addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
         images.push(match);
     }
     return images;
-});
+}
 
-addHelper("pick", (obj: any, keys: string[]): any => {
+Grabber.pick = (obj: any, keys: string[]): any => {
     return keys.reduce((ret, key) => {
         if (key in obj && obj[key] !== undefined) {
             ret[key] = obj[key];
         }
         return ret;
     }, {} as any);
-});
+}
 
-addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
+Grabber.regexToTags = (regexp: string, src: string): ITag[] => {
     const tags: ITag[] = [];
     const uniques: { [key: string]: boolean } = {};
 
@@ -213,24 +209,24 @@ addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
         uniques[match["name"]] = true;
     }
     return tags;
-});
+}
 
-addHelper("regexToPools", (regexp: string, src: string): IPool[] => {
+Grabber.regexToPools = (regexp: string, src: string): IPool[] => {
     const pools: IPool[] = [];
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
         pools.push(match);
     }
     return pools;
-});
+}
 
-addHelper("regexToConst", (key: string, regexp: string, src: string): string | undefined => {
-    const matches = Grabber.regexMatches(regexp, src);
-    for (const match of matches) {
+Grabber.regexToConst = (key: string, regexp: string, src: string): string | undefined => {
+    const match = Grabber.regexMatch(regexp, src);
+    if (match) {
         return match[key];
     }
     return undefined;
-});
+}
 
 function _visitSearch(search: IParsedSearchQuery, tag: (tag: ITag) => string, and: (left: string, right: string) => string, or: (left: string, right: string) => string): string {
     if ("operator" in search) {
@@ -242,15 +238,15 @@ function _visitSearch(search: IParsedSearchQuery, tag: (tag: ITag) => string, an
         return tag(search);
     }
 }
-addHelper("visitSearch", _visitSearch);
+Grabber.visitSearch = _visitSearch;
 
-addHelper("buildQueryParams", (params: Record<string, string | number | boolean>): string => {
+Grabber.buildQueryParams = (params: Record<string, string | number | boolean>): string => {
     const ret = [];
     for (const key in params) {
         ret.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
     }
     return ret.join("&");
-});
+}
 
 function parseSearchVal(value: string, meta: MetaField): any | null {
     if (meta.type === "options") {
@@ -273,7 +269,7 @@ function parseSearchVal(value: string, meta: MetaField): any | null {
     }
     return null;
 }
-addHelper("parseSearchQuery", (query: string, metas: Record<string, MetaField>): Record<string, any> => {
+Grabber.parseSearchQuery = (query: string, metas: Record<string, MetaField>): Record<string, any> => {
     const tags = [];
     const ret: Record<string, any> = {};
 
@@ -302,7 +298,7 @@ addHelper("parseSearchQuery", (query: string, metas: Record<string, MetaField>):
 
     ret.query = tags.join(" ");
     return ret;
-});
+}
 
 // Fix console calls since C++ handlers can't get variadic arguments
 const originalConsole = console

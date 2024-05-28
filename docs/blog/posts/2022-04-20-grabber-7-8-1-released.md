@@ -1,5 +1,5 @@
 ---
-date: 2022-04-20 23:34 +0100
+date: 2022-04-20 23:34:00 +1:00
 categories: [Release]
 authors: [Bionus]
 ---
@@ -9,5 +9,5 @@ authors: [Bionus]
 
 Grabber 7.8.1 has been released.
 
-The list of changes and download links can be found on Github:  
+The list of changes and download links can be found on GitHub:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag/v7.8.1>

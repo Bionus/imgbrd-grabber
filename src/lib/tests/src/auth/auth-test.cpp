@@ -28,7 +28,7 @@ TEST_CASE("Auth")
 		QScopedPointer<AuthConstField> constField(new AuthConstField("key", "val"));
 		QList<AuthField*> fields { textField.data(), constField.data() };
 
-		HttpAuth auth("post", "https://www.google.com", fields, "cookie", "/index.php", "/login", QStringList { "csrf" });
+		HttpAuth auth("post", "https://www.google.com", fields, "cookie", "/index.php", "/login", {"csrf"}, {{"User-Agent", "Test"}});
 
 		REQUIRE(auth.type() == QString("post"));
 		REQUIRE(auth.name() == QString("post"));
@@ -38,6 +38,7 @@ TEST_CASE("Auth")
 		REQUIRE(auth.redirectUrl() == QString("/index.php"));
 		REQUIRE(auth.csrfUrl() == QString("/login"));
 		REQUIRE(auth.csrfFields() == QStringList("csrf"));
+		REQUIRE(auth.headers() == QMap<QString, QString>{{"User-Agent", "Test"}});
 
 		REQUIRE(auth.settingFields().count() == 1);
 		REQUIRE(auth.settingFields().first().id == textField->id());

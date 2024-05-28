@@ -44,7 +44,7 @@ FilenameWindow::~FilenameWindow()
 	delete ui;
 }
 
-void FilenameWindow::on_lineClassic_textChanged(QString text)
+void FilenameWindow::validateClassicFilename(QString text)
 {
 	QString message;
 	Filename fn(text);
@@ -81,7 +81,8 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 		pos += match.capturedLength();
 	}
 
-	QString value = "'" + text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed() + "'";
+	static const QRegularExpression rxVariable("%([^%]+)%");
+	QString value = "'" + text.replace(rxVariable, "' + \\1 + '").remove(" + '' + ").trimmed() + "'";
 	if (value.startsWith("' + ")) {
 		value = value.right(value.length() - 4);
 	}
@@ -98,11 +99,11 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	m_scintilla->setText(value);
 }
 
-void FilenameWindow::on_buttonHelpClassic_clicked()
+void FilenameWindow::helpClassic()
 {
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_WEBSITE_URL) + "/docs/filename.html"));
 }
-void FilenameWindow::on_buttonHelpJavascript_clicked()
+void FilenameWindow::helpJavascript()
 {
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_WEBSITE_URL) + "/docs/filename.html#javascript"));
 }

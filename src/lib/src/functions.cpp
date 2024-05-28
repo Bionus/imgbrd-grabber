@@ -254,8 +254,7 @@ QStringList removeWildards(const QStringList &elements, const QStringList &remov
 	for (const QString &tag : elements) {
 		bool removed = false;
 		for (const QString &rem : remove) {
-			const QString pattern = QRegularExpression::wildcardToRegularExpression(rem);
-			const auto reg = QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption);
+			const auto reg = QRegularExpression::fromWildcard(rem, Qt::CaseInsensitive);
 			if (reg.match(tag).hasMatch()) {
 				removed = true;
 				break;
@@ -341,7 +340,7 @@ QDateTime qDateTimeFromString(const QString &str)
 
 QString getUnit(double *size)
 {
-	QStringList units = FILESIZE_UNITS;
+	const QStringList units = FILESIZE_UNITS;
 	const int multiplier = FILESIZE_MULTIPLIER;
 
 	int power = 0;
@@ -392,9 +391,10 @@ bool validSavePath(const QString &file, bool writable)
 
 /**
  * Return the path to a specified file in the config folder (since program files is not writable).
- * @param	file	The file.
- * @param	exists	If the file must already exist beforehand.
- * @return			The absolute path to the file.
+ * @param	file	 The file.
+ * @param	exists	 If the file must already exist beforehand.
+ * @param   writable If the file must be writable (the install directory usually isn't).
+ * @return			 The absolute path to the file.
  */
 QString savePath(const QString &file, bool exists, bool writable)
 {
@@ -665,7 +665,7 @@ bool cutStringToUtf8Bytes(QString &str, int limit)
 
 QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, bool invalidChars)
 {
-	Q_UNUSED(invalidChars);
+	Q_UNUSED(invalidChars)
 
 	// Fix parameters
 	const QString sep = QStringLiteral("/");
@@ -676,7 +676,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 	QStringList parts = filename.split(sep);
 	QString file, ext;
 	if (!fn.isEmpty()) {
-		file = parts.takeLast();;
+		file = parts.takeLast();
 		const int lastDot = file.lastIndexOf('.');
 		if (lastDot != -1) {
 			ext = file.right(file.length() - lastDot - 1);
@@ -1008,8 +1008,8 @@ QString qFontToCss(const QFont &font)
 		size = QString::number(font.pixelSize()) + "px";
 	}
 
-	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
-	const QString weight = QString::number(font.weight() * 8);
+	// Should be "font.weight() + 100", but linux doesn't handle weight the same way windows do
+	const QString weight = QString::number(font.weight());
 
 	QStringList decorations;
 	if (font.strikeOut()) {

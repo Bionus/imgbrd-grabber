@@ -26,7 +26,7 @@
 
 #include "functions.h"
 #ifdef Q_OS_ANDROID
-#include <QAndroidJniObject>
+#include <QJniObject>
 #elif defined(Q_OS_LINUX)
 #include <sys/utsname.h>
 #elif (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
@@ -379,11 +379,11 @@ QString GAnalytics::Private::getSystemInfo()
     }
 #elif defined(Q_OS_ANDROID)
     os = QString("Linux; U; Android %1; %2 %3 Build/%4; %5")
-            .arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build$VERSION", "RELEASE").toString())
-            .arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "MANUFACTURER").toString())
-            .arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString())
-            .arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "ID").toString())
-            .arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "BRAND").toString());
+            .arg(QJniObject::getStaticObjectField<jstring>("android/os/Build$VERSION", "RELEASE").toString())
+            .arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "MANUFACTURER").toString())
+            .arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString())
+            .arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "ID").toString())
+            .arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "BRAND").toString());
 #elif defined(Q_OS_LINUX)
     struct utsname buf;
     uname(&buf);

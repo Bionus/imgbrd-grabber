@@ -115,7 +115,7 @@ void SearchWindow::accept()
 	QDialog::accept();
 }
 
-void SearchWindow::on_buttonImage_clicked()
+void SearchWindow::loadImage()
 {
 	const QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
 	if (path.isEmpty()) {

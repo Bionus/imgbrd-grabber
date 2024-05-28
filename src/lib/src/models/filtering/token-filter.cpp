@@ -11,13 +11,13 @@ TokenFilter::TokenFilter(QString token, bool invert)
 
 QString TokenFilter::toString(bool escape) const
 {
-	Q_UNUSED(escape);
+	Q_UNUSED(escape)
 	return QString(m_invert ? "-" : "") % "%" % m_token % "%";
 }
 
 bool TokenFilter::compare(const Filter &rhs) const
 {
-	const auto other = dynamic_cast<const TokenFilter*>(&rhs);
+	const auto *other = dynamic_cast<const TokenFilter*>(&rhs);
 	if (other == nullptr) {
 		return false;
 	}

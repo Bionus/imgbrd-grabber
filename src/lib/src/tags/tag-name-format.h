@@ -20,8 +20,11 @@ class TagNameFormat
 		TagNameFormat() = default;
 		TagNameFormat(CaseFormat caseFormat, QString wordSeparator);
 		static TagNameFormat &Normalized();
+
+		// Getters
 		CaseFormat caseFormat() const;
 		QString wordSeparator() const;
+
 		QString formatted(const QStringList &words) const;
 
 	protected:
@@ -36,4 +39,4 @@ bool operator==(const TagNameFormat &a, const TagNameFormat &b);
 
 Q_DECLARE_METATYPE(TagNameFormat)
 
-#endif // TAG_NAME_H
+#endif // TAG_NAME_FORMAT_H

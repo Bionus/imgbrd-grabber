@@ -5,9 +5,10 @@
 #include "search/ast/search-node.h"
 
 
-SearchFormatVisitor::SearchFormatVisitor(SearchFormat searchFormat)
-	: m_searchFormat(std::move(searchFormat))
+SearchFormatVisitor::SearchFormatVisitor(SearchFormat searchFormat, TagNameFormat tagNameFormat)
+	: m_searchFormat(std::move(searchFormat)), m_tagNameFormat(std::move(tagNameFormat))
 {}
+
 
 QString SearchFormatVisitor::run(const SearchNode &node)
 {
@@ -64,5 +65,5 @@ void SearchFormatVisitor::visit(const SearchNodeOp &node)
 
 void SearchFormatVisitor::visit(const SearchNodeTag &node)
 {
-	m_result.append(node.tag.text());
+	m_result.append(m_tagNameFormat.formatted(node.tag));
 }

@@ -1,5 +1,5 @@
 ---
-date: 2023-06-05 23:00 +0200
+date: 2023-06-05 23:00:00 +2:00
 categories: [Release]
 authors: [Bionus]
 ---
@@ -9,5 +9,5 @@ authors: [Bionus]
 
 Grabber 7.11.0 has been released.
 
-The list of changes and download links can be found on Github:  
+The list of changes and download links can be found on GitHub:  
 <https://github.com/Bionus/imgbrd-grabber/releases/tag/v7.11.0>

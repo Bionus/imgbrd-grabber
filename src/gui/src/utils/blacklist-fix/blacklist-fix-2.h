@@ -23,9 +23,9 @@ class BlacklistFix2 : public QDialog
 
 	private slots:
 		void loadThumbnails();
-		void on_buttonSelectBlacklisted_clicked();
-		void on_buttonCancel_clicked();
-		void on_buttonOk_clicked();
+		void selectBlacklisted();
+		void cancel();
+		void nextStep();
 
 	private:
 		Ui::BlacklistFix2 *ui;

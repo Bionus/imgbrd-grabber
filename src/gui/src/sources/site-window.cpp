@@ -8,6 +8,7 @@
 #include "helpers.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/site-factory.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
 #include "models/source-registry.h"
@@ -46,7 +47,8 @@ void SiteWindow::accept()
 	}
 
 	// Check URL validity
-	if (!QRegularExpression(R"(^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$)").match(m_url).hasMatch()) {
+	static const QRegularExpression rxValidUrl(R"(^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$)");
+	if (!rxValidUrl.match(m_url).hasMatch()) {
 		error(this, tr("The url you entered is not valid."));
 		return;
 	}
@@ -54,7 +56,7 @@ void SiteWindow::accept()
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (ui->checkBox->isChecked()) {
-		const QString &domain = getDomain(m_url);
+		const QString &domain = SiteFactory::getDomain(m_url);
 
 		// Check in installed sources if there is a perfect match
 		for (Source *source : m_sources) {
@@ -66,9 +68,12 @@ void SiteWindow::accept()
 
 		// Check in the source registries if there is a perfect match
 		for (const auto &sourceRegistry : m_profile->getSourceRegistries()) {
+			if (!sourceRegistry->isValid()) {
+				continue;
+			}
 			const auto &sources = sourceRegistry->sources();
-			for (const QString &src : sources.keys()) {
-				const auto &source = sources[src];
+			for (auto it = sources.constBegin(); it != sources.constEnd(); ++it) {
+				const auto &source = it.value();
 				if (source.supportedSites.contains(domain)) {
 					const int reply = QMessageBox::question(this, windowTitle(), tr("A source supporting '%1' has been found in the registry '%2': '%3'. Install it?").arg(domain, sourceRegistry->name(), source.name), QMessageBox::Yes | QMessageBox::No);
 					if (reply == QMessageBox::Yes) {
@@ -103,25 +108,6 @@ void SiteWindow::accept()
 	finish(src);
 }
 
-QString SiteWindow::getDomain(QString url, bool *ssl)
-{
-	if (url.startsWith("http://")) {
-		url = url.mid(7);
-		if (ssl != nullptr) {
-			*ssl = false;
-		}
-	} else if (url.startsWith("https://")) {
-		url = url.mid(8);
-		if (ssl != nullptr) {
-			*ssl = true;
-		}
-	}
-	if (url.endsWith('/')) {
-		url = url.left(url.length() - 1);
-	}
-	return url;
-}
-
 void SiteWindow::sourceImported(SourceImporter::ImportResult result, const QList<Source*> &sources)
 {
 	if (result != SourceImporter::Success || sources.isEmpty()) {
@@ -132,9 +118,9 @@ void SiteWindow::sourceImported(SourceImporter::ImportResult result, const QList
 	finish(sources.first());
 }
 
-void SiteWindow::finish(Source *src)
+void SiteWindow::finish(Source *source)
 {
-	if (src == nullptr) {
+	if (source == nullptr) {
 		error(this, tr("Unable to guess site's type. Are you sure about the url?"));
 		ui->comboBox->setDisabled(false);
 		ui->checkBox->setChecked(false);
@@ -147,17 +133,8 @@ void SiteWindow::finish(Source *src)
 		ui->progressBar->hide();
 	}
 
-	// Remove unnecessary prefix
-	bool ssl = false;
-	const QString url = getDomain(m_url, &ssl);
-
-	Site *site = new Site(url, src, m_profile);
+	Site *site = SiteFactory::fromUrl(m_url, source, m_profile);
 	m_profile->addSite(site);
-
-	// If the user wrote "https://" in the URL, we enable SSL for this site
-	if (ssl) {
-		site->setSetting("ssl", true, false);
-	}
 
 	emit accepted();
 	close();

@@ -149,7 +149,7 @@ void Monitor::setForceRun()
 void Monitor::toJson(QJsonObject &json) const
 {
 	QStringList sites;
-	for (auto site : m_sites) {
+	for (auto *site : m_sites) {
 		sites.append(site->url());
 	}
 	json["sites"] = QJsonArray::fromStringList(sites);

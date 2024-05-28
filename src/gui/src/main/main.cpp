@@ -38,6 +38,7 @@
 #include "analytics.h"
 #include "cli.h"
 #include "functions.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/page-api.h"
 #include "models/profile.h"
@@ -59,7 +60,9 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	#if defined(Q_OS_WIN)
+		qputenv("QT_MEDIA_BACKEND", "windows");
+	#endif
 
 	#ifdef WIN_FILE_PROPS
 		initializeWindowsProperties();
@@ -71,6 +74,8 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
+
+	Logger::getInstance().initialize();
 
 	// Handler for custom URL protocols, redirecting to the main program through HTTP calls
 	if (argc == 3 && QString(argv[1]) == "--url-protocol") {
@@ -86,7 +91,6 @@ int main(int argc, char *argv[])
 	}
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
-	qRegisterMetaTypeStreamOperators<QList<ButtonSettings>>("QList<ButtonSettings>");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY

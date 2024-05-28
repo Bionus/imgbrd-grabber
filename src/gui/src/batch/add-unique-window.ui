@@ -15,7 +15,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
    </property>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
@@ -85,7 +85,7 @@
    <item row="7" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -107,10 +107,10 @@
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
        </property>
       </widget>
      </item>
@@ -123,7 +123,7 @@
        <item>
         <widget class="QPlainTextEdit" name="lineId">
          <property name="lineWrapMode">
-          <enum>QPlainTextEdit::NoWrap</enum>
+          <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
          </property>
         </widget>
        </item>
@@ -162,7 +162,7 @@
        <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -183,7 +183,7 @@
        <item>
         <widget class="QPlainTextEdit" name="lineMd5">
          <property name="lineWrapMode">
-          <enum>QPlainTextEdit::NoWrap</enum>
+          <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
          </property>
         </widget>
        </item>
@@ -222,7 +222,7 @@
        <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -366,11 +366,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>lineFilename</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>validateFilename(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>267</x>
+     <y>289</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>303</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonFolder</sender>
+   <signal>clicked()</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>chooseFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>282</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ok()</slot>
   <slot>add()</slot>
   <slot>toggleMultiLineId(bool)</slot>
   <slot>toggleMultiLineMd5(bool)</slot>
+  <slot>validateFilename(QString)</slot>
+  <slot>chooseFolder()</slot>
  </slots>
 </ui>

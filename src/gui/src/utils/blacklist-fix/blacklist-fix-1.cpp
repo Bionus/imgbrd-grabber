@@ -39,13 +39,13 @@ BlacklistFix1::~BlacklistFix1()
 	delete ui;
 }
 
-void BlacklistFix1::on_buttonCancel_clicked()
+void BlacklistFix1::cancel()
 {
 	emit rejected();
 	close();
 }
 
-void BlacklistFix1::on_buttonContinue_clicked()
+void BlacklistFix1::nextStep()
 {
 	ui->buttonContinue->setEnabled(false);
 	m_details.clear();
@@ -126,7 +126,7 @@ void BlacklistFix1::getAll(Page *p)
 			blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 		}
 
-		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
+		auto *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
 		close();
 		bf2->show();
 	}

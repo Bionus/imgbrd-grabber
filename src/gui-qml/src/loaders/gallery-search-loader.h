@@ -4,6 +4,8 @@
 #include "search-loader.h"
 #include <QSharedPointer>
 
+Q_MOC_INCLUDE("models/image.h")
+
 
 class Image;
 

@@ -21,13 +21,13 @@ const DownloadQueryGroup &DownloadGroupTableModel::dataForRow(int row)
 
 int DownloadGroupTableModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return m_downloads.count();
 }
 
 int DownloadGroupTableModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return 12;
 }
 
@@ -110,7 +110,7 @@ Qt::ItemFlags DownloadGroupTableModel::flags(const QModelIndex &index) const
 		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 	}
 
-	Qt::ItemFlags flags = QAbstractItemModel::flags(index);
+	Qt::ItemFlags flags = QAbstractTableModel::flags(index);
 	flags |= Qt::ItemIsDragEnabled;
 
 	const int minColumn = m_downloads[index.row()].query.gallery.isNull() ? 1 : 2; // Cannot edit gallery queries
@@ -188,11 +188,11 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 9:
-			download.getBlacklisted = (val != "false");
+			download.getBlacklisted = val != "false";
 			break;
 
 		case 10:
-			download.galleriesCountAsOne = (val != "false");
+			download.galleriesCountAsOne = val != "false";
 			break;
 	}
 
@@ -216,7 +216,7 @@ Qt::DropActions DownloadGroupTableModel::supportedDropActions() const
 
 bool DownloadGroupTableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	beginInsertRows(QModelIndex(), row, row + count - 1);
 	for (int i = 0; i < count; ++i) {
 		m_downloads.insert(row, DownloadQueryGroup(m_profile->getSettings(), QStringList(), 1, 10, 10, QStringList(), m_profile->getSites().first()));
@@ -227,7 +227,7 @@ bool DownloadGroupTableModel::insertRows(int row, int count, const QModelIndex &
 
 bool DownloadGroupTableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	beginRemoveRows(QModelIndex(), row, row + count - 1);
 	for (int i = 0; i < count; ++i) {
 		m_downloads.removeAt(row);
@@ -238,8 +238,8 @@ bool DownloadGroupTableModel::removeRows(int row, int count, const QModelIndex &
 
 bool DownloadGroupTableModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild)
 {
-	Q_UNUSED(sourceParent);
-	Q_UNUSED(destinationParent);
+	Q_UNUSED(sourceParent)
+	Q_UNUSED(destinationParent)
 
 	beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild);
 
@@ -255,7 +255,7 @@ bool DownloadGroupTableModel::moveRows(const QModelIndex &sourceParent, int sour
 
 bool DownloadGroupTableModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
-	Q_UNUSED(column);
+	Q_UNUSED(column)
 
 	if (row == -1) {
 		row = rowCount();

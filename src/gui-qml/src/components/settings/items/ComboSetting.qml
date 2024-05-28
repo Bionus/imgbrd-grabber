@@ -41,7 +41,7 @@ Item {
                 valueRole: "value"
                 model: ListModel {
                     Component.onCompleted: {
-                        for (var i = 0; i < values.length; ++i) {
+                        for (let i = 0; i < values.length; ++i) {
                             append({ text: options[i], value: values[i] });
                         }
                     }

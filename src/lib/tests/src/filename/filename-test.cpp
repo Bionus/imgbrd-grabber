@@ -86,12 +86,12 @@ TEST_CASE("Filename")
 	details["has_children"] = "true";
 	details["has_note"] = "true";
 	details["has_comments"] = "true";
-	details["file_url"] = "http://test.com/img/oldfilename.jpg";
-	details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
-	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+	details["file_url"] = "https://test.com/img/oldfilename.jpg";
+	details["sample_url"] = "https://test.com/sample/oldfilename.jpg";
+	details["preview_url"] = "https://test.com/preview/oldfilename.jpg";
 	details["width"] = "800";
 	details["height"] = "600";
-	details["source"] = "http://google.com/";
+	details["source"] = "https://google.com/";
 	details["tags_general"] = "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3";
 	details["tags_artist"] = "artist1";
 	details["tags_copyright"] = "copyright1 copyright2";
@@ -103,9 +103,9 @@ TEST_CASE("Filename")
 	details["name"] = "Test gallery name";
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
-	auto profile = pProfile.data();
+	auto *profile = pProfile.data();
 
-	auto settings = profile->getSettings();
+	auto *settings = profile->getSettings();
 	profile->setRemovedTags("");
 	settings->setValue("Save/separator", " ");
 	settings->setValue("Save/character_value", "group");
@@ -842,9 +842,9 @@ TEST_CASE("Filename")
 
 	SECTION("FilenameWithMultipleUnderscores")
 	{
-		details["file_url"] = "http://test.com/img/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
-		details["sample_url"] = "http://test.com/sample/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
-		details["preview_url"] = "http://test.com/preview/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
+		details["file_url"] = "https://test.com/img/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
+		details["sample_url"] = "https://test.com/sample/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
+		details["preview_url"] = "https://test.com/preview/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
 		img = ImageFactory::build(site, details, profile);
 
 		assertPath(profile, img, "%filename%", "__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2");

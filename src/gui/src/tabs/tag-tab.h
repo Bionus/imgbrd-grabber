@@ -23,6 +23,7 @@ class TagTab : public SearchTab
 		~TagTab() override;
 		Ui::TagTab *ui;
 		QString tags() const override;
+		void setSources(const QList<Site*> &sources) override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, bool preload = true);
 
@@ -39,8 +40,8 @@ class TagTab : public SearchTab
 		void getAll();
 		// Others
 		void monitor();
-		void closeEvent(QCloseEvent *) override;
-		void on_buttonSearch_clicked();
+		void closeEvent(QCloseEvent *event) override;
+		void openSearchWindow();
 		void focusSearch() override;
 		void updateTitle() override;
 

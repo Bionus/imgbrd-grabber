@@ -80,7 +80,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -118,8 +118,55 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>radioForce</tabstop>
+  <tabstop>radioFilename</tabstop>
+  <tabstop>lineFilename</tabstop>
+  <tabstop>textBlacklist</tabstop>
+  <tabstop>comboSource</tabstop>
+  <tabstop>buttonContinue</tabstop>
+  <tabstop>buttonCancel</tabstop>
+ </tabstops>
  <resources>
   <include location="../../../resources/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>BlacklistFix1</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>331</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>330</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonContinue</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>BlacklistFix1</receiver>
+   <slot>nextStep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>185</x>
+     <y>326</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cancel()</slot>
+  <slot>nextStep()</slot>
+ </slots>
 </ui>

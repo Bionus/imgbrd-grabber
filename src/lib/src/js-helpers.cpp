@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJSEngine>
 #include <QJSValue>
+#include <QJSValueIterator>
 #include <QUrl>
 #include <QStringList>
 #include "logger.h"
@@ -114,6 +115,7 @@ void getProperty(const QJSValue &val, const QString &key, QStringList &out)
 	}
 }
 
+
 QStringList jsToStringList(const QJSValue &val)
 {
 	QStringList ret;
@@ -121,6 +123,32 @@ QStringList jsToStringList(const QJSValue &val)
 	const quint32 length = val.property("length").toUInt();
 	for (quint32 i = 0; i < length; ++i) {
 		ret.append(val.property(i).toString());
+	}
+
+	return ret;
+}
+
+QMap<QString, QVariant> jsToMap(const QJSValue &val)
+{
+	QMap<QString, QVariant> ret;
+
+	QJSValueIterator dit(val);
+	while (dit.hasNext()) {
+		dit.next();
+		ret[dit.name()] = dit.value().toVariant();
+	}
+
+	return ret;
+}
+
+QMap<QString, QString> jsToStringMap(const QJSValue &val)
+{
+	QMap<QString, QString> ret;
+
+	QJSValueIterator dit(val);
+	while (dit.hasNext()) {
+		dit.next();
+		ret[dit.name()] = dit.value().toString();
 	}
 
 	return ret;

@@ -6,6 +6,8 @@
 #include <QSharedPointer>
 #include <QString>
 #include <QStringList>
+#include <QVariant>
+#include <utility>
 
 
 class Image;
@@ -18,10 +20,13 @@ class SearchQuery
 		// Constructors
 		SearchQuery() = default;
 		SearchQuery(QStringList tags_)
-			: tags(tags_)
+			: tags(std::move(tags_))
 		{}
 		SearchQuery(QSharedPointer<Image> gallery_)
-			: gallery(gallery_)
+			: gallery(std::move(gallery_))
+		{}
+		SearchQuery(QString endpoint_, QMap<QString, QVariant> input_)
+			: endpoint(std::move(endpoint_)), input(std::move(input_))
 		{}
 		QString toString() const;
 
@@ -33,6 +38,8 @@ class SearchQuery
 		QMap<QString, QString> urls;
 		QStringList tags;
 		QSharedPointer<Image> gallery;
+		QString endpoint;
+		QMap<QString, QVariant> input;
 };
 
 bool operator==(const SearchQuery &lhs, const SearchQuery &rhs);

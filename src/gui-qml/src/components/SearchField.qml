@@ -10,6 +10,7 @@ FocusScope {
     property alias text: textInput.fakeText
     property alias placeholderText: textInput.placeholderText
     property bool isOpen: false
+    property int spacing: 4
 
     activeFocusOnTab: true
 
@@ -27,6 +28,8 @@ FocusScope {
             anchors.fill: parent
             anchors.leftMargin: 12
             anchors.rightMargin: 12
+            leftPadding: leftButton.width - anchors.leftMargin + root.spacing
+            rightPadding: rightButton.width - anchors.rightMargin + root.spacing
             focus: true
 
             property string fakeText
@@ -46,6 +49,19 @@ FocusScope {
         }
 
         ToolButton {
+            id: leftButton
+            icon.source: searchTab.site.icon
+            icon.color: "transparent"
+            onClicked: searchTab.openSources()
+            flat: true
+            height: 34
+            width: 34
+            anchors.left: editbg.left
+            anchors.verticalCenter: editbg.verticalCenter
+        }
+
+        ToolButton {
+            id: rightButton
             icon.source: root.isOpen
                 ? "/images/icons/remove.png"
                 : "/images/icons/add.png"

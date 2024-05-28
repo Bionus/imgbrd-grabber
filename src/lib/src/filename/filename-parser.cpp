@@ -239,11 +239,11 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 				exprs.append(parseExpr(stop));
 			}
 			if ((peek() == '-' || peek() == '!') && m_index + 1 < m_str.count() && (!stopCond.contains(m_str[m_index + 1]) || m_str[m_index + 1] == '>')) {
-				auto xpr = parseExpr({ '>', '"', '%' });
+				auto *xpr = parseExpr({ '>', '"', '%' });
 				if (notStop) {
 					// Merge following text nodes
-					auto xprTxt = dynamic_cast<FilenameNodeText*>(xpr);
-					auto lastTxt = dynamic_cast<FilenameNodeText*>(exprs.last());
+					auto *xprTxt = dynamic_cast<FilenameNodeText*>(xpr);
+					auto *lastTxt = dynamic_cast<FilenameNodeText*>(exprs.last());
 					if (xprTxt != nullptr && lastTxt != nullptr) {
 						lastTxt->text += xprTxt->text;
 					} else {
@@ -255,7 +255,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 			}
 
 			if (peek() != '>') {
-				auto cond = parseSingleCondition(true);
+				auto *cond = parseSingleCondition(true);
 				conds.append(cond);
 				exprs.append(cond);
 			}
@@ -321,11 +321,11 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 			break;
 		}
 
-		int prec = (c == '&' ? 2 : 1);
+		int prec = c == '&' ? 2 : 1;
 
 		while (!opsStack.isEmpty()) {
 			QChar stackC = opsStack.top();
-			int stackPrec = (stackC == '&' ? 2 : 1);
+			int stackPrec = stackC == '&' ? 2 : 1;
 
 			if (prec > stackPrec) {
 				break;
@@ -336,7 +336,7 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 
 			QChar opC = opsStack.pop();
 			auto op = opC == '&' ? FilenameNodeConditionOp::And : FilenameNodeConditionOp::Or;
-			auto expr = new FilenameNodeConditionOp(op, operand1, operand2);
+			auto *expr = new FilenameNodeConditionOp(op, operand1, operand2);
 			termStack.push(expr);
 		}
 
@@ -356,7 +356,7 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 
 		QChar opC = opsStack.pop();
 		auto op = opC == '&' ? FilenameNodeConditionOp::And : FilenameNodeConditionOp::Or;
-		auto expr = new FilenameNodeConditionOp(op, operand1, operand2);
+		auto *expr = new FilenameNodeConditionOp(op, operand1, operand2);
 		termStack.push(expr);
 	}
 
@@ -409,7 +409,7 @@ FilenameNodeConditionIgnore *FilenameParser::parseConditionIgnore()
 {
 	m_index++; // -
 
-	auto cond = parseSingleCondition(true);
+	auto *cond = parseSingleCondition(true);
 
 	return new FilenameNodeConditionIgnore(cond);
 }
@@ -418,7 +418,7 @@ FilenameNodeConditionInvert *FilenameParser::parseConditionInvert()
 {
 	m_index++; // ! or -
 
-	auto cond = parseSingleCondition();
+	auto *cond = parseSingleCondition();
 
 	return new FilenameNodeConditionInvert(cond);
 }

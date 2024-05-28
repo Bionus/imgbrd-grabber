@@ -25,8 +25,8 @@ bool EmptyDirsFix2::removeDir(QString path)
 	path = QDir::toNativeSeparators(path);
 	QDir dir(path);
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (int i = 0; i < dirs.size(); i++) {
-		removeDir(path + "/" + dirs.at(i));
+	for (const QString &entry : dirs) {
+		removeDir(path + "/" + entry);
 	}
 	return QDir().rmdir(path);
 }
@@ -47,8 +47,8 @@ void EmptyDirsFix2::deleteSel()
 
 	const int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes) {
-		for (int i = 0; i < folders.size(); i++) {
-			removeDir(folders.at(i));
+		for (const QString &folder : folders) {
+			removeDir(folder);
 		}
 		close();
 	}

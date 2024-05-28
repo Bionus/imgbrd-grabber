@@ -180,7 +180,7 @@ void SourcesWindow::updateCheckboxes()
 
 void SourcesWindow::removeCheckboxes()
 {
-	for (auto &row : qAsConst(m_rows)) {
+	for (const auto &row : qAsConst(m_rows)) {
 		ui->gridLayout->removeWidget(row.check);
 		row.check->deleteLater();
 
@@ -221,7 +221,7 @@ void SourcesWindow::addCheckboxes()
 		if (t != "hide") {
 			if (t == "icon" || t == "both") {
 				Source *source = m_profile->getSources().value(site->type());
-				QAffiche *image = new QAffiche(it.key(), 0, QColor(), this);
+				auto *image = new QAffiche(it.key(), 0, QColor(), this);
 				image->setPixmap(QPixmap(source->getPath().readPath("icon.png")).scaled(QSize(16, 16)));
 				image->setCursor(Qt::PointingHandCursor);
 				image->setToolTip(source->getName());
@@ -231,14 +231,14 @@ void SourcesWindow::addCheckboxes()
 				n++;
 			}
 			if (t == "text" || t == "both") {
-				QLabel *type = new QLabel(site->getSourceEngine()->getName(), this);
+				auto *type = new QLabel(site->getSourceEngine()->getName(), this);
 				ui->gridLayout->addWidget(type, i, n);
 				row.labels.append(type);
 				n++;
 			}
 		}
 
-		QBouton *del = new QBouton(it.key());
+		auto *del = new QBouton(it.key());
 			del->setParent(this);
 			del->setText(tr("Options"));
 			connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));

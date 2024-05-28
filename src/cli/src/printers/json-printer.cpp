@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QList>
+#include <QMetaType>
 #include <QSharedPointer>
 #include <QTextStream>
 #include "logger.h"
@@ -44,7 +45,7 @@ void JsonPrinter::print(const QList<QSharedPointer<Image>> &images) const
 
 void JsonPrinter::print(const Tag &tag, Site *site) const
 {
-	Q_UNUSED(site);
+	Q_UNUSED(site)
 
 	QJsonObject jsonTag;
 	tag.write(jsonTag);
@@ -53,7 +54,7 @@ void JsonPrinter::print(const Tag &tag, Site *site) const
 
 void JsonPrinter::print(const QList<Tag> &tags, Site *site) const
 {
-	Q_UNUSED(site);
+	Q_UNUSED(site)
 
 	QJsonArray jsonArray;
 	for (const Tag &tag : tags) {
@@ -90,9 +91,11 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 
 	QJsonObject jsObject;
 
-	const auto tokens = image.tokens(m_profile);
-	for (auto& key : tokens.keys()) {
+	const auto &tokens = image.tokens(m_profile);
+	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
 		typedef QVariant::Type Type;
+
+		const QString &key = it.key();
 		if (ignoreKeys.contains(key)) {
 			continue;
 		}
@@ -100,16 +103,16 @@ QJsonObject JsonPrinter::serializeImage(const Image &image) const
 			continue;
 		}
 
-		const QVariant& qvalue = tokens.value(key).value();
+		const QVariant &qvalue = it.value().value();
 		auto type = qvalue.type();
 
-		if (type == QVariant::Type::StringList) {
+		if (type == Type::StringList) {
 			QStringList l = qvalue.toStringList();
 			if (l.isEmpty()) {
 				continue;
 			}
 			jsObject.insert(key, QJsonArray::fromStringList(l));
-		} else if (type == QVariant::Type::String) {
+		} else if (type == Type::String) {
 			QString s = qvalue.toString();
 			if (s.isEmpty()) {
 				continue;

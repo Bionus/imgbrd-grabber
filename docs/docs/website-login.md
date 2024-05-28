@@ -33,7 +33,7 @@ With the "Through URL" method, your credentials (often hashed) are passed direct
 
 #### POST
 
-With the "POST" method, Grabber will first login to the website just like a real user would do: it will fill a form and send the data to the site. It will then check your identity, and on success save a "session cookie" that will identify you until you close the program.
+With the "POST" method, Grabber will first log into the website just like a real user would do: it will fill a form and send the data to the site. It will then check your identity, and on success save a "session cookie" that will identify you until you close the program.
 
 For this method, more information is required for Grabber to be able to log you in:
 * The login form's action page (e.g. `<form action="%value%">`)

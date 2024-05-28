@@ -9,7 +9,7 @@ title: Image renamer
 
 The image renamer is a tool used to rename existing images when you change your filename.
 
-For example, if you already downloaded a few thousands of images, but decided to change your filename format afterwards, the image renamer can be used to rename your already downloaded images to the new format.
+For example, if you already downloaded a few thousands of images, but decided to change your filename format later on, the image renamer can be used to rename your already downloaded images to the new format.
 
 
 

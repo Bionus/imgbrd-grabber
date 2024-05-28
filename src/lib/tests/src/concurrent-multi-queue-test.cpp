@@ -20,7 +20,7 @@ TEST_CASE("ConcurrentMultiQueue")
 	{
 		QList<int> results;
 		ConcurrentMultiQueue multiQueue;
-		QObject::connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](QVariant item) {
+		QObject::connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](const QVariant &item) {
 			results.append(item.toInt());
 			multiQueue.next();
 		});
@@ -38,7 +38,7 @@ TEST_CASE("ConcurrentMultiQueue")
 	{
 		QList<int> results;
 		ConcurrentMultiQueue multiQueue;
-		QObject::connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](QVariant item) {
+		QObject::connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](const QVariant &item) {
 			results.append(item.toInt());
 			multiQueue.next();
 		});

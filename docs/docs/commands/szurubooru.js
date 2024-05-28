@@ -39,14 +39,14 @@ async function updateTag(name, version, category) {
 async function setTagCategory(name, category) {
     const tag = await getTag(name);
     if (tag === null) {
-        createTag(name, category);
+        await createTag(name, category);
     } else if (tag.category !== category) {
-        updateTag(name, tag.version, category);
+        await updateTag(name, tag.version, category);
     }
 }
 
 (async () => {
-    // Szurubooru doesn't use the same ratings as most boorus so we need to map them
+    // Szurubooru doesn't use the same ratings as most boorus, so we need to map them
     const ratingsMap = {
         "": "safe",
         "g": "safe",
@@ -72,11 +72,11 @@ async function setTagCategory(name, category) {
 
     // Parse tags and update categories
     const tags = argv[0].split(" ");
-    for (i = 0; i < tags.length; ++i) {
+    for (let i = 0; i < tags.length; ++i) {
         const parts = tags[i].split(":");
         const category = parts.shift();
         const name = parts.join(":");
-        setTagCategory(name, category);
+        void setTagCategory(name, category);
         tags[i] = name;
     }
 

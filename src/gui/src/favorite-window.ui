@@ -260,7 +260,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -273,10 +273,10 @@
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
        </property>
       </widget>
      </item>
@@ -352,10 +352,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>openButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FavoriteWindow</receiver>
+   <slot>browseImage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>339</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>FavoriteWindow</receiver>
+   <slot>removeFavorite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>removeFavorite()</slot>
   <slot>openSourcesWindow()</slot>
   <slot>choosePathOverride()</slot>
+  <slot>browseImage()</slot>
  </slots>
 </ui>

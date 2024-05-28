@@ -14,11 +14,11 @@ AsyncImageProvider::AsyncImageProvider(Profile *profile)
 
 QQuickImageResponse *AsyncImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
 {
-	Q_UNUSED(requestedSize);
+	Q_UNUSED(requestedSize)
 
 	const QStringList parts = id.split("¤");
-	const QString siteKey = parts[0];
-	const QString url = parts[1];
+	const QString &siteKey = parts[0];
+	const QString &url = parts[1]; // TODO(Bionus): add support for the "thumbnailSmartSize" setting
 
 	if (url.isEmpty()) {
 		auto *ret = new AsyncImageResponse(nullptr, {});
@@ -37,7 +37,7 @@ QQuickImageResponse *AsyncImageProvider::requestImageResponse(const QString &id,
 	auto *reply = manager->get(request);
 
 	auto *ret = new AsyncImageResponse(reply, rect);
-	QObject::connect(ret, &AsyncImageResponse::finished, manager, &QNetworkAccessManager::deleteLater);
+	connect(ret, &AsyncImageResponse::finished, manager, &QNetworkAccessManager::deleteLater);
 
 	return ret;
 }

@@ -53,16 +53,16 @@ StartWindow::~StartWindow()
 	delete ui;
 }
 
-void StartWindow::on_buttonFolder_clicked()
+void StartWindow::chooseFolder()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty()) {
 		ui->lineFolder->setText(folder);
 	}
 }
-void StartWindow::on_buttonFilenamePlus_clicked()
+void StartWindow::chooseFormat()
 {
-	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
+	auto *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	fw->show();
 }

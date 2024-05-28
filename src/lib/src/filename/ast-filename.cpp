@@ -1,6 +1,5 @@
 #include "filename/ast-filename.h"
 #include "filename/ast/filename-node-root.h"
-#include "filename/filename-parser.h"
 #include "filename/visitors/filename-resolution-visitor.h"
 #if DEBUG
 	#include "filename/visitors/filename-print-visitor.h"
@@ -20,7 +19,7 @@ AstFilename::~AstFilename()
 
 void AstFilename::parse()
 {
-	auto ast = m_parser.parseRoot();
+	auto *ast = m_parser.parseRoot();
 	if (m_parser.error().isEmpty()) {
 		m_ast = ast;
 

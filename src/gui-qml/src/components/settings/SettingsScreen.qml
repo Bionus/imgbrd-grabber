@@ -114,7 +114,7 @@ Page {
         }
     }
 
-    Keys.onReleased: {
+    Keys.onReleased: event => {
         if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
             if (settingsStackView.depth > 1) {
                 settingsStackView.pop()

@@ -42,10 +42,10 @@ class PersistentCookieJar : public QNetworkCookieJar
 		 */
 		bool insertCookies(const QList<QNetworkCookie> &cookies);
 
+		QList<QNetworkCookie> getAllCookies() const;
 		QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
 		bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) override;
 
-	protected:
 		/**
 		 * Save the cookies to the file.
 		 */

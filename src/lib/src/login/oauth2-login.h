@@ -52,7 +52,8 @@ class OAuth2Login : public Login
 		NetworkReply *m_refreshReply = nullptr;
 		QString m_accessToken;
 		QString m_refreshToken;
-		QDateTime m_expires;
+		QDateTime m_accessTokenExpiration;
+		QDateTime m_refreshTokenExpiration;
 		bool m_refreshing = false;
 		bool m_refreshForLogin = false;
 };

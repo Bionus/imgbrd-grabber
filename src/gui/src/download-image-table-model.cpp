@@ -16,13 +16,13 @@ DownloadImageTableModel::DownloadImageTableModel(QList<DownloadQueryImage> &down
 
 int DownloadImageTableModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return m_downloads.count();
 }
 
 int DownloadImageTableModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return 12;
 }
 

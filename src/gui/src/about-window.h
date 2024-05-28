@@ -18,7 +18,7 @@ class AboutWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit AboutWindow(const QString &v, QWidget *parent = nullptr);
+		explicit AboutWindow(const QString &version, QWidget *parent = nullptr);
 		~AboutWindow() override;
 
 	public slots:

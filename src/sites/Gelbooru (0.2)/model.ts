@@ -151,6 +151,57 @@ export const source: ISource = {
                     };
                 },
             },
+            endpoints: {
+                pool_list: {
+                    name: "Pools",
+                    input: {},
+                    url: (query: Record<never, string>, opts: IUrlOptions): string => {
+                        const pid = (opts.page - 1) * 25;
+                        return "/index.php?page=pool&s=list&pid=" + String(pid);
+                    },
+                    parse: (src: string): IParsedSearch => {
+                        const html = Grabber.parseHTML(src);
+
+                        const images: IImage[] = [];
+
+                        const rows = html.find("table tr");
+                        for (const row of rows) {
+                            const parts = row.find("td");
+                            const link = parts[1].find("a")[0];
+                            const id = link.attr("href").match(/id=(\d+)/)[1];
+
+                            images.push({
+                                id,
+                                name: link.innerText(),
+                                type: "gallery",
+                                gallery_count: parts[2].innerText().match(/(\d+)\s+Images/)[1],
+                                details_endpoint: {
+                                    endpoint: "pool_details",
+                                    input: { id },
+                                },
+                            })
+                        }
+
+                        return { images };
+                    },
+                },
+                pool_details: {
+                    input: {
+                        id: {
+                            type: "input",
+                        },
+                    },
+                    url: (query: Record<"id", number>): string => {
+                        return "/index.php?page=pool&s=show&id=" + String(query.id);
+                    },
+                    parse: (src: string): IParsedGallery => {
+                        const images = Grabber.regexToImages('<span[^>]*(?: id="?\\w(?<id>\\d+)"?)?>\\s*<a[^>]*(?: id="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src);
+                        return {
+                            images: images.map(completeImage),
+                        };
+                    },
+                },
+            },
             tagTypes: false,
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {

@@ -19,17 +19,32 @@ QString SearchQuery::toString() const
 
 void SearchQuery::write(QJsonObject &json) const
 {
-	json["tags"] = QJsonArray::fromStringList(tags);
+	if (!endpoint.isEmpty()) {
+		json["endpoint"] = endpoint;
+	}
+
+	if (!tags.isEmpty()) {
+		json["tags"] = QJsonArray::fromStringList(tags);
+	}
 
 	if (!gallery.isNull()) {
 		QJsonObject jsonGallery;
 		gallery->write(jsonGallery);
 		json["gallery"] = jsonGallery;
 	}
+
+	if (!input.isEmpty()) {
+		json["input"] = QJsonObject::fromVariantMap(input);
+	}
 }
 
 bool SearchQuery::read(const QJsonObject &json, Profile *profile)
 {
+	// Endpoint
+	if (json.contains("endpoint")) {
+		endpoint = json["endpoint"].toString();
+	}
+
 	// Tags
 	if (json.contains("tags")) {
 		QJsonArray jsonTags = json["tags"].toArray();
@@ -42,12 +57,17 @@ bool SearchQuery::read(const QJsonObject &json, Profile *profile)
 	// Gallery
 	if (json.contains("gallery")) {
 		const QMap<QString, Site*> &sites = profile->getSites();
-		auto image = new Image(profile);
+		auto *image = new Image(profile);
 		if (image->read(json["gallery"].toObject(), sites)) {
 			gallery = QSharedPointer<Image>(image);
 		} else {
 			image->deleteLater();
 		}
+	}
+
+	// Input
+	if (json.contains("input")) {
+		input = json["input"].toObject().toVariantMap();
 	}
 
 	return true;
@@ -57,7 +77,9 @@ bool SearchQuery::read(const QJsonObject &json, Profile *profile)
 bool operator==(const SearchQuery &lhs, const SearchQuery &rhs)
 {
 	return lhs.tags == rhs.tags
-		&& lhs.gallery == rhs.gallery;
+		&& lhs.gallery == rhs.gallery
+		&& lhs.endpoint == rhs.endpoint
+		&& lhs.input == rhs.input;
 }
 
 bool operator!=(const SearchQuery &lhs, const SearchQuery &rhs)

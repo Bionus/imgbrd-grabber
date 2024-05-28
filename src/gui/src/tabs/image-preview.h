@@ -26,7 +26,7 @@ class ImagePreview : public QObject
 
 	public:
 		ImagePreview(QSharedPointer<Image> image, QWidget *container, Profile *profile, DownloadQueue *downloadQueue, MainWindow *mainWindow, QObject *parent = nullptr);
-		~ImagePreview();
+		~ImagePreview() override;
 		void setCustomContextMenu(std::function<void (QMenu *, const QSharedPointer<Image> &)> customContextMenu);
 
 	public slots:

@@ -20,6 +20,7 @@ class ImageContextMenu : public QMenu
 
 	protected slots:
 		void copyAllTagsToClipboard();
+		void copyAllTagsWithNamespacesToClipboard();
 		void openInBrowser();
 		void searchMd5();
 		void reverseImageSearch(int i);

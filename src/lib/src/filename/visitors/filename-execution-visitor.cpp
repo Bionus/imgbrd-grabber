@@ -63,7 +63,7 @@ void FilenameExecutionVisitor::visit(const FilenameNodeConditional &node)
 
 void FilenameExecutionVisitor::visit(const FilenameNodeConditionIgnore &node)
 {
-	Q_UNUSED(node);
+	Q_UNUSED(node)
 
 	// No-op
 }
@@ -187,7 +187,7 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 // Special case for floats stored as strings (to avoid precision issues)
 QString FilenameExecutionVisitor::variableToString(const QString &name, QString val, const QMap<QString, QString> &options)
 {
-	Q_UNUSED(name);
+	Q_UNUSED(name)
 
 	if (options.contains("length")) {
 		const int dotIndex = val.indexOf('.');
@@ -200,7 +200,7 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QString 
 
 QString FilenameExecutionVisitor::variableToString(const QString &name, QDateTime val, const QMap<QString, QString> &options)
 {
-	Q_UNUSED(name);
+	Q_UNUSED(name)
 
 	const QString timeZone = options.value("timezone", "");
 	if (!timeZone.isEmpty() && timeZone != QLatin1String("server")) {
@@ -223,7 +223,7 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QDateTim
 template <typename T>
 QString FilenameExecutionVisitor::variableToString(const QString &name, T val, const QMap<QString, QString> &options)
 {
-	Q_UNUSED(name);
+	Q_UNUSED(name)
 
 	return options.contains("length")
 		? QString("%1").arg(val, options["length"].toInt(), 10, QChar('0'))
@@ -313,17 +313,17 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QStringL
 }
 
 
-QString FilenameExecutionVisitor::cleanVariable(QString res, const QMap<QString, QString> &options) const
+QString FilenameExecutionVisitor::cleanVariable(QString val, const QMap<QString, QString> &options) const
 {
 	// Forbidden characters
 	if (!options.contains("unsafe") && !options.contains("raw")) {
-		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+		val = val.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 	}
 
 	// Replace underscores by spaces
 	if (!options.contains("raw") && !options.contains("underscores") && (!m_settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces"))) {
-		res = res.replace("_", " ");
+		val = val.replace("_", " ");
 	}
 
-	return res;
+	return val;
 }

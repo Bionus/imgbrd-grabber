@@ -41,9 +41,11 @@ void ProgramUpdater::checkForUpdatesDone()
 	QJsonObject lastRelease = json.object();
 
 	#if defined NIGHTLY
-		QString latest = lastRelease["target_commitish"].toString();
-		QString current = QString(NIGHTLY_COMMIT);
-		bool isNew = !current.isEmpty() && latest != current;
+		static const QRegularExpression regexHead(R"(Head:\**\s*([a-f0-9]{40}))");
+		const auto match = regexHead.match(lastRelease["body"].toString());
+		QString latest = match.hasMatch() ? match.captured(1) : lastRelease["target_commitish"].toString();
+		const QString current = QString(NIGHTLY_COMMIT);
+		const bool isNew = !current.isEmpty() && latest != current;
 		latest = latest.left(8);
 		QString changelog;
 	#else

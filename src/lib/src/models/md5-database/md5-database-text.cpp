@@ -106,6 +106,7 @@ void Md5DatabaseText::add(const QString &md5, const QString &path)
 /**
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
+ * @param   path    The specific path to remove (optional).
  */
 void Md5DatabaseText::remove(const QString &md5, const QString &path)
 {

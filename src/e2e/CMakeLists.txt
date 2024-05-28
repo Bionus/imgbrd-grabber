@@ -1,6 +1,7 @@
 project(e2e)
 
-set(QT_LIBRARIES Qt5::Core)
+find_package(Qt6 COMPONENTS Core REQUIRED)
+set(QT_LIBRARIES Qt6::Core)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 include_directories("src/" "../lib/src/" "..")

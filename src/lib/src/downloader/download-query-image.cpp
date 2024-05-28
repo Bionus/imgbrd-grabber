@@ -44,7 +44,7 @@ bool DownloadQueryImage::read(const QJsonObject &json, Profile *profile)
 		return false;
 	}
 
-	auto img = new Image(profile);
+	auto *img = new Image(profile);
 	if (img->read(json["image"].toObject(), sites)) {
 		image = QSharedPointer<Image>(img);
 	} else {

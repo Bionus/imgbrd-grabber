@@ -12,7 +12,8 @@ class ConcurrentMultiQueue : public QObject
 	Q_OBJECT
 
 	public:
-		ConcurrentMultiQueue(QObject *parent = nullptr);
+		explicit ConcurrentMultiQueue(QObject *parent = nullptr);
+
 		int globalConcurrency() const;
 		void setGlobalConcurrency(int globalConcurrency);
 		void append(int queue, QVariant item);

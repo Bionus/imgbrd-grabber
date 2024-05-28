@@ -22,7 +22,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1,0">
    <item>
-    <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0">
+    <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0,0">
      <property name="spacing">
       <number>6</number>
      </property>
@@ -96,6 +96,9 @@
         </item>
        </layout>
       </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboEndpoint"/>
      </item>
      <item>
       <widget class="QPushButton" name="buttonSearch">
@@ -173,7 +176,7 @@
          <string notr="true"/>
         </property>
         <property name="textFormat">
-         <enum>Qt::RichText</enum>
+         <enum>Qt::TextFormat::RichText</enum>
         </property>
        </widget>
       </item>
@@ -208,26 +211,26 @@
          <string notr="true">background-color:transparent;</string>
         </property>
         <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+         <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
+         <enum>QFrame::Shadow::Plain</enum>
         </property>
         <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
         </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
         </property>
         <widget class="QWidget" name="sourcesList">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>762</width>
+           <width>754</width>
            <height>40</height>
           </rect>
          </property>
@@ -303,19 +306,19 @@
       <string notr="true">#scrollAreaResults, #scrollAreaWidget {background-color:transparent;}</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Shadow::Plain</enum>
      </property>
      <property name="lineWidth">
       <number>0</number>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContents</enum>
+      <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
      </property>
      <property name="widgetResizable">
       <bool>true</bool>
@@ -325,8 +328,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>780</width>
-        <height>323</height>
+        <width>776</width>
+        <height>291</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -355,10 +358,10 @@
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::MinimumExpanding</enum>
+          <enum>QSizePolicy::Policy::MinimumExpanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -766,6 +769,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonSearch</sender>
+   <signal>clicked()</signal>
+   <receiver>TagTab</receiver>
+   <slot>openSearchWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>388</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -784,5 +803,6 @@
   <slot>getSel()</slot>
   <slot>endlessLoad()</slot>
   <slot>monitor()</slot>
+  <slot>openSearchWindow()</slot>
  </slots>
 </ui>

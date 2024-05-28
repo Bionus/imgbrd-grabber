@@ -19,8 +19,10 @@ NetworkReply::~NetworkReply()
 {
 	abort();
 
-	m_reply->deleteLater();
-	m_reply = nullptr;
+	if (m_reply != nullptr) {
+		m_reply->deleteLater();
+		m_reply = nullptr;
+	}
 }
 
 

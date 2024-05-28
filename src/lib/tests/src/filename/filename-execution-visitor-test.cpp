@@ -10,7 +10,7 @@
 static QString executeFilename(const QString &filename, const QMap<QString, Token> &tokens)
 {
 	FilenameParser parser(filename);
-	auto ast = parser.parseRoot();
+	auto *ast = parser.parseRoot();
 
 	REQUIRE(parser.error() == QString());
 	REQUIRE(ast != nullptr);
@@ -63,10 +63,10 @@ TEST_CASE("FilenameExecutionVisitor")
 		SECTION("Numbers")
 		{
 			const QMap<QString, Token> tokens{
-				{"ulonglong", Token((qulonglong) 123)},
-				{"longlong", Token((qlonglong) 123)},
-				{"uint", Token((uint) 123)},
-				{"int", Token((int) 123)},
+				{"ulonglong", Token(QVariant(static_cast<qulonglong>(123)))},
+				{"longlong", Token(QVariant(static_cast<qlonglong>(123)))},
+				{"uint", Token(QVariant(static_cast<uint>(123)))},
+				{"int", Token(QVariant(static_cast<int>(123)))},
 			};
 
 			const QString result = executeFilename("%ulonglong% %longlong% %uint% %int%", tokens);

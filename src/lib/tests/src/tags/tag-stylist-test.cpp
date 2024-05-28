@@ -30,7 +30,6 @@ void assertSort(QSettings *settings, const QString &sort, const QStringList &exp
 	REQUIRE(actual.count() == expectedOrder.count());
 
 	QString format = "<a href=\"%1\" style=\"color:#aa0000; font-family:'[^']*'; font-size:[0-9]+pt; font-style:normal; font-weight:400; text-decoration:none;\">%1</a>";
-	QStringList expected;
 	for (int i = 0; i < expectedOrder.count(); ++i) {
 		const QString &tag = expectedOrder[i];
 		REQUIRE_THAT(actual[i].toStdString(), Matches(format.arg(tag).toStdString()));

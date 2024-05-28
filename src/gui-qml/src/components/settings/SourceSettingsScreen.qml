@@ -14,9 +14,9 @@ Page {
 
     property var headers: []
     function refreshHeaders() {
-        var arr = []
-        for (var key of root.site.settings.childKeys("Headers")) {
-            var value = root.site.settings.value("Headers/" + key)
+        const arr = []
+        for (let key of root.site.settings.childKeys("Headers")) {
+            const value = root.site.settings.value("Headers/" + key)
             arr.push({ key, value })
         }
         headers = arr
@@ -24,15 +24,14 @@ Page {
 
     property var cookies: []
     function writeCookies(arr) {
-        var vals = arr.map((c) => c.key + "=" + c.value)
-        console.log("vals", JSON.stringify(vals))
+        const vals = arr.map((c) => c.key + "=" + c.value)
         root.site.settings.setValue("cookies", vals)
     }
     function refreshCookies() {
         cookies = root.site.settings.value("cookies").map((c) => {
-            var index = c.indexOf("=")
-            var key = c.substring(0, index)
-            var value = c.substring(index + 1)
+            const index = c.indexOf("=")
+            const key = c.substring(0, index)
+            const value = c.substring(index + 1)
             return { key, value }
         })
         console.log("cookies", JSON.stringify(cookies))
@@ -69,11 +68,8 @@ Page {
     }
 
     ScrollView {
-        width: parent.width
-        height: parent.height
-        contentWidth: column.width
-        contentHeight: column.height
-        clip: true
+        anchors.fill: parent
+        contentWidth: width
 
         ColumnLayout {
             id: column
@@ -280,18 +276,18 @@ Page {
             KeyValueSetting {
                 values: cookies
                 onAppend: {
-                    var arr = cookies.slice().concat({ key, value })
+                    const arr = cookies.slice().concat({ key, value })
                     writeCookies(arr)
                     refreshCookies()
                 }
                 onEdit: {
-                    var arr = cookies.slice()
+                    const arr = cookies.slice()
                     arr[index] = { key, value }
                     writeCookies(arr)
                     refreshCookies()
                 }
                 onRemove: {
-                    var arr = cookies.slice()
+                    const arr = cookies.slice()
                     arr.splice(index, 1)
                     writeCookies(arr)
                     refreshCookies()
