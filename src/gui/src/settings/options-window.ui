@@ -1184,8 +1184,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>476</width>
-             <height>475</height>
+             <width>472</width>
+             <height>494</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1501,6 +1501,32 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelConversionFFmpegTimeout">
+             <property name="text">
+              <string>Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QDoubleSpinBox" name="spinConversionFFmpegTimeout">
+             <property name="suffix">
+              <string> s</string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="minimum">
+              <double>0.001000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3600.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>30.000000000000000</double>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1538,6 +1564,32 @@
             <widget class="QPushButton" name="buttonConversionImageListAdd">
              <property name="text">
               <string>Add new image conversion</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelConversionImageTimeout">
+             <property name="text">
+              <string>Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QDoubleSpinBox" name="spinConversionImageTimeout">
+             <property name="suffix">
+              <string> s</string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="minimum">
+              <double>0.001000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3600.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>30.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1597,6 +1649,32 @@
             <widget class="QCheckBox" name="checkConversionUgoiraDelete">
              <property name="text">
               <string>Delete original file on success</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelConversionUgoiraTimeout">
+             <property name="text">
+              <string>Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QDoubleSpinBox" name="spinConversionUgoiraTimeout">
+             <property name="suffix">
+              <string> s</string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="minimum">
+              <double>0.001000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3600.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>30.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -2055,8 +2133,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>323</width>
-             <height>682</height>
+             <width>296</width>
+             <height>630</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2765,8 +2843,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>388</width>
-             <height>710</height>
+             <width>338</width>
+             <height>630</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -4215,8 +4293,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>235</width>
-             <height>840</height>
+             <width>217</width>
+             <height>777</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">

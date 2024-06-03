@@ -173,9 +173,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Video conversion
 	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
 	ui->checkConversionFFmpegConvertWebmToMp4->setChecked(settings->value("Save/FFmpegConvertWebmToMp4", false).toBool());
+	ui->spinConversionFFmpegTimeout->setValue(settings->value("Save/FFmpegConvertTimeout", 30000).toDouble() / 1000);
 
 	// Image conversion
 	ui->comboConversionImageBackend->setCurrentText(settings->value("Save/ImageConversionBackend", "ImageMagick").toString());
+	ui->spinConversionImageTimeout->setValue(settings->value("Save/ImageConversionTimeout", 30000).toDouble() / 1000);
 	settings->beginGroup("Save/ImageConversion");
 	for (const QString &from : settings->childGroups()) {
 		settings->beginGroup(from);
@@ -197,6 +199,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkConversionUgoiraEnabled->setChecked(settings->value("Save/ConvertUgoira", false).toBool());
 	ui->comboConversionUgoiraTargetExtension->setCurrentText(settings->value("Save/ConvertUgoiraFormat", "gif").toString().toUpper());
 	ui->checkConversionUgoiraDelete->setChecked(settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool());
+	ui->spinConversionUgoiraTimeout->setValue(settings->value("Save/ConvertUgoiraTimeout", 30000).toDouble() / 1000);
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -1346,9 +1349,11 @@ void OptionsWindow::save()
 		// Video conversion
 		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
 		settings->setValue("FFmpegConvertWebmToMp4", ui->checkConversionFFmpegConvertWebmToMp4->isChecked());
+		settings->setValue("FFmpegConvertTimeout", qRound(ui->spinConversionFFmpegTimeout->value() * 1000));
 
 		// Image conversion
 		settings->setValue("ImageConversionBackend", ui->comboConversionImageBackend->currentText());
+		settings->setValue("ImageConversionTimeout", qRound(ui->spinConversionImageTimeout->value() * 1000));
 		settings->beginGroup("ImageConversion");
 		settings->remove("");
 		for (int i = 0, j = 0; i < m_imageConversion.count(); ++i) {
@@ -1367,6 +1372,7 @@ void OptionsWindow::save()
 		settings->setValue("ConvertUgoira", ui->checkConversionUgoiraEnabled->isChecked());
 		settings->setValue("ConvertUgoiraFormat", ui->comboConversionUgoiraTargetExtension->currentText().toLower());
 		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());
+		settings->setValue("ConvertUgoiraTimeout", qRound(ui->spinConversionUgoiraTimeout->value() * 1000));
 
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
 		settings->setValue("MetadataPropsysClear", ui->checkMetadataPropsysClear->isChecked());
