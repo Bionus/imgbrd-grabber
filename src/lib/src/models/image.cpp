@@ -847,7 +847,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		if (backend == QStringLiteral("ImageMagick")) {
 			path = ImageMagick::convert(path, targetImgExt);
 		} else if (backend == QStringLiteral("FFmpeg")) {
-			path = FFmpeg::remux(path, targetImgExt);
+			path = FFmpeg::convert(path, targetImgExt);
 		}
 		ext = getExtension(path);
 	}
