@@ -46,15 +46,15 @@ TEST_CASE("BatchDownloader")
 
 	SECTION("Single image download")
 	{
-		auto img = QSharedPointer<Image>(new Image(site, {{ "file_url", "https://test.com/img/filename.jpg" }}, profile));
-		DownloadQueryImage query(img, site, "out.jpg", "tests/resources/tmp");
+		auto img = QSharedPointer<Image>(new Image(site, {{ "file_url", "https://test.com/img/filename.png" }}, profile));
+		DownloadQueryImage query(img, site, "out.png", "tests/resources/tmp");
 
 		SECTION("Valid")
 		{
 			BatchDownloader downloader(&query, profile);
 			waitForFinished(&downloader);
 
-			QFile f("tests/resources/tmp/out.jpg");
+			QFile f("tests/resources/tmp/out.png");
 			REQUIRE(f.exists());
 			REQUIRE(f.remove());
 
@@ -72,7 +72,7 @@ TEST_CASE("BatchDownloader")
 			BatchDownloader downloader(&query, profile);
 			waitForFinished(&downloader);
 
-			QFile f("tests/resources/tmp/out.jpg");
+			QFile f("tests/resources/tmp/out.png");
 			REQUIRE(!f.exists());
 
 			REQUIRE(downloader.downloadedCount(BatchDownloader::NotFound) == 1);
