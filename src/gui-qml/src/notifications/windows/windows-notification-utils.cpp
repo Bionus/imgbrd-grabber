@@ -15,7 +15,7 @@ WindowsNotificationUtils::WindowsNotificationUtils(QQuickItem *parent)
 	}
 
 	// Setup application information
-	WinToast::instance()->setAppName(qApp->applicationDisplayName().toStdWString());
+	WinToast::instance()->setAppName(qApp->applicationName().toStdWString());
 	WinToast::instance()->setAppUserModelId(WinToast::configureAUMI(
 		qApp->organizationName().toStdWString(),
 		qApp->applicationName().toStdWString(),
