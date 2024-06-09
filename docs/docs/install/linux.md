@@ -27,6 +27,17 @@ title: Linux
 
     Grabber requires the Qt6 libraries to run. If you see a "error while loading shared libraries" error, make sure you have the Qt6 packages installed.
 
+### Via Flathub
+1. Setup Flatpak and Flathub following the instructions [here](https://flathub.org/setup)
+2. Install Grabber using the command:
+    ```bash
+    flatpak install flathub org.bionus.Grabber
+    ```       
+3. Run it using the command:
+    ```bash
+    flatpak run org.bionus.Grabber
+    ```
+
 ### Via the AUR (Arch Linux)
 Grabber has packages on the AUR for Arch Linux:
 
