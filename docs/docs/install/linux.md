@@ -25,11 +25,7 @@ title: Linux
 
 !!! info
 
-    Grabber requires Qt5 libraries to run. If you see a "error while loading shared libraries" error, make sure you have the Qt5 packages installed. On Ubuntu, they can be installed with:
-
-    ```bash
-    sudo apt install libqt5gui5 libqt5qml5 libqt5xml5 libqt5networkauth5 libqt5sql5 libqt5multimedia5 libqt5multimediawidgets5
-    ```
+    Grabber requires the Qt6 libraries to run. If you see a "error while loading shared libraries" error, make sure you have the Qt6 packages installed.
 
 ### Via the AUR (Arch Linux)
 Grabber has packages on the AUR for Arch Linux:
