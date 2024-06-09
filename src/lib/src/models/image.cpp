@@ -893,7 +893,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		if (!metadata.isEmpty()) {
 			Exiftool &exiftool = m_profile->getExiftool();
 			exiftool.start();
-			exiftool.setMetadata(path, metadata, m_settings->value("Save/MetadataExiftoolClear", false).toBool());
+			exiftool.setMetadata(path, metadata, m_settings->value("Save/MetadataExiftoolClear", false).toBool(), m_settings->value("Save/MetadataExiftoolKeepColorProfile", true).toBool());
 		}
 	}
 

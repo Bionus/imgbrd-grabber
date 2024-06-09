@@ -1353,6 +1353,19 @@
            <item row="2" column="0" colspan="2">
             <layout class="QFormLayout" name="layoutMetadataExiftool"/>
            </item>
+           <item row="5" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMetadataExiftoolKeepColorProfile">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Try to preserve color profile</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -6412,6 +6425,22 @@
     <hint type="destinationlabel">
      <x>324</x>
      <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMetadataExiftoolClear</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkMetadataExiftoolKeepColorProfile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>378</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
+     <y>287</y>
     </hint>
    </hints>
   </connection>

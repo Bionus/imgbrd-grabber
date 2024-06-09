@@ -232,6 +232,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
 	ui->checkMetadataExiftoolClear->setChecked(settings->value("Save/MetadataExiftoolClear", false).toBool());
+	ui->checkMetadataExiftoolKeepColorProfile->setChecked(settings->value("Save/MetadataExiftoolKeepColorProfile", true).toBool());
 	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
 	for (const auto &pair : metadataExiftool) {
 		auto *leKey = new QLineEdit(pair.first, this);
@@ -1391,6 +1392,7 @@ void OptionsWindow::save()
 
 		settings->setValue("MetadataExiftoolExtensions", ui->lineMetadataExiftoolExtensions->text());
 		settings->setValue("MetadataExiftoolClear", ui->checkMetadataExiftoolClear->isChecked());
+		settings->setValue("MetadataExiftoolKeepColorProfile", ui->checkMetadataExiftoolKeepColorProfile->isChecked());
 		settings->beginWriteArray("MetadataExiftool");
 		for (int i = 0, j = 0; i < m_metadataExiftool.count(); ++i) {
 			const QString &key = m_metadataExiftool[i].first->text();
