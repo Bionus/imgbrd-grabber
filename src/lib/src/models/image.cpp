@@ -796,7 +796,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	// Guess extension from file header
 	if (m_settings->value("Save/headerDetection", true).toBool() && getExtension(path) == ext) {
 		const QString headerExt = getExtensionFromHeader(path);
-		if (headerExt != ext) {
+		if (!headerExt.isEmpty() && headerExt != ext) {
 			log(QStringLiteral("Invalid file extension (%1 to %2) for `%3`").arg(ext, headerExt, path), Logger::Info);
 			const QFileInfo info(path);
 			const QString newPath = info.path() + QDir::separator() + info.completeBaseName() + "." + headerExt;
