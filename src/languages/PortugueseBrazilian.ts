@@ -350,10 +350,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Você está prestes a baixar informações de %n imagem(s). Tem certeza de que deseja continuar?</numerusform>
-        <numerusform>Você está prestes a baixar informações de %n imagem(s). Tem certeza de que deseja continuar?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -737,10 +734,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="421"/>
       <source>Loading %n download(s)</source>
-      <translation>
-        <numerusform>Carregando %n download(s)</numerusform>
-        <numerusform>Carregando %n download(s)</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="473"/>
@@ -822,58 +816,37 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1121"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation>
-        <numerusform>%n arquivo(s) baixado(s) com sucesso.</numerusform>
-        <numerusform>%n arquivo(s) baixado(s) com sucesso.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1122"/>
       <source>%n file(s) ignored.</source>
-      <translation>
-        <numerusform>%n arquivo(s) ignorado(s).</numerusform>
-        <numerusform>%n arquivo(s) ignorado(s).</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
       <source>%n file(s) already existing.</source>
-      <translation>
-        <numerusform>%n arquivo(s) já existe(m).</numerusform>
-        <numerusform>%n arquivo(s) já existe(m).</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1124"/>
       <source>%n file(s) not found on the server.</source>
-      <translation>
-        <numerusform>%n arquivo(s) não encontrado(s) no servidor.</numerusform>
-        <numerusform>%n arquivo(s) não encontrado(s) no servidor.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1125"/>
       <source>%n file(s) skipped.</source>
-      <translation>
-        <numerusform>%n arquivo(s) pulado(s).</numerusform>
-        <numerusform>%n arquivo(s) pulado(s).</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1126"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation>
-        <numerusform>%n arquivo(s) pulado(s) de um download anterior.</numerusform>
-        <numerusform>%n arquivo(s) pulado(s) de um download anterior.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1127"/>
       <source>%n error(s).</source>
-      <translation>
-        <numerusform>%n erro(s).</numerusform>
-        <numerusform>%n erro(s).</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -937,10 +910,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Você está prestes a apagar %n pasta. Tem certeza que deseja continuar?</numerusform>
-        <numerusform>Você está prestes a apagar %n pastas. Tem certeza que deseja continuar?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1441,10 +1411,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="995"/>
       <source>Source(s)</source>
-      <translation>
-        <numerusform>Fonte</numerusform>
-        <numerusform>Fontes</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="996"/>
@@ -1487,7 +1454,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation>Copiar todas as tags</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="25"/>
@@ -1634,7 +1601,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished">Escolha uma pasta para salvar</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1842,7 +1809,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="277"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished">Monitoramento do Grabber</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="470"/>
@@ -1905,10 +1872,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation>
-        <numerusform>%n MD5 convertido (de %1)</numerusform>
-        <numerusform>%n md5s convertidos (de %1)</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1981,10 +1945,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation>
-        <numerusform>%n MD5 carregado</numerusform>
-        <numerusform>%n MD5s carregados</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1992,12 +1953,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation>Pesquisar</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation>Tags</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2060,10 +2021,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
       <source>%n time(s)</source>
-      <translation>
-        <numerusform>%n vez</numerusform>
-        <numerusform>%n vezes</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2186,22 +2144,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>%n nova imagem encontrada para a tag '%1' em '%2'</numerusform>
-        <numerusform>%n novas imagens encontradas para a tag '%1' em '%2'</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>Mais de %n nova imagem encontradas para a tag '%1' no '%2'</numerusform>
-        <numerusform>Mais de %n novas imagens encontradas para a tag '%1' no '%2'</numerusform>
-      </translation>
-    </message>
-    <message>
-      <source>Grabber monitoring</source>
-      <translation type="vanished">Monitoramento do Grabber</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2941,7 +2889,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5119"/>
       <source>Interval</source>
-      <translation type="unfinished">Intervalo</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5126"/>
@@ -2952,7 +2900,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <source>Delay</source>
-      <translation type="unfinished">Atraso</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5153"/>
@@ -4141,49 +4089,6 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     </message>
   </context>
   <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Displays version information.</source>
-      <translation type="vanished">Mostra informação sobre a versão.</translation>
-    </message>
-    <message>
-      <source>Displays this help.</source>
-      <translation type="vanished">Mostra esta ajuda.</translation>
-    </message>
-    <message>
-      <source>Unknown option '%1'.</source>
-      <translation type="vanished">Opção desconhecida '%1'.</translation>
-    </message>
-    <message>
-      <source>Unknown options: %1.</source>
-      <translation type="vanished">Opções desconhecidas: %1.</translation>
-    </message>
-    <message>
-      <source>Missing value after '%1'.</source>
-      <translation type="vanished">Valor faltando após '%1'.</translation>
-    </message>
-    <message>
-      <source>Unexpected value after '%1'.</source>
-      <translation type="vanished">Valor inesperado após '%1'.</translation>
-    </message>
-    <message>
-      <source>[options]</source>
-      <translation type="vanished">[opções]</translation>
-    </message>
-    <message>
-      <source>Usage: %1</source>
-      <translation type="vanished">Uso: %1</translation>
-    </message>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">Opções:</translation>
-    </message>
-    <message>
-      <source>Arguments:</source>
-      <translation type="vanished">Parâmetros:</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="302"/>
@@ -4631,10 +4536,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Você está prestes a baixar informações de %n imagem. Tem certeza de que deseja continuar?</numerusform>
-        <numerusform>Você está prestes a baixar informações de %n imagens. Tem certeza de que deseja continuar?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4786,10 +4688,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1094"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation>
-        <numerusform>%n tag da lista negra detectada nesta imagem: %1. Você quer exibi-la mesmo assim?</numerusform>
-        <numerusform>%n tags da lista negra detectadas nesta imagem: %1. Você quer exibi-la mesmo assim?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5732,10 +5631,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation>
-        <numerusform>%n tag carregada</numerusform>
-        <numerusform>%n tags carregadas</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5794,14 +5690,6 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>&amp;Monitor</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">&amp;Combinar resultados</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">Monitor</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>

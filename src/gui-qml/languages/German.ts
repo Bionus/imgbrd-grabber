@@ -398,7 +398,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="27"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"/>
+      <translation>Unendlich Scrollen</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
@@ -674,34 +674,6 @@
       <source>Tags</source>
       <translation>Tags</translation>
     </message>
-    <message>
-      <source>Artist</source>
-      <translation type="vanished">Künstler</translation>
-    </message>
-    <message>
-      <source>Copyright</source>
-      <translation type="vanished">Urheberrecht</translation>
-    </message>
-    <message>
-      <source>Character</source>
-      <translation type="vanished">Charakter</translation>
-    </message>
-    <message>
-      <source>Model</source>
-      <translation type="vanished">Modell</translation>
-    </message>
-    <message>
-      <source>Photo set</source>
-      <translation type="vanished">Fotosammlung</translation>
-    </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">Arten</translation>
-    </message>
-    <message>
-      <source>Meta</source>
-      <translation type="vanished">Metadaten</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -952,17 +924,17 @@
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Remove from favorites</source>
-      <translation type="unfinished"/>
+      <translation>Aus Favoriten entfernen</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Add to favorites</source>
-      <translation type="unfinished"/>
+      <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="34"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>Tag kopieren</translation>
     </message>
   </context>
   <context>
@@ -970,42 +942,42 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">Allgemein</translation>
+      <translation>Allgemein</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished">Künstler</translation>
+      <translation>Künstler</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished">Urheberrecht</translation>
+      <translation>Urheberrecht</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished">Charakter</translation>
+      <translation>Charakter</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished">Modell</translation>
+      <translation>Modell</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>Photo set</source>
-      <translation type="unfinished">Fotosammlung</translation>
+      <translation>Fotosammlung</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">Arten</translation>
+      <translation>Arten</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished">Metadaten</translation>
+      <translation>Meta</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>

@@ -398,12 +398,12 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="27"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"/>
+      <translation>Scroll infini</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
       <source>Automatically load next page of results.</source>
-      <translation type="unfinished"/>
+      <translation>Charger automatiquement la page de résultats suivante.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
@@ -674,34 +674,6 @@
       <source>Tags</source>
       <translation>Tags</translation>
     </message>
-    <message>
-      <source>Artist</source>
-      <translation type="vanished">Artiste</translation>
-    </message>
-    <message>
-      <source>Copyright</source>
-      <translation type="vanished">Copyright</translation>
-    </message>
-    <message>
-      <source>Character</source>
-      <translation type="vanished">Personnage</translation>
-    </message>
-    <message>
-      <source>Model</source>
-      <translation type="vanished">Modèle</translation>
-    </message>
-    <message>
-      <source>Photo set</source>
-      <translation type="vanished">Set de photos</translation>
-    </message>
-    <message>
-      <source>Species</source>
-      <translation type="vanished">Espèces</translation>
-    </message>
-    <message>
-      <source>Meta</source>
-      <translation type="vanished">Méta</translation>
-    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -952,17 +924,17 @@
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Remove from favorites</source>
-      <translation type="unfinished"/>
+      <translation>Retirer des favoris</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="21"/>
       <source>Add to favorites</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter aux favoris</translation>
     </message>
     <message>
       <location filename="../src/components/TagView.qml" line="34"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>Copier le tag</translation>
     </message>
   </context>
   <context>
@@ -970,42 +942,42 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>General</source>
-      <translation type="unfinished">Général</translation>
+      <translation>Général</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>Artist</source>
-      <translation type="unfinished">Artiste</translation>
+      <translation>Artiste</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Copyright</source>
-      <translation type="unfinished">Copyright</translation>
+      <translation>Copyright</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>Character</source>
-      <translation type="unfinished">Personnage</translation>
+      <translation>Personnage</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>Model</source>
-      <translation type="unfinished">Modèle</translation>
+      <translation>Modèle</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>Photo set</source>
-      <translation type="unfinished">Set de photos</translation>
+      <translation>Set de photos</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="53"/>
       <source>Species</source>
-      <translation type="unfinished">Espèces</translation>
+      <translation>Espèces</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Meta</source>
-      <translation type="unfinished">Méta</translation>
+      <translation>Méta</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
