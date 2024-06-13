@@ -51,12 +51,14 @@ class Logger : public QObject
 		void logToConsole();
 
 		QString logFile() const;
+		QString logDirectory() const;
 
 	signals:
 		void newLog(const QString &message);
 
 	private:
 		Logger() = default;
+		QString m_logDirectory;
 		QFile m_logFile, m_fCommandsLog, m_fCommandsSqlLog;
 		LogLevel m_level = LogLevel::Info;
 		LogLevel m_consoleOutputLevel = LogLevel::Error;

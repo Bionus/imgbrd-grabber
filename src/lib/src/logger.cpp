@@ -10,7 +10,8 @@
 void Logger::initialize()
 {
 	// Create the "logs/" directory if it doesn't exist
-	const QDir logsDirectory = savePath(QStringLiteral("logs/"), false, true);
+	m_logDirectory = savePath(QStringLiteral("logs/"), false, true);
+	const QDir logsDirectory(m_logDirectory);
 	if (!logsDirectory.exists()) {
 		logsDirectory.mkpath(".");
 	}
@@ -51,6 +52,8 @@ void Logger::setLogFile(const QString &path)
 }
 QString Logger::logFile() const
 { return m_logFile.fileName(); }
+QString Logger::logDirectory() const
+{ return m_logDirectory; }
 
 /**
  * Sets the minimum log level for which messages will not be ignored.

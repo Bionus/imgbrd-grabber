@@ -58,10 +58,7 @@ void LogTab::open()
 
 void LogTab::openDir()
 {
-	QDir dir(savePath());
-	if (dir.exists()) {
-		showInGraphicalShell(dir.absolutePath());
-	}
+	showInGraphicalShell(Logger::getInstance().logDirectory());
 }
 
 void LogTab::changeEvent(QEvent *event)
