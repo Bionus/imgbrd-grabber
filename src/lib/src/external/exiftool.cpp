@@ -59,6 +59,7 @@ bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &me
 	for (auto it = metadata.constBegin(); it != metadata.constEnd(); ++it) {
 		commands.append("-" + it.key() + "=" + it.value());
 	}
+	commands.append("-m"); // Ignore minor errors
 
 	// Try to write metadata to the file first, unless we only want to write to the sidecar
 	if (sidecarFile != SidecarFile::Only) {
