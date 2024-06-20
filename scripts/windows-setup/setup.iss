@@ -58,8 +58,8 @@ SolidCompression=yes
 ChangesAssociations=yes
 DisableDirPage=no
 PrivilegesRequired=admin
-ArchitecturesAllowed=x86 x64 ia64
-ArchitecturesInstallIn64BitMode=x64 ia64
+ArchitecturesAllowed=x86 x64
+ArchitecturesInstallIn64BitMode=x64
 
 ; Dependencies
 #define UseMsiProductCheck
