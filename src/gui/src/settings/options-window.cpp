@@ -240,6 +240,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->layoutMetadataExiftool->addRow(leKey, leValue);
 		m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
 	}
+	static const QStringList sidecarFile { "no", "on_error", "both", "only" };
+	ui->comboMetadataExiftoolSidecar->setCurrentIndex(sidecarFile.indexOf(settings->value("Save/MetadataExiftoolSidecar", "on_error").toString()));
+	ui->checkMetadataExiftoolSidecarNoExtension->setChecked(settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
 
 	// Log
 	settings->beginGroup("Log");
@@ -1405,6 +1408,9 @@ void OptionsWindow::save()
 			}
 		}
 		settings->endArray();
+		static const QStringList sidecarFile { "no", "on_error", "both", "only" };
+		settings->setValue("MetadataExiftoolSidecar", sidecarFile.at(ui->comboMetadataExiftoolSidecar->currentIndex()));
+		settings->setValue("MetadataExiftoolSidecarNoExtension", ui->checkMetadataExiftoolSidecarNoExtension->isChecked());
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());

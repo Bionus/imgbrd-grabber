@@ -1336,6 +1336,9 @@
            <item row="1" column="1">
             <widget class="QLineEdit" name="lineMetadataExiftoolExtensions"/>
            </item>
+           <item row="2" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
+           </item>
            <item row="3" column="0" colspan="2">
             <widget class="QPushButton" name="buttonMetadataExiftoolAdd">
              <property name="text">
@@ -1343,17 +1346,14 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2">
+           <item row="6" column="0" colspan="2">
             <widget class="QCheckBox" name="checkMetadataExiftoolClear">
              <property name="text">
               <string>Clear existing metadata</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
-            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
-           </item>
-           <item row="5" column="0" colspan="2">
+           <item row="7" column="0" colspan="2">
             <widget class="QCheckBox" name="checkMetadataExiftoolKeepColorProfile">
              <property name="enabled">
               <bool>false</bool>
@@ -1363,6 +1363,47 @@
              </property>
              <property name="checked">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="labelMetadataExiftoolSidecar">
+             <property name="text">
+              <string>Sidecar files</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="comboMetadataExiftoolSidecar">
+             <property name="currentIndex">
+              <number>1</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Disabled</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>On error</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Both sidecar and original</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Only sidecar</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMetadataExiftoolSidecarNoExtension">
+             <property name="text">
+              <string>Do not include original extension in sidecar file names</string>
              </property>
             </widget>
            </item>

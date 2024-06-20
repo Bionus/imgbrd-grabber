@@ -891,9 +891,22 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		}
 
 		if (!metadata.isEmpty()) {
+			static const QMap<QString, Exiftool::SidecarFile> sidecarFileMapping {
+				{"no", Exiftool::SidecarFile::No},
+				{"on_error", Exiftool::SidecarFile::OnError},
+				{"both", Exiftool::SidecarFile::Both},
+				{"only", Exiftool::SidecarFile::Only},
+			};
 			Exiftool &exiftool = m_profile->getExiftool();
 			exiftool.start();
-			exiftool.setMetadata(path, metadata, m_settings->value("Save/MetadataExiftoolClear", false).toBool(), m_settings->value("Save/MetadataExiftoolKeepColorProfile", true).toBool());
+			exiftool.setMetadata(
+				path,
+				metadata,
+				m_settings->value("Save/MetadataExiftoolClear", false).toBool(),
+				m_settings->value("Save/MetadataExiftoolKeepColorProfile", true).toBool(),
+				sidecarFileMapping.value(m_settings->value("Save/MetadataExiftoolSidecar", "on_error").toString(), Exiftool::SidecarFile::OnError),
+				m_settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool()
+			);
 		}
 	}
 
