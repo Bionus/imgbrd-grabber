@@ -1553,17 +1553,17 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
-      <source>Clear log</source>
+      <source>Clear log file</source>
       <translation>Limpar registro</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
-      <source>Open log</source>
+      <source>Open log file</source>
       <translation>Abrir Registro</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
-      <source>Open settings directory</source>
+      <source>Open log folder</source>
       <translation>Abrir diretório de configurações</translation>
     </message>
   </context>
