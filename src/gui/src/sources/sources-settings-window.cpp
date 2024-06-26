@@ -62,9 +62,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Download settings
 	ui->spinSimultaneousDownloads->setValue(site->setting("download/simultaneous", 10).toInt());
-	ui->spinThrottleDetails->setValue(site->setting("download/throttle_details", 0).toInt());
-	ui->spinThrottleImage->setValue(site->setting("download/throttle_image", 0).toInt());
-	ui->spinThrottlePage->setValue(site->setting("download/throttle_page", 0).toInt());
+	ui->spinThrottleDetails->setValue(site->setting("download/throttle_details", 1).toInt());
+	ui->spinThrottleImage->setValue(site->setting("download/throttle_image", 1).toInt());
+	ui->spinThrottlePage->setValue(site->setting("download/throttle_page", 1).toInt());
 	ui->spinThrottleRetry->setValue(site->setting("download/throttle_retry", 60).toInt());
 	ui->spinThrottleThumbnail->setValue(site->setting("download/throttle_thumbnail", 0).toInt());
 

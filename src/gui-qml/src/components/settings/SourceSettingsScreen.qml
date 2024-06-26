@@ -233,7 +233,7 @@ Page {
                 max: 60 * 60
                 setting: Setting {
                     key: "download/throttle_image"
-                    def: 0
+                    def: 1
                     obj: root.site.settings
                 }
                 Layout.fillWidth: true
@@ -243,7 +243,7 @@ Page {
                 max: 60 * 60
                 setting: Setting {
                     key: "download/throttle_page"
-                    def: 0
+                    def: 1
                     obj: root.site.settings
                 }
                 Layout.fillWidth: true
@@ -253,7 +253,7 @@ Page {
                 max: 60 * 60
                 setting: Setting {
                     key: "download/throttle_details"
-                    def: 0
+                    def: 1
                     obj: root.site.settings
                 }
                 Layout.fillWidth: true
