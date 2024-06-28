@@ -1554,12 +1554,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation>Limpar registro</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation>Abrir Registro</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>

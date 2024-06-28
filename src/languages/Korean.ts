@@ -1542,12 +1542,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation>로그 지우기</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation>로그 열기</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>

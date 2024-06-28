@@ -1553,12 +1553,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation>Protokoll löschen</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation>Protokoll Öffnen</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>

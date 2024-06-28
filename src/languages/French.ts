@@ -1554,12 +1554,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation>Vider le log</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation>Ouvrir le log</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>

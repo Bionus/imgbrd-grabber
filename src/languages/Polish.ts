@@ -1566,12 +1566,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation>Wyczyść logi</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation>Otwórz logi</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
