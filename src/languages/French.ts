@@ -1564,7 +1564,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation>Ouvrir le répertoire des paramètres</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>

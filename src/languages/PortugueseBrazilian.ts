@@ -1564,7 +1564,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation>Abrir diretório de configurações</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>

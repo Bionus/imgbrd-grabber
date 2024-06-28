@@ -1530,7 +1530,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation>設定フォルダーを開く</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>

@@ -1553,7 +1553,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation>打开设置目录</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>

@@ -1563,7 +1563,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation>Einstellungs-Verzeichnis öffnen</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>

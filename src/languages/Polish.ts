@@ -1576,7 +1576,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation>Otwórz katalog ustawień</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
