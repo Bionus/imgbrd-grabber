@@ -1554,6 +1554,14 @@ Please solve the issue before resuming the download.</source>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">로그 지우기</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">로그 열기</translation>
+    </message>
   </context>
   <context>
     <name>LogWindow</name>

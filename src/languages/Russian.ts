@@ -1577,6 +1577,18 @@ Please solve the issue before resuming the download.</source>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Очистить журнал</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Открыть журнал</translation>
+    </message>
+    <message>
+      <source>Open settings directory</source>
+      <translation type="vanished">Открыть каталог настроек</translation>
+    </message>
   </context>
   <context>
     <name>LogWindow</name>

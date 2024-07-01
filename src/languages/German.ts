@@ -1565,6 +1565,18 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Protokoll löschen</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Protokoll Öffnen</translation>
+    </message>
+    <message>
+      <source>Open settings directory</source>
+      <translation type="vanished">Einstellungs-Verzeichnis öffnen</translation>
+    </message>
   </context>
   <context>
     <name>LogWindow</name>

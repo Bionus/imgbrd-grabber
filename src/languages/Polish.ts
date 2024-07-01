@@ -1578,6 +1578,18 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Wyczyść logi</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Otwórz logi</translation>
+    </message>
+    <message>
+      <source>Open settings directory</source>
+      <translation type="vanished">Otwórz katalog ustawień</translation>
+    </message>
   </context>
   <context>
     <name>LogWindow</name>

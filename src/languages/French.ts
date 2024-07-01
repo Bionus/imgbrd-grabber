@@ -1566,6 +1566,18 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Vider le log</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Ouvrir le log</translation>
+    </message>
+    <message>
+      <source>Open settings directory</source>
+      <translation type="vanished">Ouvrir le répertoire des paramètres</translation>
+    </message>
   </context>
   <context>
     <name>LogWindow</name>

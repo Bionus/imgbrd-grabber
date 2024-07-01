@@ -1532,6 +1532,18 @@ Please solve the issue before resuming the download.</source>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">ログを消去</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">ログを開く</translation>
+    </message>
+    <message>
+      <source>Open settings directory</source>
+      <translation type="vanished">設定フォルダーを開く</translation>
+    </message>
   </context>
   <context>
     <name>LogWindow</name>
