@@ -31,6 +31,8 @@ TEST_CASE("BatchDownloader")
 	siteSettings.clear();
 	siteSettings.setValue("sources/usedefault", false);
 	siteSettings.setValue("sources/source_1", "html");
+	siteSettings.setValue("download/throttle_image", 0);
+	siteSettings.setValue("download/throttle_details", 0);
 	siteSettings.sync();
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
