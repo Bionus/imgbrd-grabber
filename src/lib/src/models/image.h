@@ -89,7 +89,7 @@ class Image : public QObject, public Downloadable
 		void setPromoteDetailParsWarn(bool);
 		bool isValid() const;
 		Profile *getProfile() const { return m_profile; }
-		const ImageSize &mediaForSize(const QSize &size);
+		const ImageSize &mediaForSize(const QSize &size, bool thumbnail = false);
 		QList<QPair<QString, int>> ugoiraFrameInformation() const;
 
 		// Preview pixmap store

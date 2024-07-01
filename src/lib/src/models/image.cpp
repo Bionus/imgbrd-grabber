@@ -128,9 +128,9 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		const QString &urlKey = (prefix.isEmpty() ? "file_" : prefix) + "url";
 		is->url = details.contains(urlKey) ? removeCacheBuster(m_parentSite->fixUrl(details[urlKey])) : QString();
 
-		is->size = details.contains(prefix + "width") && details.contains(prefix + "height")
-			? QSize(details[prefix + "width"].toInt(), details[prefix + "height"].toInt())
-			: QSize();
+		const int width = details.value(prefix + "width", "0").toInt();
+		const int height = details.value(prefix + "height", "0").toInt();
+		is->size = width > 0 && height > 0 ? QSize(width, height) : QSize();
 		is->fileSize = details.contains(prefix + "file_size") ? details[prefix + "file_size"].toInt() : 0;
 
 		if (details.contains(prefix + "rect")) {
@@ -1364,16 +1364,21 @@ bool Image::isValid() const
  * Find the biggest media available in this image under the given size. Defaults to the thumbnail if none is found.
  *
  * @param size The bounding size not to exceed.
+ * @param thumbnail If the media will be used as a thumbnail, its filetype should match the thumbnail filetype.
  * @return The biggest media available in this image under this size.
  */
-const ImageSize &Image::mediaForSize(const QSize &size)
+const ImageSize &Image::mediaForSize(const QSize &size, bool thumbnail)
 {
 	QSharedPointer<ImageSize> ret;
 
+	const QString thumbnailExt = getExtension(m_sizes[Size::Thumbnail]->url);
+
 	// Find the biggest media smaller than the given size
 	for (const QSharedPointer<ImageSize> &media : m_allSizes) {
-		if (media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
-			ret = media;
+		if (media->size.isValid() && media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
+			if (!thumbnail || getExtension(media->url) == thumbnailExt) {
+				ret = media;
+			}
 		}
 	}
 

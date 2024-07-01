@@ -34,7 +34,7 @@ ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Prof
 	if (m_profile->getSettings()->value("thumbnailSmartSize", true).toBool()) {
 		const qreal upscale = m_profile->getSettings()->value("thumbnailUpscale", 1.0).toDouble();
 		const int imageSize = qFloor(150 * upscale);
-		m_thumbnailUrl = image->mediaForSize(QSize(imageSize, imageSize)).url;
+		m_thumbnailUrl = image->mediaForSize(QSize(imageSize, imageSize), true).url;
 	} else {
 		m_thumbnailUrl = image->url(Image::Size::Thumbnail);
 	}
@@ -162,7 +162,7 @@ void ImagePreview::finishedLoadingPreview()
 	QPixmap thumbnail;
 	thumbnail.loadFromData(m_reply->readAll());
 	if (thumbnail.isNull()) {
-		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(m_image->url(Image::Size::Thumbnail).toString()), Logger::Error);
+		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(m_reply->url().toString()), Logger::Error);
 		finishedLoading();
 		return;
 	}
