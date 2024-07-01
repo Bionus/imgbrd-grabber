@@ -1564,18 +1564,30 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
-      <source>Clear log</source>
-      <translation>Очистить журнал</translation>
+      <source>Clear log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
-      <source>Open log</source>
-      <translation>Открыть журнал</translation>
+      <source>Open log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
+      <source>Open log folder</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Очистить журнал</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Открыть журнал</translation>
+    </message>
+    <message>
       <source>Open settings directory</source>
-      <translation>Открыть каталог настроек</translation>
+      <translation type="vanished">Открыть каталог настроек</translation>
     </message>
   </context>
   <context>

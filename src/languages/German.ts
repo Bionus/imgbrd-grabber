@@ -1552,18 +1552,30 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
-      <source>Clear log</source>
-      <translation>Protokoll löschen</translation>
+      <source>Clear log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
-      <source>Open log</source>
-      <translation>Protokoll Öffnen</translation>
+      <source>Open log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
+      <source>Open log folder</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Protokoll löschen</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Protokoll Öffnen</translation>
+    </message>
+    <message>
       <source>Open settings directory</source>
-      <translation>Einstellungs-Verzeichnis öffnen</translation>
+      <translation type="vanished">Einstellungs-Verzeichnis öffnen</translation>
     </message>
   </context>
   <context>

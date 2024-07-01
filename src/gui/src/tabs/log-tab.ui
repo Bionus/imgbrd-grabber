@@ -68,21 +68,21 @@ QTextEdit {
      <item>
       <widget class="QPushButton" name="buttonClear">
        <property name="text">
-        <string>Clear log</string>
+        <string>Clear log file</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonOpen">
        <property name="text">
-        <string>Open log</string>
+        <string>Open log file</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonOpenDir">
        <property name="text">
-        <string>Open log directory</string>
+        <string>Open log folder</string>
        </property>
       </widget>
      </item>

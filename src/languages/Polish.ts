@@ -1565,18 +1565,30 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
-      <source>Clear log</source>
-      <translation>Wyczyść logi</translation>
+      <source>Clear log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
-      <source>Open log</source>
-      <translation>Otwórz logi</translation>
+      <source>Open log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
+      <source>Open log folder</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Wyczyść logi</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Otwórz logi</translation>
+    </message>
+    <message>
       <source>Open settings directory</source>
-      <translation>Otwórz katalog ustawień</translation>
+      <translation type="vanished">Otwórz katalog ustawień</translation>
     </message>
   </context>
   <context>

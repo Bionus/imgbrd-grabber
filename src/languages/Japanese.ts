@@ -1519,18 +1519,30 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
-      <source>Clear log</source>
-      <translation>ログを消去</translation>
+      <source>Clear log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
-      <source>Open log</source>
-      <translation>ログを開く</translation>
+      <source>Open log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
+      <source>Open log folder</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">ログを消去</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">ログを開く</translation>
+    </message>
+    <message>
       <source>Open settings directory</source>
-      <translation>設定フォルダーを開く</translation>
+      <translation type="vanished">設定フォルダーを開く</translation>
     </message>
   </context>
   <context>

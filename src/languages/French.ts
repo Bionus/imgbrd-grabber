@@ -1553,18 +1553,30 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
-      <source>Clear log</source>
-      <translation>Vider le log</translation>
+      <source>Clear log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
-      <source>Open log</source>
-      <translation>Ouvrir le log</translation>
+      <source>Open log file</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
+      <source>Open log folder</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Clear log</source>
+      <translation type="vanished">Vider le log</translation>
+    </message>
+    <message>
+      <source>Open log</source>
+      <translation type="vanished">Ouvrir le log</translation>
+    </message>
+    <message>
       <source>Open settings directory</source>
-      <translation>Ouvrir le répertoire des paramètres</translation>
+      <translation type="vanished">Ouvrir le répertoire des paramètres</translation>
     </message>
   </context>
   <context>
