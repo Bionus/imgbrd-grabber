@@ -486,6 +486,28 @@ You can also use JavaScript in your filenames. To do so, you can either use the 
 
 For example, if your script is "md5 + '.' + ext", your filename will be "javascript:md5 + '.' + ext".
 
+A more complex one could be:
+```
+javascript:((width>=height)?"landscape":"portrait")+"/"+copyright+"/"+md5+"."+ext
+```
+
+Which would generate files such as:
+
+* `landscape/sword art online/5231166bd271ce0cd0c11d7e3cb342a5.png`
+* `portrait/touhou/0498c78f67d5545bea731d4b1051096c.jpg`
+* `portrait/touhou/fe2e6eb294f33f455d43b3effcf4ec6c.jpg`
+
+Note that here, each slash (`/`) corresponds to a different directory:
+```
+├── landscape
+│   └── sword art online
+│           └── 5231166bd271ce0cd0c11d7e3cb342a5.png
+└── portrait
+    └── touhou
+        ├── 0498c78f67d5545bea731d4b1051096c.jpg
+        └── fe2e6eb294f33f455d43b3effcf4ec6c.jpg
+```
+
 ## Similar tags
 Sometimes, you have similar tags in your image, which can be problematic for your filename. For example, if you have an image tagged as both "pokemon" and "pokemon_bw", you might get "crossover" when using `%copyright%`, or "pokemon pokemon_bw", which can become annoying for organizing.
 
