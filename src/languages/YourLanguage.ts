@@ -3118,31 +3118,6 @@ Please solve the issue before resuming the download.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1677"/>
-      <source>GIF</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1682"/>
-      <source>WEBM</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1687"/>
-      <source>APNG</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1692"/>
-      <source>WEBP</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1697"/>
-      <source>MKV</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="1705"/>
       <source>Delete original file on success</source>
       <translation type="unfinished"/>
@@ -6279,11 +6254,6 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="49"/>
       <source>Go</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/webview-window.ui" line="65"/>
-      <source>about:blank</source>
       <translation type="unfinished"/>
     </message>
   </context>

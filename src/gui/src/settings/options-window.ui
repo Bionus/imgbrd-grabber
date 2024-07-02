@@ -1674,27 +1674,27 @@
             <widget class="QComboBox" name="comboConversionUgoiraTargetExtension">
              <item>
               <property name="text">
-               <string>GIF</string>
+               <string notr="true">GIF</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>WEBM</string>
+               <string notr="true">WEBM</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>APNG</string>
+               <string notr="true">APNG</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>WEBP</string>
+               <string notr="true">WEBP</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>MKV</string>
+               <string notr="true">MKV</string>
               </property>
              </item>
             </widget>
