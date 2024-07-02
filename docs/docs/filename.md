@@ -493,7 +493,7 @@ javascript:((width>=height)?"landscape":"portrait")+"/"+copyright+"/"+md5+"."+ex
 
 Which would generate files such as:
 
-* `landscape/sword art online/362333f4fb4c458577ee72919cfbe10d.png`
+* `landscape/sword art online/5231166bd271ce0cd0c11d7e3cb342a5.png`
 * `portrait/touhou/0498c78f67d5545bea731d4b1051096c.jpg`
 * `portrait/touhou/fe2e6eb294f33f455d43b3effcf4ec6c.jpg`
 
@@ -501,7 +501,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 ```
 ├── landscape
 │   └── sword art online
-│           └── 362333f4fb4c458577ee72919cfbe10d.png
+│           └── 5231166bd271ce0cd0c11d7e3cb342a5.png
 └── portrait
     └── touhou
         ├── 0498c78f67d5545bea731d4b1051096c.jpg
