@@ -144,7 +144,7 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 	} else if (extension == QStringLiteral("apng")) {
 		params.append({ "-c:v", "apng", "-plays", "0", "-vsync", "0" });
 	} else if (extension == QStringLiteral("webp")) {
-		params.append({ "-c:v", "libwebp", "-lossless", "0", "-compression_level", "5", "-quality", "100", "-loop", "0", "-vsync", "0" });
+		params.append({ "-c:v", "libwebp_anim", "-pix_fmt", "yuva420p", "-lossless", "0", "-compression_level", "5", "-quality", "100", "-loop", "0", "-vsync", "0" });
 	} else if (extension == QStringLiteral("webm")) {
 		params.append({ "-c:v", "libvpx-vp9", "-lossless", "0", "-crf", "15", "-b", "0", "-vsync", "0" });
 	} else {
