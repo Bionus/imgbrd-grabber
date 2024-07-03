@@ -417,7 +417,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
       <source>Automatically load next page of results.</source>
-      <translation type="unfinished"/>
+      <translation>Автоподгружать следующую страницу результатов.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
@@ -555,7 +555,7 @@
     <message>
       <location filename="../src/components/MainDrawer.qml" line="118"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Источники</translation>
     </message>
     <message>
       <location filename="../src/components/MainDrawer.qml" line="124"/>
@@ -696,12 +696,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Общий</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="79"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>Автор</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="87"/>
