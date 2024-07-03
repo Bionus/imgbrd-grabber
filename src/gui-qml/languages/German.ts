@@ -555,7 +555,7 @@
     <message>
       <location filename="../src/components/MainDrawer.qml" line="118"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Quellen</translation>
     </message>
     <message>
       <location filename="../src/components/MainDrawer.qml" line="124"/>
@@ -696,12 +696,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Allgemein</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="79"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>Künstler</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="87"/>
