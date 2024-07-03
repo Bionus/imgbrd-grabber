@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QFont>
+#include <QProcess>
 #include <QRect>
 #include <QSettings>
 #include <QTemporaryFile>
@@ -491,6 +492,13 @@ TEST_CASE("Functions")
 			REQUIRE(splitCommand("a b c") == QStringList { "a", "b", "c" });
 		}
 
+		SECTION("Multiple spaces")
+		{
+			REQUIRE(splitCommand(" ") == QStringList {});
+			REQUIRE(splitCommand(" a ") == QStringList { "a" });
+			REQUIRE(splitCommand(" a  b   c ") == QStringList { "a", "b", "c" });
+		}
+
 		SECTION("Backslash escape")
 		{
 			REQUIRE(splitCommand("a\\ b c") == QStringList { "a b", "c" });
@@ -522,6 +530,26 @@ TEST_CASE("Functions")
 			REQUIRE(splitCommand("\"a 'b'\" c") == QStringList { "a 'b'", "c" });
 			REQUIRE(splitCommand("a \"'b' c\"") == QStringList { "a", "'b' c" });
 			REQUIRE(splitCommand("a \"'b' \"\"\" c\"") == QStringList { "a", "'b' \" c" });
+		}
+
+		SECTION("Consistent with QProcess::splitCommand")
+		{
+			static const QStringList tests {
+				"",
+				" ",
+				"a",
+				" a ",
+				"a b c",
+				" a  b   c ",
+				"\"a b\" c",
+				"a \"b c\"",
+				"\"a b c\"",
+				"\"a b \"\"\" c\"",
+			};
+
+			for (const QString &str : tests) {
+				REQUIRE(splitCommand(str) == QProcess::splitCommand(str));
+			}
 		}
 	}
 

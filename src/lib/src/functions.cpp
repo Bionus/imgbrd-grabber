@@ -64,6 +64,14 @@ QString lastErrorString()
 }
 
 
+/**
+ * Re-implementation of QProcess::splitCommand that supports both single and double quotes.
+ *
+ * For example, `"a b" 'c d' e` will be turned into ("a b", "c d", "e").
+ *
+ * @param command The command to split into a list of process arguments.
+ * @return The list of arguments to start the process with.
+ */
 QStringList splitCommand(const QString &command)
 {
 	QStringList args;
@@ -114,8 +122,10 @@ QStringList splitCommand(const QString &command)
 
 		// If we finally reached a space outside a quoted argument, we flush
 		if (!inQuote && c.isSpace()) {
-			args += tmp;
-			tmp.clear();
+			if (!tmp.isEmpty()) {
+				args += tmp;
+				tmp.clear();
+			}
 		} else {
 			tmp += c;
 		}
