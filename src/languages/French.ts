@@ -681,7 +681,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Copy to monitors</source>
-      <translation type="unfinished"/>
+      <translation>Copier vers les moniteurs</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="127"/>
@@ -1492,7 +1492,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
       <source>Copy all tags (with namespaces)</source>
-      <translation type="unfinished"/>
+      <translation>Copier tous les tags (avec espaces de noms)</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="26"/>
@@ -1559,29 +1559,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation type="unfinished"/>
+      <translation>Effacer le fichier de log</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir le fichier de log</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Clear log</source>
-      <translation type="vanished">Vider le log</translation>
-    </message>
-    <message>
-      <source>Open log</source>
-      <translation type="vanished">Ouvrir le log</translation>
-    </message>
-    <message>
-      <source>Open settings directory</source>
-      <translation type="vanished">Ouvrir le répertoire des paramètres</translation>
+      <translation>Ouvrir le dossier des logs</translation>
     </message>
   </context>
   <context>
@@ -1630,11 +1618,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="vanished">Chaque fois qu'une image est enregistrée, un fichier texte avec le même nom sera enregistré au même emplacement.</translation>
+      <translation>Chaque fois qu'une image est enregistrée, un fichier texte avec le même nom sera enregistré au même emplacement.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1655,7 +1639,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished">Choisir un dossier de sauvegarde</translation>
+      <translation>Choisir un dossier de sauvegarde</translation>
     </message>
   </context>
   <context>
@@ -1863,7 +1847,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished">Suivi de Grabber</translation>
+      <translation>Suivi de Grabber</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
@@ -2076,7 +2060,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="55"/>
       <source>Last success</source>
-      <translation type="unfinished"/>
+      <translation>Dernier succès</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
@@ -2220,10 +2204,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
         <numerusform>Plus de %n nouvelles images trouvées pour le tag '%1' sur '%2'</numerusform>
       </translation>
     </message>
-    <message>
-      <source>Grabber monitoring</source>
-      <translation type="vanished">Suivi de Grabber</translation>
-    </message>
   </context>
   <context>
     <name>MonitorsTab</name>
@@ -2252,7 +2232,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="84"/>
       <source>Copy to downloads</source>
-      <translation type="unfinished"/>
+      <translation>Copier vers les téléchargements</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="87"/>
@@ -2686,10 +2666,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>L'identité des fichiers est basée sur l'algorithme MD5.</translation>
     </message>
     <message>
-      <source>Automatic redownload</source>
-      <translation type="vanished">Retéléchargement automatique</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="916"/>
       <source>Keep deleted files in the MD5 list</source>
       <translation>Conserver les fichiers supprimés dans la liste MD5</translation>
@@ -2928,7 +2904,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2154"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>Afficher le nombre d'images filtrées</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2369"/>
@@ -2954,53 +2930,53 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
       <location filename="../gui/src/settings/options-window.ui" line="5108"/>
       <source>Border</source>
-      <translation type="unfinished"/>
+      <translation>Bordure</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5382"/>
       <source>Hide images containing a blacklisted tag from results</source>
-      <translation type="unfinished"/>
+      <translation>Cacher les images contenant un tag sur la liste noire des résultats</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5389"/>
       <source>Warn before opening images containing a blacklisted tag</source>
-      <translation type="unfinished"/>
+      <translation>Avertir avant d'ouvrir une image contenant un tag de la liste noire</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5517"/>
       <source>Add sources with no results to monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter les sources sans résultat au suivi</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5524"/>
       <source>Default monitor settings</source>
-      <translation type="unfinished"/>
+      <translation>Paramètres de suivi par défaut</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5530"/>
       <source>Interval</source>
-      <translation type="unfinished">Fréquence</translation>
+      <translation>Fréquence</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"> min</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished">Délai</translation>
+      <translation>Délai</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
       <source>Notification enabled</source>
-      <translation type="unfinished"/>
+      <translation>Notifications activées</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5574"/>
       <source>Download enabled</source>
-      <translation type="unfinished"/>
+      <translation>Téléchargement activé</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5954"/>
@@ -3047,133 +3023,133 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Format conversion</source>
-      <translation type="unfinished"/>
+      <translation>Conversion de format</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="638"/>
       <source>Use Qt default User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>Utiliser l'User-Agent de Qt par défaut</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="648"/>
       <source>User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>User-Agent</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="899"/>
       <source>Retry failed downloads</source>
-      <translation type="unfinished"/>
+      <translation>Réessayer les téléchargements échoués</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="906"/>
       <source> time(s)</source>
-      <translation type="unfinished"/>
+      <translation> fois</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1299"/>
       <location filename="../gui/src/settings/options-window.ui" line="1352"/>
       <source>Clear existing metadata</source>
-      <translation type="unfinished"/>
+      <translation>Effacer les métadonnées existantes</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1362"/>
       <source>Try to preserve color profile</source>
-      <translation type="unfinished"/>
+      <translation>Essayez de préserver le profil de couleur</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1372"/>
       <source>Sidecar files</source>
-      <translation type="unfinished"/>
+      <translation>Fichiers side-car</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1388"/>
       <source>On error</source>
-      <translation type="unfinished"/>
+      <translation>En cas d'erreur</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1393"/>
       <source>Both sidecar and original</source>
-      <translation type="unfinished"/>
+      <translation>Fichier side-car et original</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1398"/>
       <source>Only sidecar</source>
-      <translation type="unfinished"/>
+      <translation>Juste le side-car</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1406"/>
       <source>Do not include original extension in sidecar file names</source>
-      <translation type="unfinished"/>
+      <translation>Ne pas inclure l'extension d'origine dans le nom des fichiers side-car</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>FFmpeg version</source>
-      <translation type="unfinished"/>
+      <translation>Version de FFmpeg</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>ImageMagick version</source>
-      <translation type="unfinished"/>
+      <translation>Version de ImageMagick</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1541"/>
       <source>Video conversion</source>
-      <translation type="unfinished"/>
+      <translation>Conversion vidéo</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1547"/>
       <source>Remux WEBM files to MP4 when possible</source>
-      <translation type="unfinished"/>
+      <translation>Remuxer les fichiers WEBM en MP4 si possible</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1554"/>
       <source>Convert WEBM files to MP4</source>
-      <translation type="unfinished"/>
+      <translation>Convertir les fichiers WEBM en MP4</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1590"/>
       <source>Image conversion</source>
-      <translation type="unfinished"/>
+      <translation>Conversion d'image</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1596"/>
       <source>Back-end</source>
-      <translation type="unfinished"/>
+      <translation>Back-end</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1620"/>
       <source>Add new image conversion</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter une nouvelle conversion d'image</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1656"/>
       <source>Ugoira (ZIP) conversion</source>
-      <translation type="unfinished"/>
+      <translation>Conversion ugoira (ZIP)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1662"/>
       <source>Convert ugoira ZIP files</source>
-      <translation type="unfinished"/>
+      <translation>Convertir les fichiers ZIP ugoira</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1669"/>
       <source>Target format</source>
-      <translation type="unfinished"/>
+      <translation>Format cible</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1705"/>
       <source>Delete original file on success</source>
-      <translation type="unfinished"/>
+      <translation>Supprimer le fichier original en cas de succès</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1778"/>
       <source>Use bigger thumbnail sizes as needed when available</source>
-      <translation type="unfinished"/>
+      <translation>Utilisez de plus grandes tailles de miniature si possible</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2003"/>
       <source>Base style</source>
-      <translation type="unfinished"/>
+      <translation>Style de base</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2050"/>
@@ -3976,14 +3952,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Une ligne par liste noire. Vous pouvez mettre plusieurs tags sur une seule ligne pour faire des conditions "ET".</translation>
     </message>
     <message>
-      <source>Ignore images containing a blacklisted tag</source>
-      <translation type="vanished">Ignorer les images contenant un tag de la liste noire</translation>
-    </message>
-    <message>
-      <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="vanished">Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="5410"/>
       <source>Removed tags</source>
       <translation>Tags retirés</translation>
@@ -4203,12 +4171,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="150"/>
       <source>FFmpeg not found</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg non trouvé</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="165"/>
       <source>ImageMagick not found</source>
-      <translation type="unfinished"/>
+      <translation>ImageMagick non trouvé</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="981"/>
@@ -4329,49 +4297,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
   </context>
   <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Displays version information.</source>
-      <translation type="vanished">Affiche l'information de version.</translation>
-    </message>
-    <message>
-      <source>Displays this help.</source>
-      <translation type="vanished">Affiche cette aide.</translation>
-    </message>
-    <message>
-      <source>Unknown option '%1'.</source>
-      <translation type="vanished">Option inconnue '%1'.</translation>
-    </message>
-    <message>
-      <source>Unknown options: %1.</source>
-      <translation type="vanished">Options inconnues: %1.</translation>
-    </message>
-    <message>
-      <source>Missing value after '%1'.</source>
-      <translation type="vanished">Valeur manquante après '%1'.</translation>
-    </message>
-    <message>
-      <source>Unexpected value after '%1'.</source>
-      <translation type="vanished">Valeur non attendue après '%1'.</translation>
-    </message>
-    <message>
-      <source>[options]</source>
-      <translation type="vanished">[options]</translation>
-    </message>
-    <message>
-      <source>Usage: %1</source>
-      <translation type="vanished">Utilisation : %1</translation>
-    </message>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">Options :</translation>
-    </message>
-    <message>
-      <source>Arguments:</source>
-      <translation type="vanished">Arguments :</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="303"/>
@@ -4472,12 +4397,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="203"/>
       <source>expression '%1' ('%2') does not match</source>
-      <translation type="unfinished"/>
+      <translation>l'expression '%1' ('%2') ne correspond pas</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="206"/>
       <source>expression '%1' ('%2') match</source>
-      <translation type="unfinished"/>
+      <translation>l'expression '%1' ('%2') correspond</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="215"/>
@@ -5561,7 +5486,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="598"/>
       <source>Clear other cookies</source>
-      <translation type="unfinished"/>
+      <translation>Effacer les autres cookies</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="606"/>
@@ -5576,7 +5501,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="658"/>
       <source>Open in WebView</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir dans une WebView</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="678"/>
@@ -5753,12 +5678,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="14"/>
       <source>Sponsors</source>
-      <translation type="unfinished"/>
+      <translation>Sponsors</translation>
     </message>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
       <source>Note that being shown here is opt-in. If you have donated but can't find your name here, please ping me and I'll add your name !</source>
-      <translation type="unfinished"/>
+      <translation>Notez qu'être affiché ici est opt-in. Si vous avez fait un don mais que vous ne trouvez pas votre nom ici, dites-le moi et j'ajouterai votre nom !</translation>
     </message>
   </context>
   <context>
@@ -5769,13 +5694,9 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Premier lancement</translation>
     </message>
     <message>
-      <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-      <translation type="vanished">Avant de commencer, le programme a besoin de quelques informations nécessaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et ces informations vous seront demandées en temps et en heure.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</source>
-      <translation type="unfinished"/>
+      <translation>Avant de commencer, le programme a besoin de quelques informations nécessaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et ces informations vous seront demandées en temps et en heure.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="41"/>
@@ -5873,12 +5794,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="47"/>
       <source>Don't remove</source>
-      <translation type="unfinished"/>
+      <translation>Ne pas retirer</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Retirer</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -5893,7 +5814,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="57"/>
       <source>Copy all tags (with namespaces)</source>
-      <translation type="unfinished"/>
+      <translation>Copier tous les tags (avec espaces de noms)</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="62"/>
@@ -6015,20 +5936,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Fusionner les résultats</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">&amp;Fusionner les résultats</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">Monitorer</translation>
+      <translation>&amp;Monitorer</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
@@ -6360,12 +6273,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="14"/>
       <source>Web view</source>
-      <translation type="unfinished"/>
+      <translation>Web view</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="49"/>
       <source>Go</source>
-      <translation type="unfinished"/>
+      <translation>Go</translation>
     </message>
   </context>
   <context>
