@@ -16,7 +16,7 @@
     <message>
       <location filename="../src/crash-reporter-window.ui" line="44"/>
       <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation>Grabber зіштовхнувся з помилкою і розбився. Програма спробує відновити ваші вкладки та інші устави після перезапуску.</translation>
+      <translation>Grabber зіштовхнувся з помилкою та вилетів. Програма спробує відновити ваші вкладки та інші устави після перезапуску.</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="60"/>
