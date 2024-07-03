@@ -1475,7 +1475,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation>모든 태그 복사</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1559,14 +1559,6 @@ Please solve the issue before resuming the download.</source>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
-    <message>
-      <source>Clear log</source>
-      <translation type="vanished">로그 지우기</translation>
-    </message>
-    <message>
-      <source>Open log</source>
-      <translation type="vanished">로그 열기</translation>
-    </message>
   </context>
   <context>
     <name>LogWindow</name>
@@ -1617,10 +1609,6 @@ Please solve the issue before resuming the download.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="vanished">사진이 저장될 때마다, 외부 텍스트 파일이 같은 이름, 같은 위치에 저장될 것입니다.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
       <source>Text file content</source>
       <translation>텍스트 파일 컨텐츠</translation>
@@ -1639,7 +1627,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished">저장할 폴더를 선택하세요</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1847,7 +1835,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished">Grabber 모니터링 중</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
@@ -1995,12 +1983,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation>검색</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation>태그</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2196,10 +2184,6 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>태그 '%1'에 해당되는 새로운 이미지가 %n 개 넘게 '%2'에서 발견되었습니다</numerusform>
       </translation>
-    </message>
-    <message>
-      <source>Grabber monitoring</source>
-      <translation type="vanished">Grabber 모니터링 중</translation>
     </message>
   </context>
   <context>
@@ -2663,10 +2647,6 @@ Please solve the issue before resuming the download.</source>
       <translation>파일의 정체성은 MD5 알고리즘에 기반합니다.</translation>
     </message>
     <message>
-      <source>Automatic redownload</source>
-      <translation type="vanished">자동 재다운로드</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="916"/>
       <source>Keep deleted files in the MD5 list</source>
       <translation>파일이 삭제되어도 MD5 목록에 유지하기</translation>
@@ -2962,12 +2942,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"> 분</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished">지연</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
@@ -3953,14 +3933,6 @@ Please solve the issue before resuming the download.</source>
       <translation>한 줄 당 하나의 블랙리스트를 입력하세요. 한 줄에 여러 태그를 입력하시면 "AND" (동시 만족)조건을 발생시킬 수 있습니다.</translation>
     </message>
     <message>
-      <source>Ignore images containing a blacklisted tag</source>
-      <translation type="vanished">블랙리스트 태그를 포함한 이미지 무시하기</translation>
-    </message>
-    <message>
-      <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="vanished">이 박스를 체크하면 블랙리스트 태그가 포함된 이미지는 검색 결과에 보이지 않습니다. 체크를 안하면 블랙리스트 된 이미지가 보일때마다 확인 여부를 물어볼 것입니다.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="5410"/>
       <source>Removed tags</source>
       <translation>제거된 태그</translation>
@@ -4303,49 +4275,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
       <source>Get &amp;all</source>
       <translation>모두 &amp;받기</translation>
-    </message>
-  </context>
-  <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Displays version information.</source>
-      <translation type="vanished">버전 정보 표시</translation>
-    </message>
-    <message>
-      <source>Displays this help.</source>
-      <translation type="vanished">도움 메뉴를 표시합니다.</translation>
-    </message>
-    <message>
-      <source>Unknown option '%1'.</source>
-      <translation type="vanished">알 수 없는 옵션 '%1'.</translation>
-    </message>
-    <message>
-      <source>Unknown options: %1.</source>
-      <translation type="vanished">알 수 없는 옵션 '%1.</translation>
-    </message>
-    <message>
-      <source>Missing value after '%1'.</source>
-      <translation type="vanished">필요한 입력 값이 '%1' 이후로 없습니다.</translation>
-    </message>
-    <message>
-      <source>Unexpected value after '%1'.</source>
-      <translation type="vanished">알 수 없는 값이 '%1' 이후로 있습니다.</translation>
-    </message>
-    <message>
-      <source>[options]</source>
-      <translation type="vanished">[options]</translation>
-    </message>
-    <message>
-      <source>Usage: %1</source>
-      <translation type="vanished">사용률: %1</translation>
-    </message>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">옵션:</translation>
-    </message>
-    <message>
-      <source>Arguments:</source>
-      <translation type="vanished">조건:</translation>
     </message>
   </context>
   <context>
@@ -5043,7 +4972,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
       <source>General (no)</source>
-      <translation type="unfinished"/>
+      <translation>일반 (x)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="123"/>
@@ -5742,10 +5671,6 @@ Please solve the issue before resuming the download.</source>
       <translation>최초 실행</translation>
     </message>
     <message>
-      <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-      <translation type="vanished">시작하기 전에, 프로그램이 제대로 작동하기 위해 몇몇 정보가 필요합니다. 이 과정을 건너 뛸 수 있고, 나중에 이 정보들은 물어볼 것입니다.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</source>
       <translation type="unfinished"/>
@@ -5993,14 +5918,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">&amp;결과 합치기</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">모니터링</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
