@@ -133,7 +133,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="59"/>
       <source>Browse</source>
-      <translation>Изменить</translation>
+      <translation>Обзор</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.cpp" line="82"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="20"/>
       <source>Batch download</source>
-      <translation>Массовая загрузка</translation>
+      <translation>Загрузка пачкой</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="84"/>
