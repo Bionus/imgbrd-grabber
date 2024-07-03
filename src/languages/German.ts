@@ -2080,10 +2080,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
       <source>%n time(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
