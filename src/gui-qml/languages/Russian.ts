@@ -845,7 +845,7 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="154"/>
       <source>API order</source>
-      <translation>Через API</translation>
+      <translation>Порядок API</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="163"/>
@@ -921,7 +921,7 @@
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="11"/>
       <source>API order</source>
-      <translation>Через API</translation>
+      <translation>Порядок API</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="14"/>
@@ -990,7 +990,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="101"/>
       <source>Use shortest if possible</source>
-      <translation>Использовать самые короткие теги если возможно</translation>
+      <translation>Использовать кратчайшие теги по возможности</translation>
     </message>
   </context>
   <context>
