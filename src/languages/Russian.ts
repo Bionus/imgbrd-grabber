@@ -683,7 +683,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Copy to monitors</source>
-      <translation type="unfinished"/>
+      <translation>Копировать в мониторы</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="127"/>
@@ -1509,7 +1509,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>Копировать все теги</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1640,7 +1640,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Каждый раз при сохранении изображения с тем же именем в той же папке будет создаваться текстовый файл, содержащий его теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1661,7 +1661,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Выберите папку для сохранения</translation>
     </message>
   </context>
   <context>
@@ -1869,7 +1869,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Мониторинг Grabber</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
@@ -2023,12 +2023,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Поиск</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Теги</translation>
     </message>
   </context>
   <context>
@@ -2086,7 +2086,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="55"/>
       <source>Last success</source>
-      <translation type="unfinished"/>
+      <translation>Последнее успешное выполнение</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
@@ -2264,7 +2264,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="84"/>
       <source>Copy to downloads</source>
-      <translation type="unfinished"/>
+      <translation>Копировать в загрузки</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="87"/>
@@ -2936,7 +2936,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2154"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>Показывать число отфильтрованных изображений</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2369"/>
@@ -2977,38 +2977,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5517"/>
       <source>Add sources with no results to monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Добавить источники без результатов в мониторинг</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5524"/>
       <source>Default monitor settings</source>
-      <translation type="unfinished"/>
+      <translation>Стандартные параметры монитора</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5530"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Интервал</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> мин</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Задержка</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
       <source>Notification enabled</source>
-      <translation type="unfinished"/>
+      <translation>Уведомление включено</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5574"/>
       <source>Download enabled</source>
-      <translation type="unfinished"/>
+      <translation>Загрузка включена</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5954"/>
@@ -5714,12 +5714,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="14"/>
       <source>Sponsors</source>
-      <translation type="unfinished"/>
+      <translation>Спонсоры</translation>
     </message>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
       <source>Note that being shown here is opt-in. If you have donated but can't find your name here, please ping me and I'll add your name !</source>
-      <translation type="unfinished"/>
+      <translation>Обратите внимание, что ваше имя отобразится здесь только по вашему желанию. Если вы сделали пожертвование, но не можете найти своё имя здесь, пожалуйста, напишите мне, и я его добавлю!</translation>
     </message>
   </context>
   <context>
@@ -5974,12 +5974,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Объединить &amp;результаты</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Мони&amp;тор</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
