@@ -1487,7 +1487,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>Copiar todas as tags</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1618,7 +1618,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Cada vez que uma imagem é salva, um arquivo de texto externo contendo suas tags será salvo com o mesmo nome no mesmo local.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1997,12 +1997,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Pesquisar</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
   </context>
   <context>
@@ -2904,7 +2904,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2154"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>Mostrar contagem de imagens filtradas</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2369"/>
@@ -5936,12 +5936,12 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Combinar &amp;resultados</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
+      <translation>&amp;Monitor</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
