@@ -354,6 +354,7 @@
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
   </context>
@@ -742,6 +743,7 @@
         <numerusform>Ładowanie %n pobrania</numerusform>
         <numerusform>Ładowanie %n pobrań</numerusform>
         <numerusform>Ładowanie %n pobrań</numerusform>
+        <numerusform>Ładowanie %n pobrań</numerusform>
       </translation>
     </message>
     <message>
@@ -829,6 +831,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik został pobrany pomyślnie.</numerusform>
         <numerusform>%n pliki zostały pobrane pomyślnie.</numerusform>
         <numerusform>%n plików zostało pobranych pomyślnie.</numerusform>
+        <numerusform>%n plików zostało pobranych pomyślnie.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -837,6 +840,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n plik został zignorowany.</numerusform>
         <numerusform>%n pliki zostały zignorowane.</numerusform>
+        <numerusform>%n plików zostało zignorowanych.</numerusform>
         <numerusform>%n plików zostało zignorowanych.</numerusform>
       </translation>
     </message>
@@ -847,6 +851,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik już istnieje.</numerusform>
         <numerusform>%n pliki już istnieją.</numerusform>
         <numerusform>%n plików już istnieje.</numerusform>
+        <numerusform>%n plików już istnieje.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -855,6 +860,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n plik nie został znaleziony na serwerze.</numerusform>
         <numerusform>%n pliki nie zostały znalezione na serwerze.</numerusform>
+        <numerusform>%n plików nie zostało znalezionych na serwerze.</numerusform>
         <numerusform>%n plików nie zostało znalezionych na serwerze.</numerusform>
       </translation>
     </message>
@@ -865,6 +871,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik został pominięty.</numerusform>
         <numerusform>%n pliki zostały pominięte.</numerusform>
         <numerusform>%n plików zostało pominiętych.</numerusform>
+        <numerusform>%n plików zostało pominiętych.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -874,6 +881,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik pominięto z poprzedniego pobierania.</numerusform>
         <numerusform>%n pliki pominięto z poprzedniego pobierania.</numerusform>
         <numerusform>%n plików pominięto z poprzedniego pobierania.</numerusform>
+        <numerusform>%n plików pominięto z poprzedniego pobierania.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -882,6 +890,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n błąd.</numerusform>
         <numerusform>%n błędy.</numerusform>
+        <numerusform>%n błędów.</numerusform>
         <numerusform>%n błędów.</numerusform>
       </translation>
     </message>
@@ -950,6 +959,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>Zamierzasz usunąć %n folder. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz usunąć %n foldery. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz usunąć %n folderów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz usunąć %n folderów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
@@ -1456,6 +1466,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>Źródło</numerusform>
         <numerusform>Źródła</numerusform>
         <numerusform>Źródeł</numerusform>
+        <numerusform>Źródeł</numerusform>
       </translation>
     </message>
     <message>
@@ -1499,7 +1510,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation>Skopiuj wszystkie tagi</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1583,18 +1594,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
-    <message>
-      <source>Clear log</source>
-      <translation type="vanished">Wyczyść logi</translation>
-    </message>
-    <message>
-      <source>Open log</source>
-      <translation type="vanished">Otwórz logi</translation>
-    </message>
-    <message>
-      <source>Open settings directory</source>
-      <translation type="vanished">Otwórz katalog ustawień</translation>
-    </message>
   </context>
   <context>
     <name>LogWindow</name>
@@ -1645,10 +1644,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation type="unfinished"/>
     </message>
     <message>
-      <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="vanished">Po każdym zapisaniu obrazu zewnętrzny plik tekstowy zostanie zapisany pod tą samą nazwą w tej samej lokalizacji.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
       <source>Text file content</source>
       <translation>Zawartość pliku tekstowego</translation>
@@ -1667,7 +1662,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished">Wybierz folder zapisu</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1875,7 +1870,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished">Monitorowanie Grabbera</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
@@ -2015,6 +2010,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n MD5 załadowano</numerusform>
         <numerusform>%n MD5 załadowano</numerusform>
         <numerusform>%n MD5 załadowano</numerusform>
+        <numerusform>%n MD5 załadowano</numerusform>
       </translation>
     </message>
   </context>
@@ -2023,12 +2019,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation>Wyszukaj</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation>Tagi</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2218,6 +2214,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n nowy obraz został znaleziony dla tagu '%1' w '%2'</numerusform>
         <numerusform>%n nowe obrazy zostały znalezione dla tagu '%1' w '%2'</numerusform>
         <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
+        <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -2227,11 +2224,8 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>Znaleziono więcej niż %n nowy obraz dla tagu '%1' w '%2'</numerusform>
         <numerusform>Znaleziono więcej niż %n nowe obrazy dla tagu '%1' w '%2'</numerusform>
         <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
+        <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
       </translation>
-    </message>
-    <message>
-      <source>Grabber monitoring</source>
-      <translation type="vanished">Monitorowanie Grabbera</translation>
     </message>
   </context>
   <context>
@@ -2695,10 +2689,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>Tożsamość pliku jest określana przez sumę MD5.</translation>
     </message>
     <message>
-      <source>Automatic redownload</source>
-      <translation type="vanished">Automatyczne ponowne pobieranie</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="916"/>
       <source>Keep deleted files in the MD5 list</source>
       <translation>Zachowaj usunięte pliki na liście MD5</translation>
@@ -2988,18 +2978,18 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5530"/>
       <source>Interval</source>
-      <translation type="unfinished">Ineterwał</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"> min</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished">Opóźnienie</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
@@ -3985,14 +3975,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>Jeden wiersz dla czarnej listy. Możesz umieścić wiele tagów w jednym wierszu, w tym celu skorzystaj z warunku "AND".</translation>
     </message>
     <message>
-      <source>Ignore images containing a blacklisted tag</source>
-      <translation type="vanished">Ignoruj obrazy zawierające tag na czarnej liście</translation>
-    </message>
-    <message>
-      <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="vanished">Obrazy zawierające tag na czarnej liście nie będą wyświetlane w wynikach, jeśli to pole jest zaznaczone. W przeciwnym razie przed wyświetleniem jednego z tych obrazów zostanie wyświetlone potwierdzenie.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="5410"/>
       <source>Removed tags</source>
       <translation>Usunięte tagi</translation>
@@ -4335,49 +4317,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
       <source>Get &amp;all</source>
       <translation>Pobierz &amp;wszystkie</translation>
-    </message>
-  </context>
-  <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Displays version information.</source>
-      <translation type="vanished">Wyświetla informacje o wersji.</translation>
-    </message>
-    <message>
-      <source>Displays this help.</source>
-      <translation type="vanished">Wyświetla tę pomoc.</translation>
-    </message>
-    <message>
-      <source>Unknown option '%1'.</source>
-      <translation type="vanished">Nieznana opcja '%1'.</translation>
-    </message>
-    <message>
-      <source>Unknown options: %1.</source>
-      <translation type="vanished">Nieznane opcje '%1.</translation>
-    </message>
-    <message>
-      <source>Missing value after '%1'.</source>
-      <translation type="vanished">Brak wartości po '%1'.</translation>
-    </message>
-    <message>
-      <source>Unexpected value after '%1'.</source>
-      <translation type="vanished">Nieoczekiwana wartość po '%1'.</translation>
-    </message>
-    <message>
-      <source>[options]</source>
-      <translation type="vanished">[opcje]</translation>
-    </message>
-    <message>
-      <source>Usage: %1</source>
-      <translation type="vanished">Użycie: %1</translation>
-    </message>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">Opcje:</translation>
-    </message>
-    <message>
-      <source>Arguments:</source>
-      <translation type="vanished">Argumenty:</translation>
     </message>
   </context>
   <context>
@@ -4842,6 +4781,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
     <message>
@@ -4997,6 +4937,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n tag figurujący na czarnej liście został wykryty na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
         <numerusform>%n tagi figurujące na czarnej liście zostały wykryte na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
+        <numerusform>%n tagów figurujących na czarnej liście zostało wykrytych na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
         <numerusform>%n tagów figurujących na czarnej liście zostało wykrytych na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
       </translation>
     </message>
@@ -5780,10 +5721,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>Pierwsze Uruchomienie</translation>
     </message>
     <message>
-      <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-      <translation type="vanished">Przed rozpoczęciem program potrzebuje pewnych informacji, aby działał poprawnie. Możesz pominąć ten krok, a o te informacje zostaniesz poproszony później.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</source>
       <translation type="unfinished"/>
@@ -5889,7 +5826,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished">Usuń</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -5974,6 +5911,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n tag załadowany</numerusform>
         <numerusform>%n tagi załadowane</numerusform>
         <numerusform>%n tagów załadowanych</numerusform>
+        <numerusform>%n tagów załadowanych</numerusform>
       </translation>
     </message>
   </context>
@@ -6033,14 +5971,6 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">&amp;Połącz wyniki</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">Monitor</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>

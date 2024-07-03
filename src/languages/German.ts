@@ -1486,7 +1486,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation>Alle Tags kopieren</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1570,18 +1570,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <source>Open log folder</source>
       <translation type="unfinished"/>
     </message>
-    <message>
-      <source>Clear log</source>
-      <translation type="vanished">Protokoll löschen</translation>
-    </message>
-    <message>
-      <source>Open log</source>
-      <translation type="vanished">Protokoll Öffnen</translation>
-    </message>
-    <message>
-      <source>Open settings directory</source>
-      <translation type="vanished">Einstellungs-Verzeichnis öffnen</translation>
-    </message>
   </context>
   <context>
     <name>LogWindow</name>
@@ -1630,10 +1618,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="vanished">Jedes Mal, wenn ein Bild gespeichert wird, wird eine externe Textdatei mit dem gleichen Namen am selben Ort gespeichert.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1862,7 +1846,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished">Grabber-Überwachung</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
@@ -1925,10 +1909,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation>
-        <numerusform>%n md5 konvertiert (von %1)</numerusform>
-        <numerusform>%n md5s konvertiert (von %1)</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2012,12 +1993,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation>Suche</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation>Tags</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2215,10 +2196,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
         <numerusform>Mehr als %n neues Bild für Tag '%1' auf '%2 ' gefunden</numerusform>
         <numerusform>Mehr als %n neue Bilder für Tag '%1' auf '%2 ' gefunden</numerusform>
       </translation>
-    </message>
-    <message>
-      <source>Grabber monitoring</source>
-      <translation type="vanished">Grabber-Überwachung</translation>
     </message>
   </context>
   <context>
@@ -2682,10 +2659,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Die Identität der Datei basiert auf dem MD5-Algorithmus.</translation>
     </message>
     <message>
-      <source>Automatic redownload</source>
-      <translation type="vanished">Automatischer Redownload</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="916"/>
       <source>Keep deleted files in the MD5 list</source>
       <translation>Gelöschte Dateien in der MD5-Liste behalten</translation>
@@ -2975,18 +2948,18 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5530"/>
       <source>Interval</source>
-      <translation type="unfinished">Intervall</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"> min</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished">Verzögerung</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
@@ -3972,14 +3945,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Eine Zeile pro Blacklist. Sie können mehrere Tags in einer einzigen Zeile platzieren, um "UND"-Bedingungen zu erstellen.</translation>
     </message>
     <message>
-      <source>Ignore images containing a blacklisted tag</source>
-      <translation type="vanished">Ignoriere Bilder, die ein gesperrten Tag enthalten</translation>
-    </message>
-    <message>
-      <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="vanished">Bilder mit einem Tag auf der Blacklist werden nicht in den Ergebnissen angezeigt, wenn diese Option aktiviert ist. Andernfalls wird eine Bestätigung angefordert, bevor eines dieser Bilder angezeigt wird.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="5410"/>
       <source>Removed tags</source>
       <translation>Entfernte Tags</translation>
@@ -4322,49 +4287,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
       <source>Get &amp;all</source>
       <translation>&amp;Alles herunterladen</translation>
-    </message>
-  </context>
-  <context>
-    <name>QCommandLineParser</name>
-    <message>
-      <source>Displays version information.</source>
-      <translation type="vanished">Zeigt Versions-Information an.</translation>
-    </message>
-    <message>
-      <source>Displays this help.</source>
-      <translation type="vanished">Zeigt diese Hilfe.</translation>
-    </message>
-    <message>
-      <source>Unknown option '%1'.</source>
-      <translation type="vanished">Unbekannte Option '%1'.</translation>
-    </message>
-    <message>
-      <source>Unknown options: %1.</source>
-      <translation type="vanished">Unbekannte Optionen: %1.</translation>
-    </message>
-    <message>
-      <source>Missing value after '%1'.</source>
-      <translation type="vanished">Fehlender Wert nach '%1'.</translation>
-    </message>
-    <message>
-      <source>Unexpected value after '%1'.</source>
-      <translation type="vanished">Unerwarteter Wert nach '%1'.</translation>
-    </message>
-    <message>
-      <source>[options]</source>
-      <translation type="vanished">[optionen]</translation>
-    </message>
-    <message>
-      <source>Usage: %1</source>
-      <translation type="vanished">Verwendung: %1</translation>
-    </message>
-    <message>
-      <source>Options:</source>
-      <translation type="vanished">Optionen:</translation>
-    </message>
-    <message>
-      <source>Arguments:</source>
-      <translation type="vanished">Parameter:</translation>
     </message>
   </context>
   <context>
@@ -5765,10 +5687,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Erster Start</translation>
     </message>
     <message>
-      <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-      <translation type="vanished">Bevor Sie starten, benötigt das Programm einige Informationen, um richtig zu funktionieren. Sie können diesen Schritt überspringen und die Informationen werden erst später gefragt.</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</source>
       <translation type="unfinished"/>
@@ -5874,7 +5792,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished">Entfernen</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -6017,14 +5935,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>&amp;Merge results</source>
-      <translation type="vanished">Ergebnisse &amp;zusammenführen</translation>
-    </message>
-    <message>
-      <source>Monitor</source>
-      <translation type="vanished">Beobachten</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
