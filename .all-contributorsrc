@@ -178,6 +178,33 @@
         "bug",
         "ideas"
       ]
+    },
+    {
+      "login": "Noptiwhite",
+      "name": "Noptiwhite",
+      "avatar_url": "https://crowdin-static.downloads.crowdin.com/avatar/15784087/large/fb71788d44585300e7a35e5172bf23e6.jpg",
+      "profile": "https://crowdin.com/profile/noptiwhite",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Tunguso4ka",
+      "name": "Tunguso4ka",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71643624?v=4",
+      "profile": "https://github.com/Tunguso4ka",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Gorgusm",
+      "name": "Gorgusm",
+      "avatar_url": "https://crowdin-static.downloads.crowdin.com/avatar/13720583/large/8099e5675724971e1519f4ea6f305d41_default.png",
+      "profile": "https://crowdin.com/profile/gorgusm",
+      "contributions": [
+        "translation"
+      ]
     }
   ],
   "commitConvention": "none"
