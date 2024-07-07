@@ -1614,7 +1614,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Cada vez que se guarde una imagen, se creará un archivo de texto adicional con el mismo nombre en el mismo lugar, conteniendo las etiquetas de la imagen.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -2107,7 +2107,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
       <location filename="../gui/src/monitor-window.ui" line="127"/>
       <source> min</source>
-      <translation> mínimo</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>

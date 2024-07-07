@@ -6,22 +6,22 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="20"/>
       <source>About Grabber</source>
-      <translation type="unfinished"/>
+      <translation>Grabber について</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber は Bionus によって作成されています。&lt;br/&gt;最新情報を入手したり、 翻訳ファイルを取得したりするには、&lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;Web サイト&lt;/span&gt;&lt;/a&gt;をご覧ください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation type="unfinished"/>
+      <translation>コードの提供、翻訳、問題の報告、新機能の提案など、長年にわたってプログラムの改善に協力してくれたすべての貢献者に感謝します。</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>&lt;u&gt;Contributors:&lt;/u&gt; {contributors}</source>
-      <translation type="unfinished"/>
+      <translation>&lt;u&gt;貢献者:&lt;/u&gt; {contributors}</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../gui/src/about-window.cpp" line="43"/>
       <source>Grabber is up to date</source>
-      <translation type="unfinished"/>
+      <translation>Grabber は最新の状態です</translation>
     </message>
   </context>
   <context>
@@ -64,12 +64,12 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="77"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>画像の制限</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
       <source>Download images with blacklisted tags</source>
-      <translation type="unfinished"/>
+      <translation>ブラックリストに登録されたタグを含む画像をダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="138"/>
       <source>One ID per line.</source>
-      <translation type="unfinished"/>
+      <translation>1行ごとに1つの ID を入力します。</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
@@ -123,12 +123,12 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
       <source>One MD5 per line.</source>
-      <translation type="unfinished"/>
+      <translation>1行ごとに1つの MD5 を入力します。</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="59"/>
@@ -138,7 +138,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.cpp" line="82"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
   </context>
   <context>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded files</source>
-      <translation type="unfinished"/>
+      <translation>ダウンロードしたファイルを追跡</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="399"/>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;平均速度:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;経過時間:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;残り時間:&lt;/b&gt; %4</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="429"/>
@@ -295,17 +295,17 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="24"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>強制的に MD5 を計算</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名の MD5 を取得</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
@@ -340,12 +340,12 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="56"/>
       <source>This directory does not exist.</source>
-      <translation type="unfinished"/>
+      <translation>このディレクトリは存在しません。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="63"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名から MD5 を取得したい場合は、 %md5% トークンを含める必要があります。</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
@@ -363,7 +363,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="24"/>
       <source>Choose images to delete in the list below.</source>
-      <translation type="unfinished"/>
+      <translation>以下のリストから削除する画像を選択してください。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="52"/>
@@ -383,7 +383,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="72"/>
       <source>Select found images</source>
-      <translation type="unfinished"/>
+      <translation>見つかった画像を選択</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="92"/>
@@ -401,17 +401,17 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished"/>
+      <translation>条件付きファイル名を追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation type="unfinished"/>
+      <translation>トークンまたはタグを条件として使用できます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
       <source>Condition</source>
-      <translation type="unfinished"/>
+      <translation>条件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="49"/>
@@ -421,17 +421,17 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="69"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>Leave empty to use the default folder.</source>
-      <translation type="unfinished"/>
+      <translation>空欄のままにするとデフォルトのフォルダが使用されます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="96"/>
       <source>Leave empty to use the default filename.</source>
-      <translation type="unfinished"/>
+      <translation>空欄のままにするとデフォルトのファイル名が使用されます。</translation>
     </message>
   </context>
   <context>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="32"/>
       <source>Separate tags by spaces or line breaks</source>
-      <translation type="unfinished"/>
+      <translation>タグをスペースまたは改行で区切ってください</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="39"/>
@@ -495,7 +495,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="45"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>画像の制限</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="46"/>
@@ -598,12 +598,12 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="45"/>
       <source>File size</source>
-      <translation type="unfinished"/>
+      <translation>ファイルサイズ</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="46"/>
       <source>Dimensions</source>
-      <translation type="unfinished"/>
+      <translation>大きさ</translation>
     </message>
   </context>
   <context>
@@ -627,7 +627,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="119"/>
       <source>Single files</source>
-      <translation type="unfinished"/>
+      <translation>単一ファイル</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="186"/>
@@ -668,7 +668,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="177"/>
       <source>Are you sure you want to clear your download list?</source>
-      <translation type="unfinished"/>
+      <translation>ダウンロードリストを削除してよろしいですか？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="124"/>
@@ -678,7 +678,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Copy to monitors</source>
-      <translation type="unfinished"/>
+      <translation>モニターにコピー</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="127"/>
@@ -711,13 +711,13 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="376"/>
       <source>Link list saved successfully!</source>
-      <translation type="unfinished"/>
+      <translation>リンクリストを正常に保存しました！</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="378"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="409"/>
       <source>Error opening file.</source>
-      <translation type="unfinished"/>
+      <translation>ファイルを開く際にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="396"/>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="407"/>
       <source>Link list loaded successfully!</source>
-      <translation type="unfinished"/>
+      <translation>リンクリストを正常に読み込みました！</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="421"/>
@@ -739,7 +739,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="473"/>
       <source>You did not specify a save folder!</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを指定していません！</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="477"/>
@@ -749,12 +749,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="565"/>
       <source>Some downloads were started but not finished. Do you want to continue from where you left off?</source>
-      <translation type="unfinished"/>
+      <translation>一部のダウンロードは開始されましたが、終了していません。中断した場所から続行しますか？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="585"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
-      <translation type="unfinished"/>
+      <translation>%1 件の画像をダウンロードしようとしています。これを行うには長い時間とディスクスペースが必要です。 続行してもよろしいですか？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="587"/>
@@ -785,14 +785,17 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="993"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>保存先ドライブ "%1" に十分な空き容量がありません。
+ダウンロードを再開する前に空き容量を確保してください。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="995"/>
       <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>画像を保存中にエラーが発生しました。
+%1
+ダウンロードを再開する前に問題を解決してください。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="997"/>
@@ -803,12 +806,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1092"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1121"/>
       <source>Getting images</source>
-      <translation type="unfinished"/>
+      <translation>画像を取得中</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1092"/>
       <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
-      <translation type="unfinished"/>
+      <translation>画像をダウンロード中にエラーが発生しました。エラーが発生した画像のダウンロードを再開しますか？ (%1/%2)</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
@@ -857,7 +860,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="24"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="49"/>
@@ -872,7 +875,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.cpp" line="33"/>
       <source>No empty folder found.</source>
-      <translation type="unfinished"/>
+      <translation>空フォルダが見つかりません。</translation>
     </message>
   </context>
   <context>
@@ -887,7 +890,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="24"/>
       <source>Choose folders to delete in the list below.</source>
-      <translation type="unfinished"/>
+      <translation>以下のリストから削除するフォルダを選択してください。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="53"/>
@@ -902,7 +905,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="44"/>
       <source>No folder selected.</source>
-      <translation type="unfinished"/>
+      <translation>フォルダが選択されていません。</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
@@ -990,22 +993,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="146"/>
       <source>Monitors</source>
-      <translation type="unfinished"/>
+      <translation>モニター</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="162"/>
       <source>Monitoring interval</source>
-      <translation type="unfinished"/>
+      <translation>モニタリング間隔</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="169"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 分</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
       <source>Set the interval to 0 to disable monitoring.</source>
-      <translation type="unfinished"/>
+      <translation>モニタリングを無効にするには、間隔を 0 に設定します。</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="152"/>
@@ -1035,7 +1038,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="220"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>空白のままにするとデフォルトの設定が使用されます。</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="256"/>
@@ -1050,7 +1053,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.cpp" line="77"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1081,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/favorites-dock.cpp" line="106"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;名前:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;メモ:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;最後に閲覧:&lt;/b&gt; %3</translation>
     </message>
   </context>
   <context>
@@ -1128,7 +1131,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="271"/>
       <source>Number of columns</source>
-      <translation type="unfinished"/>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="278"/>
@@ -1183,18 +1186,18 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
       <source>You don't have any favorite yet.</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りはまだありません。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="149"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;名前:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;メモ:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;最後に閲覧:&lt;/b&gt; %3</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="244"/>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="252"/>
       <source>No result since the %1</source>
-      <translation type="unfinished"/>
+      <translation>%1 以降の結果はありません</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="441"/>
@@ -1214,7 +1217,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="349"/>
       <source>Are you sure you want to mark all your favorites as viewed?</source>
-      <translation type="unfinished"/>
+      <translation>すべてのお気に入りを閲覧済みにしてもよろしいですか？</translation>
     </message>
   </context>
   <context>
@@ -1222,27 +1225,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="14"/>
       <source>Filenaming</source>
-      <translation type="unfinished"/>
+      <translation>ファイル命名規則</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="22"/>
       <source>Classic filenaming</source>
-      <translation type="unfinished"/>
+      <translation>クラシックファイル命名規則</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="68"/>
       <source>Javascript filenaming</source>
-      <translation type="unfinished"/>
+      <translation>Javascript ファイル命名規則</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.cpp" line="142"/>
       <source>Warning</source>
-      <translation type="unfinished"/>
+      <translation>警告</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.cpp" line="142"/>
       <source>You script contains error, are you sure you want to save it?</source>
-      <translation type="unfinished"/>
+      <translation>スクリプトにエラーが含まれています。本当に保存しますか？</translation>
     </message>
   </context>
   <context>
@@ -1260,7 +1263,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="183"/>
       <source>Number of columns</source>
-      <translation type="unfinished"/>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="190"/>
@@ -1270,7 +1273,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>モニター</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -1293,52 +1296,52 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1081"/>
       <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;タグ:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1082"/>
       <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1083"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;名前:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1084"/>
       <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;レーティング:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1085"/>
       <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;スコア:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1086"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;ユーザー:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1087"/>
       <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;サイズ:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1088"/>
       <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;ファイルサイズ:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1089"/>
       <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;日付:&lt;/b&gt; %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1099"/>
       <source>&lt;i&gt;Unknown&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;不明&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1100"/>
@@ -1378,7 +1381,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1120"/>
       <source>Author</source>
-      <translation type="unfinished"/>
+      <translation>投稿者</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1122"/>
@@ -1430,7 +1433,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1132"/>
       <source>yes (#%1)</source>
-      <translation type="unfinished"/>
+      <translation>はい (#%1)</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1133"/>
@@ -1445,7 +1448,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1135"/>
       <source>Notes</source>
-      <translation type="unfinished"/>
+      <translation>メモ</translation>
     </message>
   </context>
   <context>
@@ -1453,7 +1456,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>すべてのタグをコピー</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1548,7 +1551,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="20"/>
       <source>Location type</source>
-      <translation type="unfinished"/>
+      <translation>場所のタイプ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="28"/>
@@ -1569,7 +1572,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="62"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="89"/>
@@ -1605,7 +1608,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
   </context>
   <context>
@@ -1687,12 +1690,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="293"/>
       <source>About Grabber</source>
-      <translation type="unfinished"/>
+      <translation>Grabber について</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="302"/>
       <source>About Qt</source>
-      <translation type="unfinished"/>
+      <translation>Qt について</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="311"/>
@@ -1718,7 +1721,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="375"/>
       <source>New pool tab</source>
-      <translation type="unfinished"/>
+      <translation>新しいプールタブ</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="380"/>
@@ -1733,7 +1736,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="398"/>
       <source>Project website</source>
-      <translation type="unfinished"/>
+      <translation>プロジェクトの Web サイト</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="407"/>
@@ -1743,12 +1746,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="412"/>
       <source>Rename existing images</source>
-      <translation type="unfinished"/>
+      <translation>既存の画像の名前を変更</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="421"/>
       <source>Project GitHub</source>
-      <translation type="unfinished"/>
+      <translation>プロジェクトの Github</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="433"/>
@@ -1758,7 +1761,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="441"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>タグローダー</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="450"/>
@@ -1778,27 +1781,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="473"/>
       <source>Donate with PayPal</source>
-      <translation type="unfinished"/>
+      <translation>PayPal で寄付</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="482"/>
       <source>Donate with Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Patreon で寄付</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="487"/>
       <source>Prune sources</source>
-      <translation type="unfinished"/>
+      <translation>ソースを削除</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="161"/>
       <source>No source found</source>
-      <translation type="unfinished"/>
+      <translation>ソースが見つかりません</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="161"/>
       <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
-      <translation type="unfinished"/>
+      <translation>ソースが見つかりません。設定に問題がありますか？プログラムを再インストールしてください。</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="176"/>
@@ -1808,17 +1811,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="255"/>
       <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
-      <translation type="unfinished"/>
+      <translation>アプリケーションが正しく閉じられていなかったようです。最後のセッションを復元しますか？</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Grabber モニタリング</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
       <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="unfinished"/>
+      <translation>Mozilla Firefoxアドオン「Danbooru Downloader」がシステム上に検出されました。設定を読み込みますか？</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="772"/>
@@ -1828,17 +1831,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="926"/>
       <source>Unlock tab</source>
-      <translation type="unfinished"/>
+      <translation>タブの固定を解除</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="931"/>
       <source>Lock tab</source>
-      <translation type="unfinished"/>
+      <translation>タブを固定</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="770"/>
       <source>Are you sure you want to quit?</source>
-      <translation type="unfinished"/>
+      <translation>本当に終了しますか？</translation>
     </message>
   </context>
   <context>
@@ -1851,7 +1854,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
       <source>Generate a SQLite MD5 database using an existing TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>既存の TXT MD5 データベースを使用して SQLite MD5 データベースを生成します。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
@@ -1866,12 +1869,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
       <source>You are not using a TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>TXT MD5 データベースを使用していません。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>完了</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
@@ -1889,22 +1892,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
       <source>This tool will add the MD5 of all the files found in the folder set below to your MD5 list.</source>
-      <translation type="unfinished"/>
+      <translation>このツールは、MD5リストに以下に設定されたフォルダ内にあるすべてのファイルのMD5を追加します。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="37"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="47"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>強制的に MD5 を計算</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="54"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名の MD5 を取得</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="64"/>
@@ -1934,17 +1937,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="93"/>
       <source>This folder does not exist.</source>
-      <translation type="unfinished"/>
+      <translation>このフォルダは存在しません。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="101"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名から MD5 を取得したい場合は、 %md5% トークンを含める必要があります。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>完了</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
@@ -1957,12 +1960,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>検索</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>タグ</translation>
     </message>
   </context>
   <context>
@@ -1985,7 +1988,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="48"/>
       <source>Action</source>
-      <translation type="unfinished"/>
+      <translation>アクション</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="49"/>
@@ -2000,27 +2003,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="51"/>
       <source>Next check</source>
-      <translation type="unfinished"/>
+      <translation>次の確認</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="52"/>
       <source>Last state</source>
-      <translation type="unfinished"/>
+      <translation>最終状態</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="53"/>
       <source>Last state count</source>
-      <translation type="unfinished"/>
+      <translation>最終状態の確認回数</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="54"/>
       <source>Last state since</source>
-      <translation type="unfinished"/>
+      <translation>最終状態の開始日</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="55"/>
       <source>Last success</source>
-      <translation type="unfinished"/>
+      <translation>最終成功時間</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
@@ -2033,7 +2036,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="20"/>
       <source>Edit a monitor</source>
-      <translation type="unfinished"/>
+      <translation>モニターを編集</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
@@ -2058,7 +2061,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>最後の確認</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
@@ -2074,7 +2077,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
       <location filename="../gui/src/monitor-window.ui" line="127"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 分</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>
@@ -2120,22 +2123,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="190"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>空白のままにするとデフォルトの設定が使用されます。</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="197"/>
       <source>Download blacklisted images</source>
-      <translation type="unfinished"/>
+      <translation>ブラックリストに登録された画像をダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="42"/>
       <source>You need to enable the system tray icon to use notifications.</source>
-      <translation type="unfinished"/>
+      <translation>通知を使用するにはシステムトレイアイコンを有効にする必要があります。</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="53"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
   </context>
   <context>
@@ -2161,7 +2164,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="26"/>
       <source>Monitors</source>
-      <translation type="unfinished"/>
+      <translation>モニター</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
@@ -2173,7 +2176,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="85"/>
       <source>Start now</source>
-      <translation type="unfinished"/>
+      <translation>今すぐ開始</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="83"/>
@@ -2183,7 +2186,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="84"/>
       <source>Copy to downloads</source>
-      <translation type="unfinished"/>
+      <translation>ダウンロードにコピー</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="87"/>
@@ -2230,7 +2233,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="73"/>
       <source>Conditional filenames</source>
-      <translation type="unfinished"/>
+      <translation>条件付きファイル名</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="78"/>
@@ -2280,7 +2283,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="169"/>
       <source>Monitoring</source>
-      <translation type="unfinished"/>
+      <translation>モニタリング</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="174"/>
@@ -2388,7 +2391,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="335"/>
       <source>Images containing a whitelisted tag will be downloaded automatically according to the option above.</source>
-      <translation type="unfinished"/>
+      <translation>ホワイトリストに登録されたタグを含む画像は、上記のオプションに従って自動的にダウンロードされます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="164"/>
@@ -2399,7 +2402,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5399"/>
       <source>Download images containing blacklisted tags</source>
-      <translation type="unfinished"/>
+      <translation>ブラックリストに登録されたタグを含む画像をダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="345"/>
@@ -2409,12 +2412,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="58"/>
       <source>Registries</source>
-      <translation type="unfinished"/>
+      <translation>レジストリ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
       <source>Buttons</source>
-      <translation type="unfinished"/>
+      <translation>ボタン</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="194"/>
@@ -2424,12 +2427,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="387"/>
       <source>Ask for confirmation before closing the window</source>
-      <translation type="unfinished"/>
+      <translation>ウィンドウを閉じる前に確認を求める</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="394"/>
       <source>Send anonymous usage data</source>
-      <translation type="unfinished"/>
+      <translation>匿名の使用データを送信する</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="438"/>
@@ -2439,7 +2442,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="445"/>
       <source>Number of columns</source>
-      <translation type="unfinished"/>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="452"/>
@@ -2464,7 +2467,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="506"/>
       <source>Get more precise tags when searching images</source>
-      <translation type="unfinished"/>
+      <translation>画像を検索する際にタグをより正確に取得する</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="517"/>
@@ -2501,32 +2504,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="621"/>
       <source>Auto tag add</source>
-      <translation type="unfinished"/>
+      <translation>自動タグ追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="671"/>
       <source>New sources and sites can be supported by adding third-party source registries.</source>
-      <translation type="unfinished"/>
+      <translation>サードパーティのソースレジストリを追加することで、新しいソースとサイトをサポートできます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="684"/>
       <source>Add a new source registry</source>
-      <translation type="unfinished"/>
+      <translation>新しいソースレジストリを追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="711"/>
       <source>Download original images</source>
-      <translation type="unfinished"/>
+      <translation>オリジナル画像をダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="721"/>
       <source>Download sample on error</source>
-      <translation type="unfinished"/>
+      <translation>エラー時にサンプルをダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="731"/>
       <source>Download images automatically</source>
-      <translation type="unfinished"/>
+      <translation>自動的に画像をダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="738"/>
@@ -2541,7 +2544,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="758"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="770"/>
@@ -2590,7 +2593,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="853"/>
       <source>If a file already exists globally</source>
-      <translation type="unfinished"/>
+      <translation>ファイルがすでにグローバルに存在する場合</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="869"/>
@@ -2619,12 +2622,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="916"/>
       <source>Keep deleted files in the MD5 list</source>
-      <translation type="unfinished"/>
+      <translation>削除されたファイルを MD5 リストに保持</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="923"/>
       <source>If an image yields multiple files</source>
-      <translation type="unfinished"/>
+      <translation>画像が複数のファイルを生成する場合</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1010"/>
@@ -2644,27 +2647,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1097"/>
       <source>Replace JPEG by JPG</source>
-      <translation type="unfinished"/>
+      <translation>JPEG を JPG で置換</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1107"/>
       <source>Max length</source>
-      <translation type="unfinished"/>
+      <translation>最大の長さ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1145"/>
       <source>Conditional filenames are evaluated from top to bottom, with each overriding the previous one. This means the last filename has priority over the first one.</source>
-      <translation type="unfinished"/>
+      <translation>条件付きファイル名は上から下に評価され、それぞれが前のファイルを上書きします。これは最後のファイル名が最初のファイルよりも優先されることを意味します。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1155"/>
       <source>Add a conditional filename</source>
-      <translation type="unfinished"/>
+      <translation>条件付きファイル名を追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1239"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation type="unfinished"/>
+      <translation>画像を保存するたびに、その情報を別のテキストファイルに追加して、後で処理したり、整理したりすることができます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1252"/>
@@ -2674,13 +2677,13 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1276"/>
       <source>Windows Property System</source>
-      <translation type="unfinished"/>
+      <translation>Windows プロパティシステム</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1292"/>
       <location filename="../gui/src/settings/options-window.ui" line="1345"/>
       <source>Add new property</source>
-      <translation type="unfinished"/>
+      <translation>新しいプロパティを追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1282"/>
@@ -2728,7 +2731,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1483"/>
       <source>Images bigger than the max width and/or height will be resized to fit.</source>
-      <translation type="unfinished"/>
+      <translation>幅/高さの最大値を超える画像は数値に合うようにリサイズされます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1748"/>
@@ -2788,7 +2791,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1856"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りリストは、この画像番号に達するとすぐに非表示になります。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1866"/>
@@ -2855,27 +2858,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2154"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>フィルターされた画像の数を表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2369"/>
       <source>Go to first page</source>
-      <translation type="unfinished"/>
+      <translation>最初のページに移動</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2387"/>
       <source>Go to previous page</source>
-      <translation type="unfinished"/>
+      <translation>前のページに移動</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2405"/>
       <source>Go to next page</source>
-      <translation type="unfinished"/>
+      <translation>次のページに移動</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2423"/>
       <source>Go to last page</source>
-      <translation type="unfinished"/>
+      <translation>最後のページに移動</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
@@ -2896,48 +2899,48 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5517"/>
       <source>Add sources with no results to monitoring</source>
-      <translation type="unfinished"/>
+      <translation>モニタリングに結果のないソースを追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5524"/>
       <source>Default monitor settings</source>
-      <translation type="unfinished"/>
+      <translation>デフォルトのモニター設定</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5530"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>間隔</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 分</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>遅延</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
       <source>Notification enabled</source>
-      <translation type="unfinished"/>
+      <translation>通知を有効にする</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5574"/>
       <source>Download enabled</source>
-      <translation type="unfinished"/>
+      <translation>ダウンロードを有効にする</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5954"/>
       <source>Generate a backup</source>
-      <translation type="unfinished"/>
+      <translation>バックアップを作成</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5964"/>
       <source>Restore a backup</source>
-      <translation type="unfinished"/>
+      <translation>バックアップを復元</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1979"/>
@@ -3115,12 +3118,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2063"/>
       <source>Remember page number when infinite scrolling</source>
-      <translation type="unfinished"/>
+      <translation>無限スクロール時にページ番号を記憶</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2070"/>
       <source>Resize previews instead of cropping them</source>
-      <translation type="unfinished"/>
+      <translation>トリミングの代わりにプレビューのサイズを変更</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2080"/>
@@ -3130,17 +3133,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2090"/>
       <source>Show warning if an incompatible modifier is found</source>
-      <translation type="unfinished"/>
+      <translation>互換性のない修飾子が見つかった場合に警告を表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2100"/>
       <source>Show other warnings</source>
-      <translation type="unfinished"/>
+      <translation>他の警告を表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2110"/>
       <source>Download not loaded pages</source>
-      <translation type="unfinished"/>
+      <translation>読み込まれていないページをダウンロード</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2122"/>
@@ -3258,7 +3261,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2541"/>
       <source>Preloading</source>
-      <translation type="unfinished"/>
+      <translation>プリロード</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2551"/>
@@ -3278,23 +3281,23 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2578"/>
       <source>Enable scroll wheel navigation</source>
-      <translation type="unfinished"/>
+      <translation>スクロールホイールのナビゲーションを有効にする</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2595"/>
       <source>Show tag count</source>
-      <translation type="unfinished"/>
+      <translation>タグ数を表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2602"/>
       <source>Tag order</source>
-      <translation type="unfinished"/>
+      <translation>タグの順序</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2610"/>
       <location filename="../gui/src/settings/options-window.ui" line="5628"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>タイプ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2615"/>
@@ -3304,7 +3307,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2620"/>
       <source>Count</source>
-      <translation type="unfinished"/>
+      <translation>数</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2628"/>
@@ -3375,7 +3378,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2508"/>
       <source>Use a single image window</source>
-      <translation type="unfinished"/>
+      <translation>単一の画像ウィンドウを使用</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="93"/>
@@ -3397,7 +3400,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="83"/>
       <source>Metadata</source>
-      <translation type="unfinished"/>
+      <translation>メタデータ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="98"/>
@@ -3433,17 +3436,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="951"/>
       <source>Leave empty to use the default temporary directory.</source>
-      <translation type="unfinished"/>
+      <translation>空欄のままにするとデフォルトの一時ディレクトリが使用されます。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="975"/>
       <source>If it's in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>同じディレクトリにある場合</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1126"/>
       <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名の長さがこの数より大きい場合は短縮されます。デフォルトの制限を使用するには 0 のままにしてください。何をしているか分からない限り、Windows では 260 を超えないようにしてください。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2588"/>
@@ -3458,7 +3461,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2821"/>
       <source>Use built-in video player</source>
-      <translation type="unfinished"/>
+      <translation>内蔵ビデオプレーヤーを使用</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2851"/>
@@ -3468,7 +3471,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2861"/>
       <source>Show GIF player controls</source>
-      <translation type="unfinished"/>
+      <translation>GIF プレイヤーのコントロールバーを表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4364"/>
@@ -3484,13 +3487,13 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="2917"/>
       <location filename="../gui/src/settings/options-window.ui" line="4392"/>
       <source>Prev</source>
-      <translation type="unfinished"/>
+      <translation>前へ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3062"/>
       <location filename="../gui/src/settings/options-window.ui" line="4420"/>
       <source>Next</source>
-      <translation type="unfinished"/>
+      <translation>次へ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3198"/>
@@ -3554,12 +3557,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1758"/>
       <source>Thumbnail scaling</source>
-      <translation type="unfinished"/>
+      <translation>サムネイルの大きさ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1962"/>
       <source>Scale font size</source>
-      <translation type="unfinished"/>
+      <translation>フォントサイズを拡大縮小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2469"/>
@@ -3574,12 +3577,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2841"/>
       <source>Remember window geometry</source>
-      <translation type="unfinished"/>
+      <translation>ウィンドウの位置とサイズを記憶</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2914"/>
       <source>Previous media entry</source>
-      <translation type="unfinished"/>
+      <translation>前のメディアエントリ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2929"/>
@@ -3607,7 +3610,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="4047"/>
       <location filename="../gui/src/settings/options-window.ui" line="4186"/>
       <source>Enable</source>
-      <translation type="unfinished"/>
+      <translation>有効</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2964"/>
@@ -3621,7 +3624,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="4079"/>
       <location filename="../gui/src/settings/options-window.ui" line="4218"/>
       <source>Ascending from left to right</source>
-      <translation type="unfinished"/>
+      <translation>左から右への昇順</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2979"/>
@@ -3635,7 +3638,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="4088"/>
       <location filename="../gui/src/settings/options-window.ui" line="4227"/>
       <source>Position: </source>
-      <translation type="unfinished"/>
+      <translation>位置: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3008"/>
@@ -3649,7 +3652,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="4120"/>
       <location filename="../gui/src/settings/options-window.ui" line="4259"/>
       <source>Button display text</source>
-      <translation type="unfinished"/>
+      <translation>ボタンの表示テキスト</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3040"/>
@@ -3677,67 +3680,67 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="4149"/>
       <location filename="../gui/src/settings/options-window.ui" line="4288"/>
       <source>Width: </source>
-      <translation type="unfinished"/>
+      <translation>幅: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3059"/>
       <source>Next media entry</source>
-      <translation type="unfinished"/>
+      <translation>次のメディアエントリ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3195"/>
       <source>View media details</source>
-      <translation type="unfinished"/>
+      <translation>メディアの詳細を表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3334"/>
       <source>Save file with specified path</source>
-      <translation type="unfinished"/>
+      <translation>指定されたパスでファイルを保存</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3337"/>
       <source>Save As...</source>
-      <translation type="unfinished"/>
+      <translation>名前を付けて保存...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3473"/>
       <source>Save file to usual path</source>
-      <translation type="unfinished"/>
+      <translation>通常のパスにファイルを保存</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3612"/>
       <source>Save file to usual path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>通常のパスにファイルを保存してビューアウィンドウを閉じる</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3751"/>
       <source>Open usual save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>通常の保存パスをファイルブラウザで開く</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3754"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>開く</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3890"/>
       <source>Save file to favourite path</source>
-      <translation type="unfinished"/>
+      <translation>ファイルをお気に入りのパスに保存</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4029"/>
       <source>Save file to favourite path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>ファイルをお気に入りのパスに保存してビューアウィンドウを閉じる</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4168"/>
       <source>Open favourite save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りの保存パスをファイルブラウザで開く</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4171"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>開く (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4628"/>
@@ -3757,7 +3760,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4672"/>
       <source>Toggle full-screen</source>
-      <translation type="unfinished"/>
+      <translation>フルスクリーンの切替</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4684"/>
@@ -3767,7 +3770,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4700"/>
       <source>Toggle slideshow</source>
-      <translation type="unfinished"/>
+      <translation>スライドショーの切替</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4712"/>
@@ -3858,12 +3861,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4920"/>
       <source>Metas</source>
-      <translation type="unfinished"/>
+      <translation>メタ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5199"/>
       <source>Hosts</source>
-      <translation type="unfinished"/>
+      <translation>ホスト</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5205"/>
@@ -3920,7 +3923,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5464"/>
       <source>Delay on startup</source>
-      <translation type="unfinished"/>
+      <translation>起動時の遅延</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1568"/>
@@ -3954,12 +3957,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5591"/>
       <source>Use proxy</source>
-      <translation type="unfinished"/>
+      <translation>プロキシを使用</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5636"/>
       <source>HTTP</source>
-      <translation type="unfinished"/>
+      <translation>HTTP</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5641"/>
@@ -3992,7 +3995,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5700"/>
       <source>Use system-wide proxy settings</source>
-      <translation type="unfinished"/>
+      <translation>システム全体のプロキシ設定を使用</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5717"/>
@@ -4023,7 +4026,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1712"/>
       <location filename="../gui/src/settings/options-window.ui" line="5781"/>
       <source>Timeout</source>
-      <translation type="unfinished"/>
+      <translation>タイムアウト</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5804"/>
@@ -4044,17 +4047,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5891"/>
       <source>Credentials</source>
-      <translation type="unfinished"/>
+      <translation>資格情報</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5937"/>
       <source>Driver</source>
-      <translation type="unfinished"/>
+      <translation>ドライバー</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="226"/>
       <source>exiftool not found</source>
-      <translation type="unfinished"/>
+      <translation>exiftool が見つかりません</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="305"/>
@@ -4079,17 +4082,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="563"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="570"/>
       <source>Choose a save folder for favorites</source>
-      <translation type="unfinished"/>
+      <translation>お気に入り用の保存フォルダを選択</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="577"/>
       <source>Choose a temporary folder</source>
-      <translation type="unfinished"/>
+      <translation>一時フォルダを選択</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="676"/>
@@ -4099,7 +4102,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="697"/>
       <source>Add source registry</source>
-      <translation type="unfinished"/>
+      <translation>ソースレジストリを追加</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="697"/>
@@ -4132,38 +4135,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="981"/>
       <source>Save backup</source>
-      <translation type="unfinished"/>
+      <translation>バックアップを保存</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="981"/>
       <location filename="../gui/src/settings/options-window.cpp" line="999"/>
       <source>Backup file (*.zip)</source>
-      <translation type="unfinished"/>
+      <translation>バックアップファイル (*.zip)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="988"/>
       <source>Backup file created successfully.</source>
-      <translation type="unfinished"/>
+      <translation>バックアップファイルの作成に成功しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="990"/>
       <source>Error saving backup file.</source>
-      <translation type="unfinished"/>
+      <translation>バックアップファイルの保存中にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="999"/>
       <source>Load backup</source>
-      <translation type="unfinished"/>
+      <translation>バックアップを読み込む</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="1006"/>
       <source>Backup restored successfully.</source>
-      <translation type="unfinished"/>
+      <translation>バックアップは正常に復元されました。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="1008"/>
       <source>Error restoring backup.</source>
-      <translation type="unfinished"/>
+      <translation>バックアップの復元に失敗しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="1017"/>
@@ -4178,12 +4181,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="1306"/>
       <source>An error occured creating the save folder.</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダの作成中にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="1321"/>
       <source>An error occured creating the favorites save folder.</source>
-      <translation type="unfinished"/>
+      <translation>お気に入り保存フォルダの作成中にエラーが発生しました。</translation>
     </message>
   </context>
   <context>
@@ -4196,7 +4199,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/page.cpp" line="137"/>
       <source>No available API to perform the request.</source>
-      <translation type="unfinished"/>
+      <translation>リクエストを実行できる API がありません。</translation>
     </message>
   </context>
   <context>
@@ -4214,7 +4217,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="179"/>
       <source>Maybe you meant:</source>
-      <translation type="unfinished"/>
+      <translation>もしかして:</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="208"/>
@@ -4224,7 +4227,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="228"/>
       <source>Number of columns</source>
-      <translation type="unfinished"/>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="245"/>
@@ -4252,17 +4255,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="303"/>
       <source>Filename must not be empty!</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名を空欄にすることはできません！</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="308"/>
       <source>Can't validate Javascript expressions.</source>
-      <translation type="unfinished"/>
+      <translation>Javascript 式を検証できません。</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="314"/>
       <source>Can't compile your filename: %1</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名をコンパイルできません: %1</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="321"/>
@@ -4297,7 +4300,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="374"/>
       <source>Valid filename!</source>
-      <translation type="unfinished"/>
+      <translation>有効なファイル名です！</translation>
     </message>
     <message>
       <location filename="../gui/src/helpers.cpp" line="31"/>
@@ -4406,50 +4409,50 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/functions.h" line="30"/>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>B</source>
-      <translation type="unfinished"/>
+      <translation>B</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="26"/>
       <location filename="../lib/src/functions.h" line="30"/>
       <source>KB</source>
-      <translation type="unfinished"/>
+      <translation>KB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="26"/>
       <location filename="../lib/src/functions.h" line="30"/>
       <source>MB</source>
-      <translation type="unfinished"/>
+      <translation>MB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="26"/>
       <location filename="../lib/src/functions.h" line="30"/>
       <source>GB</source>
-      <translation type="unfinished"/>
+      <translation>GB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>KiB</source>
-      <translation type="unfinished"/>
+      <translation>KiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>MiB</source>
-      <translation type="unfinished"/>
+      <translation>MiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>GiB</source>
-      <translation type="unfinished"/>
+      <translation>GiB</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
       <source>Previous search result</source>
-      <translation type="unfinished"/>
+      <translation>前の検索結果</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="25"/>
       <source>Next search result</source>
-      <translation type="unfinished"/>
+      <translation>次の検索結果</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
@@ -4459,7 +4462,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="26"/>
       <source>Media details</source>
-      <translation type="unfinished"/>
+      <translation>メディアの詳細</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
@@ -4469,7 +4472,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="27"/>
       <source>Save to irregular location</source>
-      <translation type="unfinished"/>
+      <translation>不規則な場所に保存</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
@@ -4479,7 +4482,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="29"/>
       <source>Save to usual location</source>
-      <translation type="unfinished"/>
+      <translation>通常の場所に保存</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="30"/>
@@ -4515,7 +4518,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="36"/>
       <source>Already saved</source>
-      <translation type="unfinished"/>
+      <translation>既に保存済みです</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="37"/>
@@ -4530,7 +4533,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="39"/>
       <source>Save to usual location and close window</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りの場所に保存してウィンドウを閉じる</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="41"/>
@@ -4540,12 +4543,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>開く</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="43"/>
       <source>Open usual save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>通常の保存場所を新しいウィンドウで開く</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
@@ -4555,7 +4558,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="45"/>
       <source>Save to favourite location</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りの場所に保存</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="46"/>
@@ -4591,7 +4594,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="52"/>
       <source>Already saved (fav)</source>
-      <translation type="unfinished"/>
+      <translation>既に保存済みです (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="53"/>
@@ -4606,7 +4609,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="55"/>
       <source>Save to favourite location and close window</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りの場所に保存してウィンドウを閉じる</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="57"/>
@@ -4616,12 +4619,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>開く (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="59"/>
       <source>Open favourite save location in new window</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りの保存場所を新しいウィンドウで開く</translation>
     </message>
   </context>
   <context>
@@ -4630,17 +4633,17 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>既存のファイルの名前を変更</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="24"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>強制的に MD5 を計算</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="41"/>
@@ -4655,7 +4658,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
       <source>Destination filename</source>
-      <translation type="unfinished"/>
+      <translation>保存先のファイル名</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -4685,22 +4688,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名の ID を取得</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
       <source>This folder does not exist.</source>
-      <translation type="unfinished"/>
+      <translation>このフォルダは存在しません。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="68"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名から MD5 を取得したい場合は、 %md5% トークンを含める必要があります。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="73"/>
       <source>If you want to get the ID from the filename, you have to include the %id% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名から ID を取得したい場合は、 %id% トークンを含める必要があります。</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
@@ -4710,7 +4713,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
       <source>No image found when renaming image '%1'</source>
-      <translation type="unfinished"/>
+      <translation>画像 '%1' の名前を変更する際に画像が見つかりませんでした</translation>
     </message>
   </context>
   <context>
@@ -4718,12 +4721,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="14"/>
       <source>Rename existing files</source>
-      <translation type="unfinished"/>
+      <translation>既存のファイルの名前を変更</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="24"/>
       <source>The following images will be renamed.</source>
-      <translation type="unfinished"/>
+      <translation>次の画像の名前が変更されます。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-2.ui" line="49"/>
@@ -4746,7 +4749,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="30"/>
       <source>Original</source>
-      <translation type="unfinished"/>
+      <translation>オリジナル</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-table-model.cpp" line="31"/>
@@ -4759,7 +4762,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="189"/>
       <source>invalid or missing login information</source>
-      <translation type="unfinished"/>
+      <translation>ログイン情報が不正か見つかりません</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="195"/>
@@ -4769,37 +4772,37 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="201"/>
       <source>server offline</source>
-      <translation type="unfinished"/>
+      <translation>サーバーオフライン</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="206"/>
       <source>too many tags</source>
-      <translation type="unfinished"/>
+      <translation>タグが多すぎます</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="211"/>
       <source>page too far</source>
-      <translation type="unfinished"/>
+      <translation>ページが遠すぎます</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="418"/>
       <source>HTTPS redirection detected</source>
-      <translation type="unfinished"/>
+      <translation>HTTPS リダイレクトが検出されました</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="419"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation type="unfinished"/>
+      <translation>Webサイト %1 の HTTP から HTTPS へのリダイレクトが検出されました。 SSL を有効にしますか？推奨設定は「はい」です。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="421"/>
       <source>Always</source>
-      <translation type="unfinished"/>
+      <translation>常に有効</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="422"/>
       <source>Never for that website</source>
-      <translation type="unfinished"/>
+      <translation>このサイトではしない</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="423"/>
@@ -4814,13 +4817,13 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
       <source>Multiple sources</source>
-      <translation type="unfinished"/>
+      <translation>複数のソース</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
       <location filename="../gui/src/tabs/search-tab.cpp" line="818"/>
       <source>Page %1 of %2 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>ページ %1 / %2 (%3 / %4)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="770"/>
@@ -4832,12 +4835,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="785"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>結果がありません</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="786"/>
       <source>Possible reasons: %1</source>
-      <translation type="unfinished"/>
+      <translation>考えられる理由: %1</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="823"/>
@@ -4847,7 +4850,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="872"/>
       <source>Save selected</source>
-      <translation type="unfinished"/>
+      <translation>選択項目を保存</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="1095"/>
@@ -4875,32 +4878,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="40"/>
       <source>ID (ascending)</source>
-      <translation type="unfinished"/>
+      <translation>ID (昇順)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="45"/>
       <source>ID (descending)</source>
-      <translation type="unfinished"/>
+      <translation>ID (降順)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="50"/>
       <source>Score (ascending)</source>
-      <translation type="unfinished"/>
+      <translation>スコア (昇順)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="55"/>
       <source>Score (descending)</source>
-      <translation type="unfinished"/>
+      <translation>スコア (降順)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="60"/>
       <source>Megapixels (ascending)</source>
-      <translation type="unfinished"/>
+      <translation>メガピクセル (昇順)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="65"/>
       <source>Megapixels (descending)</source>
-      <translation type="unfinished"/>
+      <translation>メガピクセル (降順)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="70"/>
@@ -4910,22 +4913,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="75"/>
       <source>Landscape orientation</source>
-      <translation type="unfinished"/>
+      <translation>横向き</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="80"/>
       <source>Portrait orientation</source>
-      <translation type="unfinished"/>
+      <translation>縦向き</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="85"/>
       <source>Favorites count</source>
-      <translation type="unfinished"/>
+      <translation>お気に入りの数</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="90"/>
       <source>Rank</source>
-      <translation type="unfinished"/>
+      <translation>ランク</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="98"/>
@@ -4940,67 +4943,67 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="118"/>
       <source>General (no)</source>
-      <translation type="unfinished"/>
+      <translation>一般 (いいえ)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="123"/>
       <source>Safe</source>
-      <translation type="unfinished"/>
+      <translation>安全</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="128"/>
       <source>Safe (no)</source>
-      <translation type="unfinished"/>
+      <translation>安全 (いいえ)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="133"/>
       <source>Questionable</source>
-      <translation type="unfinished"/>
+      <translation>疑わしい</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="138"/>
       <source>Questionable (no)</source>
-      <translation type="unfinished"/>
+      <translation>疑わしい (いいえ)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="143"/>
       <source>Explicit</source>
-      <translation type="unfinished"/>
+      <translation>R18</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="148"/>
       <source>Explicit (no)</source>
-      <translation type="unfinished"/>
+      <translation>R18 (いいえ)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="158"/>
       <source>Status</source>
-      <translation type="unfinished"/>
+      <translation>状態</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="171"/>
       <source>Deleted</source>
-      <translation type="unfinished"/>
+      <translation>削除済み</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="176"/>
       <source>Active</source>
-      <translation type="unfinished"/>
+      <translation>有効</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="181"/>
       <source>Flagged</source>
-      <translation type="unfinished"/>
+      <translation>フラグ付き</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="186"/>
       <source>Pending</source>
-      <translation type="unfinished"/>
+      <translation>処理待ち</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="191"/>
       <source>All</source>
-      <translation type="unfinished"/>
+      <translation>すべて</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="199"/>
@@ -5048,7 +5051,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="36"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="78"/>
@@ -5068,7 +5071,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/settings-dock.cpp" line="46"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
   </context>
   <context>
@@ -5081,12 +5084,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="32"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>タイプ</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="44"/>
       <source>Guess</source>
-      <translation type="unfinished"/>
+      <translation>推測</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="53"/>
@@ -5101,7 +5104,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="52"/>
       <source>The url you entered is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>入力された URL は無効です。</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="78"/>
@@ -5111,12 +5114,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="114"/>
       <source>Error importing source.</source>
-      <translation type="unfinished"/>
+      <translation>ソースをインポートできませんでした。</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="124"/>
       <source>Unable to guess site's type. Are you sure about the url?</source>
-      <translation type="unfinished"/>
+      <translation>サイトのタイプを推測できません。URLは確かですか？</translation>
     </message>
   </context>
   <context>
@@ -5124,7 +5127,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="17"/>
       <source>Source registry</source>
-      <translation type="unfinished"/>
+      <translation>ソースレジストリ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="33"/>
@@ -5139,7 +5142,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
       <source>Homepage</source>
-      <translation type="unfinished"/>
+      <translation>ホームページ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="111"/>
@@ -5167,14 +5170,14 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="67"/>
       <source>Referer (default)</source>
-      <translation type="unfinished"/>
+      <translation>リファラー (デフォルト)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="75"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="111"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="147"/>
       <source>None</source>
-      <translation type="unfinished"/>
+      <translation>なし</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="80"/>
@@ -5200,7 +5203,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="98"/>
       <source>Referer (preview)</source>
-      <translation type="unfinished"/>
+      <translation>リファラー (プレビュー)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="106"/>
@@ -5211,7 +5214,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="134"/>
       <source>Referer (image)</source>
-      <translation type="unfinished"/>
+      <translation>リファラー (画像)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="162"/>
@@ -5228,17 +5231,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="57"/>
       <source>Ignore (always)</source>
-      <translation type="unfinished"/>
+      <translation>常に無視</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="47"/>
       <source>Ignore (page 1)</source>
-      <translation type="unfinished"/>
+      <translation>無視 (ページ 1)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
       <source>Use a secure connection (https)</source>
-      <translation type="unfinished"/>
+      <translation>セキュアな接続 (https) を使用</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="192"/>
@@ -5253,32 +5256,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="219"/>
       <source>Max simultaneous downloads</source>
-      <translation type="unfinished"/>
+      <translation>最大同時ダウンロード数</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="236"/>
       <source>Interval (thumbnail)</source>
-      <translation type="unfinished"/>
+      <translation>間隔 (サムネイル)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="253"/>
       <source>Interval (image)</source>
-      <translation type="unfinished"/>
+      <translation>間隔 (画像)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="270"/>
       <source>Interval (page)</source>
-      <translation type="unfinished"/>
+      <translation>間隔 (ページ)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="287"/>
       <source>Interval (details)</source>
-      <translation type="unfinished"/>
+      <translation>間隔 (詳細)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="304"/>
       <source>Interval (error)</source>
-      <translation type="unfinished"/>
+      <translation>間隔 (エラー)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="243"/>
@@ -5384,7 +5387,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="525"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>タイプ</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
@@ -5394,7 +5397,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP Basic</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
@@ -5409,7 +5412,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 1</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="571"/>
@@ -5461,37 +5464,37 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="95"/>
       <source>OAuth 2 (password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (パスワード)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="96"/>
       <source>OAuth 2 (JSON password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (JSON パスワード)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
       <source>OAuth 2 (client credentials)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2(クライアント資格情報)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
       <source>OAuth 2 (client credentials header)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (クライアント資格情報ヘッダー)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="99"/>
       <source>OAuth 2 (refresh token)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (更新トークン)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="100"/>
       <source>OAuth 2 (authorization code)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (認証コード)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="101"/>
       <source>OAuth 2 (PKCE)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (PKCE)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
@@ -5511,17 +5514,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="110"/>
       <source>Consumer key</source>
-      <translation type="unfinished"/>
+      <translation>コンシューマーキー</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>Consumer secret</source>
-      <translation type="unfinished"/>
+      <translation>コンシューマーシークレット</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
       <source>Access token</source>
-      <translation type="unfinished"/>
+      <translation>アクセストークン</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
@@ -5536,7 +5539,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="209"/>
       <source>Are you sure you want to delete the site %1?</source>
-      <translation type="unfinished"/>
+      <translation>サイト %1 を削除してもよろしいですか？</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="228"/>
@@ -5579,7 +5582,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.ui" line="48"/>
       <source>Check all</source>
-      <translation type="unfinished"/>
+      <translation>すべてをチェック</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.ui" line="174"/>
@@ -5594,7 +5597,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="304"/>
       <source>An update for this source is available.</source>
-      <translation type="unfinished"/>
+      <translation>このソースの更新が利用可能です。</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="389"/>
@@ -5623,7 +5626,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="14"/>
       <source>Sponsors</source>
-      <translation type="unfinished"/>
+      <translation>スポンサー</translation>
     </message>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
@@ -5636,7 +5639,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="17"/>
       <source>First launch</source>
-      <translation type="unfinished"/>
+      <translation>最初の起動</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
@@ -5651,7 +5654,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="48"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>フォルダ</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="60"/>
@@ -5661,7 +5664,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="69"/>
       <source>Format</source>
-      <translation type="unfinished"/>
+      <translation>書式</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="102"/>
@@ -5681,12 +5684,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.cpp" line="58"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダを選択</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.cpp" line="94"/>
       <source>An error occurred creating the save folder.</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダの作成中にエラーが発生しました。</translation>
     </message>
   </context>
   <context>
@@ -5709,17 +5712,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don't keep for later</source>
-      <translation type="unfinished"/>
+      <translation>あとで見ない</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
       <source>Keep for later</source>
-      <translation type="unfinished"/>
+      <translation>あとで見る</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don't blacklist</source>
-      <translation type="unfinished"/>
+      <translation>ブラックリストに登録しない</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
@@ -5729,7 +5732,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
       <source>Don't ignore</source>
-      <translation type="unfinished"/>
+      <translation>無視しない</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="42"/>
@@ -5782,12 +5785,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="71"/>
       <source>Loading tag types...</source>
-      <translation type="unfinished"/>
+      <translation>タグタイプを読み込み中...</translation>
     </message>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="81"/>
       <source>Error loading tag types.</source>
-      <translation type="unfinished"/>
+      <translation>タグの種類を読み込み中にエラーが発生しました。</translation>
     </message>
   </context>
   <context>
@@ -5795,7 +5798,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="14"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>タグローダー</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="87"/>
@@ -5820,7 +5823,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>完了</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
@@ -5843,7 +5846,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="169"/>
       <source>Maybe you meant:</source>
-      <translation type="unfinished"/>
+      <translation>もしかして:</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="198"/>
@@ -5858,7 +5861,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="260"/>
       <source>Number of columns</source>
-      <translation type="unfinished"/>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="267"/>
@@ -5868,7 +5871,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="354"/>
       <source>Load more results</source>
-      <translation type="unfinished"/>
+      <translation>さらに結果を読み込む</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="415"/>
@@ -5878,12 +5881,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>結果を統合(&amp;M)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
+      <translation>モニター(&amp;M)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
@@ -5903,7 +5906,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="282"/>
       <source>Monitoring an empty search</source>
-      <translation type="unfinished"/>
+      <translation>空の検索のモニタリング</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="282"/>
@@ -5913,12 +5916,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="287"/>
       <source>Monitoring a big search</source>
-      <translation type="unfinished"/>
+      <translation>大きな検索のモニタリング</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="287"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>多くの検索結果 (%1) のモニターを追加しようとしています。よろしいですか？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="323"/>
@@ -5961,12 +5964,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/ui/text-edit.cpp" line="217"/>
       <source>Ratings</source>
-      <translation type="unfinished"/>
+      <translation>評価</translation>
     </message>
     <message>
       <location filename="../gui/src/ui/text-edit.cpp" line="228"/>
       <source>Sortings</source>
-      <translation type="unfinished"/>
+      <translation>並べ替え</translation>
     </message>
     <message>
       <location filename="../gui/src/ui/text-edit.cpp" line="250"/>
@@ -5989,7 +5992,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/ui/toggle-columns-table-view.cpp" line="52"/>
       <source>Reset sorting</source>
-      <translation type="unfinished"/>
+      <translation>並べ替えのリセット</translation>
     </message>
   </context>
   <context>
@@ -5997,7 +6000,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="20"/>
       <source>If empty</source>
-      <translation type="unfinished"/>
+      <translation>空の場合</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="34"/>
@@ -6012,7 +6015,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="56"/>
       <source>Original</source>
-      <translation type="unfinished"/>
+      <translation>オリジナル</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="61"/>
@@ -6027,7 +6030,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="86"/>
       <source>Keep all tags</source>
-      <translation type="unfinished"/>
+      <translation>すべてのタグを保持</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="93"/>
@@ -6042,17 +6045,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="124"/>
       <source>Replace all tags by</source>
-      <translation type="unfinished"/>
+      <translation>すべてのタグを次で置き換え</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="141"/>
       <source>One file per tag</source>
-      <translation type="unfinished"/>
+      <translation>タグごとに1つのファイル</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="148"/>
       <source>Use shortest if possible</source>
-      <translation type="unfinished"/>
+      <translation>可能であれば最短のものを使う</translation>
     </message>
   </context>
   <context>
@@ -6060,12 +6063,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="14"/>
       <source>Updater</source>
-      <translation type="unfinished"/>
+      <translation>更新</translation>
     </message>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="33"/>
       <source>A new version is available.&lt;br/&gt;Do you want to update now?</source>
-      <translation type="unfinished"/>
+      <translation>新しいバージョンが利用可能です。&lt;br/&gt;今すぐ更新しますか？</translation>
     </message>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="53"/>
@@ -6109,44 +6112,46 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="451"/>
       <source>Copy link</source>
-      <translation type="unfinished"/>
+      <translation>リンクをコピー</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>
       <source>Folder does not exist</source>
-      <translation type="unfinished"/>
+      <translation>フォルダが存在しません</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>
       <source>The save folder does not exist yet. Create it?</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダはまだ存在しません。作成しますか？</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="542"/>
       <source>Error creating folder.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>フォルダの作成中にエラーが発生しました。
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="794"/>
       <source>File is too big to be displayed.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>ファイルが大きすぎて表示できません。
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="797"/>
       <source>File not found.</source>
-      <translation type="unfinished"/>
+      <translation>ファイルが見つかりません。</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
       <source>Video</source>
-      <translation type="unfinished"/>
+      <translation>動画</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
       <source>Animation</source>
-      <translation type="unfinished"/>
+      <translation>アニメーション</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="799"/>
@@ -6156,7 +6161,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="801"/>
       <source>Error loading the image's details.</source>
-      <translation type="unfinished"/>
+      <translation>画像の詳細を読み込み中にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="803"/>
@@ -6195,7 +6200,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Web service</source>
-      <translation type="unfinished"/>
+      <translation>Webサービス</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>

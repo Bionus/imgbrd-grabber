@@ -1607,7 +1607,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>每当图片保存时，一个文本文件将储存在相同的地方，包含这个图片的标签。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>

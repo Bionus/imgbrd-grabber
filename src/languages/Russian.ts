@@ -133,7 +133,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="59"/>
       <source>Browse</source>
-      <translation>Изменить</translation>
+      <translation>Обзор</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.cpp" line="82"/>
@@ -146,12 +146,12 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="20"/>
       <source>Batch download</source>
-      <translation>Массовая загрузка</translation>
+      <translation>Загрузка пачкой</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="84"/>
       <source>Batch</source>
-      <translation>Группа</translation>
+      <translation>Пачка</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="89"/>
@@ -683,7 +683,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Copy to monitors</source>
-      <translation type="unfinished"/>
+      <translation>Копировать в мониторы</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="127"/>
@@ -769,7 +769,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="587"/>
       <source>Don't ask me again</source>
-      <translation>Не спрашивать снова</translation>
+      <translation>Больше не спрашивать</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="624"/>
@@ -900,7 +900,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="14"/>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.cpp" line="33"/>
       <source>Empty folders fixer</source>
-      <translation>Фиксер пустых папок</translation>
+      <translation>Наладчик пустых папок</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="24"/>
@@ -930,7 +930,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="44"/>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>Empty folders fixer</source>
-      <translation>Фиксер пустых папок</translation>
+      <translation>Наладчик пустых папок</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="24"/>
@@ -1509,7 +1509,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>Копировать все теги</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -1640,7 +1640,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Каждый раз при сохранении изображения с тем же именем в той же папке будет создаваться текстовый файл, содержащий его теги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1661,7 +1661,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="39"/>
       <location filename="../gui/src/settings/log-window.cpp" line="55"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Выберите папку для сохранения</translation>
     </message>
   </context>
   <context>
@@ -1680,7 +1680,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="89"/>
       <source>Tools</source>
-      <translation>Инструменты</translation>
+      <translation>Сервис</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="102"/>
@@ -1769,7 +1769,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="330"/>
       <source>Empty folders fixer</source>
-      <translation>Фиксер пустых папок</translation>
+      <translation>Наладчик пустых папок</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="375"/>
@@ -1779,7 +1779,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="380"/>
       <source>MD5 list fixer</source>
-      <translation>Фиксер списка MD5 сумм</translation>
+      <translation>Наладчик списка MD5-сумм</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="389"/>
@@ -1869,7 +1869,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="281"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Мониторинг Grabber</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
@@ -1879,7 +1879,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="772"/>
       <source>Don't ask me again</source>
-      <translation>Не спрашивать снова</translation>
+      <translation>Больше не спрашивать</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="926"/>
@@ -1945,7 +1945,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="14"/>
       <source>Md5 list fixer</source>
-      <translation>Фиксер списка md5</translation>
+      <translation>Наладчик списка MD5-сумм</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
@@ -2023,12 +2023,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Поиск</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Теги</translation>
     </message>
   </context>
   <context>
@@ -2086,7 +2086,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="55"/>
       <source>Last success</source>
-      <translation type="unfinished"/>
+      <translation>Последнее успешное выполнение</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
@@ -2264,7 +2264,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="84"/>
       <source>Copy to downloads</source>
-      <translation type="unfinished"/>
+      <translation>Копировать в загрузки</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="87"/>
@@ -2936,7 +2936,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2154"/>
       <source>Show filtered images count</source>
-      <translation type="unfinished"/>
+      <translation>Показывать число отфильтрованных изображений</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2369"/>
@@ -2977,38 +2977,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5517"/>
       <source>Add sources with no results to monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Добавить источники без результатов в мониторинг</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5524"/>
       <source>Default monitor settings</source>
-      <translation type="unfinished"/>
+      <translation>Стандартные параметры монитора</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5530"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Интервал</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5537"/>
       <location filename="../gui/src/settings/options-window.ui" line="5554"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> мин</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5547"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Задержка</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5564"/>
       <source>Notification enabled</source>
-      <translation type="unfinished"/>
+      <translation>Уведомление включено</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5574"/>
       <source>Download enabled</source>
-      <translation type="unfinished"/>
+      <translation>Загрузка включена</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5954"/>
@@ -3191,7 +3191,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2055"/>
       <source>Scroll</source>
-      <translation>Прокруткой</translation>
+      <translation>Колесом</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2063"/>
@@ -3231,12 +3231,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2132"/>
       <source>Invert Click and Ctrl+Click actions</source>
-      <translation>Инвертировать действия нажатия и Ctrl+нажатие</translation>
+      <translation>Обратить действия щелчка и Ctrl+щелчок</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2144"/>
       <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
-      <translation>Если эта опция включена, нажатие на изображение пометить его для загрузки, в то время как Ctrl+Click откроет окно с деталями.</translation>
+      <translation>Если этот параметр включён, щелчок на изображение пометит его для загрузки, а Ctrl+щелчок откроет окно с подробностями.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2204"/>
@@ -3565,13 +3565,13 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="2917"/>
       <location filename="../gui/src/settings/options-window.ui" line="4392"/>
       <source>Prev</source>
-      <translation>Пред.</translation>
+      <translation>Предыдущий</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3062"/>
       <location filename="../gui/src/settings/options-window.ui" line="4420"/>
       <source>Next</source>
-      <translation>След.</translation>
+      <translation>Следующий</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3198"/>
@@ -4020,17 +4020,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5490"/>
       <source>Minimize to tray</source>
-      <translation>Свернуть в трей</translation>
+      <translation>Сворачивать в трей</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5500"/>
       <source>Close to tray</source>
-      <translation>Скрыть в трей при закрытии</translation>
+      <translation>Скрывать в трей при закрытии</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5507"/>
       <source>Enable system tray icon</source>
-      <translation>Показывать иконку в системном трее</translation>
+      <translation>Показывать значок в трее</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5591"/>
@@ -5081,7 +5081,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="181"/>
       <source>Flagged</source>
-      <translation>Помеченно</translation>
+      <translation>Помечено</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="186"/>
@@ -5470,7 +5470,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="519"/>
       <source>Login</source>
-      <translation>Войти</translation>
+      <translation>Вход</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="525"/>
@@ -5647,7 +5647,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="249"/>
       <source>Unable to test</source>
-      <translation>Не получилось протестировать</translation>
+      <translation>Не удалось проверить</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="341"/>
@@ -5714,12 +5714,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="14"/>
       <source>Sponsors</source>
-      <translation type="unfinished"/>
+      <translation>Спонсоры</translation>
     </message>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
       <source>Note that being shown here is opt-in. If you have donated but can't find your name here, please ping me and I'll add your name !</source>
-      <translation type="unfinished"/>
+      <translation>Обратите внимание, что ваше имя отобразится здесь только по вашему желанию. Если вы сделали пожертвование, но не можете найти своё имя здесь, пожалуйста, напишите мне, и я его добавлю!</translation>
     </message>
   </context>
   <context>
@@ -5800,7 +5800,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don't keep for later</source>
-      <translation>Не оставлять на потом</translation>
+      <translation>Убрать из оставленного на потом</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
@@ -5917,10 +5917,10 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
       <translation>
-        <numerusform>%n тег загружен</numerusform>
-        <numerusform>%n тега загружено</numerusform>
-        <numerusform>%n тегов загружено</numerusform>
-        <numerusform>%n тегов загружено</numerusform>
+        <numerusform>загружено %n тег</numerusform>
+        <numerusform>загружено %n тега</numerusform>
+        <numerusform>загружено %n тегов</numerusform>
+        <numerusform>загружено %n тегов</numerusform>
       </translation>
     </message>
   </context>
@@ -5974,12 +5974,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Объединить &amp;результаты</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
       <source>&amp;Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Мони&amp;тор</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="482"/>
@@ -6148,7 +6148,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="148"/>
       <source>Use shortest if possible</source>
-      <translation>Использовать самые короткие теги если возможно</translation>
+      <translation>Использовать кратчайшие теги по возможности</translation>
     </message>
   </context>
   <context>

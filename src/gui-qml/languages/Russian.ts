@@ -417,7 +417,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
       <source>Automatically load next page of results.</source>
-      <translation type="unfinished"/>
+      <translation>Автоподгружать следующую страницу результатов.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
@@ -555,7 +555,7 @@
     <message>
       <location filename="../src/components/MainDrawer.qml" line="118"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Источники</translation>
     </message>
     <message>
       <location filename="../src/components/MainDrawer.qml" line="124"/>
@@ -696,12 +696,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Общий</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="79"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>Автор</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="87"/>
@@ -845,7 +845,7 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="154"/>
       <source>API order</source>
-      <translation>Через API</translation>
+      <translation>Порядок API</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="163"/>
@@ -921,7 +921,7 @@
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="11"/>
       <source>API order</source>
-      <translation>Через API</translation>
+      <translation>Порядок API</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="14"/>
@@ -990,7 +990,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="101"/>
       <source>Use shortest if possible</source>
-      <translation>Использовать самые короткие теги если возможно</translation>
+      <translation>Использовать кратчайшие теги по возможности</translation>
     </message>
   </context>
   <context>
