@@ -350,7 +350,12 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображення. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -734,7 +739,12 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="421"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Отримання %n завантаження</numerusform>
+        <numerusform>Отримання %n завантажень</numerusform>
+        <numerusform>Отримання %n завантажень</numerusform>
+        <numerusform>Отримання %n завантажень</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="473"/>
@@ -816,37 +826,72 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл успішно завантажено.</numerusform>
+        <numerusform>%n файли успішно завантажено.</numerusform>
+        <numerusform>%n файлів успішно завантажено.</numerusform>
+        <numerusform>%n файлів успішно завантажено.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1124"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл оминуто.</numerusform>
+        <numerusform>%n файли оминуто.</numerusform>
+        <numerusform>%n файлів оминуто.</numerusform>
+        <numerusform>%n файлів оминуто.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1125"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл уже існує.</numerusform>
+        <numerusform>%n файли уже існують.</numerusform>
+        <numerusform>%n файлів уже існують.</numerusform>
+        <numerusform>%n файлів уже існують.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1126"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл не знайдено на сервері.</numerusform>
+        <numerusform>%n файли не знайдено на сервері.</numerusform>
+        <numerusform>%n файлів не знайдено на сервері.</numerusform>
+        <numerusform>%n файлів не знайдено на сервері.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1127"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл пропущено.</numerusform>
+        <numerusform>%n файли пропущено.</numerusform>
+        <numerusform>%n файлів пропущено.</numerusform>
+        <numerusform>%n файлів пропущено.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1128"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл пропущено від попереднього завантаження.</numerusform>
+        <numerusform>%n файли пропущено від попереднього завантаження.</numerusform>
+        <numerusform>%n файлів пропущено від попереднього завантаження.</numerusform>
+        <numerusform>%n файлів пропущено від попереднього завантаження.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1129"/>
       <source>%n error(s).</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n помилка.</numerusform>
+        <numerusform>%n помилки.</numerusform>
+        <numerusform>%n помилок.</numerusform>
+        <numerusform>%n помилок.</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -910,7 +955,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Ви збираєтеся видалити %n теку. Упевнені, що хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтеся видалити %n теки. Упевнені, що хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтеся видалити %n тек. Упевнені, що хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтеся видалити %n тек. Упевнені, що хочете продовжити?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1411,7 +1461,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="1128"/>
       <source>Source(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Джерело</numerusform>
+        <numerusform>Джерела</numerusform>
+        <numerusform>Джерел</numerusform>
+        <numerusform>Джерел</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1129"/>
@@ -1459,7 +1514,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
       <source>Copy all tags (with namespaces)</source>
-      <translation type="unfinished"/>
+      <translation>Копіювати всі мітки (з просторами імен)</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="26"/>
@@ -1526,17 +1581,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation type="unfinished"/>
+      <translation>Очистити журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation type="unfinished"/>
+      <translation>Відкрити журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation type="unfinished"/>
+      <translation>Відкрити теку журналу</translation>
     </message>
   </context>
   <context>
@@ -1877,7 +1932,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n md5 перетворено (з %1)</numerusform>
+        <numerusform>%n md5 перетворено (з %1)</numerusform>
+        <numerusform>%n md5 перетворено (з %1)</numerusform>
+        <numerusform>%n md5 перетворено (з %1)</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1950,7 +2010,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n MD5 завантажено</numerusform>
+        <numerusform>%n MD5 завантажено</numerusform>
+        <numerusform>%n MD5 завантажено</numerusform>
+        <numerusform>%n MD5 завантажено</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -2026,7 +2091,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
       <source>%n time(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n раз</numerusform>
+        <numerusform>%n рази</numerusform>
+        <numerusform>%n разів</numerusform>
+        <numerusform>%n разів</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -2149,12 +2219,22 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n нове зображення знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>%n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>%n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>%n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Понад %n нового зображення знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>Понад %n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>Понад %n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>Понад %n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -2882,17 +2962,17 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
       <location filename="../gui/src/settings/options-window.ui" line="5108"/>
       <source>Border</source>
-      <translation type="unfinished"/>
+      <translation>Границя</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5382"/>
       <source>Hide images containing a blacklisted tag from results</source>
-      <translation type="unfinished"/>
+      <translation>Приховати з результатів зображення з міткою у чорному списку</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5389"/>
       <source>Warn before opening images containing a blacklisted tag</source>
-      <translation type="unfinished"/>
+      <translation>Попереджати перед відкриттям зображення з мітками в чорному списку</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5517"/>
@@ -2975,133 +3055,133 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Format conversion</source>
-      <translation type="unfinished"/>
+      <translation>Перетворення формату</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="638"/>
       <source>Use Qt default User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>Користати типові для Qt дані браузера</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="648"/>
       <source>User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>Дані браузера</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="899"/>
       <source>Retry failed downloads</source>
-      <translation type="unfinished"/>
+      <translation>Повторити невдалі завантаження</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="906"/>
       <source> time(s)</source>
-      <translation type="unfinished"/>
+      <translation> раз(ів)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1299"/>
       <location filename="../gui/src/settings/options-window.ui" line="1352"/>
       <source>Clear existing metadata</source>
-      <translation type="unfinished"/>
+      <translation>Очистити існуючі метадані</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1362"/>
       <source>Try to preserve color profile</source>
-      <translation type="unfinished"/>
+      <translation>Намагатися берегти профіль кольорів</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1372"/>
       <source>Sidecar files</source>
-      <translation type="unfinished"/>
+      <translation>Побічні файли</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1388"/>
       <source>On error</source>
-      <translation type="unfinished"/>
+      <translation>При помилці</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1393"/>
       <source>Both sidecar and original</source>
-      <translation type="unfinished"/>
+      <translation>І побічний, і джерело</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1398"/>
       <source>Only sidecar</source>
-      <translation type="unfinished"/>
+      <translation>Лише побічний</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1406"/>
       <source>Do not include original extension in sidecar file names</source>
-      <translation type="unfinished"/>
+      <translation>Не включати джерельне розширення у назвах побічних файлів</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>FFmpeg version</source>
-      <translation type="unfinished"/>
+      <translation>Версія FFmpeg</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>ImageMagick version</source>
-      <translation type="unfinished"/>
+      <translation>Версія ImageMagick</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1541"/>
       <source>Video conversion</source>
-      <translation type="unfinished"/>
+      <translation>Перетворення видива</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1547"/>
       <source>Remux WEBM files to MP4 when possible</source>
-      <translation type="unfinished"/>
+      <translation>Ремультиплексація WEBM файлів до MP4, коли можливо</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1554"/>
       <source>Convert WEBM files to MP4</source>
-      <translation type="unfinished"/>
+      <translation>Перетворення файлів WEBM до MP4</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1590"/>
       <source>Image conversion</source>
-      <translation type="unfinished"/>
+      <translation>Перетворення зображення</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1596"/>
       <source>Back-end</source>
-      <translation type="unfinished"/>
+      <translation>Back-end</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1620"/>
       <source>Add new image conversion</source>
-      <translation type="unfinished"/>
+      <translation>Додати нове перетворення зображень</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1656"/>
       <source>Ugoira (ZIP) conversion</source>
-      <translation type="unfinished"/>
+      <translation>Перетворення Ugoira (ZIP)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1662"/>
       <source>Convert ugoira ZIP files</source>
-      <translation type="unfinished"/>
+      <translation>Перетворення файлів Ugoira</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1669"/>
       <source>Target format</source>
-      <translation type="unfinished"/>
+      <translation>Цільовий формат</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1705"/>
       <source>Delete original file on success</source>
-      <translation type="unfinished"/>
+      <translation>Видалити джерельний файл по успіху</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1778"/>
       <source>Use bigger thumbnail sizes as needed when available</source>
-      <translation type="unfinished"/>
+      <translation>Користати більший передпрогляд за потреби, коли можливо</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2003"/>
       <source>Base style</source>
-      <translation type="unfinished"/>
+      <translation>Основний стиль</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2050"/>
@@ -4123,12 +4203,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="150"/>
       <source>FFmpeg not found</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg не знайдено</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="165"/>
       <source>ImageMagick not found</source>
-      <translation type="unfinished"/>
+      <translation>ImageMagick не знайдено</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="981"/>
@@ -4349,12 +4429,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="203"/>
       <source>expression '%1' ('%2') does not match</source>
-      <translation type="unfinished"/>
+      <translation>вираз '%1' ('%2') не збігається</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="206"/>
       <source>expression '%1' ('%2') match</source>
-      <translation type="unfinished"/>
+      <translation>вираз '%1' ('%2') збігається</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="215"/>
@@ -4706,7 +4786,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображення. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4858,7 +4943,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1095"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n мітку із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
+        <numerusform>%n мітки із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
+        <numerusform>%n міток із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
+        <numerusform>%n міток із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -5432,7 +5522,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="598"/>
       <source>Clear other cookies</source>
-      <translation type="unfinished"/>
+      <translation>Очистити інші репʼяшки</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="606"/>
@@ -5447,7 +5537,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="658"/>
       <source>Open in WebView</source>
-      <translation type="unfinished"/>
+      <translation>Відкрити в WebView</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="678"/>
@@ -5642,7 +5732,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</source>
-      <translation type="unfinished"/>
+      <translation>Перед початком, застосунок потребує трохи даних для правильної роботи. Ви можете пропустити цей крок, і ці дані будуть запитані пізніше.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="41"/>
@@ -5740,12 +5830,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="47"/>
       <source>Don't remove</source>
-      <translation type="unfinished"/>
+      <translation>Не вилучати</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Вилучити</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -5760,7 +5850,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="57"/>
       <source>Copy all tags (with namespaces)</source>
-      <translation type="unfinished"/>
+      <translation>Копіювати всі мітки (з просторами імен)</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="62"/>
@@ -5826,7 +5916,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n мітку завантажено</numerusform>
+        <numerusform>%n мітки завантажено</numerusform>
+        <numerusform>%n міток завантажено</numerusform>
+        <numerusform>%n міток завантажено</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -6214,12 +6309,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="14"/>
       <source>Web view</source>
-      <translation type="unfinished"/>
+      <translation>Веб-перегляд</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="49"/>
       <source>Go</source>
-      <translation type="unfinished"/>
+      <translation>Вперед</translation>
     </message>
   </context>
   <context>
