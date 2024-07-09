@@ -1581,17 +1581,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation type="unfinished"/>
+      <translation>Очистить файл журнала</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation type="unfinished"/>
+      <translation>Открыть файл журнала</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation type="unfinished"/>
+      <translation>Открыть папку журнала</translation>
     </message>
   </context>
   <context>
@@ -2962,7 +2962,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
       <location filename="../gui/src/settings/options-window.ui" line="5108"/>
       <source>Border</source>
-      <translation type="unfinished"/>
+      <translation>Рамка</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5382"/>
@@ -3070,7 +3070,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="899"/>
       <source>Retry failed downloads</source>
-      <translation type="unfinished"/>
+      <translation>Повторить неудачные загрузки</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="906"/>
@@ -3081,7 +3081,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1299"/>
       <location filename="../gui/src/settings/options-window.ui" line="1352"/>
       <source>Clear existing metadata</source>
-      <translation type="unfinished"/>
+      <translation>Очистить существующие метаданные</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1362"/>
@@ -3096,7 +3096,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1388"/>
       <source>On error</source>
-      <translation type="unfinished"/>
+      <translation>При ошибке</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1393"/>
@@ -3166,7 +3166,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1669"/>
       <source>Target format</source>
-      <translation type="unfinished"/>
+      <translation>Целевой формат</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1705"/>
@@ -3181,7 +3181,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2003"/>
       <source>Base style</source>
-      <translation type="unfinished"/>
+      <translation>Основной стиль</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2050"/>
@@ -4203,7 +4203,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="150"/>
       <source>FFmpeg not found</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg не найден</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="165"/>
@@ -5522,7 +5522,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="598"/>
       <source>Clear other cookies</source>
-      <translation type="unfinished"/>
+      <translation>Очистить прочие куки</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="606"/>
@@ -5830,12 +5830,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="47"/>
       <source>Don't remove</source>
-      <translation type="unfinished"/>
+      <translation>Не убирать</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
