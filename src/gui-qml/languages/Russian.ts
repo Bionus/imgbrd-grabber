@@ -358,7 +358,7 @@
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>Нет результатов</translation>
     </message>
   </context>
   <context>
@@ -711,7 +711,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="95"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>Персонаж</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="103"/>
