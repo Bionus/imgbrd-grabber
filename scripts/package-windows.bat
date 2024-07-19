@@ -13,9 +13,9 @@ copy %Qt6_Dir%\lib\qscintilla2_qt6.dll "release"
 copy %Qt6_Dir%\bin\Qt6PrintSupport.dll "release"
 
 :: Add OpenSSL and MySQL DLL
-copy %OPENSSL_ROOT_DIR%/libcrypto-3*.dll "release"
-copy %OPENSSL_ROOT_DIR%/libssl-3*.dll "release"
-copy %MYSQL_DRIVER_DIR%/libmysql.dll "release"
+copy %OPENSSL_ROOT_DIR%\libcrypto-3*.dll "release"
+copy %OPENSSL_ROOT_DIR%\libssl-3*.dll "release"
+copy %MYSQL_DRIVER_DIR%\libmysql.dll "release"
 
 :: Zip the whole directory
 pushd release
