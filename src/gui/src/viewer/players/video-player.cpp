@@ -31,7 +31,9 @@ VideoPlayer::VideoPlayer(QSettings *settings, QWidget *parent)
 		ui->buttonPlayPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
 		connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
 		connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
-		connect(ui->sliderVolume, &QSlider::valueChanged, m_audioOutput, &QAudioOutput::setVolume);
+		connect(ui->sliderVolume, &QSlider::valueChanged, [&](int value) {
+			m_audioOutput->setVolume(float(value) / 100);
+		});
 	} else {
 		ui->controls->hide();
 	}
