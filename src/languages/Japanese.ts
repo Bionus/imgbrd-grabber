@@ -4835,7 +4835,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="785"/>
       <source>No result</source>
-      <translation>結果がありません</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="786"/>
