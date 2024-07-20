@@ -292,6 +292,7 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	}
 
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
+	request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
 	return request;
 }
 

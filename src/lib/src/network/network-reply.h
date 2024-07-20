@@ -44,6 +44,7 @@ class NetworkReply : public QObject
 	signals:
 		void readyRead();
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+		void redirected(const QUrl &url);
 		void finished();
 
 	private:
