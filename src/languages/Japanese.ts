@@ -1533,12 +1533,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation type="unfinished"/>
+      <translation>ログファイルを開く</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation type="unfinished"/>
+      <translation>ログフォルダを開く</translation>
     </message>
   </context>
   <context>
@@ -2884,7 +2884,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
       <location filename="../gui/src/settings/options-window.ui" line="5108"/>
       <source>Border</source>
-      <translation type="unfinished"/>
+      <translation>外枠</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5382"/>
@@ -2977,7 +2977,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Format conversion</source>
-      <translation type="unfinished"/>
+      <translation>フォーマット変換</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="638"/>
@@ -2987,7 +2987,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="648"/>
       <source>User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>User-Agent</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="899"/>
@@ -3013,7 +3013,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1372"/>
       <source>Sidecar files</source>
-      <translation type="unfinished"/>
+      <translation>サイドカーファイル</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1388"/>
@@ -3038,12 +3038,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>FFmpeg version</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg バージョン</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>ImageMagick version</source>
-      <translation type="unfinished"/>
+      <translation>ImageMagick バージョン</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1541"/>
@@ -3572,7 +3572,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2831"/>
       <source>Remember button drawer state</source>
-      <translation type="unfinished"/>
+      <translation>ボタンドロワーの状態を記憶</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2841"/>
@@ -4125,12 +4125,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="150"/>
       <source>FFmpeg not found</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg が見つかりません</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="165"/>
       <source>ImageMagick not found</source>
-      <translation type="unfinished"/>
+      <translation>ImageMagick が見つかりません</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="981"/>
@@ -4835,7 +4835,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="785"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>検索結果がありません</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="786"/>
@@ -5449,7 +5449,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="658"/>
       <source>Open in WebView</source>
-      <translation type="unfinished"/>
+      <translation>WebView で開く</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="678"/>
@@ -5747,7 +5747,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>削除</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -6092,7 +6092,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
       <source>Expand button drawer</source>
-      <translation type="unfinished"/>
+      <translation>ボタンドロワーを展開</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="443"/>
