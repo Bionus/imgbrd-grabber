@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
 	}
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
+	qRegisterMetaType<ButtonSettings>();
+	qRegisterMetaType<QList<ButtonSettings>>();
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY

@@ -4,9 +4,8 @@
 #include <QList>
 #include <QMetaType>
 #include <QString>
+#include "custom-buttons/state.h"
 
-
-class ButtonState;
 
 class ButtonSettings
 {
