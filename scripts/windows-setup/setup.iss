@@ -216,8 +216,8 @@ Source: "{#SrcDir}\sites\Gelbooru (0.2)\icon.png";     DestDir: "{app}\sites\Gel
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\model.js";     DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{app}\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Gfycat\downloader.spec.ts";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Gfycat\downloader.ts";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Gfycat\downloader.spec.js";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Gfycat\downloader.js";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gfycat\resources\data.json";     DestDir: "{app}\sites\Gfycat\resources"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Hentai Cosplays\model.js";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Hentai Cosplays\sites.txt";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
