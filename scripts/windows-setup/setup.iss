@@ -216,6 +216,13 @@ Source: "{#SrcDir}\sites\Gelbooru (0.2)\icon.png";     DestDir: "{app}\sites\Gel
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\model.js";     DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{app}\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{app}\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Gfycat\downloader.spec.ts";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Gfycat\downloader.ts";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Gfycat\resources\data.json";     DestDir: "{app}\sites\Gfycat\resources"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Hentai Cosplays\model.ts";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Hentai Cosplays\sites.txt";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Hentai Cosplays\supported.txt";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Hentai Cosplays\hentai-cosplays.com\defaults.ini"; DestDir: "{app}\sites\Hentai Cosplays\hentai-cosplays.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Kemono\icon.png";      DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Kemono\model.js";      DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Kemono\sites.txt";     DestDir: "{app}\sites\Kemono"; Flags: ignoreversion
@@ -253,12 +260,27 @@ Source: "{#SrcDir}\sites\Reddit\www.reddit.com\defaults.ini";              DestD
 Source: "{#SrcDir}\sites\Rule34.us Gelbooru\icon.png";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Rule34.us Gelbooru\model.js";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Rule34.us Gelbooru\sites.txt";     DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\icon.png";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\model.ts";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\sites.txt";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\supported.txt";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\chan.sankakucomplex.com\defaults.ini"; DestDir: "{app}\sites\Sankaku\chan.sankakucomplex.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\chan.sankakucomplex.com\tag-types.txt"; DestDir: "{app}\sites\Sankaku\chan.sankakucomplex.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\idol.sankakucomplex.com\defaults.ini"; DestDir: "{app}\sites\Sankaku\idol.sankakucomplex.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\idol.sankakucomplex.com\tag-types.txt"; DestDir: "{app}\sites\Sankaku\idol.sankakucomplex.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Slushe\icon.png";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Slushe\model.ts";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Slushe\sites.txt";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Slushe\supported.txt";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Slushe\slushe.com\defaults.ini"; DestDir: "{app}\sites\Slushe\slushe.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\icon.png";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\model.js";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\sites.txt";  DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Tumblr\model.js";   DestDir: "{app}\sites\Tumblr"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Tumblr\sites.txt";  DestDir: "{app}\sites\Tumblr"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\icon.png";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\model.js";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\sites.txt";  DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
