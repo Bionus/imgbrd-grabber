@@ -219,7 +219,7 @@ Source: "{#SrcDir}\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{a
 Source: "{#SrcDir}\sites\Gfycat\downloader.spec.ts";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gfycat\downloader.ts";     DestDir: "{app}\sites\Gfycat"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Gfycat\resources\data.json";     DestDir: "{app}\sites\Gfycat\resources"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Hentai Cosplays\model.ts";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Hentai Cosplays\model.js";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Hentai Cosplays\sites.txt";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Hentai Cosplays\supported.txt";     DestDir: "{app}\sites\Hentai Cosplays"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Hentai Cosplays\hentai-cosplays.com\defaults.ini"; DestDir: "{app}\sites\Hentai Cosplays\hentai-cosplays.com"; Flags: ignoreversion
@@ -261,7 +261,7 @@ Source: "{#SrcDir}\sites\Rule34.us Gelbooru\icon.png";      DestDir: "{app}\site
 Source: "{#SrcDir}\sites\Rule34.us Gelbooru\model.js";      DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Rule34.us Gelbooru\sites.txt";     DestDir: "{app}\sites\Rule34.us Gelbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Sankaku\icon.png";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Sankaku\model.ts";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Sankaku\model.js";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Sankaku\sites.txt";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Sankaku\supported.txt";     DestDir: "{app}\sites\Sankaku"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Sankaku\chan.sankakucomplex.com\defaults.ini"; DestDir: "{app}\sites\Sankaku\chan.sankakucomplex.com"; Flags: ignoreversion
@@ -272,7 +272,7 @@ Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Fl
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Slushe\icon.png";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Slushe\model.ts";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Slushe\model.js";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Slushe\sites.txt";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Slushe\supported.txt";     DestDir: "{app}\sites\Slushe"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Slushe\slushe.com\defaults.ini"; DestDir: "{app}\sites\Slushe\slushe.com"; Flags: ignoreversion
