@@ -38,8 +38,8 @@ if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 endif()
 
 # Qt libraries
-find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml OPTIONAL_COMPONENTS WebEngineCore WebEngineWidgets REQUIRED)
-set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::Widgets Qt6::Xml)
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml NetworkAuth OPTIONAL_COMPONENTS WebEngineCore WebEngineWidgets REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::Widgets Qt6::Xml Qt6::NetworkAuth)
 
 # Optional WebEngine components
 if(FALSE AND TARGET Qt6::WebEngineCore AND TARGET Qt6::WebEngineWidgets)
