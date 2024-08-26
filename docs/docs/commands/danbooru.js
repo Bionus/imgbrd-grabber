@@ -43,7 +43,7 @@ async function createPost(id, tags, rating, source) {
         const form = new FormData();
         form.append("upload_media_asset_id", id);
         form.append("post[tag_string]", tags);
-        //G, S, Q, or E
+        //g, s, q, or e
         form.append("post[rating]", rating.charAt(0).toLowerCase());
         form.append("post[source]", source);
 
