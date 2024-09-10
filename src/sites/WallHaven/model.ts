@@ -1,6 +1,7 @@
-function parseSearch(search: string): { query: string, purity: string, order: string, sort: string, ratios: string[] } {
+function parseSearch(search: string): { query: string, purity: string, category: string, order: string, sort: string, ratios: string[] } {
     let query: string = "";
     let purity: string = "111";
+    let category: string = "111";
     let order: string = "date_added";
     let sort: string = "desc";
     const ratios: string[] = [];
@@ -11,6 +12,9 @@ function parseSearch(search: string): { query: string, purity: string, order: st
         } else if (tag.indexOf("-rating:") === 0) {
             const val = tag.substr(8);
             purity = val === "s" || val === "safe" ? "011" : (val === "e" || val === "explicit" ? "110" : "101");
+        } else if (tag.indexOf("category_wallhaven:") === 0) {
+            const val = tag.substr(19);
+            category = val === "anime" ? "010" : (val === "people" ? "001" : "100");
         } else if (tag.indexOf("order:") === 0) {
             const val = tag.substr(6);
             if (val.substr(-5) === "_desc") {
@@ -29,12 +33,12 @@ function parseSearch(search: string): { query: string, purity: string, order: st
             query += (query ? " " : "") + tag;
         }
     }
-    return { query, purity, order, sort, ratios }
+    return { query, purity, category, order, sort, ratios }
 }
 
 export const source: ISource = {
     name: "WallHaven",
-    modifiers: ["rating:s", "rating:safe", "rating:q", "rating:questionable", "rating:e", "rating:explicit", "order:relevance", "order:random", "order:date_added", "order:views", "order:favorites",  "order:toplist", "order:hot"],
+    modifiers: ["rating:s", "rating:safe", "rating:q", "rating:questionable", "rating:e", "rating:explicit", "order:relevance", "order:random", "order:date_added", "order:views", "order:favorites",  "order:toplist", "order:hot", "category_wallhaven:general", "category_wallhaven:anime", "category_wallhaven:people"],
     forcedTokens: ["tags"],
     auth: {
         url: {
@@ -58,6 +62,7 @@ export const source: ISource = {
                     const params: Record<string, any> = {
                         q: search.query,
                         purity: search.purity,
+                        categories: search.category,
                         page: query.page,
                         sorting: search.order,
                         order: search.sort,
