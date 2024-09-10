@@ -353,12 +353,13 @@
       <location filename="../src/components/GalleryScreen.qml" line="130"/>
       <source>Page %1 of %2
 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>ページ %1 / %2
+(%3 / %4)</translation>
     </message>
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>検索結果がありません</translation>
     </message>
   </context>
   <context>
@@ -701,22 +702,22 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="79"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>アーティスト</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="87"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>著作権</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="95"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>キャラクター</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="103"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>モデル</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="111"/>
@@ -731,7 +732,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>メタ</translation>
     </message>
   </context>
   <context>
@@ -754,12 +755,13 @@
       <location filename="../src/components/SearchScreen.qml" line="217"/>
       <source>Page %1 of %2
 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>ページ %1 / %2
+(%3 / %4)</translation>
     </message>
     <message>
       <location filename="../src/components/SearchScreen.qml" line="218"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>検索結果がありません</translation>
     </message>
   </context>
   <context>
@@ -1051,7 +1053,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>メタ</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="58"/>

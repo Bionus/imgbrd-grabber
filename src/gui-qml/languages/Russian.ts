@@ -353,12 +353,13 @@
       <location filename="../src/components/GalleryScreen.qml" line="130"/>
       <source>Page %1 of %2
 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>Страница %1 из %2
+(%3 из %4)</translation>
     </message>
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>Нет результатов</translation>
     </message>
   </context>
   <context>
@@ -706,32 +707,32 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="87"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>Авторское право</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="95"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>Персонаж</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="103"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>Модель</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="111"/>
       <source>Photo set</source>
-      <translation type="unfinished"/>
+      <translation>Набор фотографий</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="119"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>Вид/раса</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>Мета</translation>
     </message>
   </context>
   <context>
@@ -740,7 +741,7 @@
       <location filename="../src/loaders/search-loader.cpp" line="70"/>
       <location filename="../src/loaders/search-loader.cpp" line="75"/>
       <source>max %1</source>
-      <translation type="unfinished"/>
+      <translation>макс. %1</translation>
     </message>
   </context>
   <context>
@@ -754,12 +755,13 @@
       <location filename="../src/components/SearchScreen.qml" line="217"/>
       <source>Page %1 of %2
 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>Страница %1 из %2
+(%3 из %4)</translation>
     </message>
     <message>
       <location filename="../src/components/SearchScreen.qml" line="218"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>Нет результатов</translation>
     </message>
   </context>
   <context>
