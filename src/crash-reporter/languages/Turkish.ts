@@ -6,52 +6,52 @@
     <message>
       <location filename="../src/crash-reporter-window.ui" line="14"/>
       <source>Crash Reporter</source>
-      <translation type="unfinished"/>
+      <translation>Çökme Raporlayıcı</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="28"/>
       <source>Sorry</source>
-      <translation type="unfinished"/>
+      <translation>Üzgünüz</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="44"/>
       <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation type="unfinished"/>
+      <translation>Grabber bir sorunla karşılaştı ve çöktü. Program yeniden başlatıldığında sekmelerinizi ve diğer ayarlarınızı geri yüklemeye çalışacaktır.</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="60"/>
       <source>To help us fix this crash, you can send us a bug report.</source>
-      <translation type="unfinished"/>
+      <translation>Bu çökmenin düzeltilemsine yardım etmek için bir hata raporu gönderebilirsiniz.</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="70"/>
       <source>Send a bug report</source>
-      <translation type="unfinished"/>
+      <translation>Bir hata raporu gönder</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="95"/>
       <source>Log</source>
-      <translation type="unfinished"/>
+      <translation>Günlük</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="102"/>
       <source>Settings</source>
-      <translation type="unfinished"/>
+      <translation>Ayarlar</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="109"/>
       <source>Dump</source>
-      <translation type="unfinished"/>
+      <translation>Döküm</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="155"/>
       <source>Restart</source>
-      <translation type="unfinished"/>
+      <translation>Yeniden başlat</translation>
     </message>
     <message>
       <location filename="../src/crash-reporter-window.ui" line="162"/>
       <source>Quit</source>
-      <translation type="unfinished"/>
+      <translation>Çık</translation>
     </message>
   </context>
 </TS>
