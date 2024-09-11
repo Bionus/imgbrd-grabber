@@ -1023,7 +1023,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="169"/>
       <source> min</source>
-      <translation>min</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
@@ -2098,7 +2098,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
       <location filename="../gui/src/monitor-window.ui" line="127"/>
       <source> min</source>
-      <translation>min</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>
@@ -2523,6 +2523,14 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="554"/>
       <location filename="../gui/src/settings/options-window.ui" line="581"/>
       <location filename="../gui/src/settings/options-window.ui" line="608"/>
+      <source>Regex</source>
+      <translation>Düzenli ifadeler</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="532"/>
+      <location filename="../gui/src/settings/options-window.ui" line="559"/>
+      <location filename="../gui/src/settings/options-window.ui" line="586"/>
+      <location filename="../gui/src/settings/options-window.ui" line="613"/>
       <source>RSS</source>
       <translation>RSS</translation>
     </message>
@@ -2909,6 +2917,17 @@ Please solve the issue before resuming the download.</source>
       <translation>Son sayfaya git</translation>
     </message>
     <message>
+      <location filename="../gui/src/settings/options-window.ui" line="5041"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5108"/>
+      <source>Border</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="5382"/>
+      <source>Hide images containing a blacklisted tag from results</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/settings/options-window.ui" line="5106"/>
       <source>Add sources with no results to monitoring</source>
       <translation>Sonuçsuz kaynakları izlemeye ekle</translation>
@@ -2927,7 +2946,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5126"/>
       <location filename="../gui/src/settings/options-window.ui" line="5143"/>
       <source> min</source>
-      <translation>min</translation>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
@@ -2984,6 +3003,31 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1693"/>
       <source>Disabled</source>
       <translation>Devre dışı</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="103"/>
+      <source>Format conversion</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="638"/>
+      <source>Use Qt default User-Agent</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="648"/>
+      <source>User-Agent</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="899"/>
+      <source>Retry failed downloads</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="906"/>
+      <source> time(s)</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1698"/>
@@ -3235,20 +3279,9 @@ Please solve the issue before resuming the download.</source>
       <translation>Arka plan rengi</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2453"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4440"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4468"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4496"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4524"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4552"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4580"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4608"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4636"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4664"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4692"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4720"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4748"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4826"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2805"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4792"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4820"/>
       <location filename="../gui/src/settings/options-window.ui" line="4848"/>
       <source>Color</source>
       <translation>Renk</translation>
@@ -3461,100 +3494,100 @@ Please solve the issue before resuming the download.</source>
       <translation>Önceki medya girdisi</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2577"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2722"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2858"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2997"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3136"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3275"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3414"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3553"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3692"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3831"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2929"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3074"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3210"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3349"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3488"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3627"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3766"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3905"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4044"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4183"/>
       <source>Partial checks are stored in collapsable drawer</source>
       <translation>Kısmi kontroller daraltılabilir çekmecede saklanır</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2580"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2725"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2861"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3000"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3139"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3278"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3417"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3556"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3695"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3834"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2932"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3077"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3213"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3352"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3491"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3630"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3769"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3908"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4047"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4186"/>
       <source>Enable</source>
       <translation>Etkinleştir</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2612"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2757"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2893"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3032"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3171"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3310"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3449"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3588"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3727"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3866"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2964"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3109"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3245"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3384"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3523"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3662"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3801"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3940"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4079"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4218"/>
       <source>Ascending from left to right</source>
       <translation>Soldan sağa artan</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2627"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2766"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2902"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3041"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3180"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3319"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3458"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3597"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3736"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3875"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2979"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3118"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3254"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3393"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3532"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3671"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3810"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3949"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4088"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4227"/>
       <source>Position: </source>
       <translation>Pozisyon:</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2656"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2798"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2934"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3073"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3212"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3351"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3490"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3629"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3768"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3907"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3008"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3150"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3286"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3425"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3564"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3703"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3842"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3981"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4120"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4259"/>
       <source>Button display text</source>
       <translation>Düğme ekran metni</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2688"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2824"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2960"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3099"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3238"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3377"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3516"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3655"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3794"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3933"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3040"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3176"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3312"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3451"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3590"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3729"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3868"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4007"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4146"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4285"/>
       <source>Smaller numbers make for smaller buttons</source>
       <translation>Daha küçük sayılar daha küçük düğmeler anlamına gelir</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2691"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2827"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2963"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3102"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3241"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3380"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3519"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3658"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3797"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3936"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3043"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3179"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3315"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3454"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3593"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3732"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3871"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4010"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4149"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4288"/>
       <source>Width: </source>
       <translation>Genişlik:</translation>
     </message>
@@ -3674,18 +3707,18 @@ Please solve the issue before resuming the download.</source>
       <translation>Sanatçılar</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4447"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4475"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4503"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4531"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4559"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4587"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4615"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4643"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4671"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4699"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4727"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4755"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4799"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4827"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4855"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4883"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4911"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4939"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4967"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4995"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5032"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5083"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5127"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5171"/>
       <source>Font</source>
       <translation>Font</translation>
     </message>
@@ -3815,7 +3848,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5060"/>
       <location filename="../gui/src/settings/options-window.ui" line="5377"/>
       <source> s</source>
-      <translation>s</translation>
+      <translation> s</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5070"/>
@@ -4217,6 +4250,16 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="147"/>
       <source>An image needs a date to be filtered by age</source>
       <translation>Bir resmin yaşa göre sıralanması için bir tarihe sahip olması gerekiyor</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/models/filtering/meta-filter.cpp" line="203"/>
+      <source>expression '%1' ('%2') does not match</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../lib/src/models/filtering/meta-filter.cpp" line="206"/>
+      <source>expression '%1' ('%2') match</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="168"/>
@@ -5306,6 +5349,11 @@ Please solve the issue before resuming the download.</source>
       <translation>Sil</translation>
     </message>
     <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="658"/>
+      <source>Open in WebView</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="664"/>
       <source>Cancel</source>
       <translation>İptal</translation>
@@ -5368,7 +5416,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="108"/>
       <source>Consumer key</source>
-      <translation>Tüketici anahtarı </translation>
+      <translation>Tüketici anahtarı</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="109"/>
@@ -5602,6 +5650,11 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Copy all tags</source>
       <translation>Tüm etiketleri kopyala</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/tag-context-menu.cpp" line="57"/>
+      <source>Copy all tags (with namespaces)</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -6052,6 +6105,19 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/web-service-window.ui" line="30"/>
       <source>Url</source>
       <translation>URL</translation>
+    </message>
+  </context>
+  <context>
+    <name>WebViewWindow</name>
+    <message>
+      <location filename="../gui/src/sources/webview-window.ui" line="14"/>
+      <source>Web view</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/webview-window.ui" line="49"/>
+      <source>Go</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
