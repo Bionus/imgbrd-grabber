@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber bir Bionus yapımıdır.&lt;br/&gt;Lütfen &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;web sitesini ziyaret edin&lt;/span&gt;&lt;/a&gt;, böylece güncel kalabilir ve site veya çeviri dosyalarını alabilirsiniz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Site</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="33"/>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Site</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="33"/>
@@ -118,7 +118,7 @@
       <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
       <location filename="../gui/src/batch/add-unique-window.ui" line="215"/>
       <source>+</source>
-      <translation type="unfinished"/>
+      <translation>+</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
@@ -259,19 +259,19 @@
       <location filename="../gui/src/batch/batch-window.cpp" line="395"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="396"/>
       <source>h 'h' m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>h 'sa' m 'dk' s 'sn'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="395"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="396"/>
       <source>m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>m 'dk' s 'sn'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="395"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="396"/>
       <source>s 's'</source>
-      <translation type="unfinished"/>
+      <translation>s 'sn'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="399"/>
@@ -325,7 +325,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="74"/>
       <source>%v/%m</source>
-      <translation type="unfinished"/>
+      <translation>%v/%m</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="96"/>
@@ -583,7 +583,7 @@
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="42"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Site</translation>
     </message>
     <message>
       <location filename="../gui/src/download-image-table-model.cpp" line="43"/>
@@ -759,7 +759,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="587"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>Bana tekrar sorma</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="624"/>
@@ -785,7 +785,8 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="993"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>"%1" hedef sürücüsünde yeterli alan yok.
+Lütfen indirmeye devam etmeden önce biraz yer açın.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="995"/>
@@ -942,12 +943,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="57"/>
       <source> %</source>
-      <translation type="unfinished"/>
+      <translation> %</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="70"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation type="unfinished"/>
+      <translation>En son "Görüntülenmiş olarak işaretle"ye tıkladınız.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="73"/>
@@ -1185,7 +1186,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
       <source>You don't have any favorite yet.</source>
-      <translation type="unfinished"/>
+      <translation>Henüz hiçbir favoriniz yok.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="149"/>
@@ -1365,7 +1366,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1117"/>
       <source>MD5</source>
-      <translation type="unfinished"/>
+      <translation>MD5</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1118"/>
@@ -1405,7 +1406,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1127"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="1128"/>
@@ -1525,17 +1526,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log file</source>
-      <translation type="unfinished"/>
+      <translation>Günlüğü temizle</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log file</source>
-      <translation type="unfinished"/>
+      <translation>Günlüğü aç</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open log folder</source>
-      <translation type="unfinished"/>
+      <translation>Günlüğü dizinini aç</translation>
     </message>
   </context>
   <context>
@@ -1584,7 +1585,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be saved with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Bir resim kaydedildiğinde, aynı konuma aynı adda harici bir metin dosyası da kaydedilecektir.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1594,7 +1595,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
       <source>Available tokens: the same as in the "Save" part.</source>
-      <translation type="unfinished"/>
+      <translation>Mevcut belirteçler: "Kaydet" bölümündekilerin aynısı.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="233"/>
@@ -1657,7 +1658,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="208"/>
       <source>Wiki</source>
-      <translation type="unfinished"/>
+      <translation>Wiki</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="232"/>
@@ -1672,7 +1673,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="266"/>
       <source>Ctrl+P</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+P</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="275"/>
@@ -1818,12 +1819,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="474"/>
       <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="unfinished"/>
+      <translation>Sisteminizde "Danbooru Downloader" adındaki Mozilla Firefox uzantısı tespit edildi. Onun tercihlerini yüklemek istiyor musunuz?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="772"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>Bana tekrar sorma</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="926"/>
@@ -1914,7 +1915,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="77"/>
       <source>%v/%m</source>
-      <translation type="unfinished"/>
+      <translation>%v/%m</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="99"/>
@@ -2053,7 +2054,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation type="unfinished"/>
+      <translation>En son "Görüntülenmiş olarak işaretle"ye tıkladınız.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
@@ -2143,7 +2144,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="105"/>
       <source>New images found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>'%2' sitesinde '%1' etiketi için yeni resimler bulundu</translation>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="107"/>
@@ -2373,7 +2374,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="312"/>
       <source>Don't download automatically</source>
-      <translation type="unfinished"/>
+      <translation>Otomatik olarak indirme</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="317"/>
@@ -2472,7 +2473,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="571"/>
       <location filename="../gui/src/settings/options-window.ui" line="598"/>
       <source>XML</source>
-      <translation type="unfinished"/>
+      <translation>XML</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="522"/>
@@ -2480,7 +2481,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="576"/>
       <location filename="../gui/src/settings/options-window.ui" line="603"/>
       <source>JSON</source>
-      <translation type="unfinished"/>
+      <translation>JSON</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="527"/>
@@ -2496,7 +2497,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="586"/>
       <location filename="../gui/src/settings/options-window.ui" line="613"/>
       <source>RSS</source>
-      <translation type="unfinished"/>
+      <translation>RSS</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="621"/>
@@ -2609,12 +2610,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="879"/>
       <location filename="../gui/src/settings/options-window.ui" line="998"/>
       <source>Don't save</source>
-      <translation type="unfinished"/>
+      <translation>Kaydetme</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="892"/>
       <source>File's identity is based on the MD5 algorithm.</source>
-      <translation type="unfinished"/>
+      <translation>Dosyanın kimliği MD5 algoritmasına dayanmaktadır.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="916"/>
@@ -2691,7 +2692,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1312"/>
       <source>Exiftool</source>
-      <translation type="unfinished"/>
+      <translation>Exiftool</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1318"/>
@@ -2738,7 +2739,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1765"/>
       <source>%</source>
-      <translation type="unfinished"/>
+      <translation>%</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1788"/>
@@ -2793,7 +2794,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1866"/>
       <source>Source's type display</source>
-      <translation type="unfinished"/>
+      <translation>Kaynağın tür gösterimi</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1874"/>
@@ -2815,7 +2816,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1889"/>
       <source>Don't show</source>
-      <translation type="unfinished"/>
+      <translation>Gösterme</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1897"/>
@@ -2840,7 +2841,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1945"/>
       <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
-      <translation type="unfinished"/>
+      <translation>Ana pencerenin "+" bölümünde kaynakların onay kutularının yanında görüntülenen harflerin sayısı.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1955"/>
@@ -2943,7 +2944,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1979"/>
       <location filename="../gui/src/settings/options-window.ui" line="1993"/>
       <source>Ctrl+N</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+N</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1972"/>
@@ -3145,7 +3146,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2122"/>
       <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
-      <translation type="unfinished"/>
+      <translation>Bu seçeneği etkinleştirirseniz, "Bu sayfayı al" düğmesine bastığınızda, sayfa başına resim sayısı, sayfa numarası vb. üzerinde yapılan değişiklikler, yüklenmemiş olsalar bile dikkate alınacaktır.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2132"/>
@@ -3165,7 +3166,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2219"/>
       <source>Ctrl+Q</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Q</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2235"/>
@@ -3176,7 +3177,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="2247"/>
       <location filename="../gui/src/settings/options-window.ui" line="4516"/>
       <source>S</source>
-      <translation type="unfinished"/>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
@@ -3186,7 +3187,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2275"/>
       <source>Ctrl+W</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2291"/>
@@ -3196,7 +3197,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2303"/>
       <source>Ctrl+T</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+T</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2319"/>
@@ -3206,7 +3207,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2331"/>
       <source>Ctrl+Shift+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2347"/>
@@ -3216,7 +3217,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2359"/>
       <source>Ctrl+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2447"/>
@@ -3226,7 +3227,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2459"/>
       <source>Ctrl+O</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2515"/>
@@ -3268,7 +3269,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2558"/>
       <source>s</source>
-      <translation type="unfinished"/>
+      <translation>s</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2568"/>
@@ -3438,12 +3439,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="975"/>
       <source>If it's in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>Eğer aynı dizindeyse</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1126"/>
       <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
-      <translation type="unfinished"/>
+      <translation>Dosya adı uzunluğu bu sayıdan büyükse kısaltılacaktır. Varsayılan sınırı kullanmak için 0'a bırakın. Ne yaptığınızı bilmiyorsanız Windows'ta 260'ın üzerine çıkmayın.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2588"/>
@@ -3478,7 +3479,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4376"/>
       <source>Esc</source>
-      <translation type="unfinished"/>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2917"/>
@@ -3501,7 +3502,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4460"/>
       <source>D</source>
-      <translation type="unfinished"/>
+      <translation>D</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4476"/>
@@ -3511,7 +3512,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4488"/>
       <source>Shift+S</source>
-      <translation type="unfinished"/>
+      <translation>Shift+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3615"/>
@@ -3522,7 +3523,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4544"/>
       <source>W</source>
-      <translation type="unfinished"/>
+      <translation>W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4560"/>
@@ -3532,7 +3533,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4572"/>
       <source>O</source>
-      <translation type="unfinished"/>
+      <translation>O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3893"/>
@@ -3543,7 +3544,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4600"/>
       <source>Alt+S</source>
-      <translation type="unfinished"/>
+      <translation>Alt+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4032"/>
@@ -3742,7 +3743,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4628"/>
       <source>Alt+W</source>
-      <translation type="unfinished"/>
+      <translation>Alt+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4644"/>
@@ -3752,7 +3753,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4656"/>
       <source>Alt+O</source>
-      <translation type="unfinished"/>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4672"/>
@@ -3762,7 +3763,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4684"/>
       <source>F11</source>
-      <translation type="unfinished"/>
+      <translation>F11</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4700"/>
@@ -3782,7 +3783,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4740"/>
       <source>C</source>
-      <translation type="unfinished"/>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4750"/>
@@ -3808,7 +3809,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5127"/>
       <location filename="../gui/src/settings/options-window.ui" line="5171"/>
       <source>Font</source>
-      <translation type="unfinished"/>
+      <translation>Font</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4808"/>
@@ -3900,7 +3901,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5372"/>
       <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
-      <translation type="unfinished"/>
+      <translation>Kara liste başına bir satır. "AND" koşullarını oluşturmak için tek bir satıra birden fazla etiket yerleştirebilirsiniz.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5410"/>
@@ -3910,7 +3911,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5425"/>
       <source>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</source>
-      <translation type="unfinished"/>
+      <translation>Resim kaydedilirken bu etiketler dikkate alınmayacaktır. %copyright% veya %all% gibi belirteçlerde görünmezler.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5450"/>
@@ -3959,12 +3960,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5636"/>
       <source>HTTP</source>
-      <translation type="unfinished"/>
+      <translation>HTTP</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5641"/>
       <source>SOCKS v5</source>
-      <translation type="unfinished"/>
+      <translation>SOCKS v5</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5649"/>
@@ -3975,7 +3976,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5659"/>
       <source>Port</source>
-      <translation type="unfinished"/>
+      <translation>Port</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5673"/>
@@ -4015,7 +4016,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5751"/>
       <location filename="../gui/src/settings/options-window.ui" line="5871"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="unfinished"/>
+      <translation>Ek etiketler: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: etiket&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: etiket türü, "genel", "sanatçı", "telif hakkı", "karakter", "model" ya da "fotoğraf_seti"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: etiket türü numarası (0-6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1561"/>
@@ -4104,7 +4105,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="697"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="734"/>
@@ -4122,12 +4123,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="150"/>
       <source>FFmpeg not found</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg bulunamadı</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="165"/>
       <source>ImageMagick not found</source>
-      <translation type="unfinished"/>
+      <translation>ImageMagick bulunamadı</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="981"/>
@@ -4209,7 +4210,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="139"/>
       <source>O&amp;k</source>
-      <translation type="unfinished"/>
+      <translation>&amp;Tamam</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="179"/>
@@ -4257,17 +4258,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="308"/>
       <source>Can't validate Javascript expressions.</source>
-      <translation type="unfinished"/>
+      <translation>Javascript ifadeleri doğrulanamıyor.</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="314"/>
       <source>Can't compile your filename: %1</source>
-      <translation type="unfinished"/>
+      <translation>Dosya adınız derlenemiyor: %1</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="321"/>
       <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
-      <translation type="unfinished"/>
+      <translation>Dosya adınız %ext% ile simgelenen bir uzantıyla bitmiyor! Kaydedilen dosyaları açamayabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="326"/>
@@ -4282,12 +4283,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="356"/>
       <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
-      <translation type="unfinished"/>
+      <translation>Dosya biçiminiz Windows'ta geçersiz olan karakterler kullanıyor! Geçersiz karakterler: * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="364"/>
       <source>The %num% token does not play well with simultaneous downloads. Consider another method or downloading images one at a time.</source>
-      <translation type="unfinished"/>
+      <translation>%num% belirteci aynı anda birden fazla indirmeyle düzgün çalışmaz. Başka bir yöntem kullanın ya da resimleri teker teker indirin.</translation>
     </message>
     <message>
       <location filename="../lib/src/filename/filename.cpp" line="370"/>
@@ -4307,38 +4308,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="37"/>
       <source>image has a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>resimde "%1" belirteci var</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="40"/>
       <source>image does not have a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>resimde "%1" belirteci yok</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="179"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="243"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="279"/>
       <source>image's %1 does not match</source>
-      <translation type="unfinished"/>
+      <translation>resmin %1'i eşleşmiyor</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="246"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="282"/>
       <source>image's %1 match</source>
-      <translation type="unfinished"/>
+      <translation>resmin %1'i eşleşiyor</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="158"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="260"/>
       <source>image is not "%1"</source>
-      <translation type="unfinished"/>
+      <translation>resim bir "%1" değil</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="161"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="263"/>
       <source>image is "%1"</source>
-      <translation type="unfinished"/>
+      <translation>resim bir "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="170"/>
@@ -4358,42 +4359,42 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="215"/>
       <source>unknown type "%1" (available types: "%2")</source>
-      <translation type="unfinished"/>
+      <translation>bilinmeyen tür "%1" (mevcut türler: "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="268"/>
       <source>image's source does not starts with "%1"</source>
-      <translation type="unfinished"/>
+      <translation>resmin kaynağı "%1" ile başlamıyor</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="271"/>
       <source>image's source starts with "%1"</source>
-      <translation type="unfinished"/>
+      <translation>resmin kaynağı "%1" ile başlıyor</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="50"/>
       <source>image does not contains "%1"</source>
-      <translation type="unfinished"/>
+      <translation>resimde "%1" yok</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="53"/>
       <source>image contains "%1"</source>
-      <translation type="unfinished"/>
+      <translation>resimde "%1" var</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="74"/>
       <source>h 'h' m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>h 'sa' m 'dk'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="74"/>
       <source>h 'h'</source>
-      <translation type="unfinished"/>
+      <translation>h 'sa'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="74"/>
       <source>m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>m 'dk'</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="988"/>
@@ -4406,40 +4407,40 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/functions.h" line="30"/>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>B</source>
-      <translation type="unfinished"/>
+      <translation>B</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="26"/>
       <location filename="../lib/src/functions.h" line="30"/>
       <source>KB</source>
-      <translation type="unfinished"/>
+      <translation>KB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="26"/>
       <location filename="../lib/src/functions.h" line="30"/>
       <source>MB</source>
-      <translation type="unfinished"/>
+      <translation>MB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="26"/>
       <location filename="../lib/src/functions.h" line="30"/>
       <source>GB</source>
-      <translation type="unfinished"/>
+      <translation>GB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>KiB</source>
-      <translation type="unfinished"/>
+      <translation>KiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>MiB</source>
-      <translation type="unfinished"/>
+      <translation>MiB</translation>
     </message>
     <message>
       <location filename="../lib/src/functions.h" line="34"/>
       <source>GiB</source>
-      <translation type="unfinished"/>
+      <translation>GiB</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window-buttons.h" line="24"/>
@@ -4665,7 +4666,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="84"/>
       <source>%v/%m</source>
-      <translation type="unfinished"/>
+      <translation>%v/%m</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="106"/>
@@ -4710,7 +4711,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
       <source>No image found when renaming image '%1'</source>
-      <translation type="unfinished"/>
+      <translation>'%1' resmini yeniden adlandırırken resim bulunamadı</translation>
     </message>
   </context>
   <context>
@@ -4789,7 +4790,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="419"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation type="unfinished"/>
+      <translation>%1 web sitesinde bir HTTP'den HTTPS'e yönlendirme tespit edildi. Bu sitede SSL kullanmak istiyor musunuz? Önerilen ayar 'evet'tir.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="421"/>
@@ -5096,7 +5097,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="74"/>
       <source>%v/%m</source>
-      <translation type="unfinished"/>
+      <translation>%v/%m</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="52"/>
@@ -5106,7 +5107,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="78"/>
       <source>A source supporting '%1' has been found in the registry '%2': '%3'. Install it?</source>
-      <translation type="unfinished"/>
+      <translation>'%2' kayıt defterinde '%1'i destekleyen bir kaynak bulundu: '%3'. Yüklensin mi?</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="114"/>
@@ -5116,7 +5117,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="124"/>
       <source>Unable to guess site's type. Are you sure about the url?</source>
-      <translation type="unfinished"/>
+      <translation>Sitenin türü tahmin edilemiyor. URL'yi doğru girdiğinizden emin misiniz?</translation>
     </message>
   </context>
   <context>
@@ -5134,7 +5135,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="53"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/source-registry-window.ui" line="82"/>
@@ -5181,7 +5182,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="116"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="152"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Site</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="85"/>
@@ -5287,7 +5288,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="294"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="311"/>
       <source>s</source>
-      <translation type="unfinished"/>
+      <translation>s</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
@@ -5315,7 +5316,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="443"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="482"/>
       <source>XML</source>
-      <translation type="unfinished"/>
+      <translation>XML</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="370"/>
@@ -5323,7 +5324,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="448"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="487"/>
       <source>JSON</source>
-      <translation type="unfinished"/>
+      <translation>JSON</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="375"/>
@@ -5339,7 +5340,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="458"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="497"/>
       <source>RSS</source>
-      <translation type="unfinished"/>
+      <translation>RSS</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="388"/>
@@ -5374,7 +5375,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="560"/>
       <source>Test</source>
-      <translation type="unfinished"/>
+      <translation>Metin</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="519"/>
@@ -5399,17 +5400,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>GET</source>
-      <translation type="unfinished"/>
+      <translation>GET</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
       <source>POST</source>
-      <translation type="unfinished"/>
+      <translation>POST</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="94"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 1</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="571"/>
@@ -5491,7 +5492,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="101"/>
       <source>OAuth 2 (PKCE)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (PKCE)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
@@ -5501,7 +5502,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="108"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>Salt</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="109"/>
@@ -5628,7 +5629,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sponsors-window.ui" line="29"/>
       <source>Note that being shown here is opt-in. If you have donated but can't find your name here, please ping me and I'll add your name !</source>
-      <translation type="unfinished"/>
+      <translation>Burada gösterilmenin isteğe bağlı olduğunu unutmayın. Bağış yaptıysanız ancak adınızı burada bulamıyorsanız lütfen bana mesaj atın, adınızı ekleyeyim!</translation>
     </message>
   </context>
   <context>
@@ -5641,7 +5642,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some information to work properly. You can skip this step, and these information will be asked later.</source>
-      <translation type="unfinished"/>
+      <translation>Başlamadan önce programın düzgün çalışması için bazı bilgilere ihtiyaç vardır. Bu adımı atlayabilirsiniz, bu bilgiler daha sonra sorulacaktır.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="41"/>
@@ -5671,7 +5672,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="122"/>
       <source>If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.</source>
-      <translation type="unfinished"/>
+      <translation>Grabber'ı ilk defa kullanıyorsanız, önce &lt;a href="{website}/docs/"&gt;başlarken&lt;/a&gt; wiki sayfasını okumanız önerilir.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="137"/>
@@ -5709,7 +5710,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don't keep for later</source>
-      <translation type="unfinished"/>
+      <translation>Sonrası için saklama</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
@@ -5719,7 +5720,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don't blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Kara listeye alma</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
@@ -5729,7 +5730,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
       <source>Don't ignore</source>
-      <translation type="unfinished"/>
+      <translation>Yoksayma</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="42"/>
@@ -5810,7 +5811,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation type="unfinished"/>
+      <translation>Belirli bir kaynak için yerel etiket veritabanını oluşturun. Daha sonra kaynağın API'sı etiket türü bilgisi sağlamasa bile Grabber bunu doğrudan yerel etiket veritabanından kontrol edebilir.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -6143,7 +6144,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
       <source>Video</source>
-      <translation type="unfinished"/>
+      <translation>Video</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
@@ -6158,7 +6159,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="801"/>
       <source>Error loading the image's details.</source>
-      <translation type="unfinished"/>
+      <translation>Resmin ayrıntılarını yüklerken hata.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="803"/>
