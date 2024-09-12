@@ -350,9 +350,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>%n resimden bilgi indirmek üzeresiniz. Devam etmek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -736,9 +734,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="421"/>
       <source>Loading %n download(s)</source>
-      <translation>
-        <numerusform>%n indirme yükleniyor</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="473"/>
@@ -820,51 +816,37 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation>
-        <numerusform>%n dosya başarıyla indirildi.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1124"/>
       <source>%n file(s) ignored.</source>
-      <translation>
-        <numerusform>%n dosya yoksayıldı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1125"/>
       <source>%n file(s) already existing.</source>
-      <translation>
-        <numerusform>%n dosya zaten var.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1126"/>
       <source>%n file(s) not found on the server.</source>
-      <translation>
-        <numerusform>%n dosya sunucuda bulunamadı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1127"/>
       <source>%n file(s) skipped.</source>
-      <translation>
-        <numerusform>%n dosya atlandı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1128"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation>
-        <numerusform>Önceki indirmeden %n dosya atlandı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1129"/>
       <source>%n error(s).</source>
-      <translation>
-        <numerusform>%n hata.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -928,9 +910,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>%n klasörünü silmek üzeresiniz. Devam etmek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1431,9 +1411,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="1128"/>
       <source>Source(s)</source>
-      <translation>
-        <numerusform>Kaynak(lar)</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1129"/>
@@ -1481,7 +1459,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
       <source>Copy all tags (with namespaces)</source>
-      <translation type="unfinished"/>
+      <translation>Tüm etiketleri kopyala (ad alanlarıyla)</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="26"/>
@@ -1899,9 +1877,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation>
-        <numerusform>%n/%1 MD5 dönüştürüldü</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1974,9 +1950,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation>
-        <numerusform>%n MD5 yüklendi</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2052,9 +2026,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
       <source>%n time(s)</source>
-      <translation>
-        <numerusform>%n defa</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2177,16 +2149,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>'%2' sitesinde '%1' etiketi için %n yeni resim bulundu</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>'%2' sitesinde '%1' etiketi için %n'den fazla yeni resim bulundu</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2914,17 +2882,17 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
       <location filename="../gui/src/settings/options-window.ui" line="5108"/>
       <source>Border</source>
-      <translation type="unfinished"/>
+      <translation>Çerçeve</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5382"/>
       <source>Hide images containing a blacklisted tag from results</source>
-      <translation type="unfinished"/>
+      <translation>Kara listedeki bir etikete sahip olan resimleri sonuçlardan gizle</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5389"/>
       <source>Warn before opening images containing a blacklisted tag</source>
-      <translation type="unfinished"/>
+      <translation>Kara listedeki bir etikete sahip olan resimleri açmadan önce uyar</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5517"/>
@@ -3007,133 +2975,133 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Format conversion</source>
-      <translation type="unfinished"/>
+      <translation>Biçim dönüşümü</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="638"/>
       <source>Use Qt default User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>Qt'nin varsayılan kullanıcı aracısını kullanın</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="648"/>
       <source>User-Agent</source>
-      <translation type="unfinished"/>
+      <translation>Kullanıcı Aracısı</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="899"/>
       <source>Retry failed downloads</source>
-      <translation type="unfinished"/>
+      <translation>Başarısız indirmeleri tekrar dene</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="906"/>
       <source> time(s)</source>
-      <translation type="unfinished"/>
+      <translation> defa</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1299"/>
       <location filename="../gui/src/settings/options-window.ui" line="1352"/>
       <source>Clear existing metadata</source>
-      <translation type="unfinished"/>
+      <translation>Varolan metaveriyi temizle</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1362"/>
       <source>Try to preserve color profile</source>
-      <translation type="unfinished"/>
+      <translation>Renk profilini korumaya çalış</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1372"/>
       <source>Sidecar files</source>
-      <translation type="unfinished"/>
+      <translation>Sidecar dosyaları</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1388"/>
       <source>On error</source>
-      <translation type="unfinished"/>
+      <translation>Hatada</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1393"/>
       <source>Both sidecar and original</source>
-      <translation type="unfinished"/>
+      <translation>Hem sidecar hem orijinal</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1398"/>
       <source>Only sidecar</source>
-      <translation type="unfinished"/>
+      <translation>Yalnızca sidecar</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1406"/>
       <source>Do not include original extension in sidecar file names</source>
-      <translation type="unfinished"/>
+      <translation>Sidecar dosya adlarına orijinal uzantıyı dahil etme</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>FFmpeg version</source>
-      <translation type="unfinished"/>
+      <translation>FFmpeg sürümü</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>ImageMagick version</source>
-      <translation type="unfinished"/>
+      <translation>ImageMagick sürümü</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1541"/>
       <source>Video conversion</source>
-      <translation type="unfinished"/>
+      <translation>Video dönüşümü</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1547"/>
       <source>Remux WEBM files to MP4 when possible</source>
-      <translation type="unfinished"/>
+      <translation>Mümkünse WEBM dosyalarını MP4'e remux et</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1554"/>
       <source>Convert WEBM files to MP4</source>
-      <translation type="unfinished"/>
+      <translation>WEBM dosyalarını MP4'e dönüştür</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1590"/>
       <source>Image conversion</source>
-      <translation type="unfinished"/>
+      <translation>Resim dönüşümü</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1596"/>
       <source>Back-end</source>
-      <translation type="unfinished"/>
+      <translation>Arka uç</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1620"/>
       <source>Add new image conversion</source>
-      <translation type="unfinished"/>
+      <translation>Yeni resim dönüşümü ekle</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1656"/>
       <source>Ugoira (ZIP) conversion</source>
-      <translation type="unfinished"/>
+      <translation>Ugoira (ZIP) dönüşümü</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1662"/>
       <source>Convert ugoira ZIP files</source>
-      <translation type="unfinished"/>
+      <translation>Ugoira ZIP dosyalarını dönüştür</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1669"/>
       <source>Target format</source>
-      <translation type="unfinished"/>
+      <translation>Hedef biçim</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1705"/>
       <source>Delete original file on success</source>
-      <translation type="unfinished"/>
+      <translation>Başarılı olduğunda orijinal dosyayı sil</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1778"/>
       <source>Use bigger thumbnail sizes as needed when available</source>
-      <translation type="unfinished"/>
+      <translation>Mümkün olduğunda, gerektiğinde daha büyük küçük resim boyutları kullanın</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2003"/>
       <source>Base style</source>
-      <translation type="unfinished"/>
+      <translation>Temel stil</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2050"/>
@@ -3948,7 +3916,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5450"/>
       <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
-      <translation>Satır başına bir etiket. Yoksayılan etiketler herhangi bir türe sahipmiş gibi değerlendirilmez ve bu nedenle örneğin %copyright%'da görünmez. Ancak yine de %all%'da görünecekler.</translation>
+      <translation>Satır başına bir etiket. Yoksayılan etiketler herhangi bir türe sahipmiş gibi değerlendirilmez ve bu nedenle örneğin %copyright%&apos;da görünmez. Ancak yine de %all%&apos;da görünecekler.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5464"/>
@@ -4381,12 +4349,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="203"/>
       <source>expression '%1' ('%2') does not match</source>
-      <translation type="unfinished"/>
+      <translation>'%1' ('%2') ifadesi eşleşmiyor</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="206"/>
       <source>expression '%1' ('%2') match</source>
-      <translation type="unfinished"/>
+      <translation>'%1' ('%2') ifadesi eşleşiyor</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="215"/>
@@ -4738,9 +4706,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>%n resimden bilgi indirmek üzeresiniz. Devam etmek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4892,9 +4858,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1095"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation>
-        <numerusform>Bu resimde tespit edilen kara listede %n etiketi bulunuyor: %1. Yine de görüntülemek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5411,7 +5375,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="560"/>
       <source>Test</source>
-      <translation>Test</translation>
+      <translation>Metin</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="519"/>
@@ -5468,7 +5432,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="598"/>
       <source>Clear other cookies</source>
-      <translation type="unfinished"/>
+      <translation>Diğer çerezleri temizle</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="606"/>
@@ -5483,7 +5447,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="658"/>
       <source>Open in WebView</source>
-      <translation type="unfinished"/>
+      <translation>WebView'da aç</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="678"/>
@@ -5776,12 +5740,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="47"/>
       <source>Don't remove</source>
-      <translation type="unfinished"/>
+      <translation>Kaldırma</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Kaldır</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -5796,7 +5760,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="57"/>
       <source>Copy all tags (with namespaces)</source>
-      <translation type="unfinished"/>
+      <translation>Tüm etiketleri kopyala (ad alanlarıyla)</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="62"/>
@@ -5862,9 +5826,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation>
-        <numerusform>%n etiket yüklendi</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -6254,12 +6216,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="14"/>
       <source>Web view</source>
-      <translation type="unfinished"/>
+      <translation>Web görünümü</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/webview-window.ui" line="49"/>
       <source>Go</source>
-      <translation type="unfinished"/>
+      <translation>Git</translation>
     </message>
   </context>
   <context>
