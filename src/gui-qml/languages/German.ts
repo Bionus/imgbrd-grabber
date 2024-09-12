@@ -353,12 +353,13 @@
       <location filename="../src/components/GalleryScreen.qml" line="130"/>
       <source>Page %1 of %2
 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>Seite %1 von %2
+(%3 von %4)</translation>
     </message>
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>Kein Ergebnis</translation>
     </message>
   </context>
   <context>
@@ -417,7 +418,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="28"/>
       <source>Automatically load next page of results.</source>
-      <translation type="unfinished"/>
+      <translation>Nächste Seite mit Ergebnissen automatisch laden.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
@@ -711,27 +712,27 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="95"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>Charakter</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="103"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>Modell</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="111"/>
       <source>Photo set</source>
-      <translation type="unfinished"/>
+      <translation>Fotosammlung</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="119"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>Spezies</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>Meta</translation>
     </message>
   </context>
   <context>
@@ -740,7 +741,7 @@
       <location filename="../src/loaders/search-loader.cpp" line="70"/>
       <location filename="../src/loaders/search-loader.cpp" line="75"/>
       <source>max %1</source>
-      <translation type="unfinished"/>
+      <translation>max %1</translation>
     </message>
   </context>
   <context>
@@ -754,12 +755,13 @@
       <location filename="../src/components/SearchScreen.qml" line="217"/>
       <source>Page %1 of %2
 (%3 of %4)</source>
-      <translation type="unfinished"/>
+      <translation>Seite %1 von %2
+(%3 von %4)</translation>
     </message>
     <message>
       <location filename="../src/components/SearchScreen.qml" line="218"/>
       <source>No result</source>
-      <translation type="unfinished"/>
+      <translation>Kein Ergebnis</translation>
     </message>
   </context>
   <context>
