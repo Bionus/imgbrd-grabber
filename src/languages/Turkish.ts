@@ -350,9 +350,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>%n resimden bilgi indirmek üzeresiniz. Devam etmek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -736,9 +734,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="421"/>
       <source>Loading %n download(s)</source>
-      <translation>
-        <numerusform>%n indirme yükleniyor</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="473"/>
@@ -820,51 +816,37 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation>
-        <numerusform>%n dosya başarıyla indirildi.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1124"/>
       <source>%n file(s) ignored.</source>
-      <translation>
-        <numerusform>%n dosya yoksayıldı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1125"/>
       <source>%n file(s) already existing.</source>
-      <translation>
-        <numerusform>%n dosya zaten var.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1126"/>
       <source>%n file(s) not found on the server.</source>
-      <translation>
-        <numerusform>%n dosya sunucuda bulunamadı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1127"/>
       <source>%n file(s) skipped.</source>
-      <translation>
-        <numerusform>%n dosya atlandı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1128"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation>
-        <numerusform>Önceki indirmeden %n dosya atlandı.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1129"/>
       <source>%n error(s).</source>
-      <translation>
-        <numerusform>%n hata.</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -928,9 +910,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>%n klasörünü silmek üzeresiniz. Devam etmek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1431,9 +1411,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="1128"/>
       <source>Source(s)</source>
-      <translation>
-        <numerusform>Kaynak(lar)</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="1129"/>
@@ -1899,9 +1877,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation>
-        <numerusform>%n/%1 MD5 dönüştürüldü</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1974,9 +1950,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="83"/>
       <source>%n MD5(s) loaded</source>
-      <translation>
-        <numerusform>%n MD5 yüklendi</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2052,9 +2026,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="180"/>
       <source>%n time(s)</source>
-      <translation>
-        <numerusform>%n defa</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2177,16 +2149,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>'%2' sitesinde '%1' etiketi için %n yeni resim bulundu</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation>
-        <numerusform>'%2' sitesinde '%1' etiketi için %n'den fazla yeni resim bulundu</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -3948,7 +3916,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5450"/>
       <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
-      <translation>Satır başına bir etiket. Yoksayılan etiketler herhangi bir türe sahipmiş gibi değerlendirilmez ve bu nedenle örneğin %copyright%'da görünmez. Ancak yine de %all%'da görünecekler.</translation>
+      <translation>Satır başına bir etiket. Yoksayılan etiketler herhangi bir türe sahipmiş gibi değerlendirilmez ve bu nedenle örneğin %copyright%&apos;da görünmez. Ancak yine de %all%&apos;da görünecekler.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5464"/>
@@ -4738,9 +4706,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>%n resimden bilgi indirmek üzeresiniz. Devam etmek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
@@ -4892,9 +4858,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1095"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation>
-        <numerusform>Bu resimde tespit edilen kara listede %n etiketi bulunuyor: %1. Yine de görüntülemek istiyor musunuz?</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -5411,7 +5375,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="560"/>
       <source>Test</source>
-      <translation>Test</translation>
+      <translation>Metin</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="519"/>
@@ -5862,9 +5826,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="91"/>
       <source>%n tag(s) loaded</source>
-      <translation>
-        <numerusform>%n etiket yüklendi</numerusform>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
