@@ -127,6 +127,8 @@ Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\cras
 Source: "{#BuildDir}\crash-reporter\languages\PortugueseBrazilian.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Turkish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Ukrainian.qm";DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qico.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -149,6 +151,8 @@ Source: "{#BuildDir}\languages\Polish.qm";      DestDir: "{app}\languages"; Flag
 Source: "{#BuildDir}\languages\PortugueseBrazilian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Turkish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Ukrainian.qm";   DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion

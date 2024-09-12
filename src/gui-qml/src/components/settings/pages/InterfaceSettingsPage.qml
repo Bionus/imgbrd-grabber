@@ -13,8 +13,8 @@ ColumnLayout {
     }
     ComboSetting {
         name: qsTr("Language")
-        options: ["English", "French - Français", "Russian - русский", "Chinese (Simplified) - 中文（简体）", "Polish - Polskie", "Japanese - 日本語"]
-        values: ["English", "French", "Russian", "ChineseSimplified", "Polish", "Japanese"]
+        options: ["English", "French - Français", "German - Deutsche", "Korean - 한국어", "Portuguese, Brazilian - Português, Brasil", "Russian - русский", "Chinese (Simplified) - 中文（简体）", "Polish - Polskie", "Japanese - 日本語", "Turkish - Türkçe", "Ukrainian - Українська"]
+        values: ["English", "French", "German", "Korean", "PortugueseBrazilian", "Russian", "ChineseSimplified", "Polish", "Japanese", "Turkish", "Ukrainian"]
         setting: gSettings.language
         Layout.fillWidth: true
     }
