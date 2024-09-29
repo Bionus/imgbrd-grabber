@@ -263,10 +263,6 @@ Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Fl
 Source: "{#SrcDir}\sites\Szurubooru\icon.png";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\model.js";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\sites.txt";  DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\icon.png";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\model.js";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\sites.txt";  DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\api.twitter.com\defaults.ini"; DestDir: "{app}\sites\Twitter\api.twitter.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\WallHaven\icon.png";  DestDir: "{app}\sites\WallHaven"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\WallHaven\model.js";  DestDir: "{app}\sites\WallHaven"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\WallHaven\sites.txt"; DestDir: "{app}\sites\WallHaven"; Flags: ignoreversion
