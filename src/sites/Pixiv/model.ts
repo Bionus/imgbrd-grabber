@@ -3,7 +3,7 @@
 // - https://github.com/akameco/pixiv-app-api/blob/master/src/index.ts
 
 // Set to true to use translated tag names when available
-const TRANSLATED_TAG_NAMES = true;
+const TRANSLATED_TAG_NAMES = false;
 
 function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
