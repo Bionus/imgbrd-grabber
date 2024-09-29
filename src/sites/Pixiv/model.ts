@@ -2,6 +2,9 @@
 // - https://github.com/upbit/pixivpy/blob/master/pixivpy3/aapi.py
 // - https://github.com/akameco/pixiv-app-api/blob/master/src/index.ts
 
+// Set to true to use translated tag names when available
+const TRANSLATED_TAG_NAMES = true;
+
 function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
@@ -133,6 +136,10 @@ function parseImage(image: any, fromGallery: boolean): IImage {
         img.file_url = img.file_url
             .replace("img-original", "img-zip-ugoira")
             .replace(/ugoira0\.(jpe?g|png|webp|gif)/, "ugoira1920x1080.zip");
+    }
+
+    if (TRANSLATED_TAG_NAMES) {
+        img.tags = img.tags.map((tag: any) => tag["translated_name"] || tag["name"]);
     }
 
     return img;
