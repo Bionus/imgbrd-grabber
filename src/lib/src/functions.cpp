@@ -1064,7 +1064,7 @@ bool isFileParentWithSuffix(const QString &fileName, const QString &parent, cons
 	}
 	return false;
 }
-QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes)
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes, const QSet<QString> &excludedExtensions)
 {
 	auto files = QList<QPair<QString, QStringList>>();
 
@@ -1072,7 +1072,8 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 	while (it.hasNext()) {
 		it.next();
 
-		if (it.fileInfo().isDir()) {
+		const QFileInfo fi = it.fileInfo();
+		if (fi.isDir() || excludedExtensions.contains(fi.suffix())) {
 			continue;
 		}
 

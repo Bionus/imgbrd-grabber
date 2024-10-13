@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QRect>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QKeySequence>
@@ -88,7 +89,7 @@ QString decodeHtmlEntities(const QString &html);
 QString qFontToCss(const QFont &font);
 QFont qFontFromString(const QString &str);
 
-QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes, const QSet<QString> &excludedExtensions = {});
 
 QUrl removeCacheBuster(QUrl url);
 

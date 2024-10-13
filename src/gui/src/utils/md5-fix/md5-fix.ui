@@ -19,7 +19,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
    </property>
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label_3">
@@ -68,7 +68,7 @@
    <item row="4" column="1">
     <widget class="QLineEdit" name="lineFilename"/>
    </item>
-   <item row="6" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBar">
      <property name="enabled">
       <bool>true</bool>
@@ -78,12 +78,12 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="2">
+   <item row="8" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -118,6 +118,20 @@
    </item>
    <item row="5" column="1">
     <widget class="QLineEdit" name="lineSuffixes"/>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="labelExcludeExtensions">
+     <property name="text">
+      <string>Exclude extensions</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="lineExcludeExtensions">
+     <property name="text">
+      <string>txt, xmp</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

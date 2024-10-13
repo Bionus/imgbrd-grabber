@@ -3,12 +3,12 @@
 #include "functions.h"
 
 
-void Md5FixWorker::doWork(const QString &d, const QString &format, const QStringList &suffixes, bool force)
+void Md5FixWorker::doWork(const QString &d, const QString &format, const QStringList &suffixes, const QSet<QString> &excludedExtensions, bool force)
 {
 	QDir dir(d);
 
 	// Get all files from the destination directory
-	auto files = listFilesFromDirectory(dir, suffixes);
+	auto files = listFilesFromDirectory(dir, suffixes, excludedExtensions);
 	emit maximumSet(files.count());
 
 	int loaded = 0;

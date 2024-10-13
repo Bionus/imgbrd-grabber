@@ -109,5 +109,11 @@ void Md5Fix::start()
 		suffix = suffix.trimmed();
 	}
 
-	emit startWorker(dir, ui->lineFilename->text(), suffixes, force);
+	// Excluded extensions
+	QSet<QString> excludedExtensions;
+	for (QString &excludedExtension : ui->lineExcludeExtensions->text().split(',')) {
+		excludedExtensions.insert(excludedExtension.trimmed());
+	}
+
+	emit startWorker(dir, ui->lineFilename->text(), suffixes, excludedExtensions, force);
 }
