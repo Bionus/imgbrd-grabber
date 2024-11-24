@@ -233,6 +233,11 @@ TEST_CASE("Functions")
 	}
 	SECTION("SetExtension")
 	{
+		REQUIRE(setExtension(QString(""), "png") == QString(""));
+		REQUIRE(setExtension(QString("file"), "png") == QString("file"));
+		REQUIRE(setExtension(QString("file.jpg"), "png") == QString("file.png"));
+		REQUIRE(setExtension(QString("file.jpg"), "") == QString("file"));
+
 		REQUIRE(setExtension(QUrl(""), "png") == QUrl(""));
 		REQUIRE(setExtension(QUrl("https://test.com/file"), "png") == QUrl("https://test.com/file"));
 		REQUIRE(setExtension(QUrl("https://test.com/file.jpg"), "png") == QUrl("https://test.com/file.png"));

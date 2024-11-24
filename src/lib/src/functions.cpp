@@ -618,6 +618,18 @@ QString getExtension(const QUrl &url)
 	return ext;
 }
 
+QString setExtension(QString path, const QString &extension)
+{
+	const int lastSlash = path.lastIndexOf('/');
+	const int lastDot = path.mid(lastSlash + 1).lastIndexOf('.');
+	if (lastDot != -1) {
+		const QString suffix = extension.isEmpty() ? "" : "." + extension;
+		return path.left(lastDot + lastSlash + 1) + suffix;
+	}
+
+	return path;
+}
+
 QUrl setExtension(QUrl url, const QString &extension)
 {
 	QString path = url.path();

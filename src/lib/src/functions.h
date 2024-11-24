@@ -48,6 +48,7 @@ QString getUnit(double *size);
 QString formatFilesize(double size);
 qint64 parseFileSize(const QString &str);
 QString getExtension(const QUrl &url);
+QString setExtension(QString path, const QString &extension);
 QUrl setExtension(QUrl url, const QString &extension);
 bool isUrl(const QString &str);
 bool isVariantEmpty(const QVariant &value);
