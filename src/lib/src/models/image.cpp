@@ -766,6 +766,8 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 					fileTagsPath = logFile["uniquePath"].toString();
 				} else if (locationType == 2) {
 					fileTagsPath = path + logFile["suffix"].toString();
+				} else if (locationType == 3) {
+					fileTagsPath = setExtension(path, "") + logFile["suffixWithoutExtension"].toString();
 				}
 
 				// Replace some post-save tokens

@@ -22,6 +22,7 @@ LogWindow::LogWindow(int index, Profile *profile, QWidget *parent)
 		ui->lineFilename->setText(dta["filename"].toString());
 		ui->lineUniquePath->setText(dta["uniquePath"].toString());
 		ui->lineSuffix->setText(dta["suffix"].toString());
+		ui->lineSuffixWithoutExtension->setText(dta["suffixWithoutExtension"].toString());
 		ui->textEditContent->setPlainText(dta["content"].toString());
 	}
 
@@ -69,6 +70,7 @@ void LogWindow::save()
 	dta["filename"] = ui->lineFilename->text();
 	dta["uniquePath"] = ui->lineUniquePath->text();
 	dta["suffix"] = ui->lineSuffix->text();
+	dta["suffixWithoutExtension"] = ui->lineSuffixWithoutExtension->text();
 	dta["content"] = ui->textEditContent->toPlainText();
 
 	emit validated(m_index, dta);

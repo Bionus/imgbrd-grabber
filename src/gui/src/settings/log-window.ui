@@ -38,6 +38,11 @@
        <string>Suffix</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Suffix without extension</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
@@ -174,7 +179,45 @@
         <widget class="QLineEdit" name="lineSuffix"/>
        </item>
        <item row="1" column="0" colspan="2">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="labelSuffixHelp">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>Each time an image is saved, an external text file will be saved with the same name at the same location.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageSuffixWithoutExtension">
+      <layout class="QFormLayout" name="formLayout_5">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelSuffixWithoutExtension">
+         <property name="text">
+          <string>Suffix</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineSuffixWithoutExtension"/>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="labelWithoutExtensionHelp">
          <property name="font">
           <font>
            <italic>true</italic>
@@ -205,10 +248,10 @@
    <item row="6" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>
