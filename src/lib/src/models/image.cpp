@@ -1344,6 +1344,11 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	for (auto it = m_data.constBegin(); it != m_data.constEnd(); ++it) {
 		tokens.insert(it.key(), Token(it.value(), defaultValues.value(it.key())));
 	}
+	for (auto it = defaultValues.constBegin(); it != defaultValues.constEnd(); ++it) {
+		if (!tokens.contains(it.key())) {
+			tokens.insert(it.key(), Token(it.value()));
+		}
+	}
 
 	return tokens;
 }
