@@ -15,6 +15,7 @@ Md5Fix::Md5Fix(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::Md5Fix), m_profile(profile)
 {
 	ui->setupUi(this);
+	restoreGeometry(m_profile->getSettings()->value("Utils/Md5Fix/geometry").toByteArray());
 
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
@@ -32,8 +33,6 @@ Md5Fix::Md5Fix(Profile *profile, QWidget *parent)
 	connect(m_worker, &Md5FixWorker::finished, this, &Md5Fix::workerFinished);
 
 	m_thread.start();
-
-	resize(size().width(), 0);
 }
 
 Md5Fix::~Md5Fix()
@@ -42,6 +41,13 @@ Md5Fix::~Md5Fix()
 
 	m_thread.quit();
 	m_thread.wait();
+}
+
+void Md5Fix::closeEvent(QCloseEvent *event)
+{
+	m_profile->getSettings()->setValue("Utils/Md5Fix/geometry", saveGeometry());
+
+	QDialog::closeEvent(event);
 }
 
 void Md5Fix::cancel()

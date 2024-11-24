@@ -23,6 +23,7 @@ class Md5Fix : public QDialog
 		~Md5Fix() override;
 
 	private slots:
+		void closeEvent(QCloseEvent *event) override;
 		void cancel();
 		void start();
 
