@@ -418,7 +418,7 @@ begin
       end else if DelTree(ExpandConstant('{%UserProfile}\Grabber'), True, True, True) then begin
         Log('Deleted legacy settings directory');
       end else begin
-        MsgBox('Error deleting legacy settings directory', mbError, MB_OK);
+        MsgBox('Error deleting settings directory', mbError, MB_OK);
       end;
     end;
   end;
