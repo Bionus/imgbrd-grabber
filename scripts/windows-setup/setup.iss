@@ -387,9 +387,6 @@ Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\icon.png"
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\model.js"
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net\defaults.ini"
 
-[UninstallDelete]
-Type: filesandordirs; Name: "{%UserProfile}\Grabber"
-
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
@@ -420,6 +417,10 @@ begin
         Log('Deleted settings directory');
       end else begin
         MsgBox('Error deleting settings directory', mbError, MB_OK);
+      end if DelTree(ExpandConstant('{%UserProfile}\Grabber'), True, True, True) then begin
+        Log('Deleted legacy settings directory');
+      end else begin
+        MsgBox('Error deleting legacy settings directory', mbError, MB_OK);
       end;
     end;
   end;
