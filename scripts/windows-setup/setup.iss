@@ -387,9 +387,6 @@ Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\icon.png"
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\model.js"
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net\defaults.ini"
 
-[UninstallDelete]
-Type: filesandordirs; Name: "{%UserProfile}\Grabber"
-
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
