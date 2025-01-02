@@ -415,8 +415,6 @@ begin
       Log('Deleting settings directory');
       if DelTree(ExpandConstant('{localappdata}\Bionus\Grabber'), True, True, True) then begin
         Log('Deleted settings directory');
-      end else if DelTree(ExpandConstant('{%UserProfile}\Grabber'), True, True, True) then begin
-        Log('Deleted settings directory');
       end else begin
         MsgBox('Error deleting settings directory', mbError, MB_OK);
       end;
