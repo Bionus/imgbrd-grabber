@@ -282,7 +282,7 @@ jobs:
 
   macos:
     name: macOS
-    runs-on: macos-latest
+    runs-on: macos-13
     needs: version
 
     env:
