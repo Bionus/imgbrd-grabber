@@ -11,7 +11,6 @@
 #include <QNetworkProxy>
 #include <QShortcut>
 #include <QStringList>
-#include <QStyleFactory>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QSysInfo>
 #endif
@@ -81,9 +80,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	m_themeLoader = new ThemeLoader(savePath("themes/", true, false), m_settings, this);
 	m_themeLoader->setTheme(m_settings->value("theme", "Default").toString());
-	const QStringList baseStyles = QStyleFactory::keys();
-	const QString defaultStyle = !baseStyles.isEmpty() ? (baseStyles.contains("windowsvista") ? "windowsvista" : baseStyles.first()) : "";
-	qApp->setStyle(m_settings->value("baseStyle", defaultStyle).toString());
+	qApp->setStyle(baseStyle(m_settings));
 	ui->setupUi(this);
 
 	if (m_settings->value("Log/show", true).toBool()) {

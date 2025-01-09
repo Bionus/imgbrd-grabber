@@ -723,7 +723,7 @@ void ViewerWindow::replyFinishedDetails()
 }
 void ViewerWindow::colore()
 {
-	const QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Viewer/showTagCount", false).toBool(), false, m_settings->value("Viewer/tagOrder", "type").toString());
+	const QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Viewer/showTagCount", false).toBool(), false, m_settings->value("Viewer/tagOrder", "type").toString(), isDarkTheme(m_settings));
 	const QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden()) {

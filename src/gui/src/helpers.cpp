@@ -1,7 +1,10 @@
 #include "helpers.h"
 #include <QDialog>
+#include <QGuiApplication>
 #include <QLayout>
 #include <QMessageBox>
+#include <QStyleFactory>
+#include <QStyleHints>
 #if defined(Q_OS_WIN)
 	#include <comdef.h>
 	#include <QDir>
@@ -90,4 +93,19 @@ void setupDialogShortcuts(QDialog *dialog, QSettings *settings)
 
 	auto *reject = new QShortcut(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL | Qt::Key_N), dialog);
 	QObject::connect(reject, &QShortcut::activated, dialog, &QDialog::reject);
+}
+
+
+QString baseStyle(const QSettings *settings)
+{
+	const QStringList baseStyles = QStyleFactory::keys();
+	const QString defaultStyle = !baseStyles.isEmpty() ? (baseStyles.contains("windowsvista") ? "windowsvista" : baseStyles.first()) : "";
+	return settings->value("baseStyle", defaultStyle).toString();
+}
+
+bool isDarkTheme(const QSettings *settings)
+{
+	const bool isDarkColorScheme = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
+	const bool supportsDarkTheme = baseStyle(settings) != QStringLiteral("windowsvista");
+	return supportsDarkTheme && isDarkColorScheme;
 }
