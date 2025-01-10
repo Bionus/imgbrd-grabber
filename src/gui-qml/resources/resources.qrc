@@ -122,5 +122,13 @@
         <file>images/icons/warning@2x.png</file>
         <file>images/icons/warning@3x.png</file>
         <file>images/icons/warning@4x.png</file>
+        <file>images/icons/sort.png</file>
+        <file>images/icons/sort@2x.png</file>
+        <file>images/icons/sort@3x.png</file>
+        <file>images/icons/sort@4x.png</file>
+        <file>images/icons/swap_vert.png</file>
+        <file>images/icons/swap_vert@2x.png</file>
+        <file>images/icons/swap_vert@3x.png</file>
+        <file>images/icons/swap_vert@4x.png</file>
     </qresource>
 </RCC>

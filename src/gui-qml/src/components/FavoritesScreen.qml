@@ -8,6 +8,24 @@ Page {
     signal openFavorite(string favorite)
 
     property var favorites
+    property string sort: "name"
+    property bool reverse: false
+
+    property var sortedFavorites: root.favorites.concat().sort(root.sortCompare)
+    function sortCompare(a, b) {
+        const diff = a.localeCompare(b, undefined, {'sensitivity': 'base'});
+        return root.reverse ? -diff : diff;
+    }
+    function sortBy(newSort) {
+        if (root.sort === newSort) {
+            root.reverse = !root.reverse
+        } else {
+            root.sort = newSort
+            root.reverse = false
+        }
+
+        root.sortedFavorites = root.favorites.concat().sort(root.sortCompare)
+    }
 
     header: ToolBar {
         RowLayout {
@@ -24,12 +42,27 @@ Page {
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }
+
+            ToolButton {
+                icon.source: "/images/icons/sort.png"
+                onClicked: sortMenu.popup()
+            }
+        }
+    }
+
+    Menu {
+        id: sortMenu
+        title: qsTr("Sort")
+
+        MenuItem {
+            text: qsTr("Name")
+            onTriggered: root.sortBy("name")
         }
     }
 
     ListView {
         anchors.fill: parent
-        model: favorites
+        model: root.sortedFavorites
 
         delegate: ItemDelegate {
             width: root.width
