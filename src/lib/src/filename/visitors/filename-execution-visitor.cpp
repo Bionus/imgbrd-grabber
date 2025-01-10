@@ -150,6 +150,8 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 		res = variableToString(name, val.toULongLong(), options);
 	} else if (val.type() == QVariant::LongLong) {
 		res = variableToString(name, val.toLongLong(), options);
+	} else if (val.type() == QVariant::Double) {
+		res = variableToString(name, val.toDouble(), options);
 	} else if (val.type() == QVariant::UInt) {
 		res = variableToString(name, val.toUInt(), options);
 	} else if (val.type() == QVariant::Int) {
@@ -233,6 +235,16 @@ template QString FilenameExecutionVisitor::variableToString<int>(const QString &
 template QString FilenameExecutionVisitor::variableToString<uint>(const QString &name, uint val, const QMap<QString, QString> &options);
 template QString FilenameExecutionVisitor::variableToString<qlonglong>(const QString &name, qlonglong val, const QMap<QString, QString> &options);
 template QString FilenameExecutionVisitor::variableToString<qulonglong>(const QString &name, qulonglong val, const QMap<QString, QString> &options);
+
+QString FilenameExecutionVisitor::variableToString(const QString &name, double val, const QMap<QString, QString> &options)
+{
+	Q_UNUSED(name)
+
+	const int precision = options.value("precision", "6").toInt();
+	return options.contains("length")
+		? QString("%1").arg(val, options["length"].toInt(), 'f', precision, QChar('0'))
+		: QString::number(val, 'f', precision);
+}
 
 QString FilenameExecutionVisitor::variableToString(const QString &name, QStringList val, const QMap<QString, QString> &options)
 {
