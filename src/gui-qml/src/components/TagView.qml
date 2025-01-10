@@ -25,7 +25,7 @@ Item {
                 if (isFavorited) {
                     backend.removeFavorite(tagContextMenu.tag)
                 } else {
-                    backend.addFavorite(tagContextMenu.tag, searchTab.site)
+                    backend.addFavorite(tagContextMenu.tag, searchTab.site.url)
                 }
             }
         }
