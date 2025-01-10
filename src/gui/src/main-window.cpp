@@ -444,8 +444,6 @@ void MainWindow::initialLoginsDone()
 
 MainWindow::~MainWindow()
 {
-	m_profile->deleteLater();
-
 	delete ui;
 	ui = nullptr;
 }
