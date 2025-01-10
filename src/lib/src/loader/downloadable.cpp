@@ -105,6 +105,15 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 			return metas;
 		}));
 
+		// Special Grabber version tokens
+		#ifdef NIGHTLY
+			tokens.insert("grabber_branch", Token("nightly"));
+			tokens.insert("grabber_version", Token(QString(NIGHTLY_COMMIT).left(8)));
+		#else
+			tokens.insert("grabber_branch", Token("release"));
+			tokens.insert("grabber_version", Token(QString(VERSION)));
+		#endif
+
 		m_tokens = tokens;
 	}
 
