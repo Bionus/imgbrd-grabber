@@ -1254,6 +1254,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("height", Token(height()));
 	tokens.insert("width", Token(width()));
 	tokens.insert("mpixels", Token(width() * height()));
+	tokens.insert("ratio", Token(width() == height() ? 1 : static_cast<double>(width()) / static_cast<double>(height())));
 	tokens.insert("url_file", Token(m_url));
 	tokens.insert("url_original", Token(m_sizes[Size::Full]->url.toString()));
 	tokens.insert("url_sample", Token(url(Size::Sample).toString()));
