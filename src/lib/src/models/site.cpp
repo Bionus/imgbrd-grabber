@@ -139,7 +139,7 @@ void Site::loadConfig()
 		QByteArray byteArray = variant.type() == QVariant::ByteArray ? variant.toByteArray() : variant.toString().toUtf8();
 		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(byteArray);
 		for (QNetworkCookie cookie : cookies) {
-			cookie.setDomain(m_url);
+			cookie.setDomain("." + m_url);
 			cookie.setPath("/");
 			m_cookies.append(cookie);
 		}
