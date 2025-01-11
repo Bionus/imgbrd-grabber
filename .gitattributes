@@ -17,3 +17,5 @@ src/sites/*/resources/* linguist-vendored
 src/sites/*/resources/**/* linguist-vendored
 src/tests/resources/* linguist-vendored
 src/tests/resources/**/* linguist-vendored
+src/lib/tests/resources/* linguist-vendored
+src/lib/tests/resources/**/* linguist-vendored
