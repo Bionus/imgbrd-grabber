@@ -12,9 +12,12 @@ function parseSearch(search: string): { query: string, purity: string, category:
         } else if (tag.indexOf("-rating:") === 0) {
             const val = tag.substr(8);
             purity = val === "s" || val === "safe" ? "011" : (val === "e" || val === "explicit" ? "110" : "101");
-        } else if (tag.indexOf("category_wallhaven:") === 0) {
-            const val = tag.substr(19);
+        } else if (tag.indexOf("category:") === 0) {
+            const val = tag.substr(9);
             category = val === "anime" ? "010" : (val === "people" ? "001" : "100");
+        } else if (tag.indexOf("-category:") === 0) {
+            const val = tag.substr(10);
+            category = val === "anime" ? "101" : (val === "people" ? "110" : "011");
         } else if (tag.indexOf("order:") === 0) {
             const val = tag.substr(6);
             if (val.substr(-5) === "_desc") {
@@ -38,7 +41,7 @@ function parseSearch(search: string): { query: string, purity: string, category:
 
 export const source: ISource = {
     name: "WallHaven",
-    modifiers: ["rating:s", "rating:safe", "rating:q", "rating:questionable", "rating:e", "rating:explicit", "order:relevance", "order:random", "order:date_added", "order:views", "order:favorites",  "order:toplist", "order:hot", "category_wallhaven:general", "category_wallhaven:anime", "category_wallhaven:people"],
+    modifiers: ["rating:s", "rating:safe", "rating:q", "rating:questionable", "rating:e", "rating:explicit", "order:relevance", "order:random", "order:date_added", "order:views", "order:favorites",  "order:toplist", "order:hot", "category:general", "category:anime", "category:people"],
     forcedTokens: ["tags"],
     auth: {
         url: {
