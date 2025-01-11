@@ -68,7 +68,7 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(&pro);
 		QString actual = stylist.stylished(QList<Tag>() << tag).join("");
-		std::string expected = "<a href=\"tag_text\" style=\"color:#77777; font-family:'[^']*'; font-size:[0-9]+pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+		std::string expected = "<a href=\"tag_text\" style=\"color:#777777; font-family:'[^']*'; font-size:[0-9]+pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
