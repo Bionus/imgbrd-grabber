@@ -77,7 +77,7 @@ jobs:
             **Head:** ${{ github.sha }}
             **Date:** ${{ steps.date.outputs.date }}
 
-      - uses: geekyeggo/delete-artifact@v4
+      - uses: geekyeggo/delete-artifact@v5
         with:
           failOnError: false
           name: sources
