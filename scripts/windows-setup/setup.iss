@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.12.2"
+# define MyAppVersion "7.13.0"
 #endif
 
 #define PlatformNamePrefix ""
@@ -58,8 +58,8 @@ SolidCompression=yes
 ChangesAssociations=yes
 DisableDirPage=no
 PrivilegesRequired=admin
-ArchitecturesAllowed=x86 x64 ia64
-ArchitecturesInstallIn64BitMode=x64 ia64
+ArchitecturesAllowed=x86 x64
+ArchitecturesInstallIn64BitMode=x64
 
 ; Dependencies
 #define UseMsiProductCheck
@@ -127,6 +127,8 @@ Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\cras
 Source: "{#BuildDir}\crash-reporter\languages\PortugueseBrazilian.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Turkish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Ukrainian.qm";DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qico.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -149,6 +151,8 @@ Source: "{#BuildDir}\languages\Polish.qm";      DestDir: "{app}\languages"; Flag
 Source: "{#BuildDir}\languages\PortugueseBrazilian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Turkish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Ukrainian.qm";   DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
@@ -259,10 +263,6 @@ Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Fl
 Source: "{#SrcDir}\sites\Szurubooru\icon.png";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\model.js";   DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Szurubooru\sites.txt";  DestDir: "{app}\sites\Szurubooru"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\icon.png";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\model.js";   DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\sites.txt";  DestDir: "{app}\sites\Twitter"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Twitter\api.twitter.com\defaults.ini"; DestDir: "{app}\sites\Twitter\api.twitter.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\WallHaven\icon.png";  DestDir: "{app}\sites\WallHaven"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\WallHaven\model.js";  DestDir: "{app}\sites\WallHaven"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\WallHaven\sites.txt"; DestDir: "{app}\sites\WallHaven"; Flags: ignoreversion
@@ -386,9 +386,6 @@ Type: files; Name: "{localappdata}\Bionus\Grabber\sites\WallHaven\wallhaven.cc\d
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\icon.png"
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\model.js"
 Type: files; Name: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net\defaults.ini"
-
-[UninstallDelete]
-Type: filesandordirs; Name: "{%UserProfile}\Grabber"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

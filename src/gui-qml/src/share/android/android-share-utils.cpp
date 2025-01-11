@@ -15,13 +15,12 @@ bool AndroidShareUtils::share(const QString &text)
 		return false;
 	}
 
-	QJniObject jsText = QJniObject::fromString(text);
-
+	QJniObject javaText = QJniObject::fromString(text);
 	jboolean ok = QJniObject::callStaticMethod<jboolean>(
 		"org/bionus/grabber/ShareUtils",
 		"share",
 		"(Ljava/lang/String;)Z",
-		jsText.object<jstring>()
+		javaText.object<jstring>()
 	);
 
 	return (bool) ok;
@@ -34,17 +33,17 @@ bool AndroidShareUtils::sendFile(const QString &path, const QString &mimeType, c
 		return false;
 	}
 
-	QJniObject jsPath = QJniObject::fromString(path);
-	QJniObject jsMimeType = QJniObject::fromString(mimeType);
-	QJniObject jsTitle = QJniObject::fromString(title);
+	QJniObject javaPath = QJniObject::fromString(path);
+	QJniObject javaMimeType = QJniObject::fromString(mimeType);
+	QJniObject javaTitle = QJniObject::fromString(title);
 
 	jboolean ok = QJniObject::callStaticMethod<jboolean>(
 		"org/bionus/grabber/ShareUtils",
 		"sendFile",
 		"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
-		jsPath.object<jstring>(),
-		jsMimeType.object<jstring>(),
-		jsTitle.object<jstring>()
+		javaPath.object<jstring>(),
+		javaMimeType.object<jstring>(),
+		javaTitle.object<jstring>()
 	);
 
 	return (bool) ok;

@@ -23,6 +23,7 @@ class Md5Fix : public QDialog
 		~Md5Fix() override;
 
 	private slots:
+		void closeEvent(QCloseEvent *event) override;
 		void cancel();
 		void start();
 
@@ -33,7 +34,7 @@ class Md5Fix : public QDialog
 		void workerFinished(int loadedCount);
 
 	signals:
-		void startWorker(const QString &dir, const QString &format, const QStringList &suffixes, bool force);
+		void startWorker(const QString &dir, const QString &format, const QStringList &suffixes, const QSet<QString> &excludedExtensions, bool force);
 
 	private:
 		Ui::Md5Fix *ui;

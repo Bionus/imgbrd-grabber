@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QSet>
 #include <QSettings>
+#include <QStandardPaths>
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/download-query-manager.h"
@@ -294,7 +295,15 @@ QString Profile::tempPath() const
 		return override;
 	}
 
-	const QString tmp = QDir::tempPath();
+	QString tmp;
+	#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID)
+		// Use XDG_RUNTIME_DIR on Unix
+		tmp = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+	#endif
+	if (tmp.isEmpty()) {
+		tmp = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+	}
+
 	const QString subDir = "Grabber";
 	QDir(tmp).mkpath(subDir);
 	return tmp + QDir::separator() + subDir;

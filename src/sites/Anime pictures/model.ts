@@ -30,9 +30,9 @@ function completeImage(img: IImage, raw: any): IImage {
         const domain = "anime-pictures.net";
         const md5Part = img.md5?.substring(0, 3) + "/" + img.md5;
         const previewExt = raw["have_alpha"] === true ? "png" : "jpg";
-        img.preview_url = `//cdn.${domain}/previews/${md5Part}_sp.${previewExt}`;
-        img.sample_url = `//cdn.${domain}/previews/${md5Part}_bp.${previewExt}`;
-        img.file_url = `//images.${domain}/${md5Part}.${img.ext}`;
+        img.preview_url = `//opreviews.${domain}/${md5Part}_sp.${previewExt}`;
+        img.sample_url = `//opreviews.${domain}/${md5Part}_bp.${previewExt}`;
+        img.file_url = `//oimages.${domain}/${md5Part}.${img.ext}`;
     }
 
     if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
@@ -44,6 +44,7 @@ function completeImage(img: IImage, raw: any): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.sample_url && img.sample_url.length >= 5) {
         img.file_url = img.sample_url
             .replace(/\/cdn\./, "/images.")
+            .replace(/\/opreviews\./, "/oimages.")
             .replace(/\/previews\//, "/")
             .replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
     }
@@ -150,8 +151,11 @@ export const source: ISource = {
             auth: [],
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
+                    const baseUrl = opts.baseUrl
+                        .replace("//anime-pictures.", "//api.anime-pictures.")
+                        .replace("//www.anime-pictures.", "//api.anime-pictures.");
                     const page = query.page - 1;
-                    return "/api/v3/posts?page=" + page + "&" + searchToUrl(query.page, query.search, previous) + "&posts_per_page=" + opts.limit + "&lang=en";
+                    return baseUrl + "/api/v3/posts?page=" + page + "&" + searchToUrl(query.page, query.search, previous) + "&posts_per_page=" + opts.limit + "&lang=en";
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -169,8 +173,11 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: string, md5: string): string => {
-                    return "/api/v3/posts/" + id + "?lang=en";
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    const baseUrl = opts.baseUrl
+                        .replace("//anime-pictures.", "//api.anime-pictures.")
+                        .replace("//www.anime-pictures.", "//api.anime-pictures.");
+                    return baseUrl + "/api/v3/posts/" + id + "?lang=en";
                 },
                 parse: (src: string): IParsedDetails => {
                     const data = JSON.parse(src);

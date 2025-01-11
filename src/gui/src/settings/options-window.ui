@@ -1184,8 +1184,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>476</width>
-             <height>475</height>
+             <width>472</width>
+             <height>494</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1336,6 +1336,9 @@
            <item row="1" column="1">
             <widget class="QLineEdit" name="lineMetadataExiftoolExtensions"/>
            </item>
+           <item row="2" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
+           </item>
            <item row="3" column="0" colspan="2">
             <widget class="QPushButton" name="buttonMetadataExiftoolAdd">
              <property name="text">
@@ -1343,15 +1346,66 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2">
+           <item row="6" column="0" colspan="2">
             <widget class="QCheckBox" name="checkMetadataExiftoolClear">
              <property name="text">
               <string>Clear existing metadata</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
-            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
+           <item row="7" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMetadataExiftoolKeepColorProfile">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Try to preserve color profile</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="labelMetadataExiftoolSidecar">
+             <property name="text">
+              <string>Sidecar files</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="comboMetadataExiftoolSidecar">
+             <property name="currentIndex">
+              <number>1</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Disabled</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>On error</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Both sidecar and original</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Only sidecar</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMetadataExiftoolSidecarNoExtension">
+             <property name="text">
+              <string>Do not include original extension in sidecar file names</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -1501,6 +1555,32 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelConversionFFmpegTimeout">
+             <property name="text">
+              <string>Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QDoubleSpinBox" name="spinConversionFFmpegTimeout">
+             <property name="suffix">
+              <string> s</string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="minimum">
+              <double>0.001000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3600.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>30.000000000000000</double>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1541,6 +1621,32 @@
              </property>
             </widget>
            </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelConversionImageTimeout">
+             <property name="text">
+              <string>Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QDoubleSpinBox" name="spinConversionImageTimeout">
+             <property name="suffix">
+              <string> s</string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="minimum">
+              <double>0.001000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3600.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>30.000000000000000</double>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1568,27 +1674,27 @@
             <widget class="QComboBox" name="comboConversionUgoiraTargetExtension">
              <item>
               <property name="text">
-               <string>GIF</string>
+               <string notr="true">GIF</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>WEBM</string>
+               <string notr="true">WEBM</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>APNG</string>
+               <string notr="true">APNG</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>WEBP</string>
+               <string notr="true">WEBP</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>MKV</string>
+               <string notr="true">MKV</string>
               </property>
              </item>
             </widget>
@@ -1597,6 +1703,32 @@
             <widget class="QCheckBox" name="checkConversionUgoiraDelete">
              <property name="text">
               <string>Delete original file on success</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelConversionUgoiraTimeout">
+             <property name="text">
+              <string>Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QDoubleSpinBox" name="spinConversionUgoiraTimeout">
+             <property name="suffix">
+              <string> s</string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="minimum">
+              <double>0.001000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3600.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>30.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -2055,8 +2187,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>323</width>
-             <height>682</height>
+             <width>296</width>
+             <height>630</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2765,8 +2897,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>388</width>
-             <height>710</height>
+             <width>338</width>
+             <height>630</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -4215,8 +4347,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>235</width>
-             <height>840</height>
+             <width>217</width>
+             <height>777</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -6334,6 +6466,22 @@
     <hint type="destinationlabel">
      <x>324</x>
      <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMetadataExiftoolClear</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkMetadataExiftoolKeepColorProfile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>378</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
+     <y>287</y>
     </hint>
    </hints>
   </connection>

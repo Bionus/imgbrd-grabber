@@ -15,4 +15,7 @@ void showInGraphicalShell(const QString &path);
 void clearLayout(QLayout *layout);
 void setupDialogShortcuts(QDialog *dialog, QSettings *settings);
 
+QString baseStyle(const QSettings *settings);
+bool isDarkTheme(const QSettings *settings);
+
 #endif // HELPERS_H

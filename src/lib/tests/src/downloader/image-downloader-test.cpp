@@ -77,6 +77,7 @@ TEST_CASE("ImageDownloader")
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
 	auto *profile = pProfile.data();
+	profile->getSettings()->setValue("Save/headerDetection", false); // Necessary because the fake file is a PNG
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
@@ -333,5 +334,18 @@ TEST_CASE("ImageDownloader")
 
 		assertDownload(profile, img, &downloader, expected, false);
 		REQUIRE(img->token("copyright", QString()) == QString());
+	}
+
+	SECTION("Fix extension from header")
+	{
+		profile->getSettings()->setValue("Save/headerDetection", true);
+
+		auto img = createImage(profile, site);
+		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.png"), Image::Size::Full, Image::SaveResult::Saved });
+
+		assertDownload(profile, img, &downloader, expected, true);
 	}
 }

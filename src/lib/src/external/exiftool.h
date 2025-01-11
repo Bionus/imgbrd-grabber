@@ -12,13 +12,22 @@ class Exiftool : public QObject
 	Q_OBJECT
 
 	public:
+		enum SidecarFile
+		{
+			No,
+			OnError,
+			Both,
+			Only
+		};
+		Q_ENUM(SidecarFile)
+
 		explicit Exiftool(QObject *parent = nullptr);
 
 		static QString version(int msecs = 30000);
 
 	public slots:
 		bool start(int msecs = 30000);
-		bool setMetadata(const QString &file, const QMap<QString, QString> &metadata, bool clear = false, int msecs = 30000);
+		bool setMetadata(const QString &file, const QMap<QString, QString> &metadata, bool clear = false, bool keepColorProfile = true, SidecarFile sidecarFile = SidecarFile::OnError, bool sidecarFileNoExtension = false, int msecs = 30000);
 		bool execute(const QString &file, const QString &command, int msecs = 30000);
 		bool stop(int msecs = 30000);
 

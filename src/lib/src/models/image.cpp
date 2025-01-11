@@ -128,9 +128,9 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 		const QString &urlKey = (prefix.isEmpty() ? "file_" : prefix) + "url";
 		is->url = details.contains(urlKey) ? removeCacheBuster(m_parentSite->fixUrl(details[urlKey])) : QString();
 
-		is->size = details.contains(prefix + "width") && details.contains(prefix + "height")
-			? QSize(details[prefix + "width"].toInt(), details[prefix + "height"].toInt())
-			: QSize();
+		const int width = details.value(prefix + "width", "0").toInt();
+		const int height = details.value(prefix + "height", "0").toInt();
+		is->size = width > 0 && height > 0 ? QSize(width, height) : QSize();
 		is->fileSize = details.contains(prefix + "file_size") ? details[prefix + "file_size"].toInt() : 0;
 
 		if (details.contains(prefix + "rect")) {
@@ -766,6 +766,8 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 					fileTagsPath = logFile["uniquePath"].toString();
 				} else if (locationType == 2) {
 					fileTagsPath = path + logFile["suffix"].toString();
+				} else if (locationType == 3) {
+					fileTagsPath = setExtension(path, "") + logFile["suffixWithoutExtension"].toString();
 				}
 
 				// Replace some post-save tokens
@@ -786,9 +788,27 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		}
 	}
 
+	QString ext = extension();
+
 	// Keep original date
 	if (m_settings->value("Save/keepDate", true).toBool()) {
 		setFileCreationDate(path, createdAt());
+	}
+
+	// Guess extension from file header
+	if (m_settings->value("Save/headerDetection", true).toBool() && getExtension(path) == ext) {
+		const QString headerExt = getExtensionFromHeader(path);
+		if (!headerExt.isEmpty() && headerExt != ext) {
+			log(QStringLiteral("Invalid file extension (%1 to %2) for `%3`").arg(ext, headerExt, path), Logger::Info);
+			const QFileInfo info(path);
+			const QString newPath = info.path() + QDir::separator() + info.completeBaseName() + "." + headerExt;
+			if (!QFile::rename(path, newPath)) {
+				log(QStringLiteral("Error renaming from `%1` to `%2`").arg(path, newPath), Logger::Error);
+			} else {
+				path = QDir::toNativeSeparators(newPath);
+				ext = headerExt;
+			}
+		}
 	}
 
 	// Commands
@@ -807,19 +827,18 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		commands.after();
 	}
 
-	QString ext = extension();
-
 	// FFmpeg
 	if (ext == QStringLiteral("webm")) {
 		const bool remux = m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool();
 		const bool convert = m_settings->value("Save/FFmpegConvertWebmToMp4", false).toBool();
+		const int timeout = m_settings->value("Save/FFmpegConvertTimeout", 30000).toInt();
 
 		// We can only remux VP9 to MP4 as VP8 is not compatible with the MP4 container and needs conversion instead
 		if (remux && FFmpeg::getVideoCodec(path) == QStringLiteral("vp9")) {
-			path = FFmpeg::remux(path, "mp4");
+			path = FFmpeg::remux(path, "mp4", true, timeout);
 			ext = getExtension(path);
 		} else if (convert) {
-			path = FFmpeg::convert(path, "mp4");
+			path = FFmpeg::convert(path, "mp4", true, timeout);
 			ext = getExtension(path);
 		}
 	}
@@ -828,10 +847,11 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	const QString targetImgExt = m_settings->value("Save/ImageConversion/" + ext.toUpper() + "/to").toString().toLower();
 	if (!targetImgExt.isEmpty()) {
 		const QString backend = m_settings->value("Save/ImageConversionBackend", "ImageMagick").toString();
+		const int timeout = m_settings->value("Save/ConvertUgoiraTimeout", 30000).toInt();
 		if (backend == QStringLiteral("ImageMagick")) {
-			path = ImageMagick::convert(path, targetImgExt);
+			path = ImageMagick::convert(path, targetImgExt, true, timeout);
 		} else if (backend == QStringLiteral("FFmpeg")) {
-			path = FFmpeg::remux(path, targetImgExt);
+			path = FFmpeg::convert(path, targetImgExt, true, timeout);
 		}
 		ext = getExtension(path);
 	}
@@ -840,7 +860,8 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	if (ext == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
 		const QString targetUgoiraExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
 		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
-		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal);
+		const int timeout = m_settings->value("Save/ConvertUgoiraTimeout", 30000).toInt();
+		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal, timeout);
 		ext = getExtension(path);
 	}
 
@@ -872,9 +893,22 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		}
 
 		if (!metadata.isEmpty()) {
+			static const QMap<QString, Exiftool::SidecarFile> sidecarFileMapping {
+				{"no", Exiftool::SidecarFile::No},
+				{"on_error", Exiftool::SidecarFile::OnError},
+				{"both", Exiftool::SidecarFile::Both},
+				{"only", Exiftool::SidecarFile::Only},
+			};
 			Exiftool &exiftool = m_profile->getExiftool();
 			exiftool.start();
-			exiftool.setMetadata(path, metadata, m_settings->value("Save/MetadataExiftoolClear", false).toBool());
+			exiftool.setMetadata(
+				path,
+				metadata,
+				m_settings->value("Save/MetadataExiftoolClear", false).toBool(),
+				m_settings->value("Save/MetadataExiftoolKeepColorProfile", true).toBool(),
+				sidecarFileMapping.value(m_settings->value("Save/MetadataExiftoolSidecar", "on_error").toString(), Exiftool::SidecarFile::OnError),
+				m_settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool()
+			);
 		}
 	}
 
@@ -1220,6 +1254,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("height", Token(height()));
 	tokens.insert("width", Token(width()));
 	tokens.insert("mpixels", Token(width() * height()));
+	tokens.insert("ratio", Token(width() == height() ? 1 : static_cast<double>(width()) / static_cast<double>(height())));
 	tokens.insert("url_file", Token(m_url));
 	tokens.insert("url_original", Token(m_sizes[Size::Full]->url.toString()));
 	tokens.insert("url_sample", Token(url(Size::Sample).toString()));
@@ -1312,6 +1347,11 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	for (auto it = m_data.constBegin(); it != m_data.constEnd(); ++it) {
 		tokens.insert(it.key(), Token(it.value(), defaultValues.value(it.key())));
 	}
+	for (auto it = defaultValues.constBegin(); it != defaultValues.constEnd(); ++it) {
+		if (!tokens.contains(it.key())) {
+			tokens.insert(it.key(), Token(it.value()));
+		}
+	}
 
 	return tokens;
 }
@@ -1332,16 +1372,21 @@ bool Image::isValid() const
  * Find the biggest media available in this image under the given size. Defaults to the thumbnail if none is found.
  *
  * @param size The bounding size not to exceed.
+ * @param thumbnail If the media will be used as a thumbnail, its filetype should match the thumbnail filetype.
  * @return The biggest media available in this image under this size.
  */
-const ImageSize &Image::mediaForSize(const QSize &size)
+const ImageSize &Image::mediaForSize(const QSize &size, bool thumbnail)
 {
 	QSharedPointer<ImageSize> ret;
 
+	const QString thumbnailExt = getExtension(m_sizes[Size::Thumbnail]->url);
+
 	// Find the biggest media smaller than the given size
 	for (const QSharedPointer<ImageSize> &media : m_allSizes) {
-		if (media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
-			ret = media;
+		if (media->size.isValid() && media->size.width() <= size.width() && media->size.height() <= size.height() && (ret.isNull() || isBigger(media->size, ret->size))) {
+			if (!thumbnail || getExtension(media->url) == thumbnailExt) {
+				ret = media;
+			}
 		}
 	}
 

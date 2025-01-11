@@ -44,10 +44,10 @@ QTextEdit {
 }</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Shadow::Plain</enum>
      </property>
      <property name="lineWidth">
       <number>0</number>
@@ -56,7 +56,7 @@ QTextEdit {
       <bool>false</bool>
      </property>
      <property name="lineWrapMode">
-      <enum>QPlainTextEdit::NoWrap</enum>
+      <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
      </property>
      <property name="readOnly">
       <bool>true</bool>
@@ -68,21 +68,21 @@ QTextEdit {
      <item>
       <widget class="QPushButton" name="buttonClear">
        <property name="text">
-        <string>Clear log</string>
+        <string>Clear log file</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonOpen">
        <property name="text">
-        <string>Open log</string>
+        <string>Open log file</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonOpenDir">
        <property name="text">
-        <string>Open settings directory</string>
+        <string>Open log folder</string>
        </property>
       </widget>
      </item>

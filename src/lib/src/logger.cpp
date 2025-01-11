@@ -10,7 +10,8 @@
 void Logger::initialize()
 {
 	// Create the "logs/" directory if it doesn't exist
-	const QDir logsDirectory = savePath(QStringLiteral("logs/"), false, true);
+	m_logDirectory = savePath(QStringLiteral("logs/"), false, true);
+	const QDir logsDirectory(m_logDirectory);
 	if (!logsDirectory.exists()) {
 		logsDirectory.mkpath(".");
 	}
@@ -51,6 +52,8 @@ void Logger::setLogFile(const QString &path)
 }
 QString Logger::logFile() const
 { return m_logFile.fileName(); }
+QString Logger::logDirectory() const
+{ return m_logDirectory; }
 
 /**
  * Sets the minimum log level for which messages will not be ignored.
@@ -136,6 +139,7 @@ void Logger::setupMessageOutput(bool log)
  */
 void Logger::log(const QString &message, LogLevel level)
 {
+	static QTextStream qStdOut(stdout);
 	static QTextStream qStdErr(stderr);
 
 	if (level < m_level) {
@@ -168,7 +172,11 @@ void Logger::log(const QString &message, LogLevel level)
 
 	// Print the message to the console
 	if (level >= m_consoleOutputLevel) {
-		qStdErr << strippedMsg << Qt::endl;
+		if (level >= LogLevel::Warning) {
+			qStdErr << strippedMsg << Qt::endl;
+		} else {
+			qStdOut << strippedMsg << Qt::endl;
+		}
 	}
 
 	if (m_exitOnError && level == Logger::LogLevel::Error) {

@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <QMap>
+#include <QScopedPointer>
 #include <QSettings>
 #include <QString>
 #include <QStringList>
@@ -20,10 +21,10 @@ int main(int argc, char *argv[])
 
 	Logger::getInstance().initialize();
 
-	auto *profile = new Profile(savePath());
-	profile->purgeTemp(24 * 60 * 60);
+	Profile profile(savePath());
+	profile.purgeTemp(24 * 60 * 60);
 
 	QMap<QString, QString> params;
 	QStringList positionalArgs;
-	return parseAndRunCliArgs(&app, profile, false, params, positionalArgs);
+	return parseAndRunCliArgs(&app, &profile, false, params, positionalArgs);
 }

@@ -16,6 +16,8 @@ node_modules
 
 # Disabled sites
 Gfycat
+Hentai Cosplays
 Sankaku
 Slushe
 Tumblr
+Twitter

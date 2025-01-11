@@ -61,13 +61,23 @@ bool LanguageLoader::setLanguage(const QString &lang, bool useSystemLocale)
 
 QLocale LanguageLoader::localeFromString(const QString &lang)
 {
-	// Special case for simplified Chinese because we need to set the "script" parameter
+	// Special case for Chinese because we need to set the "script" parameter
 	if (lang == QStringLiteral("ChineseSimplified")) {
 		return QLocale(QLocale::Chinese, QLocale::SimplifiedChineseScript, QLocale::AnyCountry);
+	}
+	if (lang == QStringLiteral("ChineseTraditional")) {
+		return QLocale(QLocale::Chinese, QLocale::TraditionalChineseScript, QLocale::AnyCountry);
+	}
+
+	// Special case for country language variants
+	if (lang == QStringLiteral("PortugueseBrazilian")) {
+		return QLocale(QLocale::Portuguese, QLocale::Brazil);
 	}
 
 	static const QMap<QString, QLocale::Language> languages
 	{
+		{ "Arabic", QLocale::Arabic },
+		{ "Dutch", QLocale::Dutch },
 		{ "English", QLocale::English },
 		{ "French", QLocale::French },
 		{ "German", QLocale::German },
@@ -78,8 +88,10 @@ QLocale LanguageLoader::localeFromString(const QString &lang)
 		{ "Polish", QLocale::Polish },
 		{ "Portuguese", QLocale::Portuguese },
 		{ "Russian", QLocale::Russian },
+		{ "Spanish", QLocale::Spanish },
+		{ "Turkish", QLocale::Turkish },
+		{ "Ukrainian", QLocale::Ukrainian },
 		{ "Vietnamese", QLocale::Vietnamese },
-		{ "Spanish", QLocale::Spanish }
 	};
 	if (languages.contains(lang)) {
 		// If using the same language as the system, directly use the system's locale

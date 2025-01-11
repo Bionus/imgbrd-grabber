@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QRect>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QKeySequence>
@@ -47,6 +48,7 @@ QString getUnit(double *size);
 QString formatFilesize(double size);
 qint64 parseFileSize(const QString &str);
 QString getExtension(const QUrl &url);
+QString setExtension(QString path, const QString &extension);
 QUrl setExtension(QUrl url, const QString &extension);
 bool isUrl(const QString &str);
 bool isVariantEmpty(const QVariant &value);
@@ -68,6 +70,7 @@ QList<QPair<QString, QString>> getMetadataPropsys(QSettings *settings);
 QList<QPair<QString, QString>> getMetadataExiftool(QSettings *settings);
 
 QStringList removeWildards(const QStringList &elements, const QStringList &remove);
+QString getExtensionFromHeader(const QString &path);
 QString getExtensionFromHeader(const QByteArray &data12);
 
 void setTestModeEnabled(bool testMode);
@@ -87,7 +90,7 @@ QString decodeHtmlEntities(const QString &html);
 QString qFontToCss(const QFont &font);
 QFont qFontFromString(const QString &str);
 
-QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes, const QSet<QString> &excludedExtensions = {});
 
 QUrl removeCacheBuster(QUrl url);
 

@@ -1,4 +1,6 @@
 #include "exiftool.h"
+#include <QDir>
+#include <QFileInfo>
 #include <QProcess>
 #include "logger.h"
 
@@ -49,20 +51,44 @@ bool Exiftool::start(int msecs)
 	return ok;
 }
 
-bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &metadata, bool clear, int msecs)
+bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &metadata, bool clear, bool keepColorProfile, SidecarFile sidecarFile, bool sidecarFileNoExtension, int msecs)
 {
 	QStringList commands;
 	commands.append({ "-charset", "filename=utf8" });
 	commands.append({ "-sep", ";" });
-	if (clear) {
-		commands.append("-all=");
-	}
 	for (auto it = metadata.constBegin(); it != metadata.constEnd(); ++it) {
 		commands.append("-" + it.key() + "=" + it.value());
 	}
-	commands.append("-overwrite_original");
+	commands.append("-m"); // Ignore minor errors
 
-	return execute(file, commands.join("\n"), msecs);
+	// Try to write metadata to the file first, unless we only want to write to the sidecar
+	if (sidecarFile != SidecarFile::Only) {
+		QStringList originalFileCommands(commands);
+		if (clear) {
+			originalFileCommands.insert(2, "-all=");
+			if (keepColorProfile) {
+				originalFileCommands.insert(3, QStringList{ "--icc_profile:all", "-tagsfromfile", "@", "-colorspacetags" }.join("\n"));
+			}
+		}
+		originalFileCommands.append("-overwrite_original");
+
+		bool ok = execute(file, originalFileCommands.join("\n"), msecs);
+
+		// Stop here if we only want to write to the original file
+		if (sidecarFile == SidecarFile::No) {
+			return ok;
+		}
+
+		// Stop here on success if we only want to write sidecar files on error
+		if (ok && sidecarFile == SidecarFile::OnError) {
+			return ok;
+		}
+	}
+
+	// If we're here, that means we either only want to write sidecar files, always want both, or an error occurred and we only write sidecars on error
+	const QFileInfo info(file);
+	const QString sidecarFilename = (sidecarFileNoExtension ? info.path() + QDir::separator() + info.completeBaseName() : file) + ".xmp";
+	return execute(sidecarFilename, commands.join("\n"), msecs);
 }
 
 bool Exiftool::execute(const QString &file, const QString &command, int msecs)
@@ -81,7 +107,7 @@ bool Exiftool::execute(const QString &file, const QString &command, int msecs)
 		QString output = QString::fromLocal8Bit(m_process.readAllStandardOutput()).trimmed();
 		log(QString("[Exiftool] %1").arg(output), Logger::Debug);
 		if (output.endsWith("{ready}")) {
-			return true;
+			return !output.contains("due to errors");
 		}
 	}
 

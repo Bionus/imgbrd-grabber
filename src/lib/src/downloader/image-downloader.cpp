@@ -381,6 +381,15 @@ void ImageDownloader::success()
 	// Handle network redirects
 	const QUrl redirect = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirect.isEmpty()) {
+		// Detect Cloudflare redirects to error or home pages
+		if (m_reply->rawHeader("server") == "cloudflare" && getExtension(m_url) != getExtension(redirect)) {
+			log(QStringLiteral("Cloudflare redirect image `%1` to `%2` ignored").arg(m_url.toString().toHtmlEscaped(), redirect.toString().toHtmlEscaped()), Logger::Info);
+			QFile::remove(m_temporaryPath);
+			emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
+			return;
+		}
+
+		log(QStringLiteral("Redirecting image `%1` to `%2`").arg(m_url.toString().toHtmlEscaped(), redirect.toString().toHtmlEscaped()), Logger::Info);
 		m_url = redirect;
 		loadImage();
 		return;

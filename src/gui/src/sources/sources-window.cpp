@@ -213,7 +213,11 @@ void SourcesWindow::addCheckboxes()
 		auto *check = new QCheckBox(this);
 			check->setChecked(m_selected.contains(site));
 			check->setText(site->url());
-			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
+			#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+				connect(check, &QCheckBox::checkStateChanged, this, &SourcesWindow::checkUpdate);
+			#else
+				connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
+			#endif
 			row.check = check;
 			ui->gridLayout->addWidget(check, i, 0);
 

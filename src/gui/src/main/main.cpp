@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
 	}
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
+	qRegisterMetaType<ButtonSettings>();
+	qRegisterMetaType<QList<ButtonSettings>>();
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY
@@ -126,9 +128,9 @@ int main(int argc, char *argv[])
 	// Ensure SSL libraries are loaded
 	QSslSocket::supportsSsl();
 
-	auto *profile = new Profile(savePath());
-	profile->purgeTemp(24 * 60 * 60);
-	QSettings *settings = profile->getSettings();
+	Profile profile(savePath());
+	profile.purgeTemp(24 * 60 * 60);
+	QSettings *settings = profile.getSettings();
 
 	// Default to the GUI unless USE_CLI is defined
 	bool defaultToGui = true;
@@ -139,7 +141,7 @@ int main(int argc, char *argv[])
 	// Parse CLI parameters
 	QMap<QString, QString> params;
 	QStringList positionalArgs;
-	const int ret = parseAndRunCliArgs(&app, profile, defaultToGui, params, positionalArgs);
+	const int ret = parseAndRunCliArgs(&app, &profile, defaultToGui, params, positionalArgs);
 	if (ret != -1) {
 		return ret;
 	}
@@ -184,7 +186,7 @@ int main(int argc, char *argv[])
 	}
 
 	// Run the main window
-	auto *mainWindow = new MainWindow(profile);
+	auto *mainWindow = new MainWindow(&profile);
 	mainWindow->init(positionalArgs, params);
 	mainWindow->show();
 

@@ -73,6 +73,17 @@ TEST_CASE("FilenameExecutionVisitor")
 
 			REQUIRE(result == QString("123 123 123 123"));
 		}
+
+		SECTION("Floats")
+		{
+			const QMap<QString, Token> tokens {{ "ratio", Token(static_cast<double>(100) / static_cast<double>(3)) }};
+
+			REQUIRE(executeFilename("%ratio%", tokens) == QString("33.333333"));
+			REQUIRE(executeFilename("%ratio:length=3%", tokens) == QString("33.333333"));
+			REQUIRE(executeFilename("%ratio:length=10%", tokens) == QString("033.333333"));
+			REQUIRE(executeFilename("%ratio:precision=1%", tokens) == QString("33.3"));
+			REQUIRE(executeFilename("%ratio:length=5,precision=1%", tokens) == QString("033.3"));
+		}
 	}
 
 	SECTION("Token list count")

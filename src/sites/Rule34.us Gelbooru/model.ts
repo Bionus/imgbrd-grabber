@@ -56,7 +56,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
-                        tags: Grabber.regexToTags('<li><a[^>]*>\\+</a><a [^>]*>-</a> <span [^>]*>\\? <a href="[^"]*">(?<name>[^<]+)</a> (?<count>\\d+)</span></li>', src),
+                        tags: Grabber.regexToTags('<li class="(?<type>[^"]+)-tag"[^>]*><a href="[^"]*"[^>]*>(?<name>[^<]+)</a> <small[^>]*>(?<count>\\d+)</small></li>', src),
                         imageUrl: Grabber.regexToConst("url", '<a href="(?<url>[^"]+)"><li[^>]*>Original</li></a>', src),
                     };
                 },

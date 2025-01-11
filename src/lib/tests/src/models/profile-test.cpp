@@ -95,6 +95,14 @@ TEST_CASE("Profile")
 		REQUIRE(lines[0].toObject().value("tag").toString() == QString("tag_2"));
 	}
 
+	SECTION("Temporary path")
+	{
+		const QString tempPath = profile->tempPath();
+
+		REQUIRE(QDir(tempPath).exists());
+		REQUIRE(tempPath.contains("Grabber"));
+	}
+
 	#ifndef Q_OS_WIN
 		SECTION("RemoveFavoriteThumb")
 		{

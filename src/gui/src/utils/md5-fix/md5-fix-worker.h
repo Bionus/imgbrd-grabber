@@ -9,7 +9,7 @@ class Md5FixWorker : public QObject
 	Q_OBJECT
 
 	public slots:
-		void doWork(const QString &dir, const QString &filename, const QStringList &suffixes, bool force);
+		void doWork(const QString &dir, const QString &filename, const QStringList &suffixes, const QSet<QString> &excludedExtensions, bool force);
 
 	signals:
 		void maximumSet(int max);

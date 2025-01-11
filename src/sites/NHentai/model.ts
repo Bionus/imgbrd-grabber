@@ -2,6 +2,7 @@ const extensionMap: any = {
     j: "jpg",
     p: "png",
     g: "gif",
+    w: "webp",
 };
 
 function makeGallery(gallery: any): IImage {
@@ -15,7 +16,8 @@ function makeImage(image: any): IImage {
         .replace("https://t.", "https://i.")
         .replace(/t.jpg$/, ".jpg")
         .replace(/t.png$/, ".png")
-        .replace(/t.gif$/, ".gif");
+        .replace(/t.gif$/, ".gif")
+        .replace(/t.webp$/, ".webp");
     return image;
 }
 

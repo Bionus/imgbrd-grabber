@@ -173,9 +173,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Video conversion
 	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
 	ui->checkConversionFFmpegConvertWebmToMp4->setChecked(settings->value("Save/FFmpegConvertWebmToMp4", false).toBool());
+	ui->spinConversionFFmpegTimeout->setValue(settings->value("Save/FFmpegConvertTimeout", 30000).toDouble() / 1000);
 
 	// Image conversion
 	ui->comboConversionImageBackend->setCurrentText(settings->value("Save/ImageConversionBackend", "ImageMagick").toString());
+	ui->spinConversionImageTimeout->setValue(settings->value("Save/ImageConversionTimeout", 30000).toDouble() / 1000);
 	settings->beginGroup("Save/ImageConversion");
 	for (const QString &from : settings->childGroups()) {
 		settings->beginGroup(from);
@@ -197,6 +199,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkConversionUgoiraEnabled->setChecked(settings->value("Save/ConvertUgoira", false).toBool());
 	ui->comboConversionUgoiraTargetExtension->setCurrentText(settings->value("Save/ConvertUgoiraFormat", "gif").toString().toUpper());
 	ui->checkConversionUgoiraDelete->setChecked(settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool());
+	ui->spinConversionUgoiraTimeout->setValue(settings->value("Save/ConvertUgoiraTimeout", 30000).toDouble() / 1000);
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -229,6 +232,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
 	ui->checkMetadataExiftoolClear->setChecked(settings->value("Save/MetadataExiftoolClear", false).toBool());
+	ui->checkMetadataExiftoolKeepColorProfile->setChecked(settings->value("Save/MetadataExiftoolKeepColorProfile", true).toBool());
 	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
 	for (const auto &pair : metadataExiftool) {
 		auto *leKey = new QLineEdit(pair.first, this);
@@ -236,6 +240,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->layoutMetadataExiftool->addRow(leKey, leValue);
 		m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
 	}
+	static const QStringList sidecarFile { "no", "on_error", "both", "only" };
+	ui->comboMetadataExiftoolSidecar->setCurrentIndex(sidecarFile.indexOf(settings->value("Save/MetadataExiftoolSidecar", "on_error").toString()));
+	ui->checkMetadataExiftoolSidecarNoExtension->setChecked(settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
 
 	// Log
 	settings->beginGroup("Log");
@@ -1346,9 +1353,11 @@ void OptionsWindow::save()
 		// Video conversion
 		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
 		settings->setValue("FFmpegConvertWebmToMp4", ui->checkConversionFFmpegConvertWebmToMp4->isChecked());
+		settings->setValue("FFmpegConvertTimeout", qRound(ui->spinConversionFFmpegTimeout->value() * 1000));
 
 		// Image conversion
 		settings->setValue("ImageConversionBackend", ui->comboConversionImageBackend->currentText());
+		settings->setValue("ImageConversionTimeout", qRound(ui->spinConversionImageTimeout->value() * 1000));
 		settings->beginGroup("ImageConversion");
 		settings->remove("");
 		for (int i = 0, j = 0; i < m_imageConversion.count(); ++i) {
@@ -1367,6 +1376,7 @@ void OptionsWindow::save()
 		settings->setValue("ConvertUgoira", ui->checkConversionUgoiraEnabled->isChecked());
 		settings->setValue("ConvertUgoiraFormat", ui->comboConversionUgoiraTargetExtension->currentText().toLower());
 		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());
+		settings->setValue("ConvertUgoiraTimeout", qRound(ui->spinConversionUgoiraTimeout->value() * 1000));
 
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
 		settings->setValue("MetadataPropsysClear", ui->checkMetadataPropsysClear->isChecked());
@@ -1385,6 +1395,7 @@ void OptionsWindow::save()
 
 		settings->setValue("MetadataExiftoolExtensions", ui->lineMetadataExiftoolExtensions->text());
 		settings->setValue("MetadataExiftoolClear", ui->checkMetadataExiftoolClear->isChecked());
+		settings->setValue("MetadataExiftoolKeepColorProfile", ui->checkMetadataExiftoolKeepColorProfile->isChecked());
 		settings->beginWriteArray("MetadataExiftool");
 		for (int i = 0, j = 0; i < m_metadataExiftool.count(); ++i) {
 			const QString &key = m_metadataExiftool[i].first->text();
@@ -1397,6 +1408,9 @@ void OptionsWindow::save()
 			}
 		}
 		settings->endArray();
+		static const QStringList sidecarFile { "no", "on_error", "both", "only" };
+		settings->setValue("MetadataExiftoolSidecar", sidecarFile.at(ui->comboMetadataExiftoolSidecar->currentIndex()));
+		settings->setValue("MetadataExiftoolSidecarNoExtension", ui->checkMetadataExiftoolSidecarNoExtension->isChecked());
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
@@ -1629,7 +1643,11 @@ void OptionsWindow::initButtonSettingPairs()
 			positionSpinner
 		));
 
-		QObject::connect(checker, &QCheckBox::stateChanged, this, &OptionsWindow::checkAllSpinners);
+		#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+			QObject::connect(checker, &QCheckBox::checkStateChanged, this, &OptionsWindow::checkAllSpinners);
+		#else
+			QObject::connect(checker, &QCheckBox::stateChanged, this, &OptionsWindow::checkAllSpinners);
+		#endif
 		QObject::connect(positionSpinner, SIGNAL(valueChanged(int)), this, SLOT(checkAllSpinners()));
 	}
 }

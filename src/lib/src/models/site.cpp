@@ -139,7 +139,7 @@ void Site::loadConfig()
 		QByteArray byteArray = variant.type() == QVariant::ByteArray ? variant.toByteArray() : variant.toString().toUtf8();
 		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(byteArray);
 		for (QNetworkCookie cookie : cookies) {
-			cookie.setDomain(m_url);
+			cookie.setDomain("." + m_url);
 			cookie.setPath("/");
 			m_cookies.append(cookie);
 		}
@@ -154,10 +154,10 @@ void Site::loadConfig()
 
 	// Setup throttling
 	m_manager->setMaxConcurrency(setting("download/simultaneous", 10).toInt());
-	m_manager->setInterval(QueryType::List, setting("download/throttle_page", 0).toInt() * 1000);
-	m_manager->setInterval(QueryType::Img, setting("download/throttle_image", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::List, setting("download/throttle_page", 1).toInt() * 1000);
+	m_manager->setInterval(QueryType::Img, setting("download/throttle_image", 1).toInt() * 1000);
 	m_manager->setInterval(QueryType::Thumbnail, setting("download/throttle_thumbnail", 0).toInt() * 1000);
-	m_manager->setInterval(QueryType::Details, setting("download/throttle_details", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Details, setting("download/throttle_details", 1).toInt() * 1000);
 	m_manager->setInterval(QueryType::Retry, setting("download/throttle_retry", 60).toInt() * 1000);
 
 	// Generate the User-Agent
@@ -292,6 +292,7 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	}
 
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
+	request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
 	return request;
 }
 

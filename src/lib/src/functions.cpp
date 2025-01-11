@@ -64,6 +64,14 @@ QString lastErrorString()
 }
 
 
+/**
+ * Re-implementation of QProcess::splitCommand that supports both single and double quotes.
+ *
+ * For example, `"a b" 'c d' e` will be turned into ("a b", "c d", "e").
+ *
+ * @param command The command to split into a list of process arguments.
+ * @return The list of arguments to start the process with.
+ */
 QStringList splitCommand(const QString &command)
 {
 	QStringList args;
@@ -114,8 +122,10 @@ QStringList splitCommand(const QString &command)
 
 		// If we finally reached a space outside a quoted argument, we flush
 		if (!inQuote && c.isSpace()) {
-			args += tmp;
-			tmp.clear();
+			if (!tmp.isEmpty()) {
+				args += tmp;
+				tmp.clear();
+			}
 		} else {
 			tmp += c;
 		}
@@ -608,6 +618,18 @@ QString getExtension(const QUrl &url)
 	return ext;
 }
 
+QString setExtension(QString path, const QString &extension)
+{
+	const int lastSlash = path.lastIndexOf('/');
+	const int lastDot = path.mid(lastSlash + 1).lastIndexOf('.');
+	if (lastDot != -1) {
+		const QString suffix = extension.isEmpty() ? "" : "." + extension;
+		return path.left(lastDot + lastSlash + 1) + suffix;
+	}
+
+	return path;
+}
+
 QUrl setExtension(QUrl url, const QString &extension)
 {
 	QString path = url.path();
@@ -810,6 +832,19 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	return filename;
 }
 
+
+QString getExtensionFromHeader(const QString &path)
+{
+	// Read the first 12 bytes from the file
+	QFile f(path);
+	if (!f.open(QFile::ReadOnly)) {
+		return QString();
+	}
+	const QByteArray data12 = f.read(12);
+	f.close();
+
+	return getExtensionFromHeader(data12);
+}
 
 QString getExtensionFromHeader(const QByteArray &data12)
 {
@@ -1041,7 +1076,7 @@ bool isFileParentWithSuffix(const QString &fileName, const QString &parent, cons
 	}
 	return false;
 }
-QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes)
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes, const QSet<QString> &excludedExtensions)
 {
 	auto files = QList<QPair<QString, QStringList>>();
 
@@ -1049,7 +1084,8 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 	while (it.hasNext()) {
 		it.next();
 
-		if (it.fileInfo().isDir()) {
+		const QFileInfo fi = it.fileInfo();
+		if (fi.isDir() || excludedExtensions.contains(fi.suffix())) {
 			continue;
 		}
 

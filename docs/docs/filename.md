@@ -202,6 +202,17 @@ Example:
 %count:length=3%.%ext%
 007.jpg
 ```
+#### Precision (float)
+Number of digits after the decimal.
+
+Example:
+```
+%ratio%.%ext%
+1.333333.jpg
+
+%ratio:precision=1%.%ext%
+1.3.jpg
+```
 
 ### Lists
 #### Separator (string)
