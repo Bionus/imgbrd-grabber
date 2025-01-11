@@ -58,6 +58,8 @@ endif()
 
 # QScintilla
 if(USE_QSCINTILLA)
+	set(QT_INCLUDE_DIR "${QT6_INSTALL_PREFIX}/include")
+	set(QT_LIBRARY_DIR "${QT6_INSTALL_PREFIX}/lib")
 	find_package(QScintilla)
 	if(QSCINTILLA_FOUND)
 		message(STATUS "Building with QScintilla2 support")
@@ -189,8 +191,8 @@ if(ANDROID)
 	# NAME ${ANDROID_APP_NAME}
 	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
 
-	# Sign package if the keystore was provided
-	if(DEFINED ENV{QT_ANDROID_KEYSTORE_PATH})
+	# Sign package if the keystore and its password were provided
+	if(NOT "$ENV{QT_ANDROID_KEYSTORE_PATH}" STREQUAL "" AND NOT "$ENV{QT_ANDROID_KEYSTORE_STORE_PASS}" STREQUAL "")
 		set(QT_ANDROID_SIGN_APK ON)
 	else()
 		message(WARNING "No keystore provided, APK signing disabled")
