@@ -99,7 +99,7 @@ jobs:
           sudo apt install libpulse-dev lcov libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxkbcommon-x11-0
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -183,7 +183,7 @@ jobs:
           sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libgstreamer-plugins-base1.0-0 zsync xvfb
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -298,7 +298,7 @@ jobs:
           submodules: recursive
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -386,7 +386,7 @@ jobs:
           submodules: recursive
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -533,7 +533,7 @@ jobs:
         sudo apt install libpulse-dev
 
     - name: Install Qt (host)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
@@ -542,7 +542,7 @@ jobs:
         arch: gcc_64
 
     - name: Install Qt (android)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
@@ -551,7 +551,7 @@ jobs:
         arch: android_armv7
 
     - name: Install Qt (android ARM64)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
