@@ -43,7 +43,8 @@ async function createPost(id, tags, rating, source) {
         const form = new FormData();
         form.append("upload_media_asset_id", id);
         form.append("post[tag_string]", tags);
-        //form.append("post[rating]", rating.substring(0, 1).toUpperCase());
+        //g, s, q, or e
+        form.append("post[rating]", rating.charAt(0).toLowerCase());
         form.append("post[source]", source);
 
         const response = await axios.post("posts.json", form, { headers: form.getHeaders() });
@@ -67,9 +68,13 @@ async function createPost(id, tags, rating, source) {
     axios.defaults.headers.common["Accept"] = "application/json";
 
     // Create post
+        await new Promise(r => setTimeout(r, 1));
     const uploadId = await createUpload(argv[3]);
+        await new Promise(r => setTimeout(r, 1));
     const mediaAssetId = await getUploadMediaAssetId(uploadId);
+        await new Promise(r => setTimeout(r, 1));
     const postId = await createPost(mediaAssetId, argv[0], argv[1], argv[2]);
+        await new Promise(r => setTimeout(r, 1));
 
     // Open browser
     if (OPEN_BROWSER) {

@@ -57,6 +57,12 @@ You can blacklist some tags or combinations of tags to not see them in the resul
 
 It can be edited in the settings in the "Save > Blacklist" category, or tags can be added to the blacklist by right-clicking on them and selecting "Blacklist".
 
+Note:
+
+* Blacklist is a post-filter: it is applied after results are returned from the sources.
+* When using the CLI, images that contains blacklisted tags will no be downloaded unless the `--blacklist` option is used.
+* When using the GUI, images that contain blacklisted tags will not be downloaded unless explicitly selecting them and clicking 'save'.
+
 ### Syntax
 Each line of the blacklist corresponds to a combination of tags and uses the same syntax as post-filters.
 
