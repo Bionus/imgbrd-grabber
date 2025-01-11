@@ -1643,7 +1643,11 @@ void OptionsWindow::initButtonSettingPairs()
 			positionSpinner
 		));
 
-		QObject::connect(checker, &QCheckBox::stateChanged, this, &OptionsWindow::checkAllSpinners);
+		#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+			QObject::connect(checker, &QCheckBox::checkStateChanged, this, &OptionsWindow::checkAllSpinners);
+		#else
+			QObject::connect(checker, &QCheckBox::stateChanged, this, &OptionsWindow::checkAllSpinners);
+		#endif
 		QObject::connect(positionSpinner, SIGNAL(valueChanged(int)), this, SLOT(checkAllSpinners()));
 	}
 }
