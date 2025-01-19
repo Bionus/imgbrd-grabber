@@ -99,7 +99,7 @@ jobs:
           sudo apt install libpulse-dev lcov libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxkbcommon-x11-0
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -183,7 +183,7 @@ jobs:
           sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libgstreamer-plugins-base1.0-0 zsync xvfb
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -227,8 +227,8 @@ jobs:
       # This driver causes an issue in linuxdeployqt because Mimer SQL is not installed but the plugin depends on it
       - name: Delete unnecessary SQL driver
         run: |
-          rm $Qt6_DIR/plugins/sqldrivers/libqsqlmimer.so
-          rm $Qt6_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
+          rm $QT_ROOT_DIR/plugins/sqldrivers/libqsqlmimer.so
+          rm $QT_ROOT_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
 
       - name: Build
         run: |
@@ -298,7 +298,7 @@ jobs:
           submodules: recursive
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -386,7 +386,7 @@ jobs:
           submodules: recursive
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -465,17 +465,17 @@ jobs:
           ..\..\build\lib\tests\%BUILD_TYPE%\lib-tests.exe
           ..\..\build\cli\tests\%BUILD_TYPE%\cli-tests.exe
         env:
-          QTDIR: ${{ env.Qt6_Dir }}
-          QT_PLUGIN_PATH: ${{ env.Qt6_Dir }}\plugins
+          QTDIR: ${{ env.QT_ROOT_DIR }}
+          QT_PLUGIN_PATH: ${{ env.QT_ROOT_DIR }}\plugins
 
       - name: Generate installer
         shell: cmd
         run: |
-          copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt6_Dir%\plugins\sqldrivers"
+          copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%QT_ROOT_DIR%\plugins\sqldrivers"
           iscc /Q ^
             /DMyAppVersion="%GRABBER_VERSION%" ^
             /DPlatformName="x64" ^
-            /DQtDir="%Qt6_Dir%\bin" ^
+            /DQtDir="%QT_ROOT_DIR%\bin" ^
             /DOpenSSLDir="%OPENSSL_ROOT_DIR%" ^
             /DMySQLDir="%MYSQL_DRIVER_DIR%" ^
             scripts\windows-setup\setup.iss
@@ -533,7 +533,7 @@ jobs:
         sudo apt install libpulse-dev
 
     - name: Install Qt (host)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
@@ -542,7 +542,7 @@ jobs:
         arch: gcc_64
 
     - name: Install Qt (android)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
@@ -551,7 +551,7 @@ jobs:
         arch: android_armv7
 
     - name: Install Qt (android ARM64)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
@@ -577,9 +577,9 @@ jobs:
         QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
         QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        Qt6_DIR_HOST: ${{ env.Qt6_DIR }}/../gcc_64
-        Qt6_DIR_V7: ${{ env.Qt6_DIR }}/../android_armv7
-        Qt6_DIR_V8: ${{ env.Qt6_DIR }}/../android_arm64_v8a
+        Qt6_DIR_HOST: ${{ env.QT_ROOT_DIR }}/../gcc_64
+        Qt6_DIR_V7: ${{ env.QT_ROOT_DIR }}/../android_armv7
+        Qt6_DIR_V8: ${{ env.QT_ROOT_DIR }}/../android_arm64_v8a
       run: |
         mkdir build
         cd build
