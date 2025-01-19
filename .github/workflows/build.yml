@@ -610,6 +610,7 @@ jobs:
     - name: Generate package
       run: |
         mv build/gui-qml/android-build/build/outputs/apk/debug/android-build-debug.apk Grabber.apk 2> /dev/null || true
+        mv build/gui-qml/android-build/build/outputs/apk/release/android-build-release-unsigned.apk Grabber.apk 2> /dev/null || true
         mv build/gui-qml/android-build/build/outputs/apk/release/android-build-release-signed.apk Grabber.apk 2> /dev/null || true
 
     - name: Upload package
