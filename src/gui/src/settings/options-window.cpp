@@ -477,12 +477,12 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringCharacters->setText(settings->value("characters", "#00aa00").toString());
 			ui->lineColoringSpecies->setText(settings->value("species", "#ee6600").toString());
 			ui->lineColoringMetas->setText(settings->value("metas", "#ee6600").toString());
-			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
+			ui->lineColoringModels->setText(settings->value("models", "#00aaff").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
-			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
-			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#000000").toString());
-			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#000000").toString());
-			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
+			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffaaff").toString());
+			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#aaaa00").toString());
+			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#444444").toString());
+			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#777777").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
 			ui->lineColoringArtists->setFont(qFontFromString(settings->value("artists").toString()));
@@ -499,8 +499,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
 		settings->endGroup();
 		settings->beginGroup("Borders");
-			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffc0cb").toString());
-			ui->lineColoringBlacklistedsBorder->setText(settings->value("blacklisteds", "#000000").toString());
+			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffaaff").toString());
+			ui->lineColoringBlacklistedsBorder->setText(settings->value("blacklisteds", "#444444").toString());
 		settings->endGroup();
 	settings->endGroup();
 
