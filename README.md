@@ -99,7 +99,6 @@ You can add additional sources very easily, but here's a short list of some sour
 * Anime-Pictures
 * behoimi
 * Zerochan
-* Twitter
 
 ## Compilation
 See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.html) documentation to know how to build Grabber.
