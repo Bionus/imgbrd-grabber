@@ -174,7 +174,11 @@ Page {
     }
 
     Keys.onReleased: event => {
-        if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
+        if (event.key === Qt.Key_Left) {
+            swipeView.decrementCurrentIndex()
+        } else if (event.key === Qt.Key_Right) {
+            swipeView.incrementCurrentIndex()
+        } else if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
             if (root.showTags) {
                 root.showTags = false
             } else {
