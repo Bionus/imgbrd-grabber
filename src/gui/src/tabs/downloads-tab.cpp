@@ -448,7 +448,15 @@ bool DownloadsTab::isDownloading() const
 
 void DownloadsTab::batchConvert()
 {
-	QSet<int> rows = selectedRows(ui->tableBatchGroups);
+	// We don't use a QSet because the order of rows is important
+	QList<int> rows;
+	for (const QModelIndex &index : ui->tableBatchGroups->selectionModel()->selection().indexes()) {
+		const int row = index.row();
+		if (!rows.contains(row)) {
+			rows.append(row);
+		}
+	}
+
 	for (const int row : rows) {
 		const DownloadQueryGroup &group = m_groupBatchs[row];
 		Monitor monitor(m_settings, { group.site }, group.query, group.postFiltering);
