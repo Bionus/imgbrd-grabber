@@ -244,6 +244,10 @@ export const source: ISource = {
                     if (matches.length < 1) {
                         matches = Grabber.regexMatches('<div class="gdtl"[^>]*><a href="(?<page_url>[^"]+)"><img[^>]*src="(?<preview_url>[^"]+)"[^>]*></a></div>', src);
                     }
+                    if (matches.length < 1) {
+                        matches = Grabber.regexMatches('<a href="(?<page_url>[^"]+/s/[^"]+)"><div title="Page [0-9]+: (?<filename>[^"]+)" style="(?<div_style>[^"]+)"></div></a>', src);
+                    }
+                    
                     for (const match of matches) {
                         if ("div_style" in match) {
                             const styles = cssToObject(match["div_style"]);
