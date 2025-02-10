@@ -30,13 +30,6 @@ if(USE_BREAKPAD)
 	endif()
 endif()
 
-# Nightly version settings
-if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
-	add_definitions(-DNIGHTLY=1)
-	add_definitions(-DNIGHTLY_COMMIT="${COMMIT}")
-	message(STATUS "Configuring nightly with commit '${COMMIT}'")
-endif()
-
 # Qt libraries
 find_package(Qt6 COMPONENTS Core Concurrent Gui Network NetworkAuth Multimedia MultimediaWidgets Qml Sql Widgets Xml REQUIRED) # OPTIONAL_COMPONENTS WebEngineCore WebEngineWidgets
 set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::NetworkAuth Qt6::Qml Qt6::Sql Qt6::Widgets Qt6::Xml)

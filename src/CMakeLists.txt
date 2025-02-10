@@ -55,6 +55,13 @@ if(NOT DEFINED VERSION_PLATFORM)
 endif()
 set(USE_SSL 1)
 
+# Nightly version settings
+if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
+	add_definitions(-DNIGHTLY=1)
+	add_definitions(-DNIGHTLY_COMMIT="${COMMIT}")
+	message(STATUS "Configuring nightly with commit '${COMMIT}'")
+endif()
+
 # Android settings
 set(ANDROID_APP_NAME ${PROJECT_NAME})
 set(ANDROID_APP_VERSION_NAME ${VERSION})
