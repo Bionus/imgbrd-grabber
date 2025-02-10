@@ -8,9 +8,9 @@ xcopy /I /E /Y /K /F /EXCLUDE:src\sites\exclude_xcopy.txt "src/sites" "release/s
 xcopy /I /E /Y /K /F /H "src/dist/windows" "release"
 
 :: Add Qt DLL and files
-%Qt6_Dir%\bin\windeployqt --dir "release" "release/Grabber.exe" --release --no-quick-import --no-opengl-sw
-copy %Qt6_Dir%\lib\qscintilla2_qt6.dll "release"
-copy %Qt6_Dir%\bin\Qt6PrintSupport.dll "release"
+%QT_ROOT_DIR%\bin\windeployqt --dir "release" "release/Grabber.exe" --release --no-quick-import --no-opengl-sw
+copy %QT_ROOT_DIR%\lib\qscintilla2_qt6.dll "release"
+copy %QT_ROOT_DIR%\bin\Qt6PrintSupport.dll "release"
 
 :: Add OpenSSL and MySQL DLL
 copy %OPENSSL_ROOT_DIR%\libcrypto-3*.dll "release"
