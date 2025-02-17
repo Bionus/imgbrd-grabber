@@ -278,7 +278,7 @@ export const source: ISource = {
                 fullResults: true,
                 url: (id: string, md5: string): string => {
                     if (id === "" || id === "0") { return ""; } // Gallery images don't have an ID
-                    return "https://app-api.pixiv.net/v1/illust/detail?illust_id=" + id + "&image_sizes=large";
+                    return "https://www.pixiv.net/en/artworks/" + id;
                 },
                 parse: (src: string): IImage => {
                     const data = JSON.parse(src)["illust"];
