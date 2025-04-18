@@ -855,7 +855,7 @@ QWidget *SearchTab::createImageThumbnail()
 
 	if (fixedWidthLayout) {
 		const int dim = imageSize + borderSize * 2;
-		w->setFixedSize(dim, dim);
+		w->setFixedSize(QSize(dim, dim)  / devicePixelRatio());
 	}
 
 	return w;
