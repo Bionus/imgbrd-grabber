@@ -907,12 +907,15 @@ void ViewerWindow::update(bool onlySize, bool force)
 		return;
 	}
 
+	m_displayImage.setDevicePixelRatio(m_labelImage->devicePixelRatio());
+	const QSize labelSize = m_labelImage->size() * m_labelImage->devicePixelRatio();
 	const bool needScaling = m_settings->value("Viewer/scaleUp", false).toBool()
-		|| m_displayImage.width() > m_labelImage->width()
-		|| m_displayImage.height() > m_labelImage->height();
+		|| m_displayImage.width() > labelSize.width()
+		|| m_displayImage.height() > labelSize.height();
+
 	if (needScaling && (onlySize || m_loadedImage || force)) {
 		const Qt::TransformationMode mode = onlySize ? Qt::FastTransformation : Qt::SmoothTransformation;
-		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
+		m_labelImage->setImage(m_displayImage.scaled(labelSize.width(), labelSize.height(), Qt::KeepAspectRatio, mode));
 		m_labelImageScaled = true;
 	} else if (m_loadedImage || force || (m_labelImageScaled && !needScaling)) {
 		m_labelImage->setImage(m_displayImage);
