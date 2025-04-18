@@ -46,7 +46,7 @@ export const source: ISource = {
                     return {
                         images: Grabber.regexToImages('<a id="(?<id>\\d+)" href="[^"]+"><img +src="(?<preview_url>[^"]*thumbnail_(?<md5>[^.]+)\\.[^"]+)" title=" *(?<tags>[^"]*)" .+?</a></div>', src).map(completeImage),
                         pageCount,
-                        tags: Grabber.regexToTags('<li><a[^>]*>\\+</a><a [^>]*>-</a> <span [^>]*>\\? <a href="[^"]*">(?<name>[^<]+)</a> (?<count>\\d+)</span></li>', src),
+                        tags: Grabber.regexToTags('<li[^>]*(?:\\sclass="(?<type>[^"]+)-tag")[^>]*>(?:&nbsp;|\\s)*<a[^>]*>\\+</a>(?:&nbsp;|\\s)*<a [^>]*>-</a>(?:&nbsp;|\\s)*(?:<span [^>]*>\\? <a[^>]*>(?<name>[^<]+)</a> (?<count>\\d+)</span>|<a[^>]*>(?<name_2>[^<]+)</a>\\s*<small[^>]*>(?<count_2>\\d+)</small>)</li>', src),
                     };
                 },
             },

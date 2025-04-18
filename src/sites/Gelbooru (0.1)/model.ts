@@ -35,7 +35,7 @@ export const source: ISource = {
                     return {
                         images: Grabber.regexToImages('<span class="thumb"><a id="p(?<id>\\d+)" href="[^"]+"><img src="(?<preview_url>[^"]*thumbnail_(?<md5>[^.]+)\\.[^"]+)" alt="post" border="0" title=" *(?<tags>[^"]*) *score:(?<score>[^ "]+) *rating:(?<rating>[^ "]+) *"/></a>[^<]*(?:<script type="text/javascript">[^<]*//<!\\[CDATA\\[[^<]*posts\\[[^]]+\\] = \\{\'tags\':\'(?<tags_2>[^\']+)\'\\.split\\(/ /g\\), \'rating\':\'(?<rating_2>[^\']+)\', \'score\':(?<score_2>[^,]+), \'user\':\'(?<author>[^\']+)\'\\}[^<]*//\\]\\]>[^<]*</script>)?</span>', src).map(completeImage),
                         pageCount: pageCount ? (parseInt(pageCount, 10) / 20) + 1 : undefined,
-                        tags: Grabber.regexToTags('<li><a[^>]*>\\+</a><a [^>]*>-</a> <span [^>]*>\\? <a href="[^"]*">(?<name>[^<]+)</a> (?<count>\\d+)</span></li>', src),
+                        tags: Grabber.regexToTags('<li[^>]*(?:\\sclass="(?<type>[^"]+)-tag")[^>]*>(?:&nbsp;|\\s)*<a[^>]*>\\+</a>(?:&nbsp;|\\s)*<a [^>]*>-</a>(?:&nbsp;|\\s)*(?:<span [^>]*>\\? <a[^>]*>(?<name>[^<]+)</a> (?<count>\\d+)</span>|<a[^>]*>(?<name_2>[^<]+)</a>\\s*<small[^>]*>(?<count_2>\\d+)</small>)</li>', src),
                     };
                 },
             },
