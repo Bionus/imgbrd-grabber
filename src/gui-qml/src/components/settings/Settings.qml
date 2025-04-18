@@ -95,6 +95,16 @@ Item {
         def: false
         obj: root.obj
     }
+    property Setting globalAddedTags: Setting {
+        key: "add"
+        def: ""
+        obj: root.obj
+    }
+    property Setting globalPostFilters: Setting {
+        key: "globalPostFilter"
+        def: ""
+        obj: root.obj
+    }
     property var blacklist: Item {
         property string value: backend.getBlacklist()
         function setValue(val) {

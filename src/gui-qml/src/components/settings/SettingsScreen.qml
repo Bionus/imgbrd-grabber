@@ -66,8 +66,8 @@ Page {
                     component: "SourcesSettingsPage.qml"
                 }
                 ListElement {
-                    name: qsTr("Blacklist")
-                    icon: "/images/icons/block.png"
+                    name: qsTr("Search")
+                    icon: "/images/icons/search.png"
                     component: "BlacklistSettingsPage.qml"
                 }
                 ListElement {

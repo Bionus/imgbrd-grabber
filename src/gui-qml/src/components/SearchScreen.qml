@@ -23,11 +23,11 @@ Page {
         id: pageLoader
 
         site: searchTab.site.url
-        query: textFieldSearch.text
+        query: (textFieldSearch.text + " " + gSettings.globalAddedTags.value).trim()
         page: searchTab.page
         perPage: 20
         endpoint: site.endpoints[comboEndpoint.currentIndex].id
-        postFilter: textFieldPostFiltering.text
+        postFilter: (textFieldPostFiltering.text + " " + gSettings.globalPostFilters.value).trim()
         profile: backend.profile
 
         onQueryChanged: searchTab.queryChanged = true
