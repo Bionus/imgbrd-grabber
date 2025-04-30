@@ -84,7 +84,7 @@ export const source: ISource = {
                             name: gallery["title"]["english"],
                             created_at: gallery["upload_date"],
                             tags: gallery["tags"].map(makeTag),
-                            preview_url: "https://t.nhentai.net/galleries/" + gallery["media_id"] + "/thumb." + extensionMap[thumb["t"]],
+                            preview_url: "https://t1.nhentai.net/galleries/" + gallery["media_id"] + "/thumb." + extensionMap[thumb["t"]],
                             preview_width: thumb["w"],
                             preview_height: thumb["h"],
                         };
@@ -112,10 +112,10 @@ export const source: ISource = {
                         images.push({
                             created_at: data["upload_date"],
                             tags: data["tags"].map(makeTag),
-                            file_url: "https://i.nhentai.net/galleries/" + data["media_id"] + "/" + index + "." + extensionMap[image["t"]],
+                            file_url: "https://i1.nhentai.net/galleries/" + data["media_id"] + "/" + index + "." + extensionMap[image["t"]],
                             width: image["w"],
                             height: image["h"],
-                            preview_url: "https://t.nhentai.net/galleries/" + data["media_id"] + "/" + index + "t." + extensionMap[image["t"]],
+                            preview_url: "https://t1.nhentai.net/galleries/" + data["media_id"] + "/" + index + "t." + extensionMap[image["t"]],
                         });
                     }
 
