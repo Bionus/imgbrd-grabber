@@ -33,6 +33,7 @@ function completeImage(image, raw){
     image.sample_url = noWebpAvif(image.sample_url || '');
     image.preview_url = noWebpAvif(image.preview_url || '');
     let md5Part = image.md5.substring(0, 3).concat('/', image.md5);
+    
     // If no URL is passed at all, build it ourselves.
     if (!image.preview_url && !image.sample_url && !image.file_url){
         let previewExt = raw['have_alpha'] === true ? 'png' : 'jpg';
