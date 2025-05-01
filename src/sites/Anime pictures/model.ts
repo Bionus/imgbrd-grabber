@@ -57,7 +57,7 @@ function completeImage(image, raw){
         // Valid but blocked by Cloudflare.
         // image.file_url = '//oimages.'.concat(mainHostname, '/', md5Part, '.', image.ext);
         
-        // Another seeming legacy tibit used internally with the previous above pattern.
+        // Another seeming legacy tidbit used internally with the previous above pattern.
         // image.file_url.concat('?if=ANIME-PICTURES.NET_-_', raw.file_url);
     }
     
@@ -103,24 +103,18 @@ function searchToUrl(page, search, previous){
         
         if (part.indexOf('width:') === 0){
             sizeToUrl(part.substr(6), 'res_x', ret);
-        }
-        else if (part.indexOf('height:') === 0){
+        }else if (part.indexOf('height:') === 0){
             sizeToUrl(part.substr(7), 'res_y', ret);
-        }
-        else if (part.indexOf('ratio:') === 0){
+        }else if (part.indexOf('ratio:') === 0){
             ret.push('aspect=' + part.substr(6));
-        }
-        else if (part.indexOf('order:') === 0){
+        }else if (part.indexOf('order:') === 0){
             ret.push('order_by=' + part.substr(6));
-        }
-        else if (part.indexOf('filetype:') === 0){
+        }else if (part.indexOf('filetype:') === 0){
             const ext = part.substr(9);
             ret.push('ext_' + ext + '=' + ext);
-        }
-        else if (part[0] === '-'){
+        }else if (part[0] === '-'){
             denied.push(encodeURIComponent(tag.substr(1)));
-        }
-        else if (tag.length > 0){
+        }else if (tag.length > 0){
             tags.push(encodeURIComponent(tag));
         }
     }
