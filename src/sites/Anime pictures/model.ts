@@ -1,251 +1,224 @@
-const jsonMap = {
-    "created_at": "pubtime",
-    "preview_url": "small_preview",
-    "width": "width",
-    "md5": "md5",
-    "height": "height",
-    "id": "id",
-    "score": "score_number",
-    "sample_url": "big_preview",
-    "ext": "ext",
-    "file_size": "size",
+const mainHostname = 'anime-pictures.net';
+const imageMap = {
+    'id': 'id',
+    'md5': 'md5',
+    'width': 'width',
+    'height': 'height',
+    'created_at': 'pubtime',
+    'score': 'score_number',
+    'file_size': 'size',
+    'ext': 'ext',
+    'file_url': 'file_url',
+    'sample_url': 'big_preview',
+    'preview_url': 'small_preview'
+};
+const tagMap = {
+    id: 'id',
+    name: 'tag',
+    count: 'num',
+    typeId: 'type'
 };
 
-function noWebpAvif(url: string): string {
-    return url.replace(/(\.\w{3,4})\.(?:webp|avif)/, "$1");
+function noWebpAvif(url){
+    return url.replace(/(\.\w{3,4})\.(?:webp|avif)/, '$1');
 }
 
-function completeImage(img: IImage, raw: any): IImage {
-    // Replace ".jpg" by just "jpg" in the extension
-    if (img.ext && img.ext[0] === ".") {
-        img.ext = img.ext.substring(1);
+function completeImage(image, raw){
+    // Replace '.jpg' by just 'jpg' in the extension.
+    if (image.ext && image.ext[0] === '.'){
+        image.ext = image.ext.substring(1);
     }
-
-    // Remove the ".webp" and ".avif" suffix to previews
-    img.sample_url = noWebpAvif(img.sample_url || "");
-    img.preview_url = noWebpAvif(img.preview_url || "");
-
-    // If no URL is passed at all, build it ourselves
-    if (!img.preview_url && !img.sample_url && !img.file_url) {
-        const domain = "anime-pictures.net";
-        const md5Part = img.md5?.substring(0, 3) + "/" + img.md5;
-        const previewExt = raw["have_alpha"] === true ? "png" : "jpg";
-        img.preview_url = `//opreviews.${domain}/${md5Part}_sp.${previewExt}`;
-        img.sample_url = `//opreviews.${domain}/${md5Part}_bp.${previewExt}`;
-        img.file_url = `//oimages.${domain}/${md5Part}.${img.ext}`;
+    
+    // Remove the '.webp' and '.avif' suffix to previews.
+    image.sample_url = noWebpAvif(image.sample_url || '');
+    image.preview_url = noWebpAvif(image.preview_url || '');
+    let md5Part = image.md5.substring(0, 3).concat('/', image.md5);
+    // If no URL is passed at all, build it ourselves.
+    if (!image.preview_url && !image.sample_url && !image.file_url){
+        let previewExt = raw['have_alpha'] === true ? 'png' : 'jpg';
+        image.preview_url = '//opreviews.'.concat(mainHostname, '/', md5Part, '_sp.', previewExt);
+        image.sample_url = '//opreviews.'.concat(mainHostname, '/', md5Part, '_bp.', previewExt);
+        // Valid but blocked by Cloudflare.
+        // image.file_url = '//oimages.'.concat(mainHostname, '/', md5Part, '.', image.ext);
     }
-
-    if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
-        img.sample_url = img.preview_url
-            .replace("_cp.", "_bp.")
-            .replace("_sp.", "_bp.");
+    
+    // If sample URL is bad but preview URL is good.
+    if ((!image.sample_url || image.sample_url.length < 5) && image.preview_url && image.preview_url.length >= 5){
+        image.sample_url = image.preview_url
+            .replace('_cp.', '_bp.')
+            .replace('_sp.', '_bp.');
     }
-
-    if ((!img.file_url || img.file_url.length < 5) && img.sample_url && img.sample_url.length >= 5) {
-        img.file_url = img.sample_url
-            .replace(/\/cdn\./, "/images.")
-            .replace(/\/opreviews\./, "/oimages.")
-            .replace(/\/previews\//, "/")
-            .replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
+    
+    // If file URL is bad.
+    if (!image.file_url || !image.file_url.includes(image.md5)){
+        // Seemingly legacy redirect currently used on site. Probably subject to eventual deprecation.
+        image.file_url = `//api.${mainHostname}/pictures/get_image/`.concat(raw.file_url);
+        
+        // Valid but blocked by Cloudflare.
+        // image.file_url = '//oimages.'.concat(mainHostname, '/', md5Part, '.', image.ext);
+        
+        // Another seeming legacy tibit used internally with the previous above pattern.
+        // image.file_url.concat('?if=ANIME-PICTURES.NET_-_', raw.file_url);
     }
-
-    return img;
+    
+    return image;
 }
-
-function sizeToUrl(size: string, key: string, ret: string[]): void {
-    let op: number | undefined;
-    if (size.indexOf("<=") === 0) {
+function sizeToUrl(size, key, ret){
+    let op;
+    
+    if (size.indexOf('<=') === 0){
         size = size.substr(2);
         op = 0;
-    } else if (size.indexOf(">=") === 0) {
+    }
+    
+    else if (size.indexOf('>=') === 0){
         size = size.substr(2);
         op = 1;
-    } else if (size[0] === "<") {
+    }
+    
+    else if (size[0] === '<'){
         size = String(parseInt(size.substr(1), 10) - 1);
         op = 0;
-    } else if (size[0] === ">") {
+    }
+    
+    else if (size[0] === '>'){
         size = String(parseInt(size.substr(1), 10) + 1);
         op = 1;
     }
-    ret.push(key + "=" + size);
-    if (op !== undefined) {
-        ret.push(key + "_n=" + op);
+    
+    ret.push(key + '=' + size);
+    if (op !== undefined){
+        ret.push(key + '_n=' + op);
     }
 }
-
-function searchToUrl(page: number, search: string, previous: IPreviousSearch | undefined): string {
-    const parts = search.split(" ");
-    const tags: string[] = [];
-    const denied: string[] = [];
-    const ret: string[] = [];
-    for (const tag of parts) {
-        const part = tag.trim();
-        if (part.indexOf("width:") === 0) {
-            sizeToUrl(part.substr(6), "res_x", ret);
-        } else if (part.indexOf("height:") === 0) {
-            sizeToUrl(part.substr(7), "res_y", ret);
-        } else if (part.indexOf("ratio:") === 0) {
-            ret.push("aspect=" + part.substr(6));
-        } else if (part.indexOf("order:") === 0) {
-            ret.push("order_by=" + part.substr(6));
-        } else if (part.indexOf("filetype:") === 0) {
+function searchToUrl(page, search, previous){
+    const parts = search.split(' ');
+    const tags = [];
+    const denied = [];
+    const ret = [];
+    
+    for (let index = 0; index < parts.length; index++){
+        let tag = parts[index];
+        let part = tag.trim();
+        
+        if (part.indexOf('width:') === 0){
+            sizeToUrl(part.substr(6), 'res_x', ret);
+        }
+        else if (part.indexOf('height:') === 0){
+            sizeToUrl(part.substr(7), 'res_y', ret);
+        }
+        else if (part.indexOf('ratio:') === 0){
+            ret.push('aspect=' + part.substr(6));
+        }
+        else if (part.indexOf('order:') === 0){
+            ret.push('order_by=' + part.substr(6));
+        }
+        else if (part.indexOf('filetype:') === 0){
             const ext = part.substr(9);
-            ret.push("ext_" + ext + "=" + ext);
-        } else if (part[0] === "-") {
+            ret.push('ext_' + ext + '=' + ext);
+        }
+        else if (part[0] === '-'){
             denied.push(encodeURIComponent(tag.substr(1)));
-        } else if (tag.length > 0) {
+        }
+        else if (tag.length > 0){
             tags.push(encodeURIComponent(tag));
         }
     }
-    if (tags.length > 0) {
-        ret.unshift("search_tag=" + tags.join(" "));
+    
+    if (tags.length > 0){
+        ret.unshift('search_tag=' + tags.join(' '));
     }
-    if (denied.length > 0) {
-        ret.unshift("denied_tags=" + denied.join(" "));
+    
+    if (denied.length > 0){
+        ret.unshift('denied_tags=' + denied.join(' '));
     }
-    if (previous && previous.minDate && previous.page === page - 1) {
-        ret.push("last_page=" + (previous.page - 1));
-        ret.push("last_post_date=" + previous.minDate);
+    
+    if (previous && previous.minDate && previous.page === page - 1){
+        ret.push('last_page=' + (previous.page - 1));
+        ret.push('last_post_date=' + previous.minDate);
     }
-    return ret.join("&");
+    
+    return ret.join('&');
 }
 
-export const source: ISource = {
-    name: "Anime pictures",
-    modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
-    forcedTokens: ["tags"],
+export var source = {
+    name: 'Anime pictures',
+    modifiers: ['width:', 'height:', 'ratio:', 'order:', 'filetype:'],
+    forcedTokens: ['tags'],
     tagFormat: {
-        case: "lower",
-        wordSeparator: " ",
+        case: 'lower',
+        wordSeparator: ' ',
     },
     searchFormat: {
-        and: " && ",
-        or: " || ",
+        and: ' && ',
+        or: ' || ',
         parenthesis: false,
-        precedence: "and",
+        precedence: 'and',
     },
     auth: {
         session: {
-            type: "post",
-            url: "/login/submit",
+            type: 'post',
+            url: '/login/submit',
             fields: [
                 {
-                    id: "pseudo",
-                    key: "login",
+                    id: 'pseudo',
+                    key: 'login'
                 },
                 {
-                    id: "password",
-                    key: "password",
-                    type: "password",
-                },
+                    id: 'password',
+                    key: 'password',
+                    type: 'password'
+                }
             ],
             check: {
-                type: "cookie",
-                key: "asian_server",
-            },
-        },
+                type: 'cookie',
+                key: 'asian_server'
+            }
+        }
     },
     apis: {
         json: {
-            name: "JSON",
+            name: 'JSON',
             auth: [],
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
-                    const baseUrl = opts.baseUrl
-                        .replace("//anime-pictures.", "//api.anime-pictures.")
-                        .replace("//www.anime-pictures.", "//api.anime-pictures.");
+                url: function (query, opts, previous){
                     const page = query.page - 1;
-                    return baseUrl + "/api/v3/posts?page=" + page + "&" + searchToUrl(query.page, query.search, previous) + "&posts_per_page=" + opts.limit + "&lang=en";
+                    return `//api.${mainHostname}/api/v3/posts?page=`.concat(page, '&', searchToUrl(query.page, query.search, previous), '&posts_per_page=', opts.limit, '&lang=en');
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: function (src){
                     const data = JSON.parse(src);
-
-                    const images: IImage[] = [];
-                    for (const image of data.posts) {
-                        images.push(completeImage(Grabber.mapFields(image, jsonMap), image));
+                    const images = [];
+                    
+                    for (let index = 0; index < data.response_posts_count; index++){
+                        let image = data.posts[index];
+                        image = completeImage(Grabber.mapFields(image, imageMap), image);
+                        images.push(image);
                     }
-
+                    
                     return {
-                        images,
-                        imageCount: data["posts_count"],
-                        pageCount: data["max_pages"] + 1, // max_pages is an index, not a count, and pages start at 0
+                        images: images,
+                        imageCount: data['posts_count'],
+                        pageCount: data['max_pages'] + 1, // max_pages is an index, not a count, and pages start at 0
                     };
-                },
+                }
             },
             details: {
-                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
-                    const baseUrl = opts.baseUrl
-                        .replace("//anime-pictures.", "//api.anime-pictures.")
-                        .replace("//www.anime-pictures.", "//api.anime-pictures.");
-                    return baseUrl + "/api/v3/posts/" + id + "?lang=en";
+                url: function (id, md5){
+                    return `//api.${mainHostname}/api/v3/posts/`.concat(id, '?lang=en');
                 },
-                parse: (src: string): IParsedDetails => {
+                parse: function (src){
                     const data = JSON.parse(src);
-
-                    const tags: ITag[] = data["tags"].map((tag: any) => ({
-                        name: tag["tag"]["tag"],
-                        count: tag["tag"]["num"],
-                        typeId: tag["tag"]["type"],
-                    }));
-
-                    const img: IImage = completeImage(Grabber.mapFields(data["post"], jsonMap), data["post"]);
-
+                    const tags = data.tags.map(function(tagDefinition){return Grabber.mapFields(tagDefinition.tag, tagMap)});
+                    data.post.file_url = data.file_url;
+                    let image = completeImage(Grabber.mapFields(data.post, imageMap), data.post);
+                    
                     return {
-                        tags,
-                        createdAt: data["post"]["pubtime"],
-                        imageUrl: img.file_url,
+                        tags: tags,
+                        imageUrl: image.file_url,
+                        createdAt: image.pubtime
                     };
-                },
-            },
-        },
-        html: {
-            name: "Regex",
-            auth: [],
-            forcedLimit: 80,
-            search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
-                    const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.page, query.search, previous) + "&lang=en";
-                },
-                parse: (src: string): IParsedSearch => {
-                    let wiki = Grabber.regexToConst("wiki", '<div class="posts_body_head">\\s*<h2>[^<]+</h2>\\s*(?<wiki>.+?)\s*</div>', src);
-                    wiki = wiki ? wiki.replace(/href="\/pictures\/view_posts\/0\?search_tag=([^"&]+)(?:&[^"]+)?"/g, 'href="$1"') : wiki;
-                    return {
-                        images: Grabber.regexToImages('<span[^>]*data-pubtime="(?<created_at>[^"]+)">\\s*<a href="(?<page_url>/pictures/view_post/(?<id>\\d+)[^"]+)"(?:\\s*title="Anime picture (?<width>\\d+)x(?<height>\\d+)")?[^>]*>\\s*(?:<picture[^>]*>\\s*<source[^>]*>\\s*<img\\s*id="[^"]*"\\s*class="img_sp"\\s*src="(?<preview_url>[^"]+)"[^>]*>)?', src).map(completeImage),
-                        pageCount: Grabber.regexToConst("page", "page of (?<page>\\d+)", src),
-                        wiki,
-                    };
-                },
-            },
-            details: {
-                url: (id: string, md5: string): string => {
-                    return "/pictures/view_post/" + id + "?lang=en";
-                },
-                parse: (src: string): IParsedDetails => {
-                    return {
-                        tags: Grabber.regexToTags('<li id="tag_li_[^"]+"[^>]*>\\s*<a[^>]*">(?<name>[^<]+)</a>\\s*<span>(?<count>[^<]+)</span>\\s*</li>', src),
-                    };
-                },
-            },
-            tags: {
-                url: (query: ITagsQuery): string => {
-                    const page = query.page - 1;
-                    return "/pictures/view_all_tags/" + page + "?lang=en";
-                },
-                parse: (src: string): IParsedTags => {
-                    return {
-                        tags: Grabber.regexToTags("<tr>\\s*<td>(?<id>\\d+)</td>\\s*<td>\\s*<a.+?>(?<name>.+?)</a>.*?</td>\\s*<td>.*?</td>\\s*<td>.*?</td>\\s*<td>(?<type>.+?)</td>\\s*<td>(?<count>\\d+)</td>\\s*</tr>", src),
-                    };
-                },
-            },
-            check: {
-                url: (): string => {
-                    return "/";
-                },
-                parse: (src: string): boolean => {
-                    return src.indexOf("mailto:stalkerg@gmail.com") !== -1;
-                },
-            },
-        },
-    },
+                }
+            }
+        }
+    }
 };
