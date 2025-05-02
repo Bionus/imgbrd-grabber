@@ -1,16 +1,16 @@
 const mainHostname = 'anime-pictures.net';
 const imageMap = {
-    'id': 'id',
-    'md5': 'md5',
-    'width': 'width',
-    'height': 'height',
-    'created_at': 'pubtime',
-    'score': 'score_number',
-    'file_size': 'size',
-    'ext': 'ext',
-    'file_url': 'file_url',
-    'sample_url': 'big_preview',
-    'preview_url': 'small_preview'
+    id: 'id',
+    md5: 'md5',
+    width: 'width',
+    height: 'height',
+    created_at: 'pubtime',
+    score: 'score_number',
+    file_size: 'size',
+    ext: 'ext',
+    file_url: 'file_url',
+    sample_url: 'big_preview',
+    preview_url: 'small_preview'
 };
 const tagMap = {
     id: 'id',
@@ -30,17 +30,19 @@ function completeImage(image, raw){
     }
     
     // Remove the '.webp' and '.avif' suffix to previews.
-    image.sample_url = noWebpAvif(image.sample_url || '');
     image.preview_url = noWebpAvif(image.preview_url || '');
-    let md5Part = image.md5.substring(0, 3).concat('/', image.md5);
+    image.sample_url = noWebpAvif(image.sample_url || '');
+    
+    const md5Part = `${image.md5.substring(0, 3)}/${image.md5}`;
     
     // If no URL is passed at all, build it ourselves.
     if (!image.preview_url && !image.sample_url && !image.file_url){
-        let previewExt = raw['have_alpha'] === true ? 'png' : 'jpg';
-        image.preview_url = '//opreviews.'.concat(mainHostname, '/', md5Part, '_sp.', previewExt);
-        image.sample_url = '//opreviews.'.concat(mainHostname, '/', md5Part, '_bp.', previewExt);
-        // Valid but blocked by Cloudflare.
-        // image.file_url = '//oimages.'.concat(mainHostname, '/', md5Part, '.', image.ext);
+        const previewExt = raw.have_alpha === true ? 'png' : 'jpg';
+        image.preview_url = `//opreviews.${mainHostname}/${md5Part}_sp.${previewExt}`;
+        image.sample_url = `//opreviews.'${mainHostname}/${md5Part}_bp.${previewExt}`;
+        
+        // See explanation below.
+        // image.file_url = `//oimages.${mainHostname}/${md5Part}.${image.ext}`;
     }
     
     // If sample URL is bad but preview URL is good.
@@ -50,16 +52,16 @@ function completeImage(image, raw){
             .replace('_sp.', '_bp.');
     }
     
-    // If file URL is bad.
-    if (!image.file_url || !image.file_url.includes(image.md5)){
-        // Seemingly legacy redirect currently used on site. Probably subject to eventual deprecation.
-        image.file_url = `//api.${mainHostname}/pictures/get_image/`.concat(raw.file_url);
+    // If file URL is bad: missing, legacy, relative to an undefined subdomain.
+    if (raw.file_url && (!image.file_url || !image.file_url?.includes(`api.${mainHostname}/pictures/get_image/`) || image.file_url?.includes(image.md5))){
+        // Seemingly legacy redirect currently used by site's API. Probably subject to eventual deprecation.
+        image.file_url = `//api.${mainHostname}/pictures/get_image/${raw.file_url}`;
         
-        // Valid but blocked by Cloudflare.
-        // image.file_url = '//oimages.'.concat(mainHostname, '/', md5Part, '.', image.ext);
+        // Valid and versatile result of the legacy redirect that works in a web-browser, but direct access is being blocked by Cloudflare captcha in Grabber.
+        // image.file_url = `//oimages.${mainHostname}/${md5Part}.${image.ext}`;
         
-        // Another seeming legacy tidbit used internally with the previous above pattern.
-        // image.file_url.concat('?if=ANIME-PICTURES.NET_-_', raw.file_url);
+        // Optional marker of performed redirect.
+        // image.file_url += `?if=ANIME-PICTURES.NET_-_${raw.file_url}`;
     }
     
     return image;
@@ -99,8 +101,8 @@ function searchToUrl(page, search, previous){
     const ret = [];
     
     for (let index = 0; index < parts.length; index++){
-        let tag = parts[index];
-        let part = tag.trim();
+        const tag = parts[index];
+        const part = tag.trim();
         
         if (part.indexOf('width:') === 0){
             sizeToUrl(part.substr(6), 'res_x', ret);
@@ -178,34 +180,34 @@ export var source = {
             search: {
                 url: function (query, opts, previous){
                     const page = query.page - 1;
-                    return `//api.${mainHostname}/api/v3/posts?page=`.concat(page, '&', searchToUrl(query.page, query.search, previous), '&posts_per_page=', opts.limit, '&lang=en');
+                    return `//api.${mainHostname}/api/v3/posts?page=${page}&${searchToUrl(query.page, query.search, previous)}&posts_per_page=${opts.limit}&lang=en`;
                 },
                 parse: function (src){
                     const data = JSON.parse(src);
                     const images = [];
                     
                     for (let index = 0; index < data.response_posts_count; index++){
-                        let image = data.posts[index];
-                        image = completeImage(Grabber.mapFields(image, imageMap), image);
+                        const image = completeImage(Grabber.mapFields(data.posts[index], imageMap), data.posts[index]);
                         images.push(image);
                     }
                     
                     return {
                         images: images,
-                        imageCount: data['posts_count'],
-                        pageCount: data['max_pages'] + 1, // max_pages is an index, not a count, and pages start at 0
+                        imageCount: data.posts_count,
+                        pageCount: data.max_pages + 1, // max_pages is an index, not a count, and pages start at 0
                     };
                 }
             },
             details: {
                 url: function (id, md5){
-                    return `//api.${mainHostname}/api/v3/posts/`.concat(id, '?lang=en');
+                    return `//api.${mainHostname}/api/v3/posts/${id}?lang=en`;
                 },
                 parse: function (src){
                     const data = JSON.parse(src);
+                    const post = data.post;
                     const tags = data.tags.map(function(tagDefinition){return Grabber.mapFields(tagDefinition.tag, tagMap)});
-                    data.post.file_url = data.file_url;
-                    let image = completeImage(Grabber.mapFields(data.post, imageMap), data.post);
+                    post.file_url = data.file_url;
+                    const image = completeImage(Grabber.mapFields(post, imageMap), data);
                     
                     return {
                         tags: tags,
