@@ -127,8 +127,8 @@
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuOutils"/>
    <addaction name="menuView"/>
+   <addaction name="menuOutils"/>
    <addaction name="menu_propos"/>
   </widget>
   <widget class="QDockWidget" name="dock_internet">
