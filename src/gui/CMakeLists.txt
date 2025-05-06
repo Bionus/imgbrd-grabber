@@ -178,7 +178,7 @@ elseif(MACOSX)
 		COMMAND "rm" "-rf" "${CMAKE_CURRENT_BINARY_DIR}/deploy"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/Grabber.app" "${CMAKE_CURRENT_BINARY_DIR}/deploy/Grabber.app"
 		COMMAND "${MACDEPLOYQT_EXECUTABLE}" "${CMAKE_CURRENT_BINARY_DIR}/deploy/Grabber.app" "-executable=$<TARGET_FILE_DIR:${PROJECT_NAME}>/Grabber-cli" "-dmg" "-codesign=\"-\""
-		BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/deploy/${PROJECT_NAME}.dmg"
+		BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/deploy/Grabber.dmg"
 		DEPENDS ${PROJECT_NAME}
 	)
 else()
