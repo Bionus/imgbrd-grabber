@@ -2,6 +2,7 @@
 exclude.txt
 exclude_xcopy.txt
 CMakeLists.txt
+.DS_Store
 
 # Build config files
 package*.json
