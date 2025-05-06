@@ -176,7 +176,7 @@ elseif(MACOSX)
 	add_custom_target(deploy
 		COMMENT "Running macdeployqt on Grabber.app"
 		COMMAND "rm" "-f" "${CMAKE_CURRENT_BINARY_DIR}/Grabber.dmg"
-		COMMAND "${MACDEPLOYQT_EXECUTABLE}" "Grabber.app" "-executable=$<TARGET_FILE_DIR:${PROJECT_NAME}>/Grabber-cli" "-dmg"
+		COMMAND "${MACDEPLOYQT_EXECUTABLE}" "Grabber.app" "-executable=$<TARGET_FILE_DIR:${PROJECT_NAME}>/Grabber-cli" "-dmg" "-codesign=\"-\""
 		BYPRODUCTS ${PROJECT_NAME}.dmg
 		DEPENDS ${PROJECT_NAME}
 	)
