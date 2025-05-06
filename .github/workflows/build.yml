@@ -288,7 +288,6 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      OPENSSL_ROOT_DIR: /usr/local/opt/openssl@3
       CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:

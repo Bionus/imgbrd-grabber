@@ -65,6 +65,7 @@ endif()
 # Detect macOS
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	set(MACOSX TRUE)
+	set(USE_SSL 0)
 endif()
 
 # Android settings
