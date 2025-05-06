@@ -173,7 +173,7 @@ elseif(MACOSX)
 	get_target_property(QMAKE_EXECUTABLE Qt6::qmake IMPORTED_LOCATION)
 	get_filename_component(QT_BIN "${QMAKE_EXECUTABLE}" DIRECTORY)
 	find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN}")
-	add_custom_target(deploy ALL
+	add_custom_target(deploy
 		COMMENT "Running macdeployqt on Grabber.app"
 		COMMAND "rm" "-f" "${CMAKE_CURRENT_BINARY_DIR}/Grabber.dmg"
 		COMMAND "${MACDEPLOYQT_EXECUTABLE}" "Grabber.app" "-executable=$<TARGET_FILE_DIR:${PROJECT_NAME}>/Grabber-cli" "-dmg"
