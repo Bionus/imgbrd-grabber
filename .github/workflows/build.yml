@@ -358,7 +358,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Grabber.dmg
-          path: Grabber.dmg
+          path: build/gui/deploy/Grabber.dmg
           if-no-files-found: error
 
   windows:
