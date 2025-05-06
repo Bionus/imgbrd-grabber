@@ -155,7 +155,7 @@ elseif(MACOSX)
 	)
 	add_custom_target(copy_resources
 		COMMENT "Copying resources to Grabber.app"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/dist/common $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/dist/common $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Resources/
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/dist/macos $<TARGET_FILE_DIR:${PROJECT_NAME}>/..
 	)
 	add_custom_target(copy_cli
@@ -167,7 +167,7 @@ elseif(MACOSX)
 	add_custom_target(copy_sites
 		DEPENDS sites
 		COMMENT "Copying sites to Grabber.app"
-    COMMAND rsync -ar --exclude-from="${CMAKE_SOURCE_DIR}/sites/exclude.txt" ${CMAKE_SOURCE_DIR}/sites "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+    COMMAND rsync -ar --exclude-from="${CMAKE_SOURCE_DIR}/sites/exclude.txt" ${CMAKE_SOURCE_DIR}/sites "$<TARGET_FILE_DIR:${PROJECT_NAME}>/../Resources"
 	)
 	add_dependencies(${PROJECT_NAME} copy_resources copy_cli copy_sites)
 	get_target_property(QMAKE_EXECUTABLE Qt6::qmake IMPORTED_LOCATION)
