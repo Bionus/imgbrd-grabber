@@ -62,6 +62,11 @@ if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 	message(STATUS "Configuring nightly with commit '${COMMIT}'")
 endif()
 
+# Detect macOS
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	set(MACOSX TRUE)
+endif()
+
 # Android settings
 set(ANDROID_APP_NAME ${PROJECT_NAME})
 set(ANDROID_APP_VERSION_NAME ${VERSION})
