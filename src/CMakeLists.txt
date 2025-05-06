@@ -14,6 +14,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Enable universal build on macOS
+set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "" FORCE)
+
 # Enable more compiler warnings
 if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
