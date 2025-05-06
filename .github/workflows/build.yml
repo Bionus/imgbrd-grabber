@@ -352,7 +352,7 @@ jobs:
           ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate package
-        run: cmake --build . --config Release --target deploy
+        run: cmake --build build --config Release --target deploy
 
       - name: Upload package
         uses: actions/upload-artifact@v4
