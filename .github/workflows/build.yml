@@ -322,7 +322,7 @@ jobs:
           7z x "QScintilla.zip" -y
           rm "QScintilla.zip"
           cd "${QSCINTILLA_DIR}/src"
-          qmake qscintilla.pro
+          qmake qscintilla.pro QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
           make
 
       - name: Install QScintilla
