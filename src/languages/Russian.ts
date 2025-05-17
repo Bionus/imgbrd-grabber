@@ -4766,7 +4766,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation>Получить ИД из имени файла</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
