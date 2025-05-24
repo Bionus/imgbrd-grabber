@@ -50,10 +50,6 @@ QString ImageMagick::convert(const QString &file, const QString &extension, bool
 		log(QStringLiteral("Cannot convert file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
-		log(QStringLiteral("Converting the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
-		return file;
-	}
 
 	// Execute the conversion command
 	const QStringList params = { file, destination };
