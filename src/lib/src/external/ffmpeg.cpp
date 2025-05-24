@@ -52,13 +52,9 @@ QString FFmpeg::convert(const QString &file, const QString &extension, bool dele
 		log(QStringLiteral("Cannot convert file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
-		log(QStringLiteral("Converting the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
-		return file;
-	}
 
 	// Execute the conversion command
-	const QStringList params = { "-n", "-loglevel", "error", "-i", file, destination };
+	const QStringList params = { "-y", "-loglevel", "error", "-i", file, destination };
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
@@ -76,13 +72,9 @@ QString FFmpeg::remux(const QString &file, const QString &extension, bool delete
 		log(QStringLiteral("Cannot remux file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
-		log(QStringLiteral("Remuxing the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
-		return file;
-	}
 
 	// Execute the conversion command
-	const QStringList params = { "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
+	const QStringList params = { "-y", "-loglevel", "error", "-i", file, "-c", "copy", destination };
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
@@ -102,10 +94,6 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 	}
 	if (!QFile::exists(file)) {
 		log(QStringLiteral("Cannot convert ugoira file that does not exist: `%1`").arg(file), Logger::Error);
-		return file;
-	}
-	if (QFile::exists(destination)) {
-		log(QStringLiteral("Converting the ugoira file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
 		return file;
 	}
 
@@ -138,7 +126,7 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 	ffconcatFile.close();
 
 	// Build the params
-	QStringList params = { "-n", "-loglevel", "error", "-i", ffconcatFile.fileName() };
+	QStringList params = { "-y", "-loglevel", "error", "-i", ffconcatFile.fileName() };
 	if (extension == QStringLiteral("gif")) {
 		params.append({ "-filter_complex", "[0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle", "-fps_mode", "passthrough" });
 	} else if (extension == QStringLiteral("apng")) {
