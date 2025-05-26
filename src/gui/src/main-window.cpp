@@ -81,6 +81,9 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_themeLoader = new ThemeLoader(savePath("themes/", true, false), m_settings, this);
 	m_themeLoader->setTheme(m_settings->value("theme", "Default").toString());
 	qApp->setStyle(baseStyle(m_settings));
+#ifdef Q_OS_MAC
+	QApplication::instance()->setAttribute(Qt::AA_DontShowIconsInMenus, true);
+#endif
 	ui->setupUi(this);
 
 	if (m_settings->value("Log/show", true).toBool()) {
