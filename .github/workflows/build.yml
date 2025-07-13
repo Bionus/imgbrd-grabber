@@ -532,12 +532,30 @@ jobs:
         sudo apt update
         sudo apt install libpulse-dev
 
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+        cache: gradle
+        cache-dependency-path: |
+          **/*.gradle*
+          **/gradle-wrapper.properties
+
+    - name: Setup Android Environment
+      uses: android-actions/setup-android@v3
+      with:
+        cmdline-tools-version: 12266719
+        packages: 'platform-tools platforms;android-35 build-tools;35.0.0 ndk;${{ env.ANDROID_NDK_VERSION }}'
+        log-accepted-android-sdk-licenses: false
+
     - name: Install Qt (host)
       uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
+        host: linux
         target: desktop
         arch: linux_gcc_64
 
@@ -547,6 +565,7 @@ jobs:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
+        host: linux
         target: android
         arch: android_armv7
 
@@ -556,14 +575,9 @@ jobs:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
+        host: linux
         target: android
         arch: android_arm64_v8a
-
-    - name: Install Android platform and build tools
-      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "platform-tools" "build-tools;33.0.0"
-
-    - name: Install Android NDK 25
-      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;${ANDROID_NDK_VERSION}"
 
     - name: Download Android OpenSSL libraries
       working-directory: src/cmake
@@ -577,32 +591,19 @@ jobs:
         QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
         QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        Qt6_DIR_HOST: ${{ env.QT_ROOT_DIR }}/../gcc_64
-        Qt6_DIR_V7: ${{ env.QT_ROOT_DIR }}/../android_armv7
-        Qt6_DIR_V8: ${{ env.QT_ROOT_DIR }}/../android_arm64_v8a
       run: |
         mkdir build
         cd build
         export ANDROID_SDK_ROOT="${ANDROID_HOME}"
         export ANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}"
-        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
-          -DQT_ANDROID_BUILD_ALL_ABIS=ON \
-          -DQT_PATH_ANDROID_ABI_armeabi-v7a:PATH=$Qt6_DIR_V7 \
-          -DQT_PATH_ANDROID_ABI_arm64-v8a:PATH=$Qt6_DIR_V8 \
-          -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-          -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
-          -DANDROID_SDK:PATH=$ANDROID_HOME \
-          -DANDROID_SDK_ROOT:PATH=$ANDROID_HOME \
-          -DANDROID_STL:STRING=c++_shared \
-          -DQT_HOST_PATH:STRING=$Qt6_DIR_HOST \
-          -DQT_HOST_PATH_CMAKE_DIR:STRING=$Qt6_DIR_HOST/lib/cmake \
-          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-          -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR_V7 \
-          -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR_V7 \
-          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-          -DQT_DEBUG_FIND_PACKAGE=ON \
-          -DQT_QMAKE_EXECUTABLE:STRING=$Qt6_DIR_V7/bin/qmake
+        ${{ env.QT_ROOT_DIR }}/bin/qt-cmake ../src \
+          -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
+          -DCMAKE_BUILD_TYPE:STRING=Release \
+          -DCMAKE_GENERATOR:STRING=Ninja \
+          -DCMAKE_WARN_DEPRECATED=FALSE \
+          -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
+          -DQT_ANDROID_ABIS:STRING="armeabi-v7a;arm64-v8a" \
+          -DQT_HOST_PATH:PATH="${{ env.QT_ROOT_DIR }}/../gcc_64"
         cmake --build . --config Release --target gui-qml_make_apk
 
     - name: Generate package
