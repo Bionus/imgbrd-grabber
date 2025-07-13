@@ -29,8 +29,18 @@ Page {
             }
 
             ToolButton {
+                property var lastShare
+
+                // Limit sharing button to one click per second
+                function debouncedShareImage(img) {
+                    if (!lastShare || (new Date()) - lastShare >= 1000) {
+                        lastShare = new Date()
+                        backend.shareImage(img)
+                    }
+                }
+
                 icon.source: "/images/icons/share.png"
-                onClicked: backend.shareImage(image.image)
+                onClicked: debouncedShareImage(image.image)
             }
 
             ImageLoader {
