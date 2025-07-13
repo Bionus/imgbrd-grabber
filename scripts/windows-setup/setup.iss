@@ -163,7 +163,7 @@ Source: "{#QtPlugins}\sqldrivers\qsqlite.dll";     DestDir: "{app}\sqldrivers"; 
 Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlodbc.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlpsql.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
-Source: "{#QtPlugins}\styles\qwindowsvistastyle.dll";  DestDir: "{app}\styles"; Flags: ignoreversion
+Source: "{#QtPlugins}\styles\qmodernwindowsstyle.dll"; DestDir: "{app}\styles"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\helper.js";                   DestDir: "{app}\sites"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\icon.png";     DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\model.js";     DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion

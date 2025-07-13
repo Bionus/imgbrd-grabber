@@ -1,4 +1,5 @@
 #include "android-share-utils.h"
+#include <QGuiApplication>
 #include <QJniObject>
 #include "logger.h"
 
@@ -19,7 +20,8 @@ bool AndroidShareUtils::share(const QString &text)
 	jboolean ok = QJniObject::callStaticMethod<jboolean>(
 		"org/bionus/grabber/ShareUtils",
 		"share",
-		"(Ljava/lang/String;)Z",
+		"(Landroid/app/Activity;Ljava/lang/String;)Z",
+		QNativeInterface::QAndroidApplication::context().object(),
 		javaText.object<jstring>()
 	);
 
@@ -40,7 +42,8 @@ bool AndroidShareUtils::sendFile(const QString &path, const QString &mimeType, c
 	jboolean ok = QJniObject::callStaticMethod<jboolean>(
 		"org/bionus/grabber/ShareUtils",
 		"sendFile",
-		"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
+		"(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
+		QNativeInterface::QAndroidApplication::context().object(),
 		javaPath.object<jstring>(),
 		javaMimeType.object<jstring>(),
 		javaTitle.object<jstring>()

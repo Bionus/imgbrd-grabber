@@ -1,9 +1,8 @@
 package org.bionus.grabber;
 
-import org.qtproject.qt.android.QtNative;
-
 import java.io.File;
 import java.lang.String;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -17,9 +16,9 @@ public class ShareUtils
 	protected ShareUtils()
 	{}
 
-	public static boolean share(String text)
+	public static boolean share(Activity context, String text)
 	{
-		if (QtNative.activity() == null) {
+		if (context == null) {
 			return false;
 		}
 
@@ -27,14 +26,14 @@ public class ShareUtils
 		sendIntent.setAction(Intent.ACTION_SEND);
 		sendIntent.putExtra(Intent.EXTRA_TEXT, text);
 		sendIntent.setType("text/plain");
-		QtNative.activity().startActivity(sendIntent);
+		context.startActivity(sendIntent);
 
 		return true;
 	}
 
-	public static boolean sendFile(String path, String mimeType, String title)
+	public static boolean sendFile(Activity context, String path, String mimeType, String title)
 	{
-		if (QtNative.activity() == null) {
+		if (context == null) {
 			return false;
 		}
 
@@ -42,7 +41,7 @@ public class ShareUtils
 		File imageFileToShare = new File(path);
         Uri uri;
         try {
-            uri = FileProvider.getUriForFile(QtNative.activity(), AUTHORITY, imageFileToShare);
+            uri = FileProvider.getUriForFile(context, AUTHORITY, imageFileToShare);
         } catch (IllegalArgumentException e) {
             Log.d("org.bionus.grabber.ShareUtils.sendFile", "Cannot share file: " + e.toString());
             return false;
@@ -54,7 +53,7 @@ public class ShareUtils
         sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
 		sendIntent.setType(mimeType);
 		sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		QtNative.activity().startActivity(Intent.createChooser(sendIntent, title));
+		context.startActivity(Intent.createChooser(sendIntent, title));
 
 		return true;
 	}

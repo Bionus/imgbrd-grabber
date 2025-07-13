@@ -9,7 +9,7 @@ on:
     - cron: '30 15 * * 4'
 
 env:
-  QT_VERSION: 6.6.3
+  QT_VERSION: 6.9.1
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
 
 jobs:
