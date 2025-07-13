@@ -39,9 +39,7 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 		if (fontCssCache.contains(font)) {
 			fontCss = fontCssCache[font];
 		} else {
-			QFont qFont;
-			qFont.fromString(m_profile->getSettings()->value("Coloring/Fonts/" + key).toString());
-			fontCss = qFontToCss(qFont);
+			fontCss = qFontToCss(qFontFromString(font));
 		}
 
 		styles.insert(key, "color:" + color + "; " + fontCss);

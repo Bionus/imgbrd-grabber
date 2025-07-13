@@ -1060,7 +1060,9 @@ QString qFontToCss(const QFont &font)
 QFont qFontFromString(const QString &str)
 {
 	QFont font;
-	font.fromString(str);
+	if (!str.isEmpty()) {
+		font.fromString(str);
+	}
 	if (font.family().isEmpty()) {
 		font.setFamily(font.defaultFamily());
 	}
