@@ -118,8 +118,9 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 
 	// List all frame files from the ZIP
 	QStringList frameFiles = QDir(tmpDir.path()).entryList(QDir::Files | QDir::NoDotAndDotDot);
+	frameFiles.removeIf([](const QString &frameFile) { return frameFile.endsWith(".json"); }); // Exclude JSON metadata files (TODO: use it instead of frameInformation)
 	if (frameInformation.count() != frameFiles.count()) {
-		log(QStringLiteral("Could not extract ugoira ZIP file `%1` into directory: `%2`").arg(file, destination), Logger::Error);
+		log(QStringLiteral("Invalid file count in ZIP file `%1`: %2 / %3").arg(file, QString::number(frameFiles.count()), QString::number(frameInformation.count())), Logger::Error);
 		return file;
 	}
 
