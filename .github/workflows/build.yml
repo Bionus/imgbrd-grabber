@@ -373,7 +373,7 @@ jobs:
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/14757676/qsqlmysql.dll_Qt_SQL_driver_6.6.3_MSVC2019_64-bit.zip
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
-      VCINSTALLDIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
+      VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC
 
     steps:
       - name: Set environment
@@ -448,7 +448,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..\src -G "Visual Studio 16 2019" -A "x64" ^
+          cmake ..\src -G "Visual Studio 17 2022" -A "x64" ^
             -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
             -DCMAKE_SYSTEM_VERSION=10.0.18362.0 ^
             -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
