@@ -39,7 +39,7 @@ QString ImageMagick::version(int msecs)
 }
 
 
-QString ImageMagick::convert(const QString &file, const QString &extension, bool deleteOriginal, int msecs)
+QString ImageMagick::convert(const QString &file, const QString &extension, bool overwrite, bool deleteOriginal, int msecs)
 {
 	// Since the method takes an extension, build an absolute path to the input file with that extension
 	const QFileInfo info(file);
@@ -50,7 +50,7 @@ QString ImageMagick::convert(const QString &file, const QString &extension, bool
 		log(QStringLiteral("Cannot convert file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
+	if (QFile::exists(destination) && !overwrite) {
 		log(QStringLiteral("Converting the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
 		return file;
 	}
@@ -58,7 +58,7 @@ QString ImageMagick::convert(const QString &file, const QString &extension, bool
 	// Execute the conversion command
 	const QStringList params = { file, destination };
 	if (!execute(params, msecs)) {
-		// Clean-up failed conversions
+		// Cleanup failed conversions
 		if (QFile::exists(destination)) {
 			log(QStringLiteral("Cleaning up failed conversion target file: `%1`").arg(destination), Logger::Warning);
 			QFile::remove(destination);

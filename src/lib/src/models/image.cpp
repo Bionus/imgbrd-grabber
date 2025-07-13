@@ -831,14 +831,15 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	if (ext == QStringLiteral("webm")) {
 		const bool remux = m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool();
 		const bool convert = m_settings->value("Save/FFmpegConvertWebmToMp4", false).toBool();
+		const bool overwrite = m_settings->value("Save/FFmpegConvertOverwrite", true).toBool();
 		const int timeout = m_settings->value("Save/FFmpegConvertTimeout", 30000).toInt();
 
 		// We can only remux VP9 to MP4 as VP8 is not compatible with the MP4 container and needs conversion instead
 		if (remux && FFmpeg::getVideoCodec(path) == QStringLiteral("vp9")) {
-			path = FFmpeg::remux(path, "mp4", true, timeout);
+			path = FFmpeg::remux(path, "mp4", overwrite, true, timeout);
 			ext = getExtension(path);
 		} else if (convert) {
-			path = FFmpeg::convert(path, "mp4", true, timeout);
+			path = FFmpeg::convert(path, "mp4", overwrite, true, timeout);
 			ext = getExtension(path);
 		}
 	}
@@ -847,11 +848,12 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	const QString targetImgExt = m_settings->value("Save/ImageConversion/" + ext.toUpper() + "/to").toString().toLower();
 	if (!targetImgExt.isEmpty()) {
 		const QString backend = m_settings->value("Save/ImageConversionBackend", "ImageMagick").toString();
+		const bool overwrite = m_settings->value("Save/ImageConversionOverwrite", true).toBool();
 		const int timeout = m_settings->value("Save/ConvertUgoiraTimeout", 30000).toInt();
 		if (backend == QStringLiteral("ImageMagick")) {
-			path = ImageMagick::convert(path, targetImgExt, true, timeout);
+			path = ImageMagick::convert(path, targetImgExt, overwrite, true, timeout);
 		} else if (backend == QStringLiteral("FFmpeg")) {
-			path = FFmpeg::convert(path, targetImgExt, true, timeout);
+			path = FFmpeg::convert(path, targetImgExt, overwrite, true, timeout);
 		}
 		ext = getExtension(path);
 	}
@@ -860,8 +862,9 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	if (ext == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
 		const QString targetUgoiraExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
 		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
+		const bool overwrite = m_settings->value("Save/ConvertUgoiraOverwrite", true).toBool();
 		const int timeout = m_settings->value("Save/ConvertUgoiraTimeout", 30000).toInt();
-		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal, timeout);
+		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, overwrite, deleteOriginal, timeout);
 		ext = getExtension(path);
 	}
 
