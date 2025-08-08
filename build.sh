@@ -28,10 +28,11 @@ for pm in pacman apt-get emerge yum; do
 				;;
 			emerge)
 				## Assumes default USE flags are enabled.
-				$permission emerge --noreplace --ask --verbose \
+				echo 'Warning: net-libs/nodejs must be compiled with the "npm" USE flag. We will attempt to do so now, if necessary, but you may need to adjust your system configuration so this flag is applied to future builds.'
+				$permission USE='npm' emerge --noreplace --oneshot --ask --verbose --changed-use \
 					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" "dev-qt/qtsql" \
 					"dev-qt/qtnetwork" "dev-qt/qtnetworkauth" \
-					"sys-devel/gcc" "dev-util/cmake" "net-libs/nodejs" \
+					"sys-devel/gcc" "dev-build/cmake" "net-libs/nodejs" \
 				&& installed=1
 				;;
 			yum)
