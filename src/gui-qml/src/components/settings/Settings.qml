@@ -133,6 +133,11 @@ Item {
             backend.setIgnored(val)
         }
     }
+    property Setting viewer_preload: Setting {
+        key: "preload"
+        def: 1  // Note: different value from desktop (0)
+        obj: root.obj
+    }
     property Setting viewer_viewSamples: Setting {
         key: "Viewer/viewSamples"
         def: true // false on desktop

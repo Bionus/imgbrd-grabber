@@ -122,12 +122,12 @@ Page {
             model: root.images
 
             Loader {
-                active: SwipeView.isPreviousItem || SwipeView.isCurrentItem || SwipeView.isNextItem
+                active: Math.abs(swipeView.currentIndex - SwipeView.index) <= gSettings.viewer_preload.value
 
                 sourceComponent: StackLayout {
                     id: stackLayout
                     clip: true
-                    currentIndex: showTags && index === swipeView.currentIndex ? 1 : 0
+                    currentIndex: showTags && SwipeView.isCurrentItem ? 1 : 0
 
                     Rectangle {
                         color: gSettings.imageBackgroundColor.value || "transparent"
@@ -168,7 +168,7 @@ Page {
                                 fillMode: VideoOutput.PreserveAspectFit
                                 source: showHd || !hasSample ? modelData.fileUrl : modelData.sampleUrl
                                 clip: true
-                                autoPlay: index === swipeView.currentIndex
+                                autoPlay: SwipeView.isCurrentItem
                             }
                         }
                     }

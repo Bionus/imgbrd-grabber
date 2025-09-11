@@ -90,6 +90,13 @@ ColumnLayout {
         setting: gSettings.viewer_viewSamples
         Layout.fillWidth: true
     }
+    SpinBoxSetting {
+        name: qsTr("Preloading")
+        min: 0
+        max: 99
+        setting: gSettings.viewer_preload
+        Layout.fillWidth: true
+    }
     CheckBoxSetting {
         name: qsTr("Buttons at the bottom")
         subtitle: qsTr("Move the action buttons to the bottom of the screen.")
