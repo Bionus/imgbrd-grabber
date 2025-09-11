@@ -55,38 +55,41 @@ Flickable {
         pinch.minimumScale: minScale
         pinch.maximumScale: maxScale
 
-        onPinchFinished: flickable.returnToBounds()
-    }
-
-    MouseArea {
-        anchors.fill: parent
-
-        onDoubleClicked: {
-            currentZoomStep = (currentZoomStep + 1) % zoomSteps.length
-            currentZoom = zoomSteps[currentZoomStep]
-
-            image.scale = pinchArea.minScale * currentZoom
-
-            if (currentZoomStep === 0) {
-                flickable.returnToBounds()
-            }
+        onPinchFinished: {
+            flickable.returnToBounds()
+            currentZoomStep = -1
         }
 
-        onWheel: {
-            const newZoom = currentZoom + zoomScrollStep * (wheel.angleDelta.y / 120)
-            currentZoom = Math.max(1.0, Math.min(zoomSteps[zoomSteps.length - 1], newZoom))
+        MouseArea {
+            anchors.fill: parent
 
-            if (wheel.angleDelta.y > 0) {
-                while (currentZoomStep < zoomSteps.length - 1 && currentZoom >= zoomSteps[currentZoomStep + 1]) {
-                    currentZoomStep++;
-                }
-            } else {
-                while (currentZoomStep > 0 && currentZoom <= zoomSteps[currentZoomStep - 1]) {
-                    currentZoomStep--;
+            onDoubleClicked: {
+                currentZoomStep = (currentZoomStep + 1) % zoomSteps.length
+                currentZoom = zoomSteps[currentZoomStep]
+
+                image.scale = pinchArea.minScale * currentZoom
+
+                if (currentZoomStep === 0) {
+                    flickable.returnToBounds()
                 }
             }
 
-            image.scale = pinchArea.minScale * currentZoom
+            onWheel: {
+                const newZoom = currentZoom + zoomScrollStep * (wheel.angleDelta.y / 120)
+                currentZoom = Math.max(1.0, Math.min(zoomSteps[zoomSteps.length - 1], newZoom))
+
+                if (wheel.angleDelta.y > 0) {
+                    while (currentZoomStep < zoomSteps.length - 1 && currentZoom >= zoomSteps[currentZoomStep + 1]) {
+                        currentZoomStep++;
+                    }
+                } else {
+                    while (currentZoomStep > 0 && currentZoom <= zoomSteps[currentZoomStep - 1]) {
+                        currentZoomStep--;
+                    }
+                }
+
+                image.scale = pinchArea.minScale * currentZoom
+            }
         }
     }
 }
