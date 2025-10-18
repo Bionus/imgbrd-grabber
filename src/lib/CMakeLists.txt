@@ -15,6 +15,7 @@ endif()
 
 # Android specials
 if(ANDROID)
+    find_package(Qt6 COMPONENTS Core CorePrivate REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 

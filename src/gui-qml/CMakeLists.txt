@@ -9,6 +9,7 @@ set(QT_LIBRARIES Qt6::Core Qt6::Quick Qt6::Multimedia Qt6::Network Qt6::Sql)
 
 # Android specials
 if(ANDROID)
+    find_package(Qt6 COMPONENTS Core CorePrivate REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 

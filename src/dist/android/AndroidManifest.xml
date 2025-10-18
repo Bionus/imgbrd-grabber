@@ -23,7 +23,6 @@
         android:hardwareAccelerated="true"
         android:label="Grabber"
         android:requestLegacyExternalStorage="true"
-        android:allowNativeHeapPointerTagging="false"
         android:allowBackup="true"
         android:fullBackupOnly="false"
         android:icon="@mipmap/ic_launcher"

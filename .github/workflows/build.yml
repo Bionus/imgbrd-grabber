@@ -13,14 +13,14 @@ on:
       - crowdin
 
 env:
-  QT_VERSION: 6.9.1
+  QT_VERSION: 6.10.0
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
   CMAKE_BUILD_PARALLEL_LEVEL: 2
   QSCINTILLA_VERSION: 2.14.1
   QSCINTILLA_DIR: QScintilla_src-2.14.1
-  ANDROID_NDK_VERSION: 25.1.8937393
+  ANDROID_NDK_VERSION: 27.2.12479018
 
 jobs:
   # Gatekeeper job to skip build for Crowdin PRs
@@ -370,7 +370,7 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/releases/download/qmysql_6.9.1/qsqlmysql.dll_Qt_SQL_driver_6.9.1_MSVC2022_64-bit.zip
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/releases/download/qmysql_6.10.0/qsqlmysql.dll_Qt_SQL_driver_6.10.0_MSVC2022_64-bit.zip
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC

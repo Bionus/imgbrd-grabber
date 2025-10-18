@@ -570,8 +570,8 @@ TEST_CASE("Functions")
 		REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Open, Qt::Key_D).toString() == QString("Ctrl+O"));
 
 		#ifndef Q_OS_MAC
-			// On macOS, QKeySequence::Preferences is defined, so it would return "Ctrl+," rather than "D"
-			REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Preferences, Qt::Key_D).toString() == QString("D"));
+			// QKeySequence::SelectStartOfBlock is only defined on macOS (see src/gui/kernel/qplatformtheme.cpp)
+			REQUIRE(getKeySequence(settings, "not-found", QKeySequence::SelectStartOfBlock, Qt::Key_D).toString() == QString("D"));
 		#endif
 	}
 
