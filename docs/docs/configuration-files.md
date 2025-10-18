@@ -33,6 +33,7 @@ $HOME/.config/Bionus/Grabber
 * `commands.sql`: the log of SQL commands
 * `favorites.json`: the user's favorites
 * `filenamehistory.txt`: history of the "filename" quick edit field in the main window
+* `history.json`: the search history
 * `ignore.txt`: the "ignored" tags as set in the user settings
 * `main.log`: log of everything that happened in the current (or last) run of the program
 * `md5s.txt`: the database of already downloaded files

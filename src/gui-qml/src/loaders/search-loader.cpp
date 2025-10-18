@@ -23,6 +23,8 @@ void SearchLoader::search(SearchQuery query)
 	Site *site = m_profile->getSites().value(m_site);
 	site->setAutoLogin(false);
 
+	m_profile->getHistory()->addQuery(query, {site});
+
 	QEventLoop loop;
 	QObject::connect(site, &Site::loggedIn, &loop, &QEventLoop::quit, Qt::QueuedConnection);
 	site->login();

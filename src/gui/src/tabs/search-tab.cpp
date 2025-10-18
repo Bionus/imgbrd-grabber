@@ -1283,6 +1283,9 @@ void SearchTab::loadTags(SearchQuery query)
 {
 	log(QStringLiteral("Loading results..."));
 
+	// Save history
+	m_profile->getHistory()->addQuery(query, loadSites());
+
 	// Enable or disable scroll mode
 	const bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
 	ui_scrollAreaResults->setScrollEnabled(resultsScrollArea);

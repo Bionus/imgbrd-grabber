@@ -15,7 +15,7 @@ bool saveBackup(Profile *profile, const QString &filePath)
 	QHash<QString, QString> files;
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json" };
 	for (const QString &file : backupFiles) {
 		files.insert(profile->getPath() + "/" + file, file);
 	}

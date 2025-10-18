@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include "history/history.h"
 #include "models/favorite.h"
 #include "models/filtering/blacklist.h"
 #include "models/filtering/tag-filter-list.h"
@@ -96,6 +97,7 @@ class Profile : public QObject
 		Exiftool &getExiftool();
 		QStringList &getAutoComplete();
 		Blacklist &getBlacklist();
+		History *getHistory();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
 		const QStringList &getAdditionalTokens() const;
@@ -126,6 +128,7 @@ class Profile : public QObject
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;
 		Blacklist m_blacklist;
+		History *m_history;
 		Md5Database *m_md5s;
 		QMap<QString, Source*> m_sources;
 		QMap<QString, Site*> m_sites;

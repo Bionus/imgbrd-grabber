@@ -171,6 +171,9 @@ Profile::Profile(QString path)
 		fileBlacklist.close();
 	}
 
+	// History
+	m_history = new History(m_path + "/history.json", this);
+
 	// Monitors
 	m_monitorManager = new MonitorManager(m_path + "/monitors.json", this);
 
@@ -233,6 +236,7 @@ void Profile::sync()
 	syncKeptForLater();
 	syncIgnored();
 	syncBlacklist();
+	m_history->save();
 
 	// MD5s
 	m_md5s->sync();
@@ -544,6 +548,7 @@ Commands &Profile::getCommands() { return *m_commands; }
 Exiftool &Profile::getExiftool() { return *m_exiftool; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
+History *Profile::getHistory() { return m_history; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }
