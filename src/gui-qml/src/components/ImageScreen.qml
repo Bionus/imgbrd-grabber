@@ -127,7 +127,7 @@ Page {
                 sourceComponent: StackLayout {
                     id: stackLayout
                     clip: true
-                    currentIndex: showTags && SwipeView.isCurrentItem ? 1 : 0
+                    currentIndex: showTags && index === swipeView.currentIndex ? 1 : 0
 
                     Rectangle {
                         color: gSettings.imageBackgroundColor.value || "transparent"
@@ -168,7 +168,7 @@ Page {
                                 fillMode: VideoOutput.PreserveAspectFit
                                 source: showHd || !hasSample ? modelData.fileUrl : modelData.sampleUrl
                                 clip: true
-                                autoPlay: SwipeView.isCurrentItem
+                                autoPlay: index === swipeView.currentIndex
                             }
                         }
                     }
