@@ -351,7 +351,6 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		auto *tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "General" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem({ "Contributor" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Model" }, tagsTree->type()));
@@ -359,9 +358,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		tagsTree->addChild(new QTreeWidgetItem({ "Species" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Meta" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Lore" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Contributor" }, tagsTree->type()));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "general", false, "", "", " ", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "artist", false, "anonymous", "multiple artists", "+", this));
-		m_tokenSettings.append(new TokenSettingsWidget(settings, "contributor", false, "none", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "copyright", true, "misc", "crossover", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "character", false, "unknown", "group", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "model", false, "unknown", "multiple", "+", this));
@@ -369,6 +368,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "lore", false, "none", "multiple", "+", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "contributor", false, "none", "multiple", "+", this));
 		const int tagsStackIndex = ui->stackedWidget->indexOf(ui->pageTags);
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
 			ui->stackedWidget->insertWidget(i + tagsStackIndex + 1, m_tokenSettings[i]);
