@@ -11,19 +11,19 @@ class Site;
 
 class History
 {
-    public:
-        explicit History(const QString &file, Profile *profile);
-        bool load();
-        bool save();
+	public:
+		explicit History(const QString &file, Profile *profile);
+		bool load();
+		bool save();
 
-        void addQuery(const SearchQuery &query, const QList<Site*> &sites);
-        void clear();
+		void addQuery(const SearchQuery &query, const QList<Site*> &sites);
+		void clear();
 
-    private:
-        QString m_file;
-        Profile *m_profile;
-        QList<HistoryEntry> m_entries;
-        unsigned int m_maxEntries;
+	private:
+		QString m_file;
+		Profile *m_profile;
+		QList<HistoryEntry> m_entries;
+		unsigned int m_maxEntries;
 };
 
-#endif //HISTORY_H
+#endif // HISTORY_H

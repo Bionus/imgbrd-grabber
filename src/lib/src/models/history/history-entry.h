@@ -11,12 +11,12 @@ class Site;
 
 struct HistoryEntry
 {
-    SearchQuery query;
-    QList<Site*> sites;
-    QDateTime date;
+	SearchQuery query;
+	QList<Site*> sites;
+	QDateTime date;
 
-    static HistoryEntry fromJson(const QJsonObject &json, Profile *profile);
-    void toJson(QJsonObject &json) const;
+	static HistoryEntry fromJson(const QJsonObject &json, Profile *profile);
+	void toJson(QJsonObject &json) const;
 };
 
-#endif //HISTORY_ENTRY_H
+#endif // HISTORY_ENTRY_H

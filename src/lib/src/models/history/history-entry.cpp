@@ -7,43 +7,43 @@
 
 HistoryEntry HistoryEntry::fromJson(const QJsonObject &json, Profile *profile)
 {
-    const QMap<QString, Site*> &sitesMapping = profile->getSites();
+	const QMap<QString, Site*> &sitesMapping = profile->getSites();
 
-    // Query
-    SearchQuery query;
-    query.read(json["query"].toObject(), profile);
+	// Query
+	SearchQuery query;
+	query.read(json["query"].toObject(), profile);
 
-    // Sites
-    QList<Site*> sites;
-    QJsonArray sitesJson = json["sites"].toArray();
-    sites.reserve(sitesJson.count());
-    for (const auto &siteJson : sitesJson) {
-        const QString siteUrl = siteJson.toString();
-        if (sitesMapping.contains(siteUrl)) {
-            sites.append(sitesMapping.value(siteUrl));
-        }
-    }
+	// Sites
+	QList<Site*> sites;
+	QJsonArray sitesJson = json["sites"].toArray();
+	sites.reserve(sitesJson.count());
+	for (const auto &siteJson : sitesJson) {
+		const QString siteUrl = siteJson.toString();
+		if (sitesMapping.contains(siteUrl)) {
+			sites.append(sitesMapping.value(siteUrl));
+		}
+	}
 
-    return {
-        query,
-        sites,
-        QDateTime::fromString(json["date"].toString(), Qt::ISODate),
-    };
+	return {
+		query,
+		sites,
+		QDateTime::fromString(json["date"].toString(), Qt::ISODate),
+	};
 }
 
 void HistoryEntry::toJson(QJsonObject &json) const
 {
-    // Query
+	// Query
 	QJsonObject queryJson;
-    query.write(queryJson);
+	query.write(queryJson);
 
-    // Sites
-    QJsonArray sitesJson;
-    for (const Site *site : sites) {
-        sitesJson.append(site->url());
-    }
+	// Sites
+	QJsonArray sitesJson;
+	for (const Site *site : sites) {
+		sitesJson.append(site->url());
+	}
 
-    json["query"] = queryJson;
-    json["sites"] = sitesJson;
-    json["date"] = date.toString(Qt::ISODate);
+	json["query"] = queryJson;
+	json["sites"] = sitesJson;
+	json["date"] = date.toString(Qt::ISODate);
 }
