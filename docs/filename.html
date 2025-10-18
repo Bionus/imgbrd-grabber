@@ -1,0 +1,4025 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://www.bionus.org/imgbrd-grabber/docs/filename.html">
+      
+      
+        <link rel="prev" href="index.html">
+      
+      
+        <link rel="next" href="search.html">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.0">
+    
+    
+      
+        <title>Filename - Imgbrd-Grabber</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.45e1311d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MR404DPTE5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MR404DPTE5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MR404DPTE5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+    
+        <meta name="google-site-verification" content="HUsU9v5lhoPPeKdafhViSRi1NofQwzQrRwLN1nEzsA8">
+    
+
+    
+
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Imgbrd-Grabber" class="md-header__button md-logo" aria-label="Imgbrd-Grabber" data-md-component="logo">
+      
+  <img src="../assets/img/icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imgbrd-Grabber
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Filename
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="orange" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="orange" aria-label="Switch to system preference" type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Bionus/imgbrd-grabber" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    Bionus/imgbrd-grabber
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+
+  <!-- Determine classes -->
+  
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+
+  <!-- Navigation link icon -->
+  
+    
+  
+
+  <!-- Navigation link title -->
+  Home
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+
+  <!-- Determine classes -->
+  
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+
+    <!-- Recurse, if the first item has further nested items -->
+    
+      
+      <li class="md-tabs__item">
+        <a href="../blog/" class="md-tabs__link">
+          
+
+  <!-- Navigation link icon -->
+  
+
+  <!-- Navigation link title -->
+  Blog
+  
+  
+
+        </a>
+      </li>
+    
+
+  <!-- Navigation item -->
+  
+
+      
+        
+
+  <!-- Determine classes -->
+  
+  
+    
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+
+    <!-- Recurse, if the first item has further nested items -->
+    
+      
+
+  <!-- Determine classes -->
+  
+  
+    
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+
+    <!-- Recurse, if the first item has further nested items -->
+    
+      
+
+  <!-- Determine classes -->
+  
+  
+    
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+
+    <!-- Recurse, if the first item has further nested items -->
+    
+      
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="install/windows.html" class="md-tabs__link">
+          
+
+  <!-- Navigation link icon -->
+  
+
+  <!-- Navigation link title -->
+  Docs
+  
+  
+
+        </a>
+      </li>
+    
+
+  <!-- Navigation item -->
+  
+
+
+    <!-- Nested navigation item -->
+    
+
+  <!-- Navigation item -->
+  
+
+
+    <!-- Nested navigation item -->
+    
+
+  <!-- Navigation item -->
+  
+
+      
+        
+
+  <!-- Determine classes -->
+  
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+    <li class="md-tabs__item">
+      <a href="https://github.com/Bionus/imgbrd-grabber/issues" class="md-tabs__link" target="_blank">
+        
+
+  <!-- Navigation link icon -->
+  
+    
+  
+
+  <!-- Navigation link title -->
+  Issue tracker
+  
+  
+    <span class="md-icon external">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112v320c0 44.2 35.8 80 80 80h320c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v112c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16h112c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg>
+    </span>
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+
+  <!-- Determine classes -->
+  
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+    <li class="md-tabs__item">
+      <a href="https://discord.gg/pWnY5eW3rz" class="md-tabs__link" target="_blank">
+        
+
+  <!-- Navigation link icon -->
+  
+    
+  
+
+  <!-- Navigation link title -->
+  Discord
+  
+  
+    <span class="md-icon external">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112v320c0 44.2 35.8 80 80 80h320c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v112c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16h112c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg>
+    </span>
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+
+  <!-- Determine classes -->
+  
+  
+
+  <!-- Navigation item with nested items -->
+  
+    
+
+    <!-- Recurse, if the first item has further nested items -->
+    
+      
+      <li class="md-tabs__item">
+        <a href="https://www.patreon.com/bionus" class="md-tabs__link" target="_blank">
+          
+
+  <!-- Navigation link icon -->
+  
+
+  <!-- Navigation link title -->
+  Sponsor
+  
+  
+    <span class="md-icon external">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112v320c0 44.2 35.8 80 80 80h320c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v112c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16h112c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg>
+    </span>
+  
+
+        </a>
+      </li>
+    
+
+  <!-- Navigation item -->
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Imgbrd-Grabber" class="md-nav__button md-logo" aria-label="Imgbrd-Grabber" data-md-component="logo">
+      
+  <img src="../assets/img/icon.png" alt="logo">
+
+    </a>
+    Imgbrd-Grabber
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Bionus/imgbrd-grabber" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    Bionus/imgbrd-grabber
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2025.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2025
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2024.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2023.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2022.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2022
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2021.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2021
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2020.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2020
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2019.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2019
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3">
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/category/android.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Android
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/category/linux.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/category/release.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Docs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Docs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Basics
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Basics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1">
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install/windows.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install/linux.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install/macos.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MacOS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install/android.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Android
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Filename
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="filename.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Filename
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available tokens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gallery-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gallery tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Special tokens
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#max-length-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      Max length (int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unsafe-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unsafe (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#underscores-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Underscores (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spaces-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spaces (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-escape-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL escape (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-escape-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML escape (bool)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#length-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      Length (int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#precision-float" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precision (float)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#separator-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separator (string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Count (boolean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort (boolean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-enum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case (enum)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tag lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tag lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include-namespace-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Include namespace (boolean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclude-namespace-string-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exclude namespace (string list)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignore-namespace-string-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ignore namespace (string list)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time zone
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom tokens
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conditionals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conditionals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple conditionals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Simple conditionals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token conditionals
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tag conditionals
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inverting-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inverting conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-then-else-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      If-then-else conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      JavaScript
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#similar-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Similar tags
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Similar tags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-use-shortest-if-possible-setting" class="md-nav__link">
+    <span class="md-ellipsis">
+      The "use shortest if possible" setting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignored-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ignored tags
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="search.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_5">
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_5" id="__nav_3_1_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Sources
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            Sources
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/danbooru-2.0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Danbooru (2.0)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/deviantart.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DeviantArt
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/e-hentai.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    E-Hentai
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/gelbooru-0.2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gelbooru (0.2)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/mastodon.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mastodon
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/newgrounds-art.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Newgrounds Art
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/nijie.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Nijie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/pixiv.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pixiv
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/reddit.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reddit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/shimmie.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shimmie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sources/twitter.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twitter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="favorites.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Favorites
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="website-login.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Website login
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="duplicate-files.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Duplicate files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shortcuts.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keyboard shortcuts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metadata.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metadata
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="monitors.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2_4">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2_4" id="__nav_3_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tools/blacklist-fixer.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blacklist fixer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tools/image-renamer.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image renamer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tools/tag-loader.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tag loader
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2_5">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2_5" id="__nav_3_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Commands
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Commands
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="commands/index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="commands/szurubooru.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Szurubooru
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="commands/danbooru.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Danbooru
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="commands/shimmie.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shimmie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="commands/my-imouto.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MyImouto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="commands/gelbooru.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gelbooru
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="compilation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Compilation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cli.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command-line interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="portable-version.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Portable version
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="configuration-files.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="telemetry.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Telemetry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Plugins
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Plugins
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="plugins/theme.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Themes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_2" id="__nav_3_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Sources
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Sources
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sites/index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sites
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sites/source.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sites/source-example.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sites/javascript-helper.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JavaScript helper
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sites/source-registry.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source registries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="plugins/translation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Bionus/imgbrd-grabber/issues" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Issue tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://discord.gg/pWnY5eW3rz" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Discord
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Sponsor
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Sponsor
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.patreon.com/bionus" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patreon
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/sponsors/Bionus" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GitHub
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.paypal.me/jvasti" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Paypal
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available tokens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gallery-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gallery tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Special tokens
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#max-length-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      Max length (int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unsafe-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unsafe (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#underscores-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Underscores (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spaces-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spaces (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-escape-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL escape (bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-escape-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML escape (bool)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#length-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      Length (int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#precision-float" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precision (float)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#separator-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separator (string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Count (boolean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort (boolean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-enum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case (enum)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tag lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tag lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include-namespace-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Include namespace (boolean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclude-namespace-string-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exclude namespace (string list)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignore-namespace-string-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ignore namespace (string list)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time zone
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom tokens
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conditionals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conditionals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple conditionals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Simple conditionals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token conditionals
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-conditionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tag conditionals
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inverting-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inverting conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-then-else-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      If-then-else conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      JavaScript
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#similar-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Similar tags
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Similar tags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-use-shortest-if-possible-setting" class="md-nav__link">
+    <span class="md-ellipsis">
+      The "use shortest if possible" setting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignored-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ignored tags
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Bionus/imgbrd-grabber/edit/master/docs/docs/filename.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"></path></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/Bionus/imgbrd-grabber/raw/master/docs/docs/filename.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"></path></svg>
+    </a>
+  
+
+
+  <h1>Filename</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">¶</a></h2>
+<p>If you want to download lots of images at the same time and have each of them be downloaded in a different location or have a different filename, you have to first tell the program which filename format to use.</p>
+<p>The program has many tokens to use to ensure different and unique filenames, you can find an exhaustive list <a href="#available-tokens">below</a>.</p>
+<p>The most basic tokens are <code>md5</code> (an image unique identifier across all websites), <code>id</code> (an image unique identifier on a given website), and <code>ext</code> (the image's extension). Each token should be written between percent signs (<code>%</code>) to differentiate it from plain text. So if you want to use the <code>md5</code> token in your filename, you have to write <code>%md5%</code>.</p>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
+<p>The most basic unique filename is:
+</p><div class="highlight"><pre><span></span><code>%md5%.%ext%
+</code></pre></div><p></p>
+<p>Which would generate files such as:</p>
+<ul>
+<li><code>f7deda9c6934179779f63910d5e8d2dc.png</code></li>
+<li><code>a75b2e6c0b9247d04ff88c0aa02bb17a.gif</code></li>
+</ul>
+<p>A more complex one could be:
+</p><div class="highlight"><pre><span></span><code>%artist%/%copyright%/%character%/%md5%.%ext%
+</code></pre></div><p></p>
+<p>Which would generate files such as:</p>
+<ul>
+<li><code>namu (ratias7777)/sword art online/leafa/362333f4fb4c458577ee72919cfbe10d.png</code></li>
+<li><code>moneti (daifuku)/touhou/flandre scarlet/0498c78f67d5545bea731d4b1051096c.jpg</code></li>
+<li><code>moneti (daifuku)/touhou/izayoi sakuya/fe2e6eb294f33f455d43b3effcf4ec6c.jpg</code></li>
+</ul>
+<p>Note that here, each slash (<code>/</code>) corresponds to a different directory:
+</p><div class="highlight"><pre><span></span><code>├── namu (ratias7777)
+│&nbsp;&nbsp; └── sword art online
+│&nbsp;&nbsp; &nbsp;&nbsp;  └── leafa
+│&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  └── 362333f4fb4c458577ee72919cfbe10d.png
+└── moneti (daifuku)
+    └── touhou
+        ├── flandre scarlet
+        │&nbsp;&nbsp; └── 0498c78f67d5545bea731d4b1051096c.jpg
+        └── izayoi sakuya
+            └── fe2e6eb294f33f455d43b3effcf4ec6c.jpg
+</code></pre></div><p></p>
+<h2 id="available-tokens">Available tokens<a class="headerlink" href="#available-tokens" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>ext</code>: the file extension.</li>
+<li><code>artist</code></li>
+<li><code>copyright</code></li>
+<li><code>character</code></li>
+<li><code>model</code>: boorus such as <a href="http://behoimi.org/">Behoimi</a> use, adding to classical type, the "model" type.</li>
+<li><code>general</code></li>
+<li><code>search</code>: the search that returned this image (as is).</li>
+<li><code>search_1</code>, <code>search_2</code>, <code>search_3</code>...: first/second/third... tag of the search.</li>
+<li><code>filename</code>: image filename, as stored on the booru's server.</li>
+<li><code>rating</code>: <code>safe</code>, <code>questionable</code>, <code>explicit</code>, or <code>unknown</code>.</li>
+<li><code>score</code></li>
+<li><code>md5</code>: the file's MD5 hash. If not returned by the server, it is generated automatically.</li>
+<li><code>id</code>: unique image ID per board.</li>
+<li><code>website</code>: the website's URL (without HTTP and trailing slash).</li>
+<li><code>websitename</code>: the website name as set in the sources' settings.</li>
+<li><code>height</code>: the image's height.</li>
+<li><code>width</code>: the image's width.</li>
+<li><code>mpixels</code>: the image's height multiplied by the image's width.</li>
+<li><code>author</code>: the name of the author of the image.</li>
+<li><code>authorid</code>: the ID of the author of the image.</li>
+<li><code>date</code>: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".</li>
+<li><code>all</code>: all tags.</li>
+<li><code>allo</code>: do not use this unless you know what you're doing. It is the same as <code>%all%</code>, but without the removal of forbidden characters and any other kind of treatment (using it as a filename may cause some images to not save).</li>
+<li><code>source</code>: the source of this file, usually a URL.</li>
+<li><code>sources</code>: all sources for this file, usually a list of URLs.</li>
+<li><code>url_file</code>: the URL of that file.</li>
+<li><code>url_original</code>: the URL of that file's original.</li>
+<li><code>url_sample</code>: the URL of that file's sample.</li>
+<li><code>url_thumbnail</code>: the URL of that file's thumbnail.</li>
+<li><code>url_page</code>: the URL of the details page of that file.</li>
+<li><code>count</code>: counts the current image downloaded during a batch download. Useful to have unique counters per batch.</li>
+<li><code>num</code>: a counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.</li>
+<li><code>position</code>: the position of the image in the results list or gallery (starts at 1).</li>
+<li><code>old_directory</code>: when renaming, store the local path for the current file. (useful to rename images, without changing directory structure).</li>
+<li><code>old_filename</code>: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token contains the extension of the file, therefore, should not be used with %ext%.</li>
+</ul>
+<h3 id="gallery-tokens">Gallery tokens<a class="headerlink" href="#gallery-tokens" title="Permanent link">¶</a></h3>
+<p>Images can access information on the gallery by using the <code>gallery.</code> prefix. Many tokens are present in the gallery object, but the most common are:</p>
+<ul>
+<li><code>gallery.id</code>: the ID of the gallery.</li>
+<li><code>gallery.name</code>: the name/title of the gallery.</li>
+</ul>
+<h3 id="special-tokens">Special tokens<a class="headerlink" href="#special-tokens" title="Permanent link">¶</a></h3>
+<p>Some tokens do not strictly relate to the image itself. Those tokens are:</p>
+<ul>
+<li><code>current_date</code>: the current date and time at the moment you're downloading the media.</li>
+</ul>
+<h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">¶</a></h2>
+<h3 id="introduction_1">Introduction<a class="headerlink" href="#introduction_1" title="Permanent link">¶</a></h3>
+<p>Most tokens can have options. To add options to a token, just add <code>:</code> after its name, followed by the option name and its value (separated by a <code>=</code>). Multiple options can be set, separating them by <code>,</code>.</p>
+<p>When the same option is set multiple times, only the latest one is taken into account.</p>
+<p>The value can be omitted for boolean options. In this case, <code>option_name</code> will be equivalent to <code>option_name=true</code>. Useful to set multiple flags.</p>
+<p>Example: <code>%token:option1=value1,option2%</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the comma is used to delimitate options, you need to escape it with <code>^</code> if you want to use it in the value, otherwise it'll be considered as the next option.</p>
+<p>Example: <code>%tags:separator=^,%</code> will use <code>,</code> as separator.</p>
+</div>
+<h3 id="common-options">Common options<a class="headerlink" href="#common-options" title="Permanent link">¶</a></h3>
+<h4 id="max-length-int">Max length (int)<a class="headerlink" href="#max-length-int" title="Permanent link">¶</a></h4>
+<p>If the contents of the token is longer than this value, it will be cut.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%md5%
+37d49104a49a3c27d3fabfd7e8c24f97
+
+%md5:maxlength=8%
+37d49104
+</code></pre></div><p></p>
+<h4 id="unsafe-bool">Unsafe (bool)<a class="headerlink" href="#unsafe-bool" title="Permanent link">¶</a></h4>
+<p>Disable removal of unsafe characters. Don't use it in normal filenames, as they won't save on Windows if they contain special characters.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%copyright%
+fate_stay_night
+
+%copyright:unsafe%
+fate/stay_night
+</code></pre></div><p></p>
+<h4 id="underscores-bool">Underscores (bool)<a class="headerlink" href="#underscores-bool" title="Permanent link">¶</a></h4>
+<p>If the "replace spaces by underscores" setting is not enabled globally, you can enable it for a given token using this option.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%copyright%
+fate stay night
+
+%copyright:underscores%
+fate_stay_night
+</code></pre></div><p></p>
+<h4 id="spaces-bool">Spaces (bool)<a class="headerlink" href="#spaces-bool" title="Permanent link">¶</a></h4>
+<p>If the "replace spaces by underscores" setting is enabled globally, you can disable it for a given token using this option.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%copyright%
+fate_stay_night
+
+%copyright:spaces%
+fate stay night
+</code></pre></div><p></p>
+<h4 id="sql-escape-bool">SQL escape (bool)<a class="headerlink" href="#sql-escape-bool" title="Permanent link">¶</a></h4>
+<p>Escapes unsafe SQL characters. Useful for SQL commands. Note that it encloses strings in single quotes.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%all%
+let's_try \o/
+
+%all:escape%
+'let''s_try \\o/'
+</code></pre></div><p></p>
+<h4 id="html-escape-bool">HTML escape (bool)<a class="headerlink" href="#html-escape-bool" title="Permanent link">¶</a></h4>
+<p>Escapes unsafe HTML characters.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%all%
+&gt;_&lt;
+
+%all:htmlescape%
+&amp;gt;_&amp;lt;
+</code></pre></div><p></p>
+<h3 id="numbers">Numbers<a class="headerlink" href="#numbers" title="Permanent link">¶</a></h3>
+<h4 id="length-int">Length (int)<a class="headerlink" href="#length-int" title="Permanent link">¶</a></h4>
+<p>Length of the left-pad of the number.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%count%.%ext%
+7.jpg
+
+%count:length=3%.%ext%
+007.jpg
+</code></pre></div><p></p>
+<h4 id="precision-float">Precision (float)<a class="headerlink" href="#precision-float" title="Permanent link">¶</a></h4>
+<p>Number of digits after the decimal.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%ratio%.%ext%
+1.333333.jpg
+
+%ratio:precision=1%.%ext%
+1.3.jpg
+</code></pre></div><p></p>
+<h3 id="lists">Lists<a class="headerlink" href="#lists" title="Permanent link">¶</a></h3>
+<h4 id="separator-string">Separator (string)<a class="headerlink" href="#separator-string" title="Permanent link">¶</a></h4>
+<p>The separator to use in a tag list.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%character%
+character1 character2
+
+%character:separator=---%
+character1---character2
+</code></pre></div><p></p>
+<h4 id="count-boolean">Count (boolean)<a class="headerlink" href="#count-boolean" title="Permanent link">¶</a></h4>
+<p>If enabled, the token will be replaced by the number of values in the list.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%character%
+character1 character2
+
+%character:count%
+2
+</code></pre></div><p></p>
+<h4 id="sort-boolean">Sort (boolean)<a class="headerlink" href="#sort-boolean" title="Permanent link">¶</a></h4>
+<p>If enabled, the list will be sorted alphabetically.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%character%
+artist1 tag1 character1 tag2
+
+%character:sort%
+artist1 character1 tag1 tag2
+</code></pre></div><p></p>
+<h4 id="case-enum">Case (enum)<a class="headerlink" href="#case-enum" title="Permanent link">¶</a></h4>
+<p>Change the casing (capitalization) of words in that list.</p>
+<p>Possible options:</p>
+<ul>
+<li><code>lower</code>: some_tag</li>
+<li><code>upper_first</code>: Some_tag</li>
+<li><code>upper</code>: Some_Tag</li>
+<li><code>caps</code>: SOME_TAG</li>
+</ul>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%character%
+test_tag1 test_tag2
+
+%character:case=upper_first%
+Test_tag1 Test_tag2
+
+%character:case=upper%
+Test_Tag1 Test_Tag2
+</code></pre></div><p></p>
+<h3 id="tag-lists">Tag lists<a class="headerlink" href="#tag-lists" title="Permanent link">¶</a></h3>
+<h4 id="include-namespace-boolean">Include namespace (boolean)<a class="headerlink" href="#include-namespace-boolean" title="Permanent link">¶</a></h4>
+<p>If enabled, the namespace of the tags will be included in the result. Better used with the <code>usafe</code> option to keep the <code>:</code>.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%all%
+artist1 tag1 character1 tag2
+
+%all:includenamespace%
+artist_artist1 general_tag1 character_character1 general_tag2
+
+%all:includenamespace,unsafe%
+artist:artist1 general:tag1 character:character1 general:tag2
+</code></pre></div><p></p>
+<h4 id="exclude-namespace-string-list">Exclude namespace (string list)<a class="headerlink" href="#exclude-namespace-string-list" title="Permanent link">¶</a></h4>
+<p>The list of namespaces you don't want to see when using the "include namespace" option.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%all%
+artist1 tag1 character1 tag2
+
+%all:includenamespace,unsafe%
+artist:artist1 general:tag1 character:character1 general:tag2
+
+%all:includenamespace,excludenamespace=general,unsafe%
+artist:artist1 tag1 character:character1 tag2
+
+%all:includenamespace,excludenamespace=general character,unsafe%
+artist:artist1 tag1 character1 tag2
+</code></pre></div><p></p>
+<h4 id="ignore-namespace-string-list">Ignore namespace (string list)<a class="headerlink" href="#ignore-namespace-string-list" title="Permanent link">¶</a></h4>
+<p>The list of namespaces you don't want to see in the results.</p>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%all%
+artist1 tag1 character1 tag2
+
+%all:ignorenamespace=character%
+artist1 tag1 tag2
+</code></pre></div><p></p>
+<h3 id="dates">Dates<a class="headerlink" href="#dates" title="Permanent link">¶</a></h3>
+<h4 id="format">Format<a class="headerlink" href="#format" title="Permanent link">¶</a></h4>
+<p>Beware of not using any character forbidden by your operating system in the format, or images won't save (so you cannot use <code>:</code> on Windows for example).</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>the day as number without a leading zero (1 to 31)</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>the day as number with a leading zero (01 to 31)</td>
+</tr>
+<tr>
+<td>ddd</td>
+<td>the abbreviated localized day name</td>
+</tr>
+<tr>
+<td>dddd</td>
+<td>the long localized day name</td>
+</tr>
+<tr>
+<td>M</td>
+<td>the month as number without a leading zero (1-12)</td>
+</tr>
+<tr>
+<td>MM</td>
+<td>the month as number with a leading zero (01-12)</td>
+</tr>
+<tr>
+<td>MMM</td>
+<td>the abbreviated localized month name</td>
+</tr>
+<tr>
+<td>MMMM</td>
+<td>the long localized month name</td>
+</tr>
+<tr>
+<td>yy</td>
+<td>the year as two digit number (00-99)</td>
+</tr>
+<tr>
+<td>yyyy</td>
+<td>the year as four digit number</td>
+</tr>
+<tr>
+<td>h</td>
+<td>the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)</td>
+</tr>
+<tr>
+<td>m</td>
+<td>the minute without a leading zero (0 to 59)</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>the minute with a leading zero (00 to 59)</td>
+</tr>
+<tr>
+<td>s</td>
+<td>the second without a leading zero (0 to 59)</td>
+</tr>
+<tr>
+<td>ss</td>
+<td>the second with a leading zero (00 to 59)</td>
+</tr>
+<tr>
+<td>z</td>
+<td>the milliseconds without leading zeroes (0 to 999)</td>
+</tr>
+<tr>
+<td>zzz</td>
+<td>the milliseconds with leading zeroes (000 to 999)</td>
+</tr>
+<tr>
+<td>AP</td>
+<td>use AM/PM display. AP will be replaced by either "AM" or "PM".</td>
+</tr>
+<tr>
+<td>ap</td>
+<td>use am/pm display. ap will be replaced by either "am" or "pm".</td>
+</tr>
+</tbody>
+</table>
+<p>All other input characters will be ignored. Any sequence of characters that are enclosed in single quotes will be treated as text and not be used as an expression. Two consecutive single quotes <code>''</code> are replaced by a single quote in the output.</p>
+<p>Some examples assumed that the date is 21 May 2001 at 14:13:09:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dd.MM.yyyy</code></td>
+<td>21.05.2001</td>
+</tr>
+<tr>
+<td><code>ddd MMMM d yy</code></td>
+<td>Tue May 21 01</td>
+</tr>
+<tr>
+<td><code>hh:mm:ss.zzz</code></td>
+<td>14:13:09.042</td>
+</tr>
+<tr>
+<td><code>h:m:s ap</code></td>
+<td>2:13:9 pm</td>
+</tr>
+</tbody>
+</table>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%date:format=yyyy-MM-dd%
+2001-05-21
+</code></pre></div><p></p>
+<h4 id="time-zone">Time zone<a class="headerlink" href="#time-zone" title="Permanent link">¶</a></h4>
+<p>You can override the date's timezone using the "timezone" option.</p>
+<p>Allowed values:</p>
+<ul>
+<li><code>server</code>: the server's time zone (default)</li>
+<li><code>local</code>: the current computer's local time zone</li>
+<li>Any time zone from the IANA database (ex: "UTC", "Europe/Paris"...)</li>
+</ul>
+<p>You can find the list of available time zones on:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Wikipedia</a></li>
+<li><a href="https://www.iana.org/time-zones">The IANA website</a></li>
+</ul>
+<p>Example:
+</p><div class="highlight"><pre><span></span><code>%date%
+05-18-2021 17.32
+
+%date:timezone=server%
+05-18-2021 17.32
+
+%date:timezone=local%
+05-18-2021 23.32
+
+%date:timezone=UTC%
+05-18-2021 22.32
+
+%date:timezone=Europe/Paris%
+05-18-2021 23.32
+</code></pre></div><p></p>
+<h2 id="custom-tokens">Custom tokens<a class="headerlink" href="#custom-tokens" title="Permanent link">¶</a></h2>
+<p>You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Custom tokens with an already used name (such as %character%) will be used first.</p>
+</div>
+<h2 id="conditionals">Conditionals<a class="headerlink" href="#conditionals" title="Permanent link">¶</a></h2>
+<p>You can use conditionals in your filename, using strict inequality signs (<code>&lt;</code> and <code>&gt;</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are currently issues with conditionals inside other conditionals, so it is advised to not imbricate conditionals in your filename.</p>
+</div>
+<h3 id="simple-conditionals">Simple conditionals<a class="headerlink" href="#simple-conditionals" title="Permanent link">¶</a></h3>
+<h4 id="token-conditionals">Token conditionals<a class="headerlink" href="#token-conditionals" title="Permanent link">¶</a></h4>
+<p>If any token found in the conditional does not exist or is empty, nothing into it will be displayed.</p>
+<p>Since an example is worth a thousand words:
+</p><div class="highlight"><pre><span></span><code>image - &lt;%artist% some text &lt;%nothing% another text&gt; test&gt;&lt;&lt;%character% some text&gt; text %nothing%&gt; %md5%.%ext%
+</code></pre></div><p></p>
+<p>Assuming the image contains both an artist and a character, it will return:
+</p><div class="highlight"><pre><span></span><code>image - %artist% some text  test %md5%.%ext%
+</code></pre></div><p></p>
+<p>If the image doesn't have any artist, it will be:
+</p><div class="highlight"><pre><span></span><code>image -  %md5%.%ext%
+</code></pre></div><p></p>
+<h4 id="tag-conditionals">Tag conditionals<a class="headerlink" href="#tag-conditionals" title="Permanent link">¶</a></h4>
+<p>You can also test directly the presence of a tag surrounding him with quotes. For example:
+</p><div class="highlight"><pre><span></span><code>image - &lt;image contains the tag "solo"&gt;&lt;"group" is one of the image tags&gt; %md5%.%ext%
+</code></pre></div><p></p>
+<p>If the image contains the "solo" tag, it will return:
+</p><div class="highlight"><pre><span></span><code>image - image contains the tag solo  %md5%.%ext%
+</code></pre></div><p></p>
+<p>If the image contains the "group" tag:
+</p><div class="highlight"><pre><span></span><code>image -  group is one of the image tags %md5%.%ext%
+</code></pre></div><p></p>
+<p>If, for some obscure reason, it has both:
+</p><div class="highlight"><pre><span></span><code>image - image contains the tag solo group is one of the image tags %md5%.%ext%
+</code></pre></div><p></p>
+<p>If, it does not have solo or group:
+</p><div class="highlight"><pre><span></span><code>image -   %md5%.%ext%
+</code></pre></div><p></p>
+<h3 id="inverting-conditions">Inverting conditions<a class="headerlink" href="#inverting-conditions" title="Permanent link">¶</a></h3>
+<p>You can invert any condition by prefixing it with an exclamation mark <code>!</code> symbol.</p>
+<p>It works for tokens:
+</p><div class="highlight"><pre><span></span><code>%md5% -&lt;!%artist% no artist&gt;.%ext%
+</code></pre></div>
+As well as tags:
+<div class="highlight"><pre><span></span><code>&lt;image does not contain the tag !"tag1"&gt; %md5%.%ext%
+</code></pre></div><p></p>
+<h3 id="if-then-else-conditions">If-then-else conditions<a class="headerlink" href="#if-then-else-conditions" title="Permanent link">¶</a></h3>
+<p>Sometimes, it can be easier to have explicit "if ... then ... else ..." conditions.</p>
+<p>To do so, you should use the <code>&lt;if?then:else&gt;</code> syntax:
+</p><div class="highlight"><pre><span></span><code>&lt;"tag"?yes:no&gt;
+</code></pre></div>
+If the tag is present in the image, the condition will be replaced by "yes". Otherwise, it will be "no".<p></p>
+<p>If you do not need an "else" part, you can omit it and use the simpler <code>&lt;if?then&gt;</code> syntax:
+</p><div class="highlight"><pre><span></span><code>&lt;"tag"?yes&gt;
+</code></pre></div>
+If the tag is present in the image, the condition will be replaced by "yes". Otherwise, it will simply be skipped.<p></p>
+<p>The condition part can use either tags or tokens, the same as simple conditionals, combined with <code>&amp;</code> (for "and"), <code>|</code> (for "or"), and <code>!</code> (for inversion). Complex conditions can also use parentheses (<code>(</code> and <code>)</code>).
+</p><div class="highlight"><pre><span></span><code>&lt;"tag" | !%artist%?tag or no artist:otherwise&gt;
+</code></pre></div><p></p>
+<p>You can escape special characters (<code>?</code>, <code>!</code>...) by prefixing them with <code>^</code>. For <code>&lt;</code> and <code>&gt;</code>, you can also double them (<code>&lt;&lt;</code> and <code>&gt;&gt;</code>).</p>
+<p>Note that while double quotes are optional for tags, it's recommended to use them, especially in complex conditions or for tags containing special characters.</p>
+<h2 id="javascript">JavaScript<a class="headerlink" href="#javascript" title="Permanent link">¶</a></h2>
+<p>You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, which you can open by clicking the "..." button near the filename field, or by adding "javascript:" before your script.</p>
+<p>For example, if your script is "md5 + '.' + ext", your filename will be "javascript:md5 + '.' + ext".</p>
+<p>A more complex one could be:
+</p><div class="highlight"><pre><span></span><code>javascript:((width&gt;=height)?"landscape":"portrait")+"/"+copyright+"/"+md5+"."+ext
+</code></pre></div><p></p>
+<p>Which would generate files such as:</p>
+<ul>
+<li><code>landscape/sword art online/5231166bd271ce0cd0c11d7e3cb342a5.png</code></li>
+<li><code>portrait/touhou/0498c78f67d5545bea731d4b1051096c.jpg</code></li>
+<li><code>portrait/touhou/fe2e6eb294f33f455d43b3effcf4ec6c.jpg</code></li>
+</ul>
+<p>Note that here, each slash (<code>/</code>) corresponds to a different directory:
+</p><div class="highlight"><pre><span></span><code>├── landscape
+│&nbsp;&nbsp; └── sword art online
+│&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  └── 5231166bd271ce0cd0c11d7e3cb342a5.png
+└── portrait
+    └── touhou
+        ├── 0498c78f67d5545bea731d4b1051096c.jpg
+        └── fe2e6eb294f33f455d43b3effcf4ec6c.jpg
+</code></pre></div><p></p>
+<h2 id="similar-tags">Similar tags<a class="headerlink" href="#similar-tags" title="Permanent link">¶</a></h2>
+<p>Sometimes, you have similar tags in your image, which can be problematic for your filename. For example, if you have an image tagged as both "pokemon" and "pokemon_bw", you might get "crossover" when using <code>%copyright%</code>, or "pokemon pokemon_bw", which can become annoying for organizing.</p>
+<p>To fix this, there are a few options.</p>
+<h3 id="the-use-shortest-if-possible-setting">The "use shortest if possible" setting<a class="headerlink" href="#the-use-shortest-if-possible-setting" title="Permanent link">¶</a></h3>
+<p>This setting is specific for copyright tags and can be found in the options window, in the "Save &gt; Tags &gt; Copyright" category, as a checkbox at the bottom of the window.</p>
+<p>This feature takes all tags marked as "copyright", and removes all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "_bw".</p>
+<h3 id="ignored-tags">Ignored tags<a class="headerlink" href="#ignored-tags" title="Permanent link">¶</a></h3>
+<p>You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appear, in our example, in <code>%copyright%</code>. It will however still be in <code>%all%</code>.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"></path></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 18, 2025 20:29:45 UTC">October 18, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      This project is maintained by <a href="https://github.com/Bionus" data-label="Owner">Bionus</a>
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Bionus" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.action.edit", "content.action.view", "content.code.copy", "content.tooltips"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
