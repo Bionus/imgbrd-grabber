@@ -248,62 +248,62 @@ Item {
     // Coloring
     property Setting coloring_colors_artists: Setting {
         key: "Coloring/Colors/artists"
-        def: ""
+        def: "#aa0000"
         obj: root.obj
     }
     property Setting coloring_colors_circles: Setting {
         key: "Coloring/Colors/circles"
-        def: ""
+        def: "#55bbff"
         obj: root.obj
     }
     property Setting coloring_colors_copyrights: Setting {
         key: "Coloring/Colors/copyrights"
-        def: ""
+        def: "#aa00aa"
         obj: root.obj
     }
     property Setting coloring_colors_characters: Setting {
         key: "Coloring/Colors/characters"
-        def: ""
+        def: "#00aa00"
         obj: root.obj
     }
     property Setting coloring_colors_species: Setting {
         key: "Coloring/Colors/species"
-        def: ""
+        def: "#ee6600"
         obj: root.obj
     }
     property Setting coloring_colors_metas: Setting {
         key: "Coloring/Colors/metas"
-        def: ""
+        def: "#ee6600"
         obj: root.obj
     }
     property Setting coloring_colors_models: Setting {
         key: "Coloring/Colors/models"
-        def: ""
+        def: "#00aaff"
         obj: root.obj
     }
     property Setting coloring_colors_generals: Setting {
         key: "Coloring/Colors/generals"
-        def: ""
+        def: appearance_materialTheme.value === Material.Dark ? "#ffffff" : "#000000"
         obj: root.obj
     }
     property Setting coloring_colors_favorites: Setting {
         key: "Coloring/Colors/favorites"
-        def: ""
+        def: "#ffaaff"
         obj: root.obj
     }
     property Setting coloring_colors_keptForLater: Setting {
         key: "Coloring/Colors/keptForLater"
-        def: ""
+        def: "#aaaa00"
         obj: root.obj
     }
     property Setting coloring_colors_blacklisteds: Setting {
         key: "Coloring/Colors/blacklisteds"
-        def: ""
+        def: "#444444"
         obj: root.obj
     }
     property Setting coloring_colors_ignoreds: Setting {
         key: "Coloring/Colors/ignoreds"
-        def: ""
+        def: "#777777"
         obj: root.obj
     }
 

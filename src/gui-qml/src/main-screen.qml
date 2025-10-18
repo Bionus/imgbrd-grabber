@@ -52,7 +52,17 @@ ApplicationWindow {
             "model": qsTr("Model"),
             "photo_set": qsTr("Photo set"),
             "species": qsTr("Species"),
-            "meta": qsTr("Meta")
+            "meta": qsTr("Meta"),
+        }
+        property var tagTypeColorSettings: {
+            "artist": gSettings.coloring_colors_artists,
+            "circle": gSettings.coloring_colors_circles,
+            "copyright": gSettings.coloring_colors_copyrights,
+            "character": gSettings.coloring_colors_characters,
+            "species": gSettings.coloring_colors_species,
+            "meta": gSettings.coloring_colors_metas,
+            "model": gSettings.coloring_colors_models,
+            "general": gSettings.coloring_colors_generals,
         }
         property var authTypes: {
             "url": qsTr("Through URL"),
