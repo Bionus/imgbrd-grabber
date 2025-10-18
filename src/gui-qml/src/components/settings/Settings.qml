@@ -231,13 +231,13 @@ Item {
         key: "Appearance/materialPrimary"
         def: Material.Blue
         obj: root.obj
-        parser: (v) => globals.materialColors[Number(v)]
+        parser: (v) => Material.color(globals.materialColors[Number(v)], Material.Shade500)
     }
     property Setting appearance_materialAccent: Setting {
         key: "Appearance/materialAccent"
         def: Material.Amber
         obj: root.obj
-        parser: (v) => globals.materialColors[Number(v)]
+        parser: (v) => Material.color(globals.materialColors[Number(v)], Material.Shade500)
     }
     property Setting imageBackgroundColor: Setting {
         key: "imageBackgroundColor"

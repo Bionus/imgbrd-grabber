@@ -10,7 +10,7 @@ Item {
 
     property string name
     property Setting setting
-    property var colors: globals.materialColors.map(c => Material.color(c, Material.Shade700))
+    property var colors: globals.materialColors.map(c => Material.color(c, Material.Shade500))
     property var values: globals.materialColors.map((v, i) => i)
     property var labels: globals.materialColorsStr
     property bool showLabels: false
@@ -51,7 +51,7 @@ Item {
                         height: 60
                         radius: width * 0.2
                         border.color: "#000000"
-                        border.width: currentValue === (values ? values[index] : modelData) ? 3 : 0
+                        border.width: currentValue === modelData ? 3 : 0
 
                         Label {
                             anchors.fill: parent
