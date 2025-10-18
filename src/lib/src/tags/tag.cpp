@@ -183,6 +183,7 @@ bool sortTagsByType(const Tag &s1, const Tag &s2)
 		<< QStringLiteral("lore")
 		<< QStringLiteral("species")
 		<< QStringLiteral("artist")
+		<< QStringLiteral("contributor")
 		<< QStringLiteral("character")
 		<< QStringLiteral("copyright");
 
