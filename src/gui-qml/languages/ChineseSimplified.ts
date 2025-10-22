@@ -276,57 +276,72 @@
     <name>BlacklistSettingsPage</name>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
+      <source>Search</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
+      <source>Added tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="19"/>
+      <source>Post-filters</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="29"/>
       <source>Blacklist</source>
       <translation>黑名单</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="30"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
       <translation>每行一个黑名单项。单行多个标签将视为'每个标签都包含'时生效。</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="35"/>
       <source>Hide blacklisted</source>
       <translation>隐藏在黑名单中的资源</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="21"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="36"/>
       <source>Hide blacklisted images from the results.</source>
       <translation>从结果中隐藏黑名单中的图像。</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="41"/>
       <source>Download blacklisted</source>
       <translation>下载黑名单中的资源</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="27"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="42"/>
       <source>Download blacklisted images during batch downloads.</source>
       <translation>批量下载时下载黑名单中的资源。</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="34"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="49"/>
       <source>Tagging</source>
       <translation>标记</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="37"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="52"/>
       <source>Removed tags</source>
       <translation>移除标签</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="53"/>
       <source>These won't be taken into account when saving the image.</source>
       <translation>这些标签在保存图片时不会被处理。</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="58"/>
       <source>Ignored tags</source>
       <translation>忽略的标签</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="44"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="59"/>
       <source>One per line. Their tag type will be reset to the default.</source>
       <translation>每行一个标签。他们的标签类型将重置为默认标签。</translation>
     </message>
@@ -334,9 +349,19 @@
   <context>
     <name>FavoritesScreen</name>
     <message>
-      <location filename="../src/components/FavoritesScreen.qml" line="22"/>
+      <location filename="../src/components/FavoritesScreen.qml" line="40"/>
       <source>Favorites</source>
       <translation>收藏</translation>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="55"/>
+      <source>Sort</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="58"/>
+      <source>Name</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -358,6 +383,14 @@
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
+      <translation type="unfinished"/>
+    </message>
+  </context>
+  <context>
+    <name>HistoryScreen</name>
+    <message>
+      <location filename="../src/components/HistoryScreen.qml" line="22"/>
+      <source>History</source>
       <translation type="unfinished"/>
     </message>
   </context>
@@ -387,7 +420,7 @@
   <context>
     <name>ImageScreen</name>
     <message>
-      <location filename="../src/components/ImageScreen.qml" line="72"/>
+      <location filename="../src/components/ImageScreen.qml" line="82"/>
       <source>Image</source>
       <translation>图片</translation>
     </message>
@@ -476,32 +509,37 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="94"/>
+      <source>Preloading</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="101"/>
       <source>Buttons at the bottom</source>
       <translation>底部按钮</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
       <source>Move the action buttons to the bottom of the screen.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="109"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
       <source>Confirm exit</source>
       <translation>退出时确认</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="113"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>关闭前显示确认对话框。</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="111"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="118"/>
       <source>Double tap to exit</source>
       <translation>双击按钮退出</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="119"/>
       <source>Tap back button twice to exit.</source>
       <translation>按两次返回按钮退出。</translation>
     </message>
@@ -737,8 +775,8 @@
   <context>
     <name>SearchLoader</name>
     <message>
-      <location filename="../src/loaders/search-loader.cpp" line="70"/>
-      <location filename="../src/loaders/search-loader.cpp" line="75"/>
+      <location filename="../src/loaders/search-loader.cpp" line="72"/>
+      <location filename="../src/loaders/search-loader.cpp" line="77"/>
       <source>max %1</source>
       <translation type="unfinished"/>
     </message>
@@ -791,8 +829,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
-      <source>Blacklist</source>
-      <translation>黑名单</translation>
+      <source>Search</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -1054,72 +1092,72 @@
       <translation>元信息 (Meta)</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="58"/>
+      <location filename="../src/main-screen.qml" line="68"/>
       <source>Through URL</source>
       <translation>通过 url</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="59"/>
+      <location filename="../src/main-screen.qml" line="69"/>
       <source>HTTP Basic</source>
       <translation>HTTP 基本验证</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="60"/>
+      <location filename="../src/main-screen.qml" line="70"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="61"/>
+      <location filename="../src/main-screen.qml" line="71"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="62"/>
+      <location filename="../src/main-screen.qml" line="72"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="63"/>
+      <location filename="../src/main-screen.qml" line="73"/>
       <source>OAuth 2</source>
       <translation>OAuth 2</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="66"/>
+      <location filename="../src/main-screen.qml" line="76"/>
       <source>Username</source>
       <translation>用户名</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="67"/>
+      <location filename="../src/main-screen.qml" line="77"/>
       <source>User ID</source>
       <translation>用户 ID</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="68"/>
+      <location filename="../src/main-screen.qml" line="78"/>
       <source>Password</source>
       <translation>密码</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="69"/>
+      <location filename="../src/main-screen.qml" line="79"/>
       <source>Salt</source>
       <translation>盐值</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="70"/>
+      <location filename="../src/main-screen.qml" line="80"/>
       <source>API key</source>
       <translation>API 密钥</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="88"/>
+      <location filename="../src/main-screen.qml" line="98"/>
       <source>Update available</source>
       <translation>可用更新</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="157"/>
+      <location filename="../src/main-screen.qml" line="167"/>
       <source>Do you want to exit?</source>
       <translation>您是否想要退出？</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="171"/>
+      <location filename="../src/main-screen.qml" line="181"/>
       <source>Don't ask again</source>
       <translation>不再显示</translation>
     </message>
