@@ -1476,7 +1476,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>复制所有标签</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -2001,12 +2001,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>搜索</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>标签</translation>
     </message>
   </context>
   <context>
@@ -2956,18 +2956,18 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5560"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>间隔</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5567"/>
       <location filename="../gui/src/settings/options-window.ui" line="5584"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 分钟</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5577"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>延迟</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5594"/>
