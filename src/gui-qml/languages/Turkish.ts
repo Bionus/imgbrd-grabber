@@ -276,57 +276,72 @@
     <name>BlacklistSettingsPage</name>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
+      <source>Search</source>
+      <translation type="unfinished">Ara</translation>
+    </message>
+    <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
+      <source>Added tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="19"/>
+      <source>Post-filters</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="29"/>
       <source>Blacklist</source>
       <translation>Kara liste</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="30"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
       <translation>Kara liste başına bir satır. Birden fazla etiket bir 'AND' koşulu oluşturur.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="35"/>
       <source>Hide blacklisted</source>
       <translation>Kara listeye alınanları gizle</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="21"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="36"/>
       <source>Hide blacklisted images from the results.</source>
       <translation>Kara listeye alınan resimleri sonuçlardan gizle.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="41"/>
       <source>Download blacklisted</source>
       <translation>Kara listedekileri indir</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="27"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="42"/>
       <source>Download blacklisted images during batch downloads.</source>
       <translation>Toplu indirmeler sırasında kara listedeki resimleri indirin.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="34"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="49"/>
       <source>Tagging</source>
       <translation>Etiketleme</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="37"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="52"/>
       <source>Removed tags</source>
       <translation>Kaldırılan etiketler</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="53"/>
       <source>These won't be taken into account when saving the image.</source>
       <translation>Resim kaydedilirken bunlar dikkate alınmayacaktır.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="58"/>
       <source>Ignored tags</source>
       <translation>Yoksayılan etiketler</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="44"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="59"/>
       <source>One per line. Their tag type will be reset to the default.</source>
       <translation>Her satıra bir adet. Etiket türleri varsayılana sıfırlanacak.</translation>
     </message>
@@ -334,9 +349,19 @@
   <context>
     <name>FavoritesScreen</name>
     <message>
-      <location filename="../src/components/FavoritesScreen.qml" line="22"/>
+      <location filename="../src/components/FavoritesScreen.qml" line="40"/>
       <source>Favorites</source>
       <translation>Favoriler</translation>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="55"/>
+      <source>Sort</source>
+      <translation type="unfinished">Sırala</translation>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="58"/>
+      <source>Name</source>
+      <translation type="unfinished">Ad</translation>
     </message>
   </context>
   <context>
@@ -360,6 +385,14 @@
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
       <translation>Sonuç yok</translation>
+    </message>
+  </context>
+  <context>
+    <name>HistoryScreen</name>
+    <message>
+      <location filename="../src/components/HistoryScreen.qml" line="22"/>
+      <source>History</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -388,7 +421,7 @@
   <context>
     <name>ImageScreen</name>
     <message>
-      <location filename="../src/components/ImageScreen.qml" line="72"/>
+      <location filename="../src/components/ImageScreen.qml" line="82"/>
       <source>Image</source>
       <translation>Resim</translation>
     </message>
@@ -477,32 +510,37 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="94"/>
+      <source>Preloading</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="101"/>
       <source>Buttons at the bottom</source>
       <translation>Düğmeler altta</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
       <source>Move the action buttons to the bottom of the screen.</source>
       <translation>Eylem düğmelerini ekranın altına taşıyın.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="109"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
       <source>Confirm exit</source>
       <translation>Çıkışı onayla</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="113"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>Çıkmadan önce bir onaylama diyaloğu gösterin.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="111"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="118"/>
       <source>Double tap to exit</source>
       <translation>Çıkmak için çift dokunun</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="119"/>
       <source>Tap back button twice to exit.</source>
       <translation>Çıkmak için geri tuşuna iki defa dokunun.</translation>
     </message>
@@ -738,8 +776,8 @@
   <context>
     <name>SearchLoader</name>
     <message>
-      <location filename="../src/loaders/search-loader.cpp" line="70"/>
-      <location filename="../src/loaders/search-loader.cpp" line="75"/>
+      <location filename="../src/loaders/search-loader.cpp" line="72"/>
+      <location filename="../src/loaders/search-loader.cpp" line="77"/>
       <source>max %1</source>
       <translation>maksimum %1</translation>
     </message>
@@ -793,8 +831,12 @@
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
+      <source>Search</source>
+      <translation type="unfinished">Ara</translation>
+    </message>
+    <message>
       <source>Blacklist</source>
-      <translation>Kara liste</translation>
+      <translation type="vanished">Kara liste</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -1056,72 +1098,72 @@
       <translation>Meta</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="58"/>
+      <location filename="../src/main-screen.qml" line="68"/>
       <source>Through URL</source>
       <translation>URL üzerinden</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="59"/>
+      <location filename="../src/main-screen.qml" line="69"/>
       <source>HTTP Basic</source>
       <translation>HTTP Temel</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="60"/>
+      <location filename="../src/main-screen.qml" line="70"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="61"/>
+      <location filename="../src/main-screen.qml" line="71"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="62"/>
+      <location filename="../src/main-screen.qml" line="72"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="63"/>
+      <location filename="../src/main-screen.qml" line="73"/>
       <source>OAuth 2</source>
       <translation>OAuth 2</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="66"/>
+      <location filename="../src/main-screen.qml" line="76"/>
       <source>Username</source>
       <translation>Kullanıcı adı</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="67"/>
+      <location filename="../src/main-screen.qml" line="77"/>
       <source>User ID</source>
       <translation>Kullanıcı kimliği</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="68"/>
+      <location filename="../src/main-screen.qml" line="78"/>
       <source>Password</source>
       <translation>Şifre</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="69"/>
+      <location filename="../src/main-screen.qml" line="79"/>
       <source>Salt</source>
       <translation>Salt</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="70"/>
+      <location filename="../src/main-screen.qml" line="80"/>
       <source>API key</source>
       <translation>API anahtarı</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="88"/>
+      <location filename="../src/main-screen.qml" line="98"/>
       <source>Update available</source>
       <translation>Güncelleme mevcut</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="157"/>
+      <location filename="../src/main-screen.qml" line="167"/>
       <source>Do you want to exit?</source>
       <translation>Çıkmak istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="171"/>
+      <location filename="../src/main-screen.qml" line="181"/>
       <source>Don't ask again</source>
       <translation>Tekrar sorma</translation>
     </message>

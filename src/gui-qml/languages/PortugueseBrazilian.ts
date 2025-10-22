@@ -276,57 +276,72 @@
     <name>BlacklistSettingsPage</name>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
+      <source>Search</source>
+      <translation type="unfinished">Pesquisar</translation>
+    </message>
+    <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
+      <source>Added tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="19"/>
+      <source>Post-filters</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="29"/>
       <source>Blacklist</source>
       <translation>Lista negra</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="30"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
       <translation>Uma linha por lista negra. Múltiplas tags fazem uma condição 'AND'.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="35"/>
       <source>Hide blacklisted</source>
       <translation>Ocultar listados na lista negra</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="21"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="36"/>
       <source>Hide blacklisted images from the results.</source>
       <translation>Ocultar imagens com tags na lista negra dos resultados.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="41"/>
       <source>Download blacklisted</source>
       <translation>Fazer download de imagens com tags da lista negra</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="27"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="42"/>
       <source>Download blacklisted images during batch downloads.</source>
       <translation>Baixe imagens com tags na lista negra em downloads em lote.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="34"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="49"/>
       <source>Tagging</source>
       <translation>Marcação</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="37"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="52"/>
       <source>Removed tags</source>
       <translation>Tags removidas</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="53"/>
       <source>These won't be taken into account when saving the image.</source>
       <translation>Estas não serão levadas em conta ao salvar a imagem.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="58"/>
       <source>Ignored tags</source>
       <translation>Tags ignoradas</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="44"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="59"/>
       <source>One per line. Their tag type will be reset to the default.</source>
       <translation>Um por linha. Seu tipo de tag será redefinido para o padrão.</translation>
     </message>
@@ -334,9 +349,19 @@
   <context>
     <name>FavoritesScreen</name>
     <message>
-      <location filename="../src/components/FavoritesScreen.qml" line="22"/>
+      <location filename="../src/components/FavoritesScreen.qml" line="40"/>
       <source>Favorites</source>
       <translation>Favoritos</translation>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="55"/>
+      <source>Sort</source>
+      <translation type="unfinished">Ordenar</translation>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="58"/>
+      <source>Name</source>
+      <translation type="unfinished">Nome</translation>
     </message>
   </context>
   <context>
@@ -358,6 +383,14 @@
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
+      <translation type="unfinished"/>
+    </message>
+  </context>
+  <context>
+    <name>HistoryScreen</name>
+    <message>
+      <location filename="../src/components/HistoryScreen.qml" line="22"/>
+      <source>History</source>
       <translation type="unfinished"/>
     </message>
   </context>
@@ -387,7 +420,7 @@
   <context>
     <name>ImageScreen</name>
     <message>
-      <location filename="../src/components/ImageScreen.qml" line="72"/>
+      <location filename="../src/components/ImageScreen.qml" line="82"/>
       <source>Image</source>
       <translation>Imagem</translation>
     </message>
@@ -476,32 +509,37 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="94"/>
+      <source>Preloading</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="101"/>
       <source>Buttons at the bottom</source>
       <translation>Botão na parte inferior</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
       <source>Move the action buttons to the bottom of the screen.</source>
       <translation>Mova os botões de ação para a parte inferior da tela.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="109"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
       <source>Confirm exit</source>
       <translation>Confirmar saída</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="113"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>Mostrar diálogo de confirmação antes de sair.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="111"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="118"/>
       <source>Double tap to exit</source>
       <translation>Toque duplo para sair</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="119"/>
       <source>Tap back button twice to exit.</source>
       <translation>Toque duas vezes no botão voltar para sair.</translation>
     </message>
@@ -696,7 +734,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation type="unfinished">Geral</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="79"/>
@@ -726,7 +764,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="119"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation type="unfinished">Espécies</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
@@ -737,8 +775,8 @@
   <context>
     <name>SearchLoader</name>
     <message>
-      <location filename="../src/loaders/search-loader.cpp" line="70"/>
-      <location filename="../src/loaders/search-loader.cpp" line="75"/>
+      <location filename="../src/loaders/search-loader.cpp" line="72"/>
+      <location filename="../src/loaders/search-loader.cpp" line="77"/>
       <source>max %1</source>
       <translation type="unfinished"/>
     </message>
@@ -791,8 +829,12 @@
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
+      <source>Search</source>
+      <translation type="unfinished">Pesquisar</translation>
+    </message>
+    <message>
       <source>Blacklist</source>
-      <translation>Lista negra</translation>
+      <translation type="vanished">Lista negra</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -1016,12 +1058,12 @@
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation type="unfinished">Geral</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation type="unfinished">Artista</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
@@ -1046,7 +1088,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation type="unfinished">Espécies</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
@@ -1054,72 +1096,72 @@
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="58"/>
+      <location filename="../src/main-screen.qml" line="68"/>
       <source>Through URL</source>
       <translation>Através da URL</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="59"/>
+      <location filename="../src/main-screen.qml" line="69"/>
       <source>HTTP Basic</source>
       <translation>HTTP Básico</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="60"/>
+      <location filename="../src/main-screen.qml" line="70"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="61"/>
+      <location filename="../src/main-screen.qml" line="71"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="62"/>
+      <location filename="../src/main-screen.qml" line="72"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="63"/>
+      <location filename="../src/main-screen.qml" line="73"/>
       <source>OAuth 2</source>
       <translation>OAuth 2</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="66"/>
+      <location filename="../src/main-screen.qml" line="76"/>
       <source>Username</source>
       <translation>Usuário</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="67"/>
+      <location filename="../src/main-screen.qml" line="77"/>
       <source>User ID</source>
       <translation>ID do usuário</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="68"/>
+      <location filename="../src/main-screen.qml" line="78"/>
       <source>Password</source>
       <translation>Senha</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="69"/>
+      <location filename="../src/main-screen.qml" line="79"/>
       <source>Salt</source>
       <translation>Salt</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="70"/>
+      <location filename="../src/main-screen.qml" line="80"/>
       <source>API key</source>
       <translation>Chave da API</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="88"/>
+      <location filename="../src/main-screen.qml" line="98"/>
       <source>Update available</source>
       <translation>Atualização disponível</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="157"/>
+      <location filename="../src/main-screen.qml" line="167"/>
       <source>Do you want to exit?</source>
       <translation>Deseja sair?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="171"/>
+      <location filename="../src/main-screen.qml" line="181"/>
       <source>Don't ask again</source>
       <translation>Não perguntar novamente</translation>
     </message>
