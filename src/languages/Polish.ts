@@ -354,6 +354,7 @@
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
   </context>
@@ -742,6 +743,7 @@
         <numerusform>Ładowanie %n pobrania</numerusform>
         <numerusform>Ładowanie %n pobrań</numerusform>
         <numerusform>Ładowanie %n pobrań</numerusform>
+        <numerusform>Ładowanie %n pobrań</numerusform>
       </translation>
     </message>
     <message>
@@ -829,6 +831,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik został pobrany pomyślnie.</numerusform>
         <numerusform>%n pliki zostały pobrane pomyślnie.</numerusform>
         <numerusform>%n plików zostało pobranych pomyślnie.</numerusform>
+        <numerusform>%n plików zostało pobranych pomyślnie.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -837,6 +840,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n plik został zignorowany.</numerusform>
         <numerusform>%n pliki zostały zignorowane.</numerusform>
+        <numerusform>%n plików zostało zignorowanych.</numerusform>
         <numerusform>%n plików zostało zignorowanych.</numerusform>
       </translation>
     </message>
@@ -847,6 +851,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik już istnieje.</numerusform>
         <numerusform>%n pliki już istnieją.</numerusform>
         <numerusform>%n plików już istnieje.</numerusform>
+        <numerusform>%n plików już istnieje.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -855,6 +860,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n plik nie został znaleziony na serwerze.</numerusform>
         <numerusform>%n pliki nie zostały znalezione na serwerze.</numerusform>
+        <numerusform>%n plików nie zostało znalezionych na serwerze.</numerusform>
         <numerusform>%n plików nie zostało znalezionych na serwerze.</numerusform>
       </translation>
     </message>
@@ -865,6 +871,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik został pominięty.</numerusform>
         <numerusform>%n pliki zostały pominięte.</numerusform>
         <numerusform>%n plików zostało pominiętych.</numerusform>
+        <numerusform>%n plików zostało pominiętych.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -874,6 +881,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n plik pominięto z poprzedniego pobierania.</numerusform>
         <numerusform>%n pliki pominięto z poprzedniego pobierania.</numerusform>
         <numerusform>%n plików pominięto z poprzedniego pobierania.</numerusform>
+        <numerusform>%n plików pominięto z poprzedniego pobierania.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -882,6 +890,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n błąd.</numerusform>
         <numerusform>%n błędy.</numerusform>
+        <numerusform>%n błędów.</numerusform>
         <numerusform>%n błędów.</numerusform>
       </translation>
     </message>
@@ -950,6 +959,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>Zamierzasz usunąć %n folder. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz usunąć %n foldery. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz usunąć %n folderów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz usunąć %n folderów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
@@ -1455,6 +1465,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>Źródło</numerusform>
         <numerusform>Źródła</numerusform>
+        <numerusform>Źródeł</numerusform>
         <numerusform>Źródeł</numerusform>
       </translation>
     </message>
@@ -2016,6 +2027,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n MD5 załadowano</numerusform>
         <numerusform>%n MD5 załadowano</numerusform>
         <numerusform>%n MD5 załadowano</numerusform>
+        <numerusform>%n MD5 załadowano</numerusform>
       </translation>
     </message>
   </context>
@@ -2219,6 +2231,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>%n nowy obraz został znaleziony dla tagu '%1' w '%2'</numerusform>
         <numerusform>%n nowe obrazy zostały znalezione dla tagu '%1' w '%2'</numerusform>
         <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
+        <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -2227,6 +2240,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>Znaleziono więcej niż %n nowy obraz dla tagu '%1' w '%2'</numerusform>
         <numerusform>Znaleziono więcej niż %n nowe obrazy dla tagu '%1' w '%2'</numerusform>
+        <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
         <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
       </translation>
     </message>
@@ -4791,6 +4805,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
         <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
+        <numerusform>Zamierzasz pobrać informacje z %n obrazów. Jesteś pewien, że chcesz kontynuować?</numerusform>
       </translation>
     </message>
     <message>
@@ -4946,6 +4961,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n tag figurujący na czarnej liście został wykryty na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
         <numerusform>%n tagi figurujące na czarnej liście zostały wykryte na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
+        <numerusform>%n tagów figurujących na czarnej liście zostało wykrytych na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
         <numerusform>%n tagów figurujących na czarnej liście zostało wykrytych na tym obrazie: %1. Czy mimo to chcesz go wyświetlić?</numerusform>
       </translation>
     </message>
@@ -5834,7 +5850,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -5918,6 +5934,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <translation>
         <numerusform>%n tag załadowany</numerusform>
         <numerusform>%n tagi załadowane</numerusform>
+        <numerusform>%n tagów załadowanych</numerusform>
         <numerusform>%n tagów załadowanych</numerusform>
       </translation>
     </message>
