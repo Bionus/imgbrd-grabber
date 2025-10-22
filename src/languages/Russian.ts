@@ -354,6 +354,7 @@
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображения. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
       </translation>
     </message>
   </context>
@@ -742,6 +743,7 @@
         <numerusform>Загружается %n загрузка</numerusform>
         <numerusform>Загружаются %n загрузки</numerusform>
         <numerusform>Загружаются %n загрузок</numerusform>
+        <numerusform>Загружаются %n загрузок</numerusform>
       </translation>
     </message>
     <message>
@@ -828,6 +830,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл успешно загружен.</numerusform>
         <numerusform>%n файла успешно загружено.</numerusform>
         <numerusform>%n файлов успешно загружено.</numerusform>
+        <numerusform>%n файлов успешно загружено.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -836,6 +839,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n файл проигнорирован.</numerusform>
         <numerusform>%n файла проигнорировано.</numerusform>
+        <numerusform>%n файлов проигнорировано.</numerusform>
         <numerusform>%n файлов проигнорировано.</numerusform>
       </translation>
     </message>
@@ -846,6 +850,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл уже существует.</numerusform>
         <numerusform>%n файла уже существуют.</numerusform>
         <numerusform>%n файлов уже существуют.</numerusform>
+        <numerusform>%n файлов уже существуют.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -854,6 +859,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n файл не найден на сервере.</numerusform>
         <numerusform>%n файла не найдено на сервере.</numerusform>
+        <numerusform>%n файлов не найдено на сервере.</numerusform>
         <numerusform>%n файлов не найдено на сервере.</numerusform>
       </translation>
     </message>
@@ -864,6 +870,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл пропущен.</numerusform>
         <numerusform>%n файла пропущено.</numerusform>
         <numerusform>%n файлов пропущено.</numerusform>
+        <numerusform>%n файлов пропущено.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -873,6 +880,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл пропущен из предыдущей загрузки.</numerusform>
         <numerusform>%n файла пропущены из предыдущей загрузки.</numerusform>
         <numerusform>%n файлов пропущено из предыдущей загрузки.</numerusform>
+        <numerusform>%n файлов пропущено из предыдущей загрузки.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -881,6 +889,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n ошибка.</numerusform>
         <numerusform>%n ошибки.</numerusform>
+        <numerusform>%n ошибок.</numerusform>
         <numerusform>%n ошибок.</numerusform>
       </translation>
     </message>
@@ -949,6 +958,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>Вы собираетесь удалить %n папку. Уверены, что хотите продолжить?</numerusform>
         <numerusform>Вы собираетесь удалить %n папки. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
         <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
       </translation>
     </message>
@@ -1455,6 +1465,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>Источник</numerusform>
         <numerusform>Источники</numerusform>
         <numerusform>Источники</numerusform>
+        <numerusform>Источники</numerusform>
       </translation>
     </message>
     <message>
@@ -1932,6 +1943,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n md5 конвертировано (из %1)</numerusform>
         <numerusform>%n md5 конвертировано (из %1)</numerusform>
         <numerusform>%n md5 конвертировано (из %1)</numerusform>
+        <numerusform>%n md5 конвертировано (из %1)</numerusform>
       </translation>
     </message>
   </context>
@@ -2019,6 +2031,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n MD5(s) загружен</numerusform>
         <numerusform>%n MD5(s) загружено</numerusform>
         <numerusform>%n MD5(s) загружено</numerusform>
+        <numerusform>%n MD5(s) загружено</numerusform>
       </translation>
     </message>
   </context>
@@ -2098,6 +2111,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n раз</numerusform>
         <numerusform>%n раза</numerusform>
+        <numerusform>%n раз</numerusform>
         <numerusform>%n раз</numerusform>
       </translation>
     </message>
@@ -2226,12 +2240,14 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
         <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
         <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
+        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/monitoring/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation>
+        <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
         <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
         <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
         <numerusform>%n новых изображений найдено для тега '%1' на '%2'</numerusform>
@@ -4774,7 +4790,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation>Получить ИД из имени файла</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
@@ -4795,6 +4811,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
       <translation>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
@@ -4951,6 +4968,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/search-tab.cpp" line="1095"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
       <translation>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
         <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
         <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
         <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
@@ -5926,6 +5944,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>загружено %n тег</numerusform>
         <numerusform>загружено %n тега</numerusform>
         <numerusform>загружено %n тегов</numerusform>
+        <numerusform>загружено %n тегов</numerusform>
       </translation>
     </message>
   </context>
@@ -5979,7 +5998,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation>Объединить &amp;результаты</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
