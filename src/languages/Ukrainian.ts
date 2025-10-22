@@ -354,6 +354,7 @@
         <numerusform>Ви збираєтесь завантажити дані з %n зображення. Хочете продовжити?</numerusform>
         <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
         <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
       </translation>
     </message>
   </context>
@@ -742,6 +743,7 @@
         <numerusform>Отримання %n завантаження</numerusform>
         <numerusform>Отримання %n завантажень</numerusform>
         <numerusform>Отримання %n завантажень</numerusform>
+        <numerusform>Отримання %n завантажень</numerusform>
       </translation>
     </message>
     <message>
@@ -828,6 +830,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл успішно завантажено.</numerusform>
         <numerusform>%n файли успішно завантажено.</numerusform>
         <numerusform>%n файлів успішно завантажено.</numerusform>
+        <numerusform>%n файлів успішно завантажено.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -836,6 +839,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n файл оминуто.</numerusform>
         <numerusform>%n файли оминуто.</numerusform>
+        <numerusform>%n файлів оминуто.</numerusform>
         <numerusform>%n файлів оминуто.</numerusform>
       </translation>
     </message>
@@ -846,6 +850,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл уже існує.</numerusform>
         <numerusform>%n файли уже існують.</numerusform>
         <numerusform>%n файлів уже існують.</numerusform>
+        <numerusform>%n файлів уже існують.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -854,6 +859,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n файл не знайдено на сервері.</numerusform>
         <numerusform>%n файли не знайдено на сервері.</numerusform>
+        <numerusform>%n файлів не знайдено на сервері.</numerusform>
         <numerusform>%n файлів не знайдено на сервері.</numerusform>
       </translation>
     </message>
@@ -864,6 +870,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл пропущено.</numerusform>
         <numerusform>%n файли пропущено.</numerusform>
         <numerusform>%n файлів пропущено.</numerusform>
+        <numerusform>%n файлів пропущено.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -873,6 +880,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл пропущено від попереднього завантаження.</numerusform>
         <numerusform>%n файли пропущено від попереднього завантаження.</numerusform>
         <numerusform>%n файлів пропущено від попереднього завантаження.</numerusform>
+        <numerusform>%n файлів пропущено від попереднього завантаження.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -881,6 +889,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n помилка.</numerusform>
         <numerusform>%n помилки.</numerusform>
+        <numerusform>%n помилок.</numerusform>
         <numerusform>%n помилок.</numerusform>
       </translation>
     </message>
@@ -949,6 +958,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>Ви збираєтеся видалити %n теку. Упевнені, що хочете продовжити?</numerusform>
         <numerusform>Ви збираєтеся видалити %n теки. Упевнені, що хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтеся видалити %n тек. Упевнені, що хочете продовжити?</numerusform>
         <numerusform>Ви збираєтеся видалити %n тек. Упевнені, що хочете продовжити?</numerusform>
       </translation>
     </message>
@@ -1455,6 +1465,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>Джерело</numerusform>
         <numerusform>Джерела</numerusform>
         <numerusform>Джерел</numerusform>
+        <numerusform>Джерел</numerusform>
       </translation>
     </message>
     <message>
@@ -1932,6 +1943,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n md5 перетворено (з %1)</numerusform>
         <numerusform>%n md5 перетворено (з %1)</numerusform>
         <numerusform>%n md5 перетворено (з %1)</numerusform>
+        <numerusform>%n md5 перетворено (з %1)</numerusform>
       </translation>
     </message>
   </context>
@@ -2019,6 +2031,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n MD5 завантажено</numerusform>
         <numerusform>%n MD5 завантажено</numerusform>
         <numerusform>%n MD5 завантажено</numerusform>
+        <numerusform>%n MD5 завантажено</numerusform>
       </translation>
     </message>
   </context>
@@ -2098,6 +2111,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n раз</numerusform>
         <numerusform>%n рази</numerusform>
+        <numerusform>%n разів</numerusform>
         <numerusform>%n разів</numerusform>
       </translation>
     </message>
@@ -2226,6 +2240,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n нове зображення знайдено за міткою '%1' на '%2'</numerusform>
         <numerusform>%n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
         <numerusform>%n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>%n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -2233,6 +2248,7 @@ Please solve the issue before resuming the download.</source>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation>
         <numerusform>Понад %n нового зображення знайдено за міткою '%1' на '%2'</numerusform>
+        <numerusform>Понад %n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
         <numerusform>Понад %n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
         <numerusform>Понад %n нових зображень знайдено за міткою '%1' на '%2'</numerusform>
       </translation>
@@ -4798,6 +4814,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>Ви збираєтесь завантажити дані з %n зображення. Хочете продовжити?</numerusform>
         <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
         <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
+        <numerusform>Ви збираєтесь завантажити дані з %n зображень. Хочете продовжити?</numerusform>
       </translation>
     </message>
     <message>
@@ -4953,6 +4970,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n мітку із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
         <numerusform>%n мітки із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
+        <numerusform>%n міток із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
         <numerusform>%n міток із чорного списку виявлено на цьому зображенні: %1. Бажаєте переглянути попри це?</numerusform>
       </translation>
     </message>
@@ -5925,6 +5943,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n мітку завантажено</numerusform>
         <numerusform>%n мітки завантажено</numerusform>
+        <numerusform>%n міток завантажено</numerusform>
         <numerusform>%n міток завантажено</numerusform>
       </translation>
     </message>
