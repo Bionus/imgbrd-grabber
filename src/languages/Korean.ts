@@ -1475,7 +1475,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>모든 태그 복사</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="22"/>
@@ -2000,12 +2000,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="14"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>검색</translation>
     </message>
     <message>
       <location filename="../gui/src/meta-search-window.ui" line="26"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>태그</translation>
     </message>
   </context>
   <context>
@@ -2959,12 +2959,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5567"/>
       <location filename="../gui/src/settings/options-window.ui" line="5584"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 분</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5577"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>지연</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5594"/>
