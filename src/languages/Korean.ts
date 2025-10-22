@@ -1634,7 +1634,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.cpp" line="40"/>
       <location filename="../gui/src/settings/log-window.cpp" line="56"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더를 선택하세요</translation>
     </message>
   </context>
   <context>
