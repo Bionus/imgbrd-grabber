@@ -1646,7 +1646,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
       <location filename="../gui/src/settings/log-window.cpp" line="40"/>
       <location filename="../gui/src/settings/log-window.cpp" line="56"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Escolha uma pasta para salvar</translation>
     </message>
   </context>
   <context>
@@ -2972,7 +2972,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5560"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Intervalo</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5567"/>
@@ -2983,7 +2983,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5577"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>Atraso</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5594"/>
@@ -5823,7 +5823,7 @@ Por favor, resolver o problema antes de retomar o download.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Remover</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
