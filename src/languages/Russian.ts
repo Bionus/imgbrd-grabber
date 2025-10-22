@@ -4790,7 +4790,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation type="unfinished"/>
+      <translation>Получать ИД из имени файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
@@ -5998,7 +5998,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="422"/>
       <source>Mer&amp;ge results</source>
-      <translation type="unfinished"/>
+      <translation>Объединять &amp;результаты</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="475"/>
