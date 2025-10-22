@@ -3940,7 +3940,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5480"/>
       <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
-      <translation>Satır başına bir etiket. Yoksayılan etiketler herhangi bir türe sahipmiş gibi değerlendirilmez ve bu nedenle örneğin %copyright%'da görünmez. Ancak yine de %all%'da görünecekler.</translation>
+      <translation>Satır başına bir etiket. Yoksayılan etiketler herhangi bir türe sahipmiş gibi değerlendirilmez ve bu nedenle örneğin %copyright%&apos;da görünmez. Ancak yine de %all%&apos;da görünecekler.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5494"/>
