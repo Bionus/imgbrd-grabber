@@ -5,6 +5,8 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+    branches-ignore:
+      - crowdin
   pull_request:
     paths-ignore:
       - 'docs/**'
