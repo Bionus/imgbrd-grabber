@@ -29,7 +29,7 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout_5">
        <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
        </property>
        <item row="0" column="0">
         <widget class="QLabel" name="labelSiteName">
@@ -329,7 +329,7 @@
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
           </property>
           <property name="leftMargin">
            <number>18</number>
@@ -586,14 +586,25 @@
         </widget>
        </item>
        <item row="1" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="layoutAddCookies">
+         <item>
+          <widget class="QPushButton" name="buttonAddCookie">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>Import</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="2" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="buttonClearOtherCookies">
          <property name="text">
           <string>Clear other cookies</string>
          </property>
@@ -662,7 +673,7 @@
      <item>
       <spacer name="spacerButtons">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -712,7 +723,6 @@
   <tabstop>comboSources4</tabstop>
   <tabstop>comboLoginType</tabstop>
   <tabstop>tableCookies</tabstop>
-  <tabstop>pushButton</tabstop>
   <tabstop>tableHeaders</tabstop>
   <tabstop>buttonAddHeader</tabstop>
   <tabstop>buttonDelete</tabstop>
@@ -734,8 +744,8 @@
    <slot>deleteSite()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>298</y>
+     <x>88</x>
+     <y>300</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -750,8 +760,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>433</x>
-     <y>272</y>
+     <x>530</x>
+     <y>300</y>
     </hint>
     <hint type="destinationlabel">
      <x>345</x>
@@ -767,7 +777,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>101</x>
-     <y>46</y>
+     <y>45</y>
     </hint>
     <hint type="destinationlabel">
      <x>101</x>
@@ -782,8 +792,8 @@
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>123</x>
-     <y>87</y>
+     <x>119</x>
+     <y>84</y>
     </hint>
     <hint type="destinationlabel">
      <x>273</x>
@@ -792,7 +802,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>buttonAddCookie</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>addCookie()</slot>
@@ -847,7 +857,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>101</x>
-     <y>45</y>
+     <y>42</y>
     </hint>
     <hint type="destinationlabel">
      <x>526</x>
@@ -872,7 +882,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>buttonClearOtherCookies</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>clearOtherCookies()</slot>
@@ -887,6 +897,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>importCookies()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>482</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>622</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteSite()</slot>
@@ -897,5 +923,6 @@
   <slot>setLoginType(int)</slot>
   <slot>openInWebView()</slot>
   <slot>clearOtherCookies()</slot>
+  <slot>importCookies()</slot>
  </slots>
 </ui>

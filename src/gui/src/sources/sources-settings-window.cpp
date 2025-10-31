@@ -1,11 +1,13 @@
 #include "sources/sources-settings-window.h"
 #include <QCryptographicHash>
+#include <QFileDialog>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QNetworkCookie>
 #include <QSettings>
 #include <ui_sources-settings-window.h>
 #include "auth/auth.h"
+#include "cookies.h"
 #include "functions.h"
 #include "mixed-settings.h"
 #include "models/api/api.h"
@@ -199,6 +201,25 @@ void SourcesSettingsWindow::addCookie()
 {
 	ui->tableCookies->setRowCount(ui->tableCookies->rowCount() + 1);
 }
+
+void SourcesSettingsWindow::importCookies()
+{
+	const QString path = QFileDialog::getOpenFileName(this, tr("Import cookies"), "", tr("Cookie files (*.txt *.json)"));
+	if (path.isEmpty()) {
+		return;
+	}
+
+	const QList<QNetworkCookie> cookies = loadCookiesFromFile(path);
+	for (const QNetworkCookie &cookie : cookies) {
+		const int row = ui->tableCookies->rowCount();
+		ui->tableCookies->setRowCount(ui->tableCookies->rowCount() + 1);
+		ui->tableCookies->setItem(row, 0, new QTableWidgetItem(QString(cookie.name())));
+		ui->tableCookies->setItem(row, 1, new QTableWidgetItem(QString(cookie.value())));
+	}
+
+	QMessageBox::information(this, QObject::tr("Success"), tr("%n cookie(s) imported.", nullptr, cookies.count()));
+}
+
 void SourcesSettingsWindow::addHeader()
 {
 	ui->tableHeaders->setRowCount(ui->tableHeaders->rowCount() + 1);
