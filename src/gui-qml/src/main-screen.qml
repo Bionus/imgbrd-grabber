@@ -201,7 +201,9 @@ ApplicationWindow {
             onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
             onBack: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
-            onEditSource: mainStackView.push(editSourceScreen, { site: activeSite })
+             onEditSource: function (site) {
+                mainStackView.push(editSourceScreen, { site: site })
+            }
         }
 
         AddSourceScreen {
