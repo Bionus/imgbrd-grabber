@@ -9,7 +9,7 @@ include(ListFilterRegex)
 listFilterRegex(TS_FILES_FOR_QM "YourLanguage.ts$")
 
 qt_add_lupdate(TS_FILES ${TS_FILES_FOR_TS} SOURCES ${SOURCES})  # Re-generate TS and generate QM for 'YourLanguage'
-qt_add_lrelease(TS_FILES ${TS_FILES_FOR_QM} EXCLUDE_FROM_ALL)  # Only generate QM for actual translations
+qt_add_lrelease(TS_FILES ${TS_FILES_FOR_QM})  # Only generate QM for actual translations
 
 add_custom_target(CrashReporter_translations)
 add_dependencies(CrashReporter_translations ${PROJECT_NAME}_lupdate ${PROJECT_NAME}_lrelease)

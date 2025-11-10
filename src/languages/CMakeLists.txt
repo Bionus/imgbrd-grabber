@@ -19,7 +19,7 @@ file(GLOB_RECURSE SOURCES
 	"${CMAKE_CURRENT_LIST_DIR}/../cli/src/*.cpp")
 
 qt_add_lupdate(TS_FILES ${TS_FILES_FOR_TS} SOURCES ${SOURCES})  # Re-generate TS and generate QM for 'YourLanguage'
-qt_add_lrelease(TS_FILES ${TS_FILES_FOR_QM} EXCLUDE_FROM_ALL)  # Only generate QM for actual translations
+qt_add_lrelease(TS_FILES ${TS_FILES_FOR_QM})  # Only generate QM for actual translations
 
 add_custom_target(General_translations)
 add_dependencies(General_translations ${PROJECT_NAME}_lupdate ${PROJECT_NAME}_lrelease)
