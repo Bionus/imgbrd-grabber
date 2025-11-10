@@ -115,6 +115,8 @@ Source: "{#QtDir}\Qt6PrintSupport.dll";         DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt6Qml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Sql.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6WebEngineCore.dll";        DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6WebEngineWidgets.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\Qt6Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion

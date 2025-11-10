@@ -17,6 +17,7 @@ on:
 env:
   QT_VERSION: 6.10.0
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
+  QT_MODULES_WEBENGINE: qtwebchannel qtpositioning qtwebengine qtwebview qtserialport
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
   CMAKE_BUILD_PARALLEL_LEVEL: 2
@@ -189,7 +190,7 @@ jobs:
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
-          modules: ${{ env.QT_MODULES }}
+          modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
 
       - name: Vendor cache
         uses: actions/cache@v4
@@ -304,7 +305,8 @@ jobs:
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
-          modules: ${{ env.QT_MODULES }}
+          modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
+
 
       - name: Vendor cache
         uses: actions/cache@v4
@@ -392,7 +394,7 @@ jobs:
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
-          modules: ${{ env.QT_MODULES }}
+          modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
 
       - name: Vendor cache
         uses: actions/cache@v4
