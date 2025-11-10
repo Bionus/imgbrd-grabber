@@ -15,7 +15,7 @@
 #include "models/source-engine.h"
 #include "network/persistent-cookie-jar.h"
 #include "login/login-factory.h"
-#if !defined(USE_WEBENGINE)
+#if defined(USE_WEBENGINE)
 	#include "webview-window.h"
 #endif
 
