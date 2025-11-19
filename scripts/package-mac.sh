@@ -13,8 +13,17 @@ mkdir -p $APP_DIR
 rm "$APP_DIR/settings.ini"
 cp -r src/dist/macos/* "$APP_ROOT/Contents"
 
-# Create the DMG file
-macdeployqt $APP_ROOT -dmg
+# Prepare the app bundle (doesn't create the DMG file)
+macdeployqt $APP_ROOT
+
+# Create LZMA compressed DMG using hdiutil (format ULMO)
+hdiutil create \
+  -volname "Grabber" \
+  -srcfolder "$APP_ROOT" \
+  -fs APFS \
+  -format ULMO \
+  -ov \
+  "Grabber.dmg"
 
 # Cleanup
 rm -rf $APP_DIR
