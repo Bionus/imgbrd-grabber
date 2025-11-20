@@ -19,7 +19,7 @@ copy %MYSQL_DRIVER_DIR%\libmysql.dll "release"
 
 :: Zip the whole directory
 pushd release
-    7z a -r "../Grabber.zip" .
+    7z a -m0=lzma -r "../Grabber.zip" .
 popd
 
 :: Cleanup
