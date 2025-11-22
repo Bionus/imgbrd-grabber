@@ -247,5 +247,8 @@ ApplicationWindow {
                 event.accepted = true
             }
         }
+
+        // Ensure the current stack is focused, so key events are handled there
+        onCurrentItemChanged: if (currentItem) currentItem.forceActiveFocus()
     }
 }
