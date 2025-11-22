@@ -968,15 +968,13 @@ void ViewerWindow::saveImage(bool fav)
 			if (m_imagePath.isEmpty() || m_imagePath == m_source) {
 				m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + "." + m_image->extension();
 			}
-			if (QFile::exists(m_imagePath)) {
-				QFile::remove(m_source);
-			} else {
+			if (!QFile::exists(m_imagePath)) {
 				QFile::rename(m_source, m_imagePath);
 			}
+			m_image->remove({ m_source });
 			m_image->setTemporaryPath(m_imagePath);
 			m_source = "";
 			setButtonState(fav, SaveButtonState::Save);
-			m_profile->removeMd5(m_image->md5());
 			break;
 		}
 

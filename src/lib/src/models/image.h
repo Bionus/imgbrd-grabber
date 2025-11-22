@@ -91,6 +91,7 @@ class Image : public QObject, public Downloadable
 		Profile *getProfile() const { return m_profile; }
 		const ImageSize &mediaForSize(const QSize &size, bool thumbnail = false);
 		QList<QPair<QString, int>> ugoiraFrameInformation() const;
+		void remove(const QStringList &paths);
 
 		// Preview pixmap store
 		QPixmap previewImage() const;

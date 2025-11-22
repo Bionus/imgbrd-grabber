@@ -923,6 +923,29 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	return path;
 }
 
+void Image::remove(const QStringList &paths)
+{
+	const auto logFiles = getExternalLogFiles(m_profile->getSettings());
+
+	for (const QString &path : paths) {
+		// Delete the file
+		QFile(path).remove();
+
+		// Delete external log files
+		for (const auto &logFile : logFiles) {
+			const int locationType = logFile["locationType"].toInt();
+			if (locationType == 2) {
+				QFile(path + logFile["suffix"].toString()).remove();
+			} else if (locationType == 3) {
+				QFile(setExtension(path, "") + logFile["suffixWithoutExtension"].toString()).remove();
+			}
+		}
+
+		// Remove the MD5 from the database
+		m_profile->removeMd5(md5(), path);
+	}
+}
+
 
 Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
