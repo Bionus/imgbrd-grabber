@@ -239,7 +239,7 @@ ApplicationWindow {
                     currentPage = "search";
                 } else if (gSettings.mobile_confirmExit.value) {
                     confirmExitDialog.open()
-                } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 200) {
+                } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 1000) {
                     backPressed = now
                 } else {
                     Qt.quit()
