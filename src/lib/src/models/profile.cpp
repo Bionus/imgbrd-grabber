@@ -243,11 +243,7 @@ void Profile::sync()
 	m_md5s->sync();
 
 	// Custom auto-complete
-	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
-	if (fileCustomAutoComplete.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileCustomAutoComplete.write(m_customAutoComplete.join("\r\n").toUtf8());
-		fileCustomAutoComplete.close();
-	}
+	safeWriteFile(m_path + "/wordsc.txt", m_customAutoComplete.join('\n').toUtf8());
 
 	// Update commands settings
 	auto *oldCommands = m_commands;
