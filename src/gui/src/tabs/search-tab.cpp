@@ -153,14 +153,9 @@ void SearchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 		}
 
 		QList<Tag> tags = page->tags();
+ 		m_completion.append(m_profile->addAutoComplete(tags));
 		for (const Tag &tag : tags) {
 			if (!tag.text().isEmpty()) {
-				// Add to auto-complete list if it has enough count
-				if (tag.count() >= m_settings->value("tagsautoadd", 10).toInt() && !m_completion.contains(tag.text())) {
-					m_profile->addAutoComplete(tag.text());
-					m_completion.append(tag.text());
-				}
-
 				// If we already have this tag in the list, we increase its count
 				if (tagsGot.contains(tag.text())) {
 					const int index = tagsGot.indexOf(tag.text());

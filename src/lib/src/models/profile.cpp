@@ -24,6 +24,7 @@
 #include "models/source-registry.h"
 #include "models/url-downloader/url-downloader-manager.h"
 #include "monitoring/monitor-manager.h"
+#include "tags/tag.h"
 #include "utils/file-utils.h"
 #include "utils/read-write-path.h"
 
@@ -450,6 +451,24 @@ void Profile::removeMd5(const QString &md5, const QString &path)
 void Profile::addAutoComplete(const QString &tag)
 {
 	m_customAutoComplete.append(tag);
+}
+
+QStringList Profile::addAutoComplete(const QList<Tag> &tags)
+{
+	const int autoAddThreshold = m_settings->value("tagsautoadd", 10).toInt();
+
+	QStringList ret;
+	for (const auto &tag : tags) {
+		if (tag.count() >= autoAddThreshold && !m_autoComplete.contains(tag.text())) {
+			addAutoComplete(tag.text());
+			ret.append(tag.text());
+		}
+	}
+
+	m_autoComplete.append(ret);
+	m_autoComplete.sort();
+
+	return ret;
 }
 
 

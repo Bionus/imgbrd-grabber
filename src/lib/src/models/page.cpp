@@ -221,7 +221,7 @@ int Page::filteredImageCount() const { return m_pageApis[m_currentApi]->filtered
 const QList<QSharedPointer<Image>> &Page::images() const { return m_pageApis[m_currentApi]->images(); }
 const QUrl &Page::url() const { return m_pageApis[m_currentApi]->url(); }
 const QUrl &Page::friendlyUrl() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url(); }
-const QList<Tag> &Page::tags() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags(); }
+const QList<Tag> &Page::tags() const { return m_pageApis[m_regexApi < 0 || m_pageApis[m_regexApi]->tags().isEmpty() ? m_currentApi : m_regexApi]->tags(); }
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }

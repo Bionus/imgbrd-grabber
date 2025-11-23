@@ -69,6 +69,7 @@ class Profile : public QObject
 
 		// Auto-completion
 		void addAutoComplete(const QString &tag);
+		QStringList addAutoComplete(const QList<Tag> &tags);
 
 		// Sites management
 		void addSource(Source *source);
