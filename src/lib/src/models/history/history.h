@@ -4,6 +4,7 @@
 #include <QList>
 #include <QString>
 #include "history-entry.h"
+#include "history-key.h"
 #include "models/search-query/search-query.h"
 
 
@@ -19,10 +20,13 @@ class History
 		void addQuery(const SearchQuery &query, const QList<Site*> &sites);
 		void clear();
 
+		const QList<QSharedPointer<HistoryEntry>> &entries() const;
+
 	private:
 		QString m_file;
 		Profile *m_profile;
-		QList<HistoryEntry> m_entries;
+		QList<QSharedPointer<HistoryEntry>> m_entries;
+		QHash<HistoryKey, QSharedPointer<HistoryEntry>> m_entriesMap;
 		unsigned int m_maxEntries;
 };
 
