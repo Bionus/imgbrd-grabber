@@ -83,6 +83,13 @@ void History::addQuery(const SearchQuery &query, const QList<Site*> &sites)
 	}
 }
 
+void History::removeQuery(const SearchQuery &query, const QList<Site*> &sites)
+{
+	const HistoryKey key { query, sites };
+	m_entries.removeOne(m_entriesMap[key]);
+	m_entriesMap.remove(key);
+}
+
 void History::clear()
 {
 	m_entries.clear();

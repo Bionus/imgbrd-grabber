@@ -18,6 +18,7 @@ class History
 		bool save();
 
 		void addQuery(const SearchQuery &query, const QList<Site*> &sites);
+		void removeQuery(const SearchQuery &query, const QList<Site*> &sites);
 		void clear();
 
 		const QList<QSharedPointer<HistoryEntry>> &entries() const;

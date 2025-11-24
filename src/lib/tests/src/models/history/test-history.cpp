@@ -84,4 +84,19 @@ TEST_CASE("History")
 		REQUIRE(history.entries()[2]->query.tags == QStringList("search"));
 		REQUIRE(history.entries()[2]->date > now);
 	}
+
+	SECTION("Add entries")
+	{
+		History history(filename, profile.data());
+		history.addQuery(SearchQuery({"search_1"}), {site});
+		history.addQuery(SearchQuery({"search_2"}), {site});
+		history.addQuery(SearchQuery({"search_3"}), {site});
+		REQUIRE(history.entries().count() == 3);
+
+		history.removeQuery(SearchQuery({"search_2"}), {site});
+		REQUIRE(history.entries().count() == 2);
+
+		REQUIRE(history.entries()[0]->query.tags == QStringList("search_1"));
+		REQUIRE(history.entries()[1]->query.tags == QStringList("search_3"));
+	}
 }
