@@ -8,8 +8,8 @@
 #include "utils/file-utils.h"
 
 
-History::History(const QString &file, Profile *profile)
-	: m_file(file), m_profile(profile)
+History::History(const QString &file, Profile *profile, QObject *parent)
+	: QObject(parent), m_file(file), m_profile(profile)
 {
 	m_maxEntries = m_profile->getSettings()->value("History/MaxSearchCount", 100).toUInt();
 	load();
@@ -81,6 +81,8 @@ void History::addQuery(const SearchQuery &query, const QList<Site*> &sites)
 	if (m_entries.size() > m_maxEntries) {
 		m_entries.removeFirst();
 	}
+
+	emit changed();
 }
 
 void History::removeQuery(const SearchQuery &query, const QList<Site*> &sites)
@@ -88,11 +90,15 @@ void History::removeQuery(const SearchQuery &query, const QList<Site*> &sites)
 	const HistoryKey key { query, sites };
 	m_entries.removeOne(m_entriesMap[key]);
 	m_entriesMap.remove(key);
+
+	emit changed();
 }
 
 void History::clear()
 {
 	m_entries.clear();
+
+	emit changed();
 }
 
 const QList<QSharedPointer<HistoryEntry>> &History::entries() const

@@ -143,6 +143,19 @@ ApplicationWindow {
                 }
             }
 
+            HistoryScreen {
+                id: historyScreen
+                visible: currentPage === "history"
+                anchors.fill: parent
+                history: backend.history
+
+                onOpenSearch: (query, site) => {
+                    gSettings.activeSource.setValue(site)
+                    searchScreen.load(query)
+                    currentPage = "search"
+                }
+            }
+
             SourcesScreen {
                 visible: currentPage === "sources"
                 anchors.fill: parent

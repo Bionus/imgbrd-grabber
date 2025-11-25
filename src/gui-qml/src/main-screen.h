@@ -8,6 +8,8 @@
 Q_MOC_INCLUDE("models/profile.h")
 Q_MOC_INCLUDE("models/qml-site.h")
 
+#include "models/qml-history-entry.h"
+
 
 class Image;
 class Page;
@@ -25,6 +27,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QList<QmlSite*> sites READ sites NOTIFY sitesChanged)
 	Q_PROPERTY(QStringList sources READ sources NOTIFY sourcesChanged)
 	Q_PROPERTY(QStringList favorites READ favorites NOTIFY favoritesChanged)
+	Q_PROPERTY(QList<QmlHistoryEntry*> history READ history NOTIFY historyChanged)
 	Q_PROPERTY(QStringList autoComplete READ autoComplete NOTIFY autoCompleteChanged)
 	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
 	Q_PROPERTY(Profile * profile READ profile CONSTANT)
@@ -35,6 +38,7 @@ class MainScreen : public QObject
 		const QList<QmlSite*> &sites() const { return m_sites; }
 		const QStringList &sources() const { return m_sources; }
 		const QStringList &favorites() const { return m_favorites; }
+		const QList<QmlHistoryEntry*> &history() const { return m_history; }
 		const QStringList &autoComplete() const { return m_autoComplete; }
 		QString settingsFileName() const;
 		Profile *profile() const { return m_profile; }
@@ -51,6 +55,8 @@ class MainScreen : public QObject
 		void setIgnored(const QString &ignored);
 		void addFavorite(const QString &query, const QString &siteUrl);
 		void removeFavorite(const QString &query);
+		void removeHistory(const QString &query, const QString &siteUrl);
+		void clearHistory();
 		void loadSuggestions(const QString &prefix, int limit);
 		bool exportSettings(const QString &dest);
 		bool importSettings(const QString &source);
@@ -61,12 +67,14 @@ class MainScreen : public QObject
 		void refreshSites();
 		void refreshSources();
 		void refreshFavorites();
+		void refreshHistory();
 
 	signals:
 		void logChanged();
 		void sitesChanged();
 		void sourcesChanged();
 		void favoritesChanged();
+		void historyChanged();
 		void autoCompleteChanged();
 		void settingsChanged();
 
@@ -77,6 +85,7 @@ class MainScreen : public QObject
 		QList<QmlSite*> m_sites;
 		QStringList m_sources;
 		QStringList m_favorites;
+		QList<QmlHistoryEntry*> m_history;
 		QStringList m_fullAutoComplete;
 		QStringList m_autoComplete;
 };

@@ -34,7 +34,6 @@ void SearchLoader::search(SearchQuery query)
 	connect(page, &Page::finishedLoading, this, &SearchLoader::searchFinished);
 	connect(page, &Page::failedLoading, this, &SearchLoader::searchFinished);
 	page->load(false);
-
 }
 
 void SearchLoader::searchFinished(Page *page)

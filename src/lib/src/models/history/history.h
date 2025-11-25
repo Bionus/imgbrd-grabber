@@ -10,10 +10,12 @@
 
 class Site;
 
-class History
+ class History : public QObject
 {
+	Q_OBJECT
+
 	public:
-		explicit History(const QString &file, Profile *profile);
+		explicit History(const QString &file, Profile *profile, QObject *parent = nullptr);
 		bool load();
 		bool save();
 
@@ -22,6 +24,9 @@ class History
 		void clear();
 
 		const QList<QSharedPointer<HistoryEntry>> &entries() const;
+
+	signals:
+		void changed();
 
 	private:
 		QString m_file;

@@ -17,6 +17,7 @@
 #include "models/site-factory.h"
 #include "models/source.h"
 #include "settings.h"
+#include "models/qml-history-entry.h"
 #include "share/share-utils.h"
 #include "utils/logging.h"
 #include "models/qml-site.h"
@@ -31,9 +32,11 @@ MainScreen::MainScreen(Profile *profile, ShareUtils *shareUtils, QObject *parent
 	refreshSites();
 	refreshSources();
 	refreshFavorites();
+	refreshHistory();
 
 	connect(m_profile, &Profile::sitesChanged, this, &MainScreen::refreshSites);
 	connect(m_profile, &Profile::favoritesChanged, this, &MainScreen::refreshFavorites);
+	connect(m_profile->getHistory(), &History::changed, this, &MainScreen::refreshHistory);
 }
 
 void MainScreen::refreshSites()
@@ -65,6 +68,17 @@ void MainScreen::refreshFavorites()
 		m_favorites.append(fav.getName(false));
 	}
 	emit favoritesChanged();
+}
+
+void MainScreen::refreshHistory()
+{
+	qDeleteAll(m_history);
+	m_history.clear();
+
+	for (const auto &entry : m_profile->getHistory()->entries()) {
+		m_history.append(new QmlHistoryEntry(entry));
+	}
+	emit historyChanged();
 }
 
 void MainScreen::newLog(const QString &message)
@@ -142,6 +156,16 @@ void MainScreen::addFavorite(const QString &query, const QString &siteUrl)
 void MainScreen::removeFavorite(const QString &query)
 {
 	m_profile->removeFavorite(Favorite(query));
+}
+
+void MainScreen::removeHistory(const QString &query, const QString &siteUrl)
+{
+	Site *site = m_profile->getSites().value(siteUrl);
+	m_profile->getHistory()->removeQuery(query.split(' ', Qt::SkipEmptyParts), {site});
+}
+void MainScreen::clearHistory()
+{
+	m_profile->getHistory()->clear();
 }
 
 void MainScreen::loadSuggestions(const QString &prefix, int limit)
