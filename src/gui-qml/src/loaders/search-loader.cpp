@@ -1,4 +1,4 @@
-#include "search-loader.h"
+ #include "search-loader.h"
 #include <QEventLoop>
 #include <QSettings>
 #include <QSharedPointer>
@@ -76,7 +76,7 @@ void SearchLoader::searchFinished(Page *page)
 		: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
 	emit imageCountChanged();
 
- 	m_profile->addAutoComplete(page->tags());
+	m_profile->addAutoComplete(page->tags());
 
 	emit resultsChanged();
 	setStatus(Status::Ready);

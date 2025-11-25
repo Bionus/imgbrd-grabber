@@ -10,7 +10,7 @@
 
 class Site;
 
- class History : public QObject
+class History : public QObject
 {
 	Q_OBJECT
 
