@@ -42,7 +42,7 @@ Page {
     }
 
     function load(tag) {
-        if (tag) {
+        if (tag !== undefined) {
             textFieldSearch.text = tag.trim()
             queryChanged = true
         }
