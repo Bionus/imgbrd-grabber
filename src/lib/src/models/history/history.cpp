@@ -64,6 +64,11 @@ bool History::save()
 
 void History::addQuery(const SearchQuery &query, const QList<Site*> &sites)
 {
+	// History does not support galleries for now
+	if (!query.gallery.isNull()) {
+		return;
+	}
+
 	const HistoryKey key { query, sites };
 	const QDateTime now = QDateTime::currentDateTimeUtc();
 

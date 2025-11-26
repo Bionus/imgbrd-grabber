@@ -85,7 +85,7 @@ TEST_CASE("History")
 		REQUIRE(history.entries()[2]->date > now);
 	}
 
-	SECTION("Add entries")
+	SECTION("Remove entries")
 	{
 		History history(filename, profile.data());
 		history.addQuery(SearchQuery({"search_1"}), {site});
@@ -98,5 +98,20 @@ TEST_CASE("History")
 
 		REQUIRE(history.entries()[0]->query.tags == QStringList("search_1"));
 		REQUIRE(history.entries()[1]->query.tags == QStringList("search_3"));
+	}
+
+	SECTION("Cycle entries")
+	{
+		History history(filename, profile.data());
+		for (int i = 1; i <= 150; ++i) {
+			history.addQuery(SearchQuery({QString::number(i)}), {site});
+		}
+
+		// Entries should cap at 100
+		REQUIRE(history.entries().count() == 100);
+
+		// It should only keep the latest entries, forgetting the first
+		REQUIRE(history.entries()[0]->query.tags == QStringList("51"));
+		REQUIRE(history.entries()[99]->query.tags == QStringList("150"));
 	}
 }
