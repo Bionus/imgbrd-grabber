@@ -1604,7 +1604,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="43"/>
       <source>Suffix without extension</source>
-      <translation type="unfinished"/>
+      <translation>Suffixe sans extension</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="67"/>
@@ -1978,12 +1978,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="131"/>
       <source>Exclude extensions</source>
-      <translation type="unfinished"/>
+      <translation>Exclure les extensions</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="138"/>
       <source>txt, tmp, xmp, xmp_original</source>
-      <translation type="unfinished"/>
+      <translation>txt, tmp, xmp, xmp_original</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="99"/>
@@ -3128,7 +3128,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="1663"/>
       <location filename="../gui/src/settings/options-window.ui" line="1758"/>
       <source>Overwrite destination file if it already exists</source>
-      <translation type="unfinished"/>
+      <translation>Écraser le fichier de destination s'il existe déjà</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1600"/>

@@ -277,7 +277,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <source>Search</source>
-      <translation type="unfinished">찾기</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
@@ -358,12 +358,12 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="55"/>
       <source>Sort</source>
-      <translation type="unfinished">정렬</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="58"/>
       <source>Name</source>
-      <translation type="unfinished">이름</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -766,7 +766,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="119"/>
       <source>Species</source>
-      <translation type="unfinished">종</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
@@ -832,11 +832,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Search</source>
-      <translation type="unfinished">찾기</translation>
-    </message>
-    <message>
-      <source>Blacklist</source>
-      <translation type="vanished">블랙리스트</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -1060,7 +1056,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>General</source>
-      <translation type="unfinished">일반</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
@@ -1090,7 +1086,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Species</source>
-      <translation type="unfinished">종</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="55"/>

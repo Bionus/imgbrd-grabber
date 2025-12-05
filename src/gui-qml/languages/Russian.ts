@@ -103,7 +103,7 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
       <source>Check for updates interval</source>
-      <translation>Интервал проверки обновлений</translation>
+      <translation>Период проверки обновлений</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <source>Search</source>
-      <translation type="unfinished">Поиск</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="55"/>
       <source>Sort</source>
-      <translation type="unfinished">Сортировать</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="58"/>
       <source>Name</source>
-      <translation type="unfinished">Имя</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -832,11 +832,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Search</source>
-      <translation type="unfinished">Поиск</translation>
-    </message>
-    <message>
-      <source>Blacklist</source>
-      <translation type="vanished">Чёрный список</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
