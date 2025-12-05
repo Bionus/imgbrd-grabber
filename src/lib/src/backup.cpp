@@ -3,6 +3,7 @@
 #include <QHash>
 #include <QTemporaryDir>
 #include "functions.h"
+#include "logger.h"
 #include "models/favorite.h"
 #include "models/profile.h"
 #include "utils/zip.h"
@@ -42,20 +43,27 @@ bool saveBackup(Profile *profile, const QString &filePath)
 		}
 	}
 
-	// Create backup ZIP
-	return createZip(filePath, zipFiles);
+	// Create the backup ZIP
+	const bool ok = createZip(filePath, zipFiles);
+	if (!ok) {
+		log("Failed to create backup ZIP file", Logger::Error);
+	}
+
+	return ok;
 }
 
 bool loadBackup(Profile *profile, const QString &filePath)
 {
-	// Create temporary directory to store the backup
+	// Create a temporary directory to store the extracted backup
 	QTemporaryDir tmpDir;
 	if (!tmpDir.isValid()) {
+		log("Failed to create temporary directory to extract backup file", Logger::Error);
 		return false;
 	}
 
 	// Unzip file
 	if (!unzipFile(filePath, tmpDir.path())) {
+		log("Failed to extract backup ZIP file", Logger::Error);
 		return false;
 	}
 
