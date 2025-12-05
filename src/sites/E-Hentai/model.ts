@@ -118,7 +118,7 @@ function parseList(src: string): IParsedSearch {
         console.warn("Parsing mode not found, falling back to 'Compact'"); // tslint:disable-line: no-console
     } else {
         const possibleModes = ["Minimal", "Minimal+", "Compact", "Extended", "Thumbnail"];
-        const allowedModeOptions = modeOption.filter(mode => possibleModes.indexOf(mode.innerText().trim()) !== -1);
+        const allowedModeOptions = modeOption.filter(m => possibleModes.indexOf(m.innerText().trim()) !== -1);
         const validOption = allowedModeOptions.length > 0 ? allowedModeOptions[0] : modeOption[0];
         mode = validOption.attr("value");
         if (["m", "p", "l", "e", "t"].indexOf(mode) === -1) {
@@ -247,7 +247,7 @@ export const source: ISource = {
                     if (matches.length < 1) {
                         matches = Grabber.regexMatches('<a href="(?<page_url>[^"]+/s/[^"]+)"><div title="Page [0-9]+: (?<filename>[^"]+)" style="(?<div_style>[^"]+)"></div></a>', src);
                     }
-                    
+
                     for (const match of matches) {
                         if ("div_style" in match) {
                             const styles = cssToObject(match["div_style"]);
