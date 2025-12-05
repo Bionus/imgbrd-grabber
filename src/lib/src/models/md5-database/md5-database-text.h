@@ -18,6 +18,7 @@ class Md5DatabaseText : public Md5Database
 		explicit Md5DatabaseText(QString path, QSettings *settings);
 		~Md5DatabaseText() override;
 
+		void load() override;
 		void sync() override;
 		void add(const QString &md5, const QString &path) override;
 		void remove(const QString &md5, const QString &path = {}) override;

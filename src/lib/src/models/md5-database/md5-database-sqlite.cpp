@@ -52,6 +52,11 @@ Md5DatabaseSqlite::~Md5DatabaseSqlite()
 }
 
 
+void Md5DatabaseSqlite::load()
+{
+	// No-op
+}
+
 void Md5DatabaseSqlite::sync()
 {
 	// No-op

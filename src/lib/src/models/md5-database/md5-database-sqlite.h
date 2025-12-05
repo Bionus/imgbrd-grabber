@@ -19,6 +19,7 @@ class Md5DatabaseSqlite : public Md5Database
 		explicit Md5DatabaseSqlite(QString path, QSettings *settings);
 		~Md5DatabaseSqlite() override;
 
+		void load() override;
 		void sync() override;
 		void add(const QString &md5, const QString &path) override;
 		void remove(const QString &md5, const QString &path = {}) override;
