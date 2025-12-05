@@ -23,6 +23,7 @@ class MonitorManager : public QObject
 		void save() const;
 
 	signals:
+		void changed();
 		void inserted(int index);
 		void removed(int index);
 
