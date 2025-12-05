@@ -226,6 +226,36 @@ Page {
                 background: Rectangle {
                     color: nextButton.background.color
                 }
+
+                MouseArea {
+                    enabled: !infiniteScroll
+                    anchors.fill: parent
+                    onClicked: pageNumberDialog.open()
+                }
+
+                Dialog {
+                    id: pageNumberDialog
+
+                    title: qsTr("Page number")
+                    anchors.centerIn: Overlay.overlay
+                    modal: true
+                    standardButtons: Dialog.Ok | Dialog.Cancel
+
+                    onAccepted: {
+                        searchTab.page = pageNumberBox.value
+                        searchTab.load()
+                    }
+                    onRejected: pageNumberBox.value = searchTab.page
+
+                    SpinBox {
+                        id: pageNumberBox
+                        anchors.fill: parent
+                        value: searchTab.page
+                        editable: true
+                        from: 1
+                        to: pageLoader.pageCount
+                    }
+                }
             }
 
             Button {
