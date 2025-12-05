@@ -75,7 +75,7 @@
 
         <!-- Custom -->
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name="org.bionus.grabber.GrabberFileProvider"
             android:authorities="org.bionus.grabber.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

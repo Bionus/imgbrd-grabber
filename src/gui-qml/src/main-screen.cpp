@@ -115,11 +115,13 @@ void MainScreen::shareImage(const QSharedPointer<Image> &image)
 	ImageDownloader downloader(m_profile, image, filename, path, 0, false, false, this);
 
 	QEventLoop loop;
-	QObject::connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+	connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit, Qt::QueuedConnection);
 	downloader.save();
 	loop.exec();
 
-	const QString savePath = image->savePath();
+	const QString savePath = !image->savePath(Image::Size::Full).isEmpty()
+		? image->savePath(Image::Size::Full)
+		: image->savePath(Image::Size::Sample);
 	const QString mimeType = QMimeDatabase().mimeTypeForFile(savePath).name();
 	m_shareUtils->sendFile(savePath, mimeType, "Share image");
 }

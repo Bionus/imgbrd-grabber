@@ -39,7 +39,7 @@ android {
      *******************************************************/
 
     namespace = androidPackageName
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion "android-35"
     buildToolsVersion androidBuildToolsVersion
     ndkVersion = androidNdkVersion
 
