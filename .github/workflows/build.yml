@@ -291,7 +291,6 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      OPENSSL_ROOT_DIR: /usr/local/opt/openssl@3
       CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:
@@ -327,7 +326,7 @@ jobs:
           7z x "QScintilla.zip" -y
           rm "QScintilla.zip"
           cd "${QSCINTILLA_DIR}/src"
-          qmake qscintilla.pro
+          qmake qscintilla.pro QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
           make
 
       - name: Install QScintilla
@@ -357,13 +356,13 @@ jobs:
           ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate package
-        run: ./scripts/package-mac.sh
+        run: cmake --build build --config Release --target deploy
 
       - name: Upload package
         uses: actions/upload-artifact@v5
         with:
           name: Grabber.dmg
-          path: Grabber.dmg
+          path: build/gui/deploy/Grabber.dmg
           if-no-files-found: error
 
   windows:
