@@ -33,6 +33,11 @@ bool Blacklist::contains(const QString &tag) const
 	return indexOf(tag) != -1;
 }
 
+void Blacklist::clear()
+{
+	m_filters.clear();
+}
+
 void Blacklist::add(const QString &tag)
 {
 	auto filter = QSharedPointer<Filter>(FilterFactory::build(tag));

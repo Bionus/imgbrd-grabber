@@ -32,6 +32,17 @@ TEST_CASE("Blacklist")
 		REQUIRE(Blacklist(QStringList() << "tag1" << "tag2").isEmpty() == false);
 	}
 
+	SECTION("Clear")
+	{
+		Blacklist blacklist;
+		blacklist.add("tag1");
+		blacklist.add("tag2");
+		blacklist.add("tag3");
+		blacklist.clear();
+
+		REQUIRE(Blacklist().isEmpty() == true);
+	}
+
 	SECTION("Remove")
 	{
 		Blacklist blacklist(QStringList() << "tag1" << "tag2");

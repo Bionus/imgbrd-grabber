@@ -19,6 +19,7 @@ class Blacklist
 
 		bool isEmpty() const;
 		bool contains(const QString &tag) const;
+		void clear();
 		void add(const QString &tag);
 		void add(const QStringList &tags);
 		bool remove(const QString &tag);
