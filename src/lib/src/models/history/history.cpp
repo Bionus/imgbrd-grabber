@@ -30,16 +30,20 @@ bool History::load()
 		return false;
 	}
 
-	m_entries.clear();
-
 	const QJsonObject object = jsonDoc.object();
 	const QJsonArray entries = object["entries"].toArray();
+
+	m_entries.clear();
+	m_entries.reserve(entries.count());
+	m_entriesMap.clear();
+	m_entriesMap.reserve(entries.count());
 	for (auto entryJson : entries) {
 		const auto entry = QSharedPointer<HistoryEntry>::create(HistoryEntry::fromJson(entryJson.toObject(), m_profile));
 		m_entries.append(entry);
 		m_entriesMap.insert({ entry->query, entry->sites }, entry);
 	}
 
+	emit changed();
 	return true;
 }
 
