@@ -41,7 +41,7 @@ Rectangle {
                     visible: !!subtitle
                     text: subtitle
                     font.italic: true
-                    color: Material.secondaryTextColor
+                    color: enabled ? Material.secondaryTextColor : Material.hintTextColor
                 }
             }
         }

@@ -6,6 +6,7 @@
 #include <QMimeDatabase>
 #include <QSettings>
 #include <QStandardPaths>
+#include "backup.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
@@ -193,6 +194,7 @@ void MainScreen::loadSuggestions(const QString &prefix, int limit)
 	emit autoCompleteChanged();
 }
 
+
 bool MainScreen::exportSettings(const QString &dest)
 {
 	return QFile::copy(m_profile->getSettings()->fileName(), dest);
@@ -217,6 +219,17 @@ bool MainScreen::importSettings(const QString &source)
 
 	return true;
 }
+
+bool MainScreen::exportBackup(const QString &dest)
+{
+	return saveBackup(m_profile, dest);
+}
+
+bool MainScreen::importBackup(const QString &source)
+{
+	return loadBackup(m_profile, source);
+}
+
 
 bool MainScreen::removeSite(QmlSite *site)
 {

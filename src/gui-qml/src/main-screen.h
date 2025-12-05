@@ -58,10 +58,14 @@ class MainScreen : public QObject
 		void removeHistory(const QString &query, const QString &siteUrl);
 		void clearHistory();
 		void loadSuggestions(const QString &prefix, int limit);
-		bool exportSettings(const QString &dest);
-		bool importSettings(const QString &source);
 		bool removeSite(QmlSite *site);
 		void setClipboardText(const QString &text);
+
+		// Backup / restore
+		bool exportSettings(const QString &dest);
+		bool importSettings(const QString &source);
+		bool exportBackup(const QString &dest);
+		bool importBackup(const QString &source);
 
 	protected slots:
 		void refreshSites();
