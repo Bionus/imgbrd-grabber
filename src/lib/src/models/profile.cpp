@@ -62,24 +62,6 @@ Profile::Profile(QString path)
 		addSource(source);
 	}
 
-	// Load view it later
-	QFile fileKfl(m_path + "/viewitlater.txt");
-	if (fileKfl.open(QFile::ReadOnly | QFile::Text)) {
-		QString vil = fileKfl.readAll();
-		fileKfl.close();
-
-		m_keptForLater = vil.split("\n", Qt::SkipEmptyParts);
-	}
-
-	// Load ignored
-	QFile fileIgnored(m_path + "/ignore.txt");
-	if (fileIgnored.open(QFile::ReadOnly | QFile::Text)) {
-		QString ign = fileIgnored.readAll();
-		fileIgnored.close();
-
-		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
-	}
-
 	// Load removed
 	m_removedTags.add(splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true));
 
@@ -211,6 +193,24 @@ void Profile::reload()
 				}
 			}
 		}
+	}
+
+	// Load view it later
+	QFile fileKfl(m_path + "/viewitlater.txt");
+	if (fileKfl.open(QFile::ReadOnly | QFile::Text)) {
+		QString vil = fileKfl.readAll();
+		fileKfl.close();
+
+		m_keptForLater = vil.split("\n", Qt::SkipEmptyParts);
+	}
+
+	// Load ignored
+	QFile fileIgnored(m_path + "/ignore.txt");
+	if (fileIgnored.open(QFile::ReadOnly | QFile::Text)) {
+		QString ign = fileIgnored.readAll();
+		fileIgnored.close();
+
+		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
 	}
 }
 
