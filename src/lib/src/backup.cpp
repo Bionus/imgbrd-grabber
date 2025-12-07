@@ -1,6 +1,7 @@
 #include "backup.h"
 #include <QFile>
 #include <QHash>
+#include <QSettings>
 #include <QTemporaryDir>
 #include "functions.h"
 #include "logger.h"
@@ -14,6 +15,9 @@
 bool saveBackup(Profile *profile, const QString &filePath)
 {
 	QHash<QString, QString> files;
+
+	// Save any pending settings changes
+	profile->getSettings()->sync();
 
 	// Common files
 	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json" };
@@ -67,8 +71,29 @@ bool loadBackup(Profile *profile, const QString &filePath)
 		return false;
 	}
 
-	// TODO(Bionus): actually implement loading here
-	Q_UNUSED(profile)
+	// Save any pending settings changes
+	profile->getSettings()->sync();
+
+	// Common files
+	static const QStringList backupFiles { "settings.ini" };
+	for (const QString &file : backupFiles) {
+		const QString source = tmpDir.filePath(file);
+		const QString target = profile->getPath() +"/" + file;
+
+		if (QFile::exists(source)) {
+			if (QFile::exists(target) && !QFile::remove(target)) {
+				log("Could not remove existing " + file, Logger::Error);
+				return false;
+			}
+			if (!QFile::copy(source, target)) {
+				log("Could not restore " + file, Logger::Error);
+				return false;
+			}
+		}
+	}
+
+	// Reload the profile
+	profile->reload();
 
 	return true;
 }

@@ -40,8 +40,7 @@ Profile::Profile(QString path)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
-	// Rename deprecated settings keys
-	renameSettingsGroup(m_settings, "Zoom", "Viewer");
+	reload();
 
 	// Load sources
 	const QString defaultPath = savePath("sites/", true, false);
@@ -203,6 +202,14 @@ Profile::Profile(QString path)
 		m_sourceRegistries.append(sourceRegistry);
 		emit sourceRegistriesChanged();
 	}
+}
+
+void Profile::reload()
+{
+	m_settings->sync();
+
+	// Rename deprecated settings keys
+	renameSettingsGroup(m_settings, "Zoom", "Viewer");
 }
 
 Profile::~Profile()

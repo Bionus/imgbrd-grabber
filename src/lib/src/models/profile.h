@@ -34,6 +34,7 @@ class Profile : public QObject
 		~Profile() override;
 
 		// Sync
+		void reload();
 		void sync();
 		void syncFavorites() const;
 		void syncKeptForLater() const;
