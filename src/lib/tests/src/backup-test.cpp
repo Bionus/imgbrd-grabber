@@ -6,12 +6,16 @@
 #include "backup.h"
 #include "models/profile.h"
 #include "source-helpers.h"
+#include "monitoring/monitor-manager.h"
 #include "utils/zip.h"
 
 
 TEST_CASE("Backup")
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 	const QScopedPointer<Profile> profile(makeProfile());
+	Site *site = profile->getSites().value("danbooru.donmai.us");
 	QTemporaryDir tmpDir;
 
 	const QString zipFile = "backup-test.zip";
@@ -162,5 +166,30 @@ TEST_CASE("Backup")
 		REQUIRE(loadBackup(fresh.data(), zipFile));
 		REQUIRE(fresh->getBlacklist().contains("test_tag"));
 		REQUIRE(!fresh->getBlacklist().contains("another_tag"));
+	}
+
+	SECTION("monitors.json")
+	{
+		// Set a single setting on the profile and back it up
+		profile->monitorManager()->add(Monitor(profile->getSettings(), {site}, QStringList() << "test_tag"));
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a settings.ini file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("monitors.json"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.monitorManager()->monitors().count() == 1);
+		REQUIRE(after.monitorManager()->monitors()[0].query().tags == QStringList() << "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->monitorManager()->add(Monitor(profile->getSettings(), {site}, QStringList() << "another_tag")); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->monitorManager()->monitors().count() == 1);
+		REQUIRE(fresh->monitorManager()->monitors()[0].query().tags == QStringList() << "test_tag");
 	}
 }

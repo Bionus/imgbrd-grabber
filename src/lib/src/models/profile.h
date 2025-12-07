@@ -118,6 +118,9 @@ class Profile : public QObject
 		void blacklistChanged();
 		void sourceRegistriesChanged();
 
+	protected:
+		void reload(bool init);
+
 	private:
 		QString m_path;
 		QSettings *m_settings;

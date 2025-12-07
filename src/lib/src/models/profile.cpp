@@ -51,7 +51,7 @@ Profile::Profile(QString path)
 		fileAutoComplete.close();
 	}
 
-	reload();
+	reload(true);
 
 	// Load sources
 	const QString defaultPath = savePath("sites/", true, false);
@@ -112,6 +112,10 @@ Profile::Profile(QString path)
 }
 
 void Profile::reload()
+{
+	reload(false);
+}
+void Profile::reload(bool init)
 {
 	m_settings->sync();
 
