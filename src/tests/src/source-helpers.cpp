@@ -7,7 +7,9 @@
 
 Profile *makeProfile()
 {
-	QFile::remove("tests/resources/settings.ini");
+	QFile settings("tests/resources/settings.ini");
+	settings.open(QFile::Truncate | QFile::WriteOnly | QFile::Text);
+	settings.close();
 
 	auto *profile = new Profile("tests/resources");
 	profile->getSettings()->clear();
