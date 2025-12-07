@@ -116,4 +116,28 @@ TEST_CASE("Backup")
 		REQUIRE(loadBackup(fresh.data(), zipFile));
 		REQUIRE(fresh->getIgnored() == QStringList() << "test_tag");
 	}
+
+	SECTION("wordsc.txt")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addAutoComplete("test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a settings.ini file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("wordsc.txt"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getAutoComplete().contains("test_tag"));
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addAutoComplete("another_tag"); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getAutoComplete().contains("test_tag"));
+		REQUIRE(!fresh->getAutoComplete().contains("another_tag"));
+	}
 }

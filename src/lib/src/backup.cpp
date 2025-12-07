@@ -16,8 +16,8 @@ bool saveBackup(Profile *profile, const QString &filePath)
 {
 	QHash<QString, QString> files;
 
-	// Save any pending settings changes
-	profile->getSettings()->sync();
+	// Save any pending changes
+	profile->sync();
 
 	// Common files
 	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json" };
@@ -75,7 +75,7 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	profile->getSettings()->sync();
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt" };
 	for (const QString &file : backupFiles) {
 		const QString source = tmpDir.filePath(file);
 		const QString target = profile->getPath() +"/" + file;

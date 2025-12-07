@@ -40,6 +40,17 @@ Profile::Profile(QString path)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
+	// Load auto-complete
+	QFile fileAutoComplete(savePath("words.txt", true, false));
+	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
+		QString line;
+		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
+			m_autoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
+		}
+
+		fileAutoComplete.close();
+	}
+
 	reload();
 
 	// Load sources
@@ -75,28 +86,6 @@ Profile::Profile(QString path)
 		? static_cast<Md5Database*>(new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings))
 		: static_cast<Md5Database*>(new Md5DatabaseText(m_path + "/md5s.txt", m_settings));
 
-	// Load auto-complete
-	QFile fileAutoComplete(savePath("words.txt", true, false));
-	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
-		QString line;
-		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
-			m_autoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
-		}
-
-		fileAutoComplete.close();
-	}
-
-	// Load custom auto-complete
-	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
-	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
-		QString line;
-		while (!(line = fileCustomAutoComplete.readLine()).isEmpty()) {
-			m_customAutoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
-		}
-
-		fileCustomAutoComplete.close();
-	}
-
 	m_commands = new Commands(this);
 	m_exiftool = new Exiftool(this);
 
@@ -129,17 +118,6 @@ Profile::Profile(QString path)
 
 	// URL downloaders
 	m_urlDownloaderManager = new UrlDownloaderManager(ReadWritePath(defaultPath, customPath), this);
-
-	// Complete auto-complete
-	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "grabber:monitored" };
-	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
-	m_autoComplete.append(m_customAutoComplete);
-	for (const Favorite &fav : qAsConst(m_favorites)) {
-		m_autoComplete.append(fav.getName());
-	}
-	m_autoComplete.append(specialCompletes);
-	m_autoComplete.removeDuplicates();
-	m_autoComplete.sort();
 
 	// Load source registries
 	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
@@ -212,6 +190,30 @@ void Profile::reload()
 
 		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
 	}
+
+	// Load custom auto-complete
+	m_customAutoComplete.clear();
+	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
+	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
+		QString line;
+		while (!(line = fileCustomAutoComplete.readLine()).isEmpty()) {
+			m_customAutoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
+		}
+
+		fileCustomAutoComplete.close();
+	}
+
+	// Complete auto-complete
+	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "grabber:monitored" };
+	m_autoComplete.clear();
+	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
+	m_autoComplete.append(m_customAutoComplete);
+	for (const Favorite &fav : qAsConst(m_favorites)) {
+		m_autoComplete.append(fav.getName());
+	}
+	m_autoComplete.append(specialCompletes);
+	m_autoComplete.removeDuplicates();
+	m_autoComplete.sort();
 }
 
 Profile::~Profile()
