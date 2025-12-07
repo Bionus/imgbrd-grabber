@@ -89,24 +89,6 @@ Profile::Profile(QString path)
 	m_commands = new Commands(this);
 	m_exiftool = new Exiftool(this);
 
-	// Blacklisted tags
-	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
-	for (const QString &bl : blacklist) {
-		m_blacklist.add(bl);
-	}
-	QFile fileBlacklist(m_path + "/blacklist.txt");
-	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text)) {
-		QString line;
-		while (!(line = fileBlacklist.readLine()).isEmpty()) {
-			line = line.trimmed();
-			if (!line.startsWith('#')) {
-				m_blacklist.add(line.split(" ", Qt::SkipEmptyParts));
-			}
-		}
-
-		fileBlacklist.close();
-	}
-
 	// History
 	m_history = new History(m_path + "/history.json", this);
 
@@ -214,6 +196,25 @@ void Profile::reload()
 	m_autoComplete.append(specialCompletes);
 	m_autoComplete.removeDuplicates();
 	m_autoComplete.sort();
+
+	// Blacklisted tags
+	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
+	m_blacklist.clear();
+	for (const QString &bl : blacklist) {
+		m_blacklist.add(bl);
+	}
+	QFile fileBlacklist(m_path + "/blacklist.txt");
+	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text)) {
+		QString line;
+		while (!(line = fileBlacklist.readLine()).isEmpty()) {
+			line = line.trimmed();
+			if (!line.startsWith('#')) {
+				m_blacklist.add(line.split(" ", Qt::SkipEmptyParts));
+			}
+		}
+
+		fileBlacklist.close();
+	}
 }
 
 Profile::~Profile()
