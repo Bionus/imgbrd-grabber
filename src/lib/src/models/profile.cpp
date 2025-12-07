@@ -219,6 +219,11 @@ void Profile::reload(bool init)
 
 		fileBlacklist.close();
 	}
+
+	if (!init) {
+		m_monitorManager->load();
+		m_history->load();
+	}
 }
 
 Profile::~Profile()

@@ -55,7 +55,7 @@ TEST_CASE("Backup")
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
-		// Unzipping the backup should contain a settings.ini file
+		// Unzipping the backup should contain a favorites.json file
 		REQUIRE(unzipFile(zipFile, zipDir));
 		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
 		REQUIRE(files.contains("favorites.json"));
@@ -81,7 +81,7 @@ TEST_CASE("Backup")
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
-		// Unzipping the backup should contain a settings.ini file
+		// Unzipping the backup should contain a viewitlater.txt file
 		REQUIRE(unzipFile(zipFile, zipDir));
 		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
 		REQUIRE(files.contains("viewitlater.txt"));
@@ -104,7 +104,7 @@ TEST_CASE("Backup")
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
-		// Unzipping the backup should contain a settings.ini file
+		// Unzipping the backup should contain a ignore.txt file
 		REQUIRE(unzipFile(zipFile, zipDir));
 		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
 		REQUIRE(files.contains("ignore.txt"));
@@ -127,7 +127,7 @@ TEST_CASE("Backup")
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
-		// Unzipping the backup should contain a settings.ini file
+		// Unzipping the backup should contain a wordsc.txt file
 		REQUIRE(unzipFile(zipFile, zipDir));
 		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
 		REQUIRE(files.contains("wordsc.txt"));
@@ -151,7 +151,7 @@ TEST_CASE("Backup")
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
-		// Unzipping the backup should contain a settings.ini file
+		// Unzipping the backup should contain a blacklist.txt file
 		REQUIRE(unzipFile(zipFile, zipDir));
 		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
 		REQUIRE(files.contains("blacklist.txt"));
@@ -175,7 +175,7 @@ TEST_CASE("Backup")
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
-		// Unzipping the backup should contain a settings.ini file
+		// Unzipping the backup should contain a monitors.json file
 		REQUIRE(unzipFile(zipFile, zipDir));
 		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
 		REQUIRE(files.contains("monitors.json"));
@@ -191,5 +191,30 @@ TEST_CASE("Backup")
 		REQUIRE(loadBackup(fresh.data(), zipFile));
 		REQUIRE(fresh->monitorManager()->monitors().count() == 1);
 		REQUIRE(fresh->monitorManager()->monitors()[0].query().tags == QStringList() << "test_tag");
+	}
+
+	SECTION("history.json")
+	{
+		// Set a single setting on the profile and back it up
+		profile->getHistory()->addQuery(QStringList() << "test_tag", {site});
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a history.json file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("history.json"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getHistory()->entries().count() == 1);
+		REQUIRE(after.getHistory()->entries()[0]->query.tags == QStringList() << "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->getHistory()->addQuery(QStringList() << "another_tag", {site}); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getHistory()->entries().count() == 1);
+		REQUIRE(fresh->getHistory()->entries()[0]->query.tags == QStringList() << "test_tag");
 	}
 }

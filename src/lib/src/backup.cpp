@@ -25,6 +25,8 @@ bool saveBackup(Profile *profile, const QString &filePath)
 		files.insert(profile->getPath() + "/" + file, file);
 	}
 
+	// TODO(Bionus): filenamehistory.txt, md5s.sqlite, md5s.txt
+
 	// Favorite thumbnails
 	for (const Favorite &fav : profile->getFavorites()) {
 		const QString relPath = "thumbs/" + fav.getName(true) + ".png";
@@ -75,7 +77,7 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	profile->getSettings()->sync();
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json" };
 	for (const QString &file : backupFiles) {
 		const QString source = tmpDir.filePath(file);
 		const QString target = profile->getPath() +"/" + file;
@@ -94,6 +96,8 @@ bool loadBackup(Profile *profile, const QString &filePath)
 
 	// Reload the profile
 	profile->reload();
+
+	// TODO(Bionus): restore.igl, tabs.json, thumbs/, webservices/
 
 	return true;
 }
