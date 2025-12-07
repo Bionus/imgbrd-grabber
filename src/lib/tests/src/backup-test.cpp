@@ -47,6 +47,7 @@ TEST_CASE("Backup")
 	SECTION("favorites.json")
 	{
 		// Set a single setting on the profile and back it up
+		profile->addFavorite(Favorite("test_tag"));
 		REQUIRE(saveBackup(profile.data(), zipFile));
 		REQUIRE(QFile::exists(zipFile));
 
@@ -57,18 +58,16 @@ TEST_CASE("Backup")
 
 		// Creating a profile file from the backup directory should have the previous setting
 		Profile after(zipDir);
-		REQUIRE(after.getFavorites().count() == 2);
-		REQUIRE(after.getFavorites()[0].getName() == "tag_1");
-		REQUIRE(after.getFavorites()[1].getName() == "tag_2");
+		REQUIRE(after.getFavorites().count() == 1);
+		REQUIRE(after.getFavorites()[0].getName() == "test_tag");
 
 		// Create a fresh profile and import the backup in it, the setting key should be available
 		const QScopedPointer<Profile> fresh(makeProfile());
-		fresh->addFavorite(Favorite("tag_3")); // This should be overwritten by the backup
-		REQUIRE(fresh->getFavorites().count() == 3);
+		fresh->addFavorite(Favorite("another_tag")); // This should be overwritten by the backup
+		REQUIRE(fresh->getFavorites().count() == 1);
 		REQUIRE(loadBackup(fresh.data(), zipFile));
-		REQUIRE(fresh->getFavorites().count() == 2);
-		REQUIRE(fresh->getFavorites()[0].getName() == "tag_1");
-		REQUIRE(fresh->getFavorites()[1].getName() == "tag_2");
+		REQUIRE(fresh->getFavorites().count() == 1);
+		REQUIRE(fresh->getFavorites()[0].getName() == "test_tag");
 	}
 
 	SECTION("viewitlater.txt")
