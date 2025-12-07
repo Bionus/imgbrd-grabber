@@ -62,41 +62,6 @@ Profile::Profile(QString path)
 		addSource(source);
 	}
 
-	// Load favorites
-	QSet<QString> unique;
-	QFile fileFavoritesJson(m_path + "/favorites.json");
-	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text)) {
-		const QByteArray data = fileFavoritesJson.readAll();
-		fileFavoritesJson.close();
-		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
-		QJsonObject object = loadDoc.object();
-
-		QJsonArray favorites = object["favorites"].toArray();
-		for (auto favoriteJson : favorites) {
-			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), this);
-			if (!unique.contains(fav.getName())) {
-				unique.insert(fav.getName());
-				m_favorites.append(fav);
-			}
-		}
-	} else {
-		QFile fileFavorites(m_path + "/favorites.txt");
-		if (fileFavorites.open(QFile::ReadOnly | QFile::Text)) {
-			QString favorites = fileFavorites.readAll();
-			fileFavorites.close();
-
-			QStringList words = favorites.split("\n", Qt::SkipEmptyParts);
-			m_favorites.reserve(words.count());
-			for (const QString &word : words) {
-				Favorite fav = Favorite::fromString(m_path, word);
-				if (!unique.contains(fav.getName())) {
-					unique.insert(fav.getName());
-					m_favorites.append(fav);
-				}
-			}
-		}
-	}
-
 	// Load view it later
 	QFile fileKfl(m_path + "/viewitlater.txt");
 	if (fileKfl.open(QFile::ReadOnly | QFile::Text)) {
@@ -210,6 +175,43 @@ void Profile::reload()
 
 	// Rename deprecated settings keys
 	renameSettingsGroup(m_settings, "Zoom", "Viewer");
+
+	// Load favorites
+	m_favorites.clear();
+	QSet<QString> unique;
+	QFile fileFavoritesJson(m_path + "/favorites.json");
+	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text)) {
+		const QByteArray data = fileFavoritesJson.readAll();
+		fileFavoritesJson.close();
+		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
+		QJsonObject object = loadDoc.object();
+
+		QJsonArray favorites = object["favorites"].toArray();
+		m_favorites.reserve(favorites.count());
+		for (auto favoriteJson : favorites) {
+			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), this);
+			if (!unique.contains(fav.getName())) {
+				unique.insert(fav.getName());
+				m_favorites.append(fav);
+			}
+		}
+	} else {
+		QFile fileFavorites(m_path + "/favorites.txt");
+		if (fileFavorites.open(QFile::ReadOnly | QFile::Text)) {
+			QString favorites = fileFavorites.readAll();
+			fileFavorites.close();
+
+			QStringList words = favorites.split("\n", Qt::SkipEmptyParts);
+			m_favorites.reserve(words.count());
+			for (const QString &word : words) {
+				Favorite fav = Favorite::fromString(m_path, word);
+				if (!unique.contains(fav.getName())) {
+					unique.insert(fav.getName());
+					m_favorites.append(fav);
+				}
+			}
+		}
+	}
 }
 
 Profile::~Profile()

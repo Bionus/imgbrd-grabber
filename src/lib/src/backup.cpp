@@ -75,7 +75,7 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	profile->getSettings()->sync();
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json" };
 	for (const QString &file : backupFiles) {
 		const QString source = tmpDir.filePath(file);
 		const QString target = profile->getPath() +"/" + file;
