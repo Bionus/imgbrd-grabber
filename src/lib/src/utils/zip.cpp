@@ -21,7 +21,7 @@ bool createZip(const QString &filePath, const QHash<QString, QString> &files)
 	// Add all files to the archive
 	for (auto it = files.constBegin(); it != files.constEnd(); ++it) {
 		if (!mz_zip_writer_add_file(&zip_archive, it.value().toStdString().c_str(), it.key().toStdString().c_str(), NULL, 0, MZ_BEST_COMPRESSION)) {
-			log(QStringLiteral("mz_zip_writer_add_file failed"), Logger::Error);
+			log(QStringLiteral("mz_zip_writer_add_file failed for `%1` in '%2'").arg(it.key(), it.value()), Logger::Error);
 			return false;
 		}
 	}

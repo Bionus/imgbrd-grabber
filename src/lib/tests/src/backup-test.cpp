@@ -217,4 +217,28 @@ TEST_CASE("Backup")
 		REQUIRE(fresh->getHistory()->entries().count() == 1);
 		REQUIRE(fresh->getHistory()->entries()[0]->query.tags == QStringList() << "test_tag");
 	}
+
+	SECTION("md5s.sqlite")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addMd5("098f6bcd4621d373cade4e832627b4f6", "tests/resources/image_1x1.png");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a md5s.sqlite file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("md5s.sqlite"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(!after.md5Exists("098f6bcd4621d373cade4e832627b4f6").isEmpty());
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addMd5("b32d73e56ec99bc5ec8f83871cde708a", "tests/resources/image_200x200.png");
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(!fresh->md5Exists("098f6bcd4621d373cade4e832627b4f6").isEmpty());
+		REQUIRE(fresh->md5Exists("b32d73e56ec99bc5ec8f83871cde708a").isEmpty());
+	}
 }

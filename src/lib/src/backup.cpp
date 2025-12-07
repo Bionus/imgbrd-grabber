@@ -7,6 +7,7 @@
 #include "logger.h"
 #include "models/favorite.h"
 #include "models/profile.h"
+#include "models/md5-database/md5-database-sqlite.h"
 #include "utils/zip.h"
 #include "reverse-search/reverse-search-engine.h"
 #include "reverse-search/reverse-search-loader.h"
@@ -20,12 +21,12 @@ bool saveBackup(Profile *profile, const QString &filePath)
 	profile->sync();
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json", "md5s.txt", "md5s.sqlite" };
 	for (const QString &file : backupFiles) {
 		files.insert(profile->getPath() + "/" + file, file);
 	}
 
-	// TODO(Bionus): filenamehistory.txt, md5s.sqlite, md5s.txt
+	// TODO(Bionus): filenamehistory.txt
 
 	// Favorite thumbnails
 	for (const Favorite &fav : profile->getFavorites()) {
@@ -49,10 +50,21 @@ bool saveBackup(Profile *profile, const QString &filePath)
 		}
 	}
 
+	// Close SQLite connections while copying files
+	auto *md5Database = qobject_cast<Md5DatabaseSqlite*>(profile->md5Database());
+	if (md5Database != nullptr) {
+		md5Database->close();
+	}
+
 	// Create the backup ZIP
 	const bool ok = createZip(filePath, zipFiles);
 	if (!ok) {
 		log("Failed to create backup ZIP file", Logger::Error);
+	}
+
+	// Re-open SQLite connections once we're done
+	if (md5Database != nullptr) {
+		md5Database->load();
 	}
 
 	return ok;
@@ -76,8 +88,14 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	// Save any pending settings changes
 	profile->getSettings()->sync();
 
+	// Close SQLite connections while copying files
+	auto *md5Database = qobject_cast<Md5DatabaseSqlite*>(profile->md5Database());
+	if (md5Database != nullptr) {
+		md5Database->close();
+	}
+
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json", "md5s.txt", "md5s.sqlite" };
 	for (const QString &file : backupFiles) {
 		const QString source = tmpDir.filePath(file);
 		const QString target = profile->getPath() + "/" + file;
@@ -92,6 +110,11 @@ bool loadBackup(Profile *profile, const QString &filePath)
 				return false;
 			}
 		}
+	}
+
+	// Re-open SQLite connections once we're done
+	if (md5Database != nullptr) {
+		md5Database->load();
 	}
 
 	// Reload the profile

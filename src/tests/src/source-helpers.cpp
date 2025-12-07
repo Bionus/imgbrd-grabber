@@ -12,6 +12,8 @@ Profile *makeProfile(bool clean)
 		QFile::remove("tests/resources/favorites.json");
 		QFile::remove("tests/resources/favorites.txt");
 		QFile::remove("tests/resources/ignore.txt");
+		QFile::remove("tests/resources/md5s.sqlite");
+		QFile::remove("tests/resources/md5s.txt");
 		QFile::remove("tests/resources/viewitlater.txt");
 		QFile::remove("tests/resources/wordsc.txt");
 	}

@@ -223,6 +223,7 @@ void Profile::reload(bool init)
 	if (!init) {
 		m_monitorManager->load();
 		m_history->load();
+		m_md5s->load();
 	}
 }
 

@@ -11,15 +11,26 @@
 Md5DatabaseSqlite::Md5DatabaseSqlite(QString path, QSettings *settings)
 	: Md5Database(settings), m_path(std::move(path))
 {
-	// Use SQLite database for tests
 	m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), "MD5 database - " + m_path);
 	m_database.setDatabaseName(m_path);
+
+	Md5DatabaseSqlite::load();
+}
+
+Md5DatabaseSqlite::~Md5DatabaseSqlite()
+{
+	m_database.close();
+}
+
+
+void Md5DatabaseSqlite::load()
+{
 	if (!m_database.open()) {
 		log(QStringLiteral("Could not open MD5 database: %1").arg(m_database.lastError().text()), Logger::Error);
 		return;
 	}
 
-	// Create schema if necessary
+	// Create the DB schema if necessary
 	QSqlQuery createQuery(QStringLiteral("CREATE TABLE IF NOT EXISTS md5s (md5 CHAR(32), path TEXT)"), m_database);
 	if (!createQuery.exec()) {
 		log(QStringLiteral("Could not create MD5 database schema: %1").arg(createQuery.lastError().text()), Logger::Error);
@@ -44,17 +55,6 @@ Md5DatabaseSqlite::Md5DatabaseSqlite(QString path, QSettings *settings)
 	m_deleteAllQuery.prepare(QStringLiteral("DELETE FROM md5s WHERE md5 = :md5"));
 	m_countQuery = QSqlQuery(m_database);
 	m_countQuery.prepare(QStringLiteral("SELECT COUNT(*) AS cnt FROM md5s"));
-}
-
-Md5DatabaseSqlite::~Md5DatabaseSqlite()
-{
-	m_database.close();
-}
-
-
-void Md5DatabaseSqlite::load()
-{
-	// No-op
 }
 
 void Md5DatabaseSqlite::sync()
@@ -169,4 +169,9 @@ void Md5DatabaseSqlite::setMd5s(const QMultiHash<QString, QString> &md5s)
 			return;
 		}
 	}
+}
+
+void Md5DatabaseSqlite::close()
+{
+	m_database.close();
 }

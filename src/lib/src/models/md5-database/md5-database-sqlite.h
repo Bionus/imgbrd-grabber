@@ -24,6 +24,7 @@ class Md5DatabaseSqlite : public Md5Database
 		void add(const QString &md5, const QString &path) override;
 		void remove(const QString &md5, const QString &path = {}) override;
 		int count() const override;
+		void close();
 
 		void setMd5s(const QMultiHash<QString, QString> &md5s);
 
