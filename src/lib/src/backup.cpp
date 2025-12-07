@@ -80,7 +80,7 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json" };
 	for (const QString &file : backupFiles) {
 		const QString source = tmpDir.filePath(file);
-		const QString target = profile->getPath() +"/" + file;
+		const QString target = profile->getPath() + "/" + file;
 
 		if (QFile::exists(source)) {
 			if (QFile::exists(target) && !QFile::remove(target)) {

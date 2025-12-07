@@ -31,7 +31,7 @@ TEST_CASE("Profile")
 	f2.write(QString("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png\r\n").toUtf8());
 	f2.close();
 
-	const QScopedPointer<Profile> profile(makeProfile());
+	const QScopedPointer<Profile> profile(makeProfile(false));
 
 	SECTION("ConstructorEmpty")
 	{
