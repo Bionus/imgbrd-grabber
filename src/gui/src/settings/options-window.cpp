@@ -1009,6 +1009,7 @@ void OptionsWindow::backupRestore()
 	settings->setValue("lastDirBackup", QDir::toNativeSeparators(path).section(QDir::separator(), 0, -2));
 	if (loadBackup(m_profile, path)) {
 		QMessageBox::information(this, QObject::tr("Success"), tr("Backup restored successfully."));
+		emit settingsChanged();
 	} else {
 		error(this, tr("Error restoring backup."));
 	}

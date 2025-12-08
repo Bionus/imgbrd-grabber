@@ -21,12 +21,10 @@ bool saveBackup(Profile *profile, const QString &filePath)
 	profile->sync();
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json", "md5s.txt", "md5s.sqlite" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json", "md5s.txt", "md5s.sqlite", "filenamehistory.txt" };
 	for (const QString &file : backupFiles) {
 		files.insert(profile->getPath() + "/" + file, file);
 	}
-
-	// TODO(Bionus): filenamehistory.txt
 
 	// Favorite thumbnails
 	for (const Favorite &fav : profile->getFavorites()) {
@@ -95,7 +93,7 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	}
 
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json", "md5s.txt", "md5s.sqlite" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json", "md5s.txt", "md5s.sqlite", "filenamehistory.txt" };
 	for (const QString &file : backupFiles) {
 		const QString source = tmpDir.filePath(file);
 		const QString target = profile->getPath() + "/" + file;
