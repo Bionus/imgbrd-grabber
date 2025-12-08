@@ -245,7 +245,7 @@ export const source: ISource = {
                         matches = Grabber.regexMatches('<div class="gdtl"[^>]*><a href="(?<page_url>[^"]+)"><img[^>]*src="(?<preview_url>[^"]+)"[^>]*></a></div>', src);
                     }
                     if (matches.length < 1) {
-                        matches = Grabber.regexMatches('<a href="(?<page_url>[^"]+/s/[^"]+)"><div title="Page [0-9]+: (?<filename>[^"]+)" style="(?<div_style>[^"]+)"></div></a>', src);
+                        matches = Grabber.regexMatches('<a href="(?<page_url>[^"]+/s/[^"]+)">(?:<div>)?<div title="Page [0-9]+: (?<filename>[^"]+)" style="(?<div_style>[^"]+)"></div>', src);
                     }
 
                     for (const match of matches) {
