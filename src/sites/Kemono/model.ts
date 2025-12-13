@@ -12,7 +12,7 @@ function parseJsonImage(data: any): IImage {
         user: data["user"],
         id: data["id"],
     }
-    if (data["attachments"].length > 1) {
+    if (data["attachments"].length > 0) {
         img.type = "gallery";
         img.gallery_count = data["attachments"].length;
     }
@@ -63,7 +63,7 @@ export const source: ISource = {
                     if (query.search) {
                         return {error: "The JSON API does not support arbitrary search."};
                     }
-                    return "/api/recent?limit=" + opts.limit + "&o=" + offset; // + "&q=" + encodeURIComponent(query.search);
+                    return "/api/v1/recent?limit=" + opts.limit + "&o=" + offset; // + "&q=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const data = JSON.parse(src);
@@ -74,10 +74,10 @@ export const source: ISource = {
             gallery: {
                 url: (query: IGalleryQuery): string => {
                     const identity = query.identity!;
-                    return `/api/${identity["service"]}/user/${identity["user"]}/post/${identity["id"]}`;
+                    return `/api/v1/${identity["service"]}/user/${identity["user"]}/post/${identity["id"]}`;
                 },
                 parse: (src: string): IParsedGallery => {
-                    const data = JSON.parse(src)[0];
+                    const data = JSON.parse(src);
                     const image = parseJsonImage(data);
 
                     // Duplicate the root data for each attachment
@@ -151,7 +151,7 @@ export const source: ISource = {
 
                         // Detect galleries with multiple files
                         const attachmentCount = parseInt(Grabber.regexToConst("count", "(?<count>\\d+) attachments?", article.innerHTML()), 10)
-                        if (attachmentCount > 1) {
+                        if (attachmentCount > 0) {
                             image.type = "gallery";
                             image.gallery_count = attachmentCount;
                         }
