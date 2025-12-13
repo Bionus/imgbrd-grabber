@@ -277,7 +277,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <source>Search</source>
-      <translation type="unfinished">搜索</translation>
+      <translation>搜索</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="55"/>
       <source>Sort</source>
-      <translation type="unfinished">排序</translation>
+      <translation>排序</translation>
     </message>
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="58"/>
       <source>Name</source>
-      <translation type="unfinished">名稱</translation>
+      <translation>名稱</translation>
     </message>
   </context>
   <context>
@@ -744,17 +744,17 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="87"/>
       <source>Copyright</source>
-      <translation type="unfinished">系列</translation>
+      <translation>系列</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="95"/>
       <source>Character</source>
-      <translation type="unfinished">角色</translation>
+      <translation>角色</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="103"/>
       <source>Model</source>
-      <translation type="unfinished">模型</translation>
+      <translation>模型</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="111"/>
@@ -764,12 +764,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="119"/>
       <source>Species</source>
-      <translation type="unfinished">物種 (Species)</translation>
+      <translation>物種 (Species)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
       <source>Meta</source>
-      <translation type="unfinished">元資訊 (Meta)</translation>
+      <translation>元資訊 (Meta)</translation>
     </message>
   </context>
   <context>
@@ -830,11 +830,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Search</source>
-      <translation type="unfinished">搜索</translation>
-    </message>
-    <message>
-      <source>Blacklist</source>
-      <translation type="vanished">黑名單</translation>
+      <translation>搜索</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>

@@ -277,7 +277,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <source>Search</source>
-      <translation type="unfinished">Buscar</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="55"/>
       <source>Sort</source>
-      <translation type="unfinished">Ordenar</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="58"/>
       <source>Name</source>
-      <translation type="unfinished">Nombre</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="119"/>
       <source>Species</source>
-      <translation type="unfinished">Especies</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="127"/>
@@ -830,11 +830,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Search</source>
-      <translation type="unfinished">Buscar</translation>
-    </message>
-    <message>
-      <source>Blacklist</source>
-      <translation type="vanished">Lista negra</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -1058,7 +1054,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>General</source>
-      <translation type="unfinished">General</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
@@ -1088,7 +1084,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="54"/>
       <source>Species</source>
-      <translation type="unfinished">Especies</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="55"/>

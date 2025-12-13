@@ -277,7 +277,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <source>Search</source>
-      <translation type="unfinished">Пошук</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="55"/>
       <source>Sort</source>
-      <translation type="unfinished">Порядок</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="58"/>
       <source>Name</source>
-      <translation type="unfinished">Назва</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -832,11 +832,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Search</source>
-      <translation type="unfinished">Пошук</translation>
-    </message>
-    <message>
-      <source>Blacklist</source>
-      <translation type="vanished">Чорний список</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
