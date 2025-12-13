@@ -8,6 +8,18 @@ ColumnLayout {
 
     SettingTitle {
         Layout.fillWidth: true
+        text: qsTr("General")
+    }
+    SpinBoxSetting {
+        name: qsTr("Images per page")
+        min: 1
+        max: 1000
+        setting: gSettings.imagesPerPage
+        Layout.fillWidth: true
+    }
+
+    SettingTitle {
+        Layout.fillWidth: true
         text: qsTr("API order")
     }
     ComboSetting {

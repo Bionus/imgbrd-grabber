@@ -55,6 +55,11 @@ Item {
         def: false
         obj: root.obj
     }
+    property Setting imagesPerPage: Setting {
+        key: "limit"
+        def: 20
+        obj: root.obj
+    }
     property Setting save_filename: Setting {
         key: "Save/filename"
         def: "%md5%.%ext%"
