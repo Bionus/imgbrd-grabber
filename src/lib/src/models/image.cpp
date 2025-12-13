@@ -554,6 +554,7 @@ void Image::parseDetails()
 	}
 	if (!ret.tags.isEmpty()) {
 		m_tags = ret.tags;
+		m_profile->addAutoComplete(ret.tags);
 	}
 	if (ret.createdAt.isValid()) {
 		m_data["date"] = ret.createdAt;
