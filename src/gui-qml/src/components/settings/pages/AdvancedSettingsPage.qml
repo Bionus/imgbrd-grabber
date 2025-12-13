@@ -22,6 +22,18 @@ ColumnLayout {
 
     SettingTitle {
         Layout.fillWidth: true
+        text: qsTr("Auto-complete")
+    }
+    SpinBoxSetting {
+        name: qsTr("Auto tag add")
+        min: 0
+        max: 100000
+        setting: gSettings.tagsAutoAdd
+        Layout.fillWidth: true
+    }
+
+    SettingTitle {
+        Layout.fillWidth: true
         text: qsTr("Backup")
     }
     SettingItem {

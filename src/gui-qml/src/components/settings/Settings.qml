@@ -60,6 +60,11 @@ Item {
         def: 20
         obj: root.obj
     }
+    property Setting tagsAutoAdd: Setting {
+        key: "tagsautoadd"
+        def: 10
+        obj: root.obj
+    }
     property Setting save_filename: Setting {
         key: "Save/filename"
         def: "%md5%.%ext%"
