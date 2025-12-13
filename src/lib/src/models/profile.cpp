@@ -483,8 +483,10 @@ QStringList Profile::addAutoComplete(const QList<Tag> &tags)
 		}
 	}
 
-	m_autoComplete.append(ret);
-	m_autoComplete.sort();
+	if (!ret.isEmpty()) {
+		m_autoComplete.append(ret);
+		m_autoComplete.sort();
+	}
 
 	return ret;
 }
