@@ -195,6 +195,13 @@
        </property>
       </item>
      </widget>
+     <widget class="QScrollArea" name="stackedWidgetScrollArea">
+      <property name="minimumSize">
+        <size>
+          <width>0</width>
+          <height>400</height>
+        </size>
+      </property>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -6009,6 +6016,7 @@
          </spacer>
         </item>
        </layout>
+        </widget>
       </widget>
      </widget>
     </widget>
