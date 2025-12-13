@@ -141,6 +141,47 @@ endif()
 
 if(WIN32)
 	qt_add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+elseif(MACOSX)
+	qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		MACOSX_BUNDLE_EXECUTABLE_NAME "${PROJECT_NAME}"
+		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/gui/resources/Info.plist.in
+		MACOSX_BUNDLE_BUNDLE_NAME "Grabber"
+		MACOSX_BUNDLE_GUI_IDENTIFIER "org.bionus.grabber"
+		MACOSX_BUNDLE_ICON_FILE "grabber.icns"
+		MACOSX_BUNDLE_BUNDLE_VERSION ${VERSION}
+		MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}"
+		MACOSX_BUNDLE_LONG_VERSION_STRING "${VERSION}"
+		MACOSX_BUNDLE_COPYRIGHT "Copyright © 2011-2025 Bionus.\nApache 2.0 License."
+	)
+	add_custom_target(copy_resources
+		COMMENT "Copying resources to Grabber.app"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/dist/common $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Resources/
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/dist/macos $<TARGET_FILE_DIR:${PROJECT_NAME}>/..
+	)
+	add_custom_target(copy_cli
+		DEPENDS cli
+		COMMENT "Copying CLI to Grabber.app"
+		COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cli> $<TARGET_FILE_DIR:${PROJECT_NAME}>
+	)
+	add_custom_target(copy_sites
+		DEPENDS sites
+		COMMENT "Copying sites to Grabber.app"
+    COMMAND rsync -ar --exclude-from="${CMAKE_SOURCE_DIR}/sites/exclude.txt" ${CMAKE_SOURCE_DIR}/sites "$<TARGET_FILE_DIR:${PROJECT_NAME}>/../Resources"
+	)
+	add_dependencies(${PROJECT_NAME} copy_resources copy_cli copy_sites)
+	get_target_property(QMAKE_EXECUTABLE Qt6::qmake IMPORTED_LOCATION)
+	get_filename_component(QT_BIN "${QMAKE_EXECUTABLE}" DIRECTORY)
+	find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN}")
+	add_custom_target(deploy
+		COMMENT "Running macdeployqt on Grabber.app"
+		COMMAND "rm" "-rf" "${CMAKE_CURRENT_BINARY_DIR}/deploy"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/Grabber.app" "${CMAKE_CURRENT_BINARY_DIR}/deploy/Grabber.app"
+		COMMAND "${MACDEPLOYQT_EXECUTABLE}" "${CMAKE_CURRENT_BINARY_DIR}/deploy/Grabber.app" "-executable=$<TARGET_FILE_DIR:${PROJECT_NAME}>/Grabber-cli" "-dmg" "-codesign=\"-\""
+		BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/deploy/Grabber.dmg"
+		DEPENDS ${PROJECT_NAME}
+	)
 else()
 	qt_add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 endif()
@@ -193,7 +234,10 @@ if(ANDROID)
 	endif()
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
-	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+	install(TARGETS ${PROJECT_NAME} RUNTIME
+		DESTINATION bin
+		BUNDLE DESTINATION bin
+	)
 endif()
 
 # Pre-compiled header
