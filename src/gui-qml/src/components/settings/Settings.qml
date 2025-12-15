@@ -293,7 +293,7 @@ Item {
     }
     property Setting coloring_colors_generals: Setting {
         key: "Coloring/Colors/generals"
-        def: appearance_materialTheme.value === Material.Dark ? "#ffffff" : "#000000"
+        def: window.Material.theme === Material.Dark ? "#ffffff" : "#000000"
         obj: root.obj
     }
     property Setting coloring_colors_favorites: Setting {
