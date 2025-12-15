@@ -19,7 +19,7 @@ FocusScope {
         anchors.fill: parent
         anchors.topMargin: 8
         anchors.bottomMargin: 8
-        color: Qt.rgba(1, 1, 1, 0.6)
+        color: Qt.lighter(Material.primary, 1.6)
         radius: 12
 
         AutoCompleteSearchEdit {

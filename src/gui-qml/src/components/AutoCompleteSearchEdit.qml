@@ -52,12 +52,17 @@ SearchEdit {
 
         visible: false
         anchors.top: parent.bottom
+        anchors.topMargin: 12
         anchors.left: parent.left
         anchors.right: parent.right
         height: childrenRect.height
-        color: Material.backgroundDimColor
+        color: Qt.lighter(Material.primary, 1.4)
+        radius: 12
 
         Column {
+            topPadding: 6
+            bottomPadding: 6
+
             Repeater {
                 id: completions
 
