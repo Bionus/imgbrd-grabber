@@ -450,8 +450,6 @@ jobs:
       - name: Build
         shell: cmd
         run: |
-          dir %QT_ROOT_DIR%
-          dir %QT_ROOT_DIR%\resources
           mkdir build
           cd build
           cmake ..\src -G "Visual Studio 17 2022" -A "x64" ^

@@ -129,11 +129,11 @@ Source: "{#QtDir}\Qt6WebChannel.dll";           DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt6QmlWorkerScript.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\QtWebEngineProcess.exe";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtResources}\icudtl.dat";                         DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtResources}\qtwebengine_devtools_resources.dat"; DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtResources}\qtwebengine_resources.dat";          DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtResources}\qtwebengine_resources_100p.dat";     DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtResources}\qtwebengine_resources_200p.dat";     DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtResources}\v8_context_snapshot.dat";            DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_devtools_resources.pak"; DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_resources.pak";          DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_resources_100p.pak";     DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_resources_200p.pak";     DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\v8_context_snapshot.bin";            DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
