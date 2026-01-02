@@ -120,6 +120,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->checkUseQtUserAgent->setDisabled(true);
 	#endif
 	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString());
+	ui->lineExtensionRotatorStatic->setText(settings->value("extensionRotationStatic", QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" }).toStringList().join(", "));
+	ui->lineExtensionRotatorAnimated->setText(settings->value("extensionRotationAnimated", QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }).toStringList().join(", "));
 
 	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
@@ -1203,6 +1205,10 @@ void OptionsWindow::save()
 	settings->setValue("tagsautoadd", ui->spinAutoTagAdd->value());
 	settings->setValue("useQtUserAgent", ui->checkUseQtUserAgent->isChecked());
 	settings->setValue("userAgent", ui->lineUserAgent->text());
+	static const QRegularExpression rxSplitComma(R"(\s*,\s*)");
+	settings->setValue("extensionRotationStatic", ui->lineExtensionRotatorStatic->text().split(rxSplitComma));
+	settings->setValue("extensionRotationAnimated", ui->lineExtensionRotatorAnimated->text().split(rxSplitComma));
+
 	const QStringList starts { "none", "loadfirst", "restore" };
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());

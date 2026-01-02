@@ -284,10 +284,12 @@ void Image::init()
 	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
 
 	// Setup extension rotator
+	static const QStringList defaultExtensionsStatic { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
+	static const QStringList defaultExtensionsAnimated { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" };
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated") || hasTag("video");
 	const QStringList extensions = animated
-		? QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }
-		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
+		? m_settings->value("extensionRotationAnimated", defaultExtensionsAnimated).toStringList()
+		: m_settings->value("extensionRotationStatic", defaultExtensionsStatic).toStringList();
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 }
 

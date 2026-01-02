@@ -656,6 +656,43 @@
           </property>
          </widget>
         </item>
+        <item row="10" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupExtensionRotatorStatic">
+          <property name="title">
+           <string>Extension rotation</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_31">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelExtensionRotatorStatic">
+             <property name="text">
+              <string>Static media</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineExtensionRotatorStatic">
+             <property name="text">
+              <string>jpg, png, gif, jpeg, webm, swf, mp4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineExtensionRotatorAnimated">
+             <property name="text">
+              <string>mp4, webm, gif, jpg, png, jpeg, swf</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelExtensionRotatorAnimated">
+             <property name="text">
+              <string>Animated media</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSourcesRegistries">
