@@ -2517,7 +2517,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="194"/>
       <source>Backup</source>
-      <translation>Резервное копирование</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="387"/>
