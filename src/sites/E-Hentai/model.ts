@@ -227,14 +227,7 @@ export const source: ISource = {
                     const html = Grabber.parseHTML(src);
 
                     const posted = src.match(/>Posted:<\/td>\s*<td.*?>(.+?)</)?.[1];
-                    var nodes = html.find("#gdn a");
-                    var author = "";
-                    if (nodes.length > 0) {
-                        author = nodes[0].innerText();
-                    } 
-                    else {
-                         author = "Disowned gallery";  // or "" if you prefer empty
-                        }
+                    const author = html.find("#gdn a")?.[0]?.innerText();
 
                     /*const tags: ITag[] = [];
                     const tagGroups = html.find("#taglist")[0].find("tr");
