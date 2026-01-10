@@ -5,3 +5,4 @@ paths-ignore:
   - src/sites/node_modules
   - src/sites/*/resources
   - src/tests/resources
+  - src/*/tests/resources
