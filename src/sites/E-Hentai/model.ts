@@ -227,7 +227,7 @@ export const source: ISource = {
                     const html = Grabber.parseHTML(src);
 
                     const posted = src.match(/>Posted:<\/td>\s*<td.*?>(.+?)</)?.[1];
-                    const author = html.find("#gdn a")[0].innerText();
+                    const author = html.find("#gdn a")?.[0]?.innerText();
 
                     /*const tags: ITag[] = [];
                     const tagGroups = html.find("#taglist")[0].find("tr");
