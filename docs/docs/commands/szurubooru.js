@@ -1,5 +1,8 @@
-// Usage: ORDER IS DIFFERENT FROM ORIGINAL szurubooru.js!!! - Update line 35 with your sites url/domain prefixed with /api.
+// Usage:
 // node /full/path/to/grabber/szurubooru.js "username" "token" "%path:nobackslash%" "%all:includenamespace,unsafe,underscores%" "%rating%" "%source:raw%"
+
+// Config:
+const BASE_URL = "http://localhost:8080"; // https://your_booru.tld
 
 const axios = require("axios");
 const fs = require("fs");
@@ -47,8 +50,9 @@ async function setTagCategory(name, category) {
 
 (async () => {
     // Ratings map updated to include szurubooru default ratings, and anime-pictures default 'unknown' safety, which defaults to 'safe'
+    const defaultRating = "safe";
     const ratingsMap = {
-        "": "safe",
+        "": defaultRating,
         "g": "safe",
         "general": "safe",
         "safe": "safe",
@@ -60,22 +64,22 @@ async function setTagCategory(name, category) {
         "e": "unsafe",
         "explicit": "unsafe",
         "unsafe": "unsafe",
-        "unknown": "safe",
+        "unknown": defaultRating,
     };
 
     // Get parameters
     const argv = process.argv.slice(2);
     const username = argv.shift();
     const token = argv.shift();
-
-    axios.defaults.baseURL = "https://your_booru.tld/api";
-    axios.defaults.headers.common["Authorization"] = "Token " + Buffer.from(username + ":" + token).toString("base64");
-    axios.defaults.headers.common["Accept"] = "application/json";
-
     const filePath = argv[0];
     const rawTags = argv[1] || "";
     const rating = argv[2] || "safe";
     const source = argv[3] || undefined;
+
+    // Axios settings
+    axios.defaults.baseURL = BASE_URL + "/api";
+    axios.defaults.headers.common["Authorization"] = "Token " + Buffer.from(username + ":" + token).toString("base64");
+    axios.defaults.headers.common["Accept"] = "application/json";
 
     // Parse tags and update categories
     const tags = rawTags.split(" ");
@@ -88,16 +92,19 @@ async function setTagCategory(name, category) {
         tags[i] = name;
     }
 
+    // Actual data to send to the server
     const data = {
         tags,
         safety: ratingsMap[rating.toLowerCase()],
-        source: source,
+        source,
     };
 
+    // Create a multipart form data request
     const form = new FormData();
     form.append("content", fs.createReadStream(filePath), "image.tmp");
     form.append("metadata", JSON.stringify(data));
 
+    // Create image post
     try {
         const config = {
             headers: form.getHeaders(),
