@@ -1626,7 +1626,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="43"/>
       <source>Suffix without extension</source>
-      <translation type="unfinished"/>
+      <translation>Суффикс без расширения</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="67"/>
@@ -2002,12 +2002,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="131"/>
       <source>Exclude extensions</source>
-      <translation type="unfinished"/>
+      <translation>Исключать расширения</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="138"/>
       <source>txt, tmp, xmp, xmp_original</source>
-      <translation type="unfinished"/>
+      <translation>txt, tmp, xmp, xmp_original</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="99"/>
@@ -2517,7 +2517,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="194"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>Резервная копия</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="387"/>
@@ -3160,7 +3160,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1663"/>
       <location filename="../gui/src/settings/options-window.ui" line="1758"/>
       <source>Overwrite destination file if it already exists</source>
-      <translation type="unfinished"/>
+      <translation>Перезаписывать файл назначения, если он уже существует</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1600"/>
