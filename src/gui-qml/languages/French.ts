@@ -277,17 +277,17 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <source>Search</source>
-      <translation type="unfinished">Recherche</translation>
+      <translation>Recherche</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
       <source>Added tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags ajoutés</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="19"/>
       <source>Post-filters</source>
-      <translation type="unfinished"/>
+      <translation>Post-filtrage</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="55"/>
       <source>Sort</source>
-      <translation type="unfinished">Tri</translation>
+      <translation>Tri</translation>
     </message>
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="58"/>
       <source>Name</source>
-      <translation type="unfinished">Nom</translation>
+      <translation>Nom</translation>
     </message>
   </context>
   <context>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../src/components/HistoryScreen.qml" line="22"/>
       <source>History</source>
-      <translation type="unfinished"/>
+      <translation>Historique</translation>
     </message>
   </context>
   <context>
@@ -511,7 +511,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="94"/>
       <source>Preloading</source>
-      <translation type="unfinished"/>
+      <translation>Pré-chargement</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="101"/>
@@ -832,11 +832,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Search</source>
-      <translation type="unfinished">Recherche</translation>
-    </message>
-    <message>
-      <source>Blacklist</source>
-      <translation type="vanished">Liste noire</translation>
+      <translation>Recherche</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
