@@ -79,6 +79,12 @@ ColumnLayout {
         setting: gSettings.resultsRoundImages
         Layout.fillWidth: true
     }
+    CheckBoxSetting {
+        name: qsTr("Video indicator")
+        subtitle: qsTr("Overlay video indicator on thumbnails.")
+        setting: gSettings.previewVideoIndicator
+        Layout.fillWidth: true
+    }
 
     SettingTitle {
         Layout.fillWidth: true

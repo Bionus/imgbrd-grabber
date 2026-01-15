@@ -158,6 +158,11 @@ Item {
         def: 24 * 60 * 60
         obj: root.obj
     }
+    property Setting previewVideoIndicator: Setting {
+        key: "Interface/previewVideoIndicator"
+        def: true
+        obj: root.obj
+    }
 
     // QML-only settings
     property Setting viewer_buttonsAtBottom: Setting {

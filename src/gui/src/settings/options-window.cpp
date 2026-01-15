@@ -286,6 +286,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
 	ui->checkScaleFontSize->setChecked(settings->value("Interface/scaleFontSize", true).toBool());
+	ui->checkPreviewVideoIndicator->setChecked(settings->value("Interface/previewVideoIndicator", false).toBool());
 
 	// Resize
 	settings->beginGroup("ImageSize");

@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QMenu>
 #include <QMovie>
+#include <QPainter>
 #include <QRandomGenerator>
 #include <QSettings>
 #include <QtMath>
@@ -184,6 +185,7 @@ void ImagePreview::finishedLoading()
 		const int borderSize = settings->value("borders", 3).toInt();
 		const qreal upscale = settings->value("thumbnailUpscale", 1.0).toDouble();
 		const int imageSize = qFloor(150 * upscale);
+		const QSize bounds(imageSize, imageSize);
 
 		QBouton *l = new QBouton(0, resizeInsteadOfCropping, resultsScrollArea, borderSize, m_image->color(), m_container);
 		l->setCheckable(true);
@@ -195,12 +197,22 @@ void ImagePreview::finishedLoading()
 		const QPixmap &thumbnail = m_image->previewImage();
 		if (thumbnail.isNull()) {
 			if (m_image->hasTag(QStringLiteral("flash"))) {
-				l->scale(QPixmap(":/images/flash.png"), QSize(imageSize, imageSize));
+				l->scale(QPixmap(":/images/flash.png"), bounds);
 			} else {
-				l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
+				l->scale(QPixmap(":/images/noimage.png"), bounds);
 			}
+		} else if (m_image->isVideo() && settings->value("Interface/previewVideoIndicator", false).toBool()) {
+			static const QPixmap overlay(":/images/thumbnail-video-overlay.png");
+			const int overlaySize = qMin(qMin(overlay.width(), thumbnail.width()), qMin(overlay.height(), thumbnail.height()));
+
+			QPixmap withOverlay(thumbnail);
+			QPainter painter(&withOverlay);
+			painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+			painter.drawPixmap(qMax(0, (thumbnail.width() - overlaySize) / 2), qMax(0, (thumbnail.height() - overlaySize) / 2), overlaySize, overlaySize, overlay);
+
+			l->scale(withOverlay, bounds);
 		} else {
-			l->scale(thumbnail, QSize(imageSize, imageSize));
+			l->scale(thumbnail, bounds);
 		}
 		if (!m_counter.isEmpty()) {
 			l->setCounter(m_counter);

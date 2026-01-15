@@ -87,6 +87,15 @@ ScrollView {
                         }
                     }
 
+                    Image {
+                        id: previewVideoOverlay
+                        visible: gSettings.previewVideoIndicator.value && modelData.isVideo
+                        source: "/images/thumbnail-video-overlay.png"
+                        width: Math.min(img.width / 3, previewVideoOverlay.implicitWidth)
+                        height: Math.min(img.height / 3, previewVideoOverlay.implicitHeight)
+                        anchors.centerIn: parent
+                    }
+
                     InnerBorder {
                         visible: modelData.color.a > 0
                         color: modelData.color

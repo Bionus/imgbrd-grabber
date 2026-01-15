@@ -134,5 +134,6 @@
         <file>images/icons/history@2x.png</file>
         <file>images/icons/history@3x.png</file>
         <file>images/icons/history@4x.png</file>
+        <file>images/thumbnail-video-overlay.png</file>
     </qresource>
 </RCC>
