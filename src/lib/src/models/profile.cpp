@@ -51,8 +51,6 @@ Profile::Profile(QString path)
 		fileAutoComplete.close();
 	}
 
-	reload(true);
-
 	// Load sources
 	const QString defaultPath = savePath("sites/", true, false);
 	const QString customPath = m_path + "/sites/";
@@ -72,6 +70,8 @@ Profile::Profile(QString path)
 
 		addSource(source);
 	}
+
+	reload(true);
 
 	// Load removed
 	m_removedTags.add(splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true));
