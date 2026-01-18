@@ -88,11 +88,13 @@ ScrollView {
                     }
 
                     Image {
+                        property int overlaySize: Math.min(img.width / 3, previewVideoOverlay.implicitWidth)
+
                         id: previewVideoOverlay
                         visible: gSettings.previewVideoIndicator.value && modelData.isVideo
                         source: "/images/thumbnail-video-overlay.png"
-                        width: Math.min(img.width / 3, previewVideoOverlay.implicitWidth)
-                        height: Math.min(img.height / 3, previewVideoOverlay.implicitHeight)
+                        width: overlaySize
+                        height: overlaySize
                         anchors.centerIn: parent
                     }
 
