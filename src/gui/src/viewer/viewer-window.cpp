@@ -241,7 +241,9 @@ ViewerWindow::~ViewerWindow()
 	m_detailsWindow->deleteLater();
 
 	m_gifPlayer->deleteLater();
-	m_videoPlayer->deleteLater();
+	if (m_videoPlayer != nullptr) {
+		m_videoPlayer->deleteLater();
+	}
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();
