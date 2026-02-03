@@ -58,7 +58,7 @@ QString FFmpeg::convert(const QString &file, const QString &extension, bool over
 	}
 
 	// Execute the conversion command
-	const QStringList params = { "-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2", overwrite ? "-y" : "-n", "-loglevel", "error", "-i", file, destination };
+	const QStringList params = { overwrite ? "-y" : "-n", "-loglevel", "error", "-i", file, "-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2", destination };
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
@@ -82,7 +82,7 @@ QString FFmpeg::remux(const QString &file, const QString &extension, bool overwr
 	}
 
 	// Execute the conversion command
-	const QStringList params = { "-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2", overwrite ? "-y" : "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
+	const QStringList params = { overwrite ? "-y" : "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
