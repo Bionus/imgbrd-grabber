@@ -31,6 +31,7 @@
  * /api/v1/posts -> Image List API(JSON), more info:https://github.com/Kycklingar/pbooru-downloader
  * /tombstone/ -> List of images removed from their original source sites (with reasons)
  * /dns/ -> Link to the artist's SNS or art posting site
+ * /candidates -> A page where users vote for images that have different hashes but are actually duplicates (requires JavaScript, need login)
 */
 
 /* This booru sets the number of images per page as OPTION method instead of passing it as GET method.
