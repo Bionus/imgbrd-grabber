@@ -32,6 +32,9 @@
  * /tombstone/ -> List of images removed from their original source sites (with reasons)
  * /dns/ -> Link to the artist's SNS or art posting site
  * /candidates -> A page where users vote for images that have different hashes but are actually duplicates (requires JavaScript, need login)
+ * /lookup/ -> Find images similar to the image you uploaded.
+ * /similar/?id=<postID> -> Find images similar to the image corresponding to the postID.
+ * /compare?post-id=<postID>&post-id=<postID>&post-id=<postID>... -> This is a tool that compares images received as arguments (requires JavaScript)
 */
 
 /* This booru sets the number of images per page as OPTION method instead of passing it as GET method.
