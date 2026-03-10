@@ -123,11 +123,11 @@ export const source: ISource = {
                     const pageCount = pageCountRaw && pageCountRaw["page"];
                     const images = Grabber.regexToImages('(?:<span[^>]*(?:\\sid="?\\w(?<id>\\d+)"?)?>\\s*)?<a[^>]*(?:\\sid="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src);
                     for (const img of images) {
-                        const json = src.match(new RegExp("posts\\[" + img.id + "\\]\\s*=\\s*({.+?})"))?.[1];
+                        const json = src.match(new RegExp("posts\\[" + img.id + "\\]\\s*=\\s*({[\\s*\\S]+?})"))?.[1];
                         if (json) {
-                            img.rating = json.match(/'rating'\s*:\s*'([^']+)'/)?.[1].toLowerCase();
-                            img.score = json.match(/'score'\s*:\s*(\d+)/)?.[1];
-                            img.author = json.match(/'user'\s*:\s*'([^']+)'/)?.[1];
+                            img.rating = json.match(/["']?rating["']?\s*:\s*["']([^"']+)["']/)?.[1].toLowerCase();
+                            img.score  = json.match(/["']?score["']?\s*:\s*["'](\d+)["']/)?.[1];
+                            img.author = json.match(/["']?user["']?\s*:\s*["']([^'"]+)["']/)?.[1];
                         }
                     }
                     return {
