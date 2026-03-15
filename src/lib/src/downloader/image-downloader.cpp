@@ -358,7 +358,7 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 	} else if (error != NetworkReply::NetworkError::OperationCanceledError) {
 		// "HostNotFoundError" might be caused by network loss, so we emit a blocking "Error" instead
 		if (error == NetworkReply::NetworkError::HostNotFoundError || msg.contains("unreachable")) {
-			log(QStringLiteral("Host '%1' not found for the image: `%2`: %3 (%4)").arg(m_reply->url().host(), m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+			log(QStringLiteral("Host '%1' not found for the image: `%2`: %3 (%4)").arg(m_reply->url().host(), m_image->url().toString()).arg(error).arg(msg), Logger::Error);
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 			return;
 		}
@@ -366,12 +366,12 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 		// Detect HTTP 429 / 503 / 509 usage limit reached
 		const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 		if (statusCode == 429 || statusCode == 503 || statusCode == 509) {
-			log(QStringLiteral("Rate limit reached (%1) for the image `%2`. New try.").arg(QString::number(statusCode), m_image->url().toString().toHtmlEscaped()), Logger::Warning);
+			log(QStringLiteral("Rate limit reached (%1) for the image `%2`. New try.").arg(QString::number(statusCode), m_image->url().toString()), Logger::Warning);
 			loadImage(true);
 			return;
 		}
 
-		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
 	}
 }
@@ -383,13 +383,13 @@ void ImageDownloader::success()
 	if (!redirect.isEmpty()) {
 		// Detect Cloudflare redirects to error or home pages
 		if (m_reply->rawHeader("server") == "cloudflare" && getExtension(m_url) != getExtension(redirect)) {
-			log(QStringLiteral("Cloudflare redirect image `%1` to `%2` ignored").arg(m_url.toString().toHtmlEscaped(), redirect.toString().toHtmlEscaped()), Logger::Info);
+			log(QStringLiteral("Cloudflare redirect image `%1` to `%2` ignored").arg(m_url.toString(), redirect.toString()), Logger::Info);
 			QFile::remove(m_temporaryPath);
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
 			return;
 		}
 
-		log(QStringLiteral("Redirecting image `%1` to `%2`").arg(m_url.toString().toHtmlEscaped(), redirect.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("Redirecting image `%1` to `%2`").arg(m_url.toString(), redirect.toString()), Logger::Info);
 		m_url = redirect;
 		loadImage();
 		return;
