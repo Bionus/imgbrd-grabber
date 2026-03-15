@@ -124,8 +124,6 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->lineExtensionRotatorAnimated->setText(settings->value("extensionRotationAnimated", QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }).toStringList().join(", "));
 
 	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
-	m_filenamesConditions = QList<QLineEdit*>();
-	m_filenamesFilenames = QList<QLineEdit*>();
 	for (const auto &fn : filenames) {
 		addFilename(fn.condition, fn.filename.format(), fn.path);
 	}
@@ -630,16 +628,81 @@ void OptionsWindow::addFilename(const QString &condition, const QString &filenam
 	auto *leCondition = new QLineEdit(condition);
 	auto *leFilename = new QLineEdit(filename);
 	auto *leFolder = new QLineEdit(folder);
+	auto *buttonUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), "");
+	auto *buttonDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), "");
+	auto *buttonRemove = new QPushButton(QIcon(":/images/icons/remove.png"), "");
+
+	connect(buttonUp, &QPushButton::clicked, [=]() {
+		const int index = m_filenamesConditions.indexOf(leCondition);
+		swapConditionals(index, index - 1);
+	});
+	connect(buttonDown, &QPushButton::clicked, [=]() {
+		const int index = m_filenamesConditions.indexOf(leCondition);
+		swapConditionals(index, index + 1);
+	});
+	connect(buttonRemove, &QPushButton::clicked, [=]() {
+		removeConditional(m_filenamesConditions.indexOf(leCondition));
+	});
 
 	m_filenamesConditions.append(leCondition);
 	m_filenamesFilenames.append(leFilename);
 	m_filenamesFolders.append(leFolder);
+	m_filenamesButtonsUp.append(buttonUp);
+	m_filenamesButtonsDown.append(buttonDown);
 
 	auto *layout = new QHBoxLayout();
 	layout->addWidget(leCondition);
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
+	layout->addWidget(buttonUp);
+	layout->addWidget(buttonDown);
+	layout->addWidget(buttonRemove);
 	ui->layoutConditionals->addLayout(layout);
+
+	updateConditionalButtons();
+}
+
+void OptionsWindow::swapConditionals(const int a, const int b)
+{
+	m_filenamesConditions.swapItemsAt(a, b);
+	m_filenamesFilenames.swapItemsAt(a, b);
+	m_filenamesFolders.swapItemsAt(a, b);
+	m_filenamesButtonsUp.swapItemsAt(a, b);
+	m_filenamesButtonsDown.swapItemsAt(a, b);
+
+	const int low = qMin(a, b);
+	const int high = qMax(a, b);
+	auto *itemHigh = ui->layoutConditionals->takeAt(high);
+	auto *itemLow = ui->layoutConditionals->takeAt(low);
+	ui->layoutConditionals->insertItem(low, itemHigh);
+	ui->layoutConditionals->insertItem(high, itemLow);
+
+	updateConditionalButtons();
+}
+
+void OptionsWindow::removeConditional(const int index)
+{
+	m_filenamesConditions.removeAt(index);
+	m_filenamesFilenames.removeAt(index);
+	m_filenamesFolders.removeAt(index);
+	m_filenamesButtonsUp.removeAt(index);
+	m_filenamesButtonsDown.removeAt(index);
+
+	auto *item = ui->layoutConditionals->takeAt(index);
+	clearLayout(item->layout());
+	item->layout()->deleteLater();
+	delete item;
+
+	updateConditionalButtons();
+}
+
+void OptionsWindow::updateConditionalButtons()
+{
+	const int count = m_filenamesConditions.size();
+	for (int i = 0; i < count; ++i) {
+		m_filenamesButtonsUp[i]->setEnabled(i > 0);
+		m_filenamesButtonsDown[i]->setEnabled(i < count - 1);
+	}
 }
 
 

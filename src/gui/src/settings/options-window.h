@@ -15,6 +15,7 @@ namespace Ui
 
 class Profile;
 class QCheckBox;
+class QPushButton;
 class QSpinBox;
 class ThemeLoader;
 class TokenSettingsWidget;
@@ -87,6 +88,9 @@ class OptionsWindow : public QDialog
 		void addCustom(const QString &, const QString &);
 		void on_buttonFilenames_clicked();
 		void addFilename(const QString &, const QString &, const QString &);
+		void swapConditionals(int a, int b);
+		void removeConditional(int index);
+		void updateConditionalButtons();
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
 		void on_buttonConversionImageListAdd_clicked();
@@ -135,6 +139,7 @@ class OptionsWindow : public QDialog
 		QList<ReverseSearchEngine> m_webServices;
 		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
+		QList<QPushButton*> m_filenamesButtonsUp, m_filenamesButtonsDown;
 		QList<TokenSettingsWidget*> m_tokenSettings;
 		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
 		QList<QPair<QCheckBox*, QSpinBox*>> m_buttonSettingPairs;
