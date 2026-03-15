@@ -74,7 +74,17 @@ QString logToHtml(const QString &msg)
 
 	// Links color
 	static const QRegularExpression rxLinks("`(http[^`]+)`");
-	htmlMsg.replace(rxLinks, R"(<a href="\1">\1</a>)");
+	QString htmlMsgLinks;
+	int lastEnd = 0;
+	const QStringView view(htmlMsg);
+	for (const auto &match : rxLinks.globalMatch(htmlMsg)) {
+		htmlMsgLinks += view.mid(lastEnd, match.capturedStart() - lastEnd);
+		const auto url = match.capturedView(1);
+		htmlMsgLinks += QLatin1String("<a href=\"") + url + QLatin1String("\">") + url.toString().toHtmlEscaped() + QLatin1String("</a>");
+		lastEnd = match.capturedEnd();
+	}
+	htmlMsgLinks += view.mid(lastEnd);
+	htmlMsg = htmlMsgLinks;
 
 	// File paths color
 	#ifdef Q_OS_WIN
