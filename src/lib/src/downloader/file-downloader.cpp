@@ -66,7 +66,7 @@ void FileDownloader::replyFinished()
 	if (error != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml || emptyFile) {
 		// Ignore those errors as they are caused by a bug in Qt
 		if (error != NetworkReply::NetworkError::NoError && msg.contains("140E0197")) {
-			log(QStringLiteral("Ignored network error '140E0197' for the image: `%1`: %2 (%3)").arg(m_reply->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Info);
+			log(QStringLiteral("Ignored network error '140E0197' for the image: `%1`: %2 (%3)").arg(m_reply->url().toString()).arg(error).arg(msg), Logger::Info);
 			emit success();
 			return;
 		}
