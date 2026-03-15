@@ -57,8 +57,12 @@ QString FFmpeg::convert(const QString &file, const QString &extension, bool over
 		return file;
 	}
 
+	// Most video codecs require even dimensions, as well as some image formats
+	static const QStringList evenDimensionsFormats {"mp4", "mkv", "mov", "avi", "webm", "wmv", "mpg", "mpeg", "m4v", "ts", "flv", "3gp", "avif", "heic", "heif", "webp"};
+	const QStringList filters = evenDimensionsFormats.contains(extension) ? QStringList {"-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2"} : QStringList();
+
 	// Execute the conversion command
-	const QStringList params = { overwrite ? "-y" : "-n", "-loglevel", "error", "-i", file, "-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2", destination };
+	const QStringList params = QStringList() << (overwrite ? "-y" : "-n") << "-loglevel" << "error" << "-i" << file << filters << destination;
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
