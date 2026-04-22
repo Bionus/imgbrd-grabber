@@ -49,6 +49,8 @@ class MainScreen : public QObject
 		void setBlacklist(const QString &blacklist);
 		QString getIgnored();
 		void setIgnored(const QString &ignored);
+		QString getRemoved();
+		void setRemoved(const QString &removed);
 		void addFavorite(const QString &query, const QString &siteUrl);
 		void removeFavorite(const QString &query);
 		void loadSuggestions(const QString &prefix, int limit);

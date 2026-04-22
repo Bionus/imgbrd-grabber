@@ -1234,7 +1234,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	const QSettings *settings = profile->getSettings();
 	const QStringList &ignore = profile->getIgnored();
-	const TagFilterList &remove = profile->getRemovedTags();
+	const TagFilterList &remove = profile->getRemoved();
 
 	QMap<QString, Token> tokens;
 	QMap<QString, QStringList> details;

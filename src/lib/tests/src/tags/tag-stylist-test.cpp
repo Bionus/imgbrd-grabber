@@ -72,6 +72,22 @@ TEST_CASE("TagStylist")
 		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
+	SECTION("Removed")
+	{
+	settings.setValue("Coloring/Fonts/removeds", ",8.25,-1,5,50,0,0,0,0,0");
+	settings.setValue("Coloring/Colors/removeds", "#6e6e6e");
+
+	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	Profile pro(&settings, QList<Favorite>());
+	pro.addRemoved("tag_text");
+
+	TagStylist stylist(&pro);
+	QString actual = stylist.stylished(QList<Tag>() << tag).join("");
+	std::string expected = "<a href=\"tag_text\" style=\"color:#6e6e6e; font-family:'[^']*'; font-size:[0-9]+pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	REQUIRE_THAT(actual.toStdString(), Matches(expected));
+	}
+
 	SECTION("Blacklisted")
 	{
 		settings.setValue("Coloring/Fonts/blacklisteds", ",8.25,-1,5,50,0,0,0,0,0");

@@ -35,7 +35,7 @@ ColumnLayout {
     }
     TextAreaSetting {
         name: qsTr("Removed tags")
-        subtitle: qsTr("These won't be taken into account when saving the image.")
+        subtitle: qsTr("One per line. These won't be taken into account when saving the image.")
         setting: gSettings.removedTags
         Layout.fillWidth: true
     }

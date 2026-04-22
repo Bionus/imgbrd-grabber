@@ -26,9 +26,53 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 	}
 
 	// Generate style map
-	static const QStringList tlist { "artists", "circles", "copyrights", "characters", "species", "metas", "models", "generals", "favorites", "keptForLater", "blacklisteds", "ignoreds", "favorites" };
-	static const QStringList defaults { "#aa0000", "#55bbff", "#aa00aa", "#00aa00", "#ee6600", "#ee6600", "#0000ee", "#000000", "#ffc0cb", "#000000", "#000000", "#999999", "#ffcccc" };
-	static const QStringList defaultsDark { "#ff8888", "#55bbff", "#cc66cc", "#66cc66", "#ee6600", "#ee6600", "#0000ee", "#ffffff", "#ffc0cb", "#ffffff", "#000000", "#999999", "#ffcccc" };
+	static const QStringList tlist {
+		"artists",
+		"circles",
+		"copyrights",
+		"characters",
+		"species",
+		"metas",
+		"models",
+		"generals",
+		"favorites",
+		"keptForLater",
+		"blacklisteds",
+		"ignoreds",
+		"removeds"
+	};
+
+	static const QStringList defaults {
+		"#aa0000", /*artists*/
+		"#55bbff", /*circles*/
+		"#aa00aa", /*copyrights*/
+		"#00aa00", /*characters*/
+		"#ee6600", /*species*/
+		"#ee6600", /*metas*/
+		"#0000ee", /*models*/
+		"#000000", /*generals*/
+		"#ffc0cb", /*favorites*/
+		"#000000", /*keptForLater*/
+		"#000000", /*blacklisteds*/
+		"#999999", /*ignoreds*/
+		"#6e6e6e" /*removeds*/
+	};
+
+	static const QStringList defaultsDark {
+		"#ff8888", /*artists*/
+		"#55bbff", /*circles*/
+		"#cc66cc", /*copyrights*/
+		"#66cc66", /*characters*/
+		"#ee6600", /*species*/
+		"#ee6600", /*metas*/
+		"#0000ee", /*models*/
+		"#ffffff", /*generals*/
+		"#ffc0cb", /*favorites*/
+		"#ffffff", /*keptForLater*/
+		"#000000", /*blacklisteds*/
+		"#999999", /*ignoreds*/
+		"#6e6e6e" /*removeds*/
+	};
 	QMap<QString, QString> styles;
 	for (const QString &key : tlist) {
 		const QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, (dark ? defaultsDark : defaults).at(tlist.indexOf(key))).toString();
@@ -68,6 +112,9 @@ QString TagStylist::stylished(const Tag &tag, const QMap<QString, QString> &styl
 	}
 	if (m_profile->getIgnored().contains(txt, Qt::CaseInsensitive)) {
 		key = "ignoreds";
+	}
+	if (m_profile->getRemoved().contains(txt)) {
+		key = "removeds";
 	}
 	for (const QString &t : qAsConst(m_profile->getKeptForLater())) {
 		if (t == txt) {

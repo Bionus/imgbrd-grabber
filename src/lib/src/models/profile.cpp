@@ -116,7 +116,21 @@ Profile::Profile(QString path)
 	}
 
 	// Load removed
-	m_removedTags.add(splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true));
+	QFile fileRemoved(m_path + "/removed.txt");
+	if (fileRemoved.open(QFile::ReadOnly | QFile::Text)) {
+		QString rem = fileRemoved.readAll();
+		fileRemoved.close();
+
+		m_removedTags.add(rem.split("\n", Qt::SkipEmptyParts));
+	} else {
+		// Legacy migration from old settings key
+		const QString legacyRemoved = m_settings->value("ignoredtags").toString();
+		if (!legacyRemoved.isEmpty()) {
+			m_removedTags.add(splitStringMulti({ ' ', '\n' }, legacyRemoved, true));
+			syncRemoved();
+			m_settings->remove("ignoredtags");
+		}
+	}
 
 	// Make a backup of MD5s in case the multi-location change broke everything
 	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
@@ -232,6 +246,7 @@ void Profile::sync()
 	syncFavorites();
 	syncKeptForLater();
 	syncIgnored();
+	syncRemoved();
 	syncBlacklist();
 
 	// MD5s
@@ -281,6 +296,14 @@ void Profile::syncKeptForLater() const
 void Profile::syncIgnored() const
 {
 	safeWriteFile(m_path + "/ignore.txt", m_ignored.join("\r\n").toUtf8());
+}
+void Profile::syncRemoved() const
+{
+	if (m_path.isEmpty()) {
+		return;
+	}
+
+	safeWriteFile(m_path + "/removed.txt", m_removedTags.toString().toUtf8());
 }
 void Profile::syncBlacklist() const
 {
@@ -399,12 +422,29 @@ void Profile::removeIgnored(const QString &tag)
 	emit ignoredChanged();
 }
 
-void Profile::setRemovedTags(const QString &raw)
+void Profile::setRemoved(const QStringList &tags)
 {
 	m_removedTags.clear();
-	m_removedTags.add(splitStringMulti({ ' ', '\n' }, raw, true));
+	m_removedTags.add(tags);
 
-	m_settings->setValue("ignoredtags", raw);
+	syncRemoved();
+	emit removedChanged();
+}
+
+void Profile::addRemoved(const QString &tag)
+{
+	m_removedTags.add(tag);
+
+	syncRemoved();
+	emit removedChanged();
+}
+
+void Profile::removeRemoved(const QString &tag)
+{
+	m_removedTags.remove(tag);
+
+	syncRemoved();
+	emit removedChanged();
 }
 
 QPair<QString, QString> Profile::md5Action(const QString &md5, const QString &target)
@@ -539,7 +579,7 @@ QSettings *Profile::getSettings() const { return m_settings; }
 QList<Favorite> &Profile::getFavorites() { return m_favorites; }
 QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
-TagFilterList &Profile::getRemovedTags() { return m_removedTags; }
+TagFilterList &Profile::getRemoved() { return m_removedTags; }
 Commands &Profile::getCommands() { return *m_commands; }
 Exiftool &Profile::getExiftool() { return *m_exiftool; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }

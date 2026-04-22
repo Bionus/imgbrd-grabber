@@ -4,9 +4,9 @@
 #include <QList>
 #include <QSet>
 
-
 class QRegularExpression;
 class QString;
+class QStringList;
 class Tag;
 
 /**
@@ -24,8 +24,12 @@ class TagFilterList
 		QList<Tag> filterTags(const QList<Tag> &tags) const;
 		bool contains(const QString &word) const;
 
+		QStringList toStringList() const;
+		QString toString() const;
+
 	private:
 		QSet<QString> m_rawTags;
+		QSet<QString> m_starTagStrings;
 		QSet<QRegularExpression> m_starTags;
 };
 

@@ -37,6 +37,7 @@ class Profile : public QObject
 		void syncFavorites() const;
 		void syncKeptForLater() const;
 		void syncIgnored() const;
+		void syncRemoved() const;
 		void syncBlacklist() const;
 
 		// Temporary path
@@ -58,7 +59,9 @@ class Profile : public QObject
 		void removeIgnored(const QString &tag);
 
 		// Removed tags management
-		void setRemovedTags(const QString &raw);
+		void setRemoved(const QStringList &tags);
+		void addRemoved(const QString &tag);
+		void removeRemoved(const QString &tag);
 
 		// MD5 management
 		QPair<QString, QString> md5Action(const QString &md5, const QString &target);
@@ -91,7 +94,7 @@ class Profile : public QObject
 		QList<Favorite> &getFavorites();
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
-		TagFilterList &getRemovedTags();
+		TagFilterList &getRemoved();
 		Commands &getCommands();
 		Exiftool &getExiftool();
 		QStringList &getAutoComplete();
@@ -109,6 +112,7 @@ class Profile : public QObject
 		void favoritesChanged();
 		void keptForLaterChanged();
 		void ignoredChanged();
+		void removedChanged();
 		void sitesChanged();
 		void siteDeleted(Site *site);
 		void blacklistChanged();

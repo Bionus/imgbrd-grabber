@@ -51,6 +51,7 @@ class OptionsWindow : public QDialog
 		void on_lineColoringBlacklisteds_textChanged();
 		void on_lineColoringBlacklistedsBorder_textChanged();
 		void on_lineColoringIgnoreds_textChanged();
+		void on_lineColoringRemoveds_textChanged();
 		void on_buttonColoringArtistsColor_clicked();
 		void on_buttonColoringCirclesColor_clicked();
 		void on_buttonColoringCopyrightsColor_clicked();
@@ -65,6 +66,7 @@ class OptionsWindow : public QDialog
 		void on_buttonColoringBlacklistedsColor_clicked();
 		void on_buttonColoringBlacklistedsBorderColor_clicked();
 		void on_buttonColoringIgnoredsColor_clicked();
+		void on_buttonColoringRemovedsColor_clicked();
 		void on_buttonColoringArtistsFont_clicked();
 		void on_buttonColoringCirclesFont_clicked();
 		void on_buttonColoringCopyrightsFont_clicked();
@@ -77,6 +79,7 @@ class OptionsWindow : public QDialog
 		void on_buttonColoringKeptForLaterFont_clicked();
 		void on_buttonColoringBlacklistedsFont_clicked();
 		void on_buttonColoringIgnoredsFont_clicked();
+		void on_buttonColoringRemovedsFont_clicked();
 		void on_lineBorderColor_textChanged();
 		void on_buttonBorderColor_clicked();
 		void on_buttonFilenamePlus_clicked();
