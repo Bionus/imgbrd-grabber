@@ -107,9 +107,12 @@ Grabber.countToInt = (str: string): number | undefined => {
     }
     let count: number;
     const normalized = str.toLowerCase().trim().replace(/,/g, "");
-    if (normalized.slice(-1) === "k") {
+    if (normalized.slice(-1) === "m") {
         const withoutK = normalized.substring(0, normalized.length - 1).trim();
-        count = parseFloat(withoutK) * 1000;
+        count = parseFloat(withoutK) * 1_000_000;
+    } else if (normalized.slice(-1) === "k") {
+        const withoutK = normalized.substring(0, normalized.length - 1).trim();
+        count = parseFloat(withoutK) * 1_000;
     } else {
         count = parseFloat(normalized);
     }
