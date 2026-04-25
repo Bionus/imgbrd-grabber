@@ -255,8 +255,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	new SearchSyntaxHighlighter(false, ui->textBlacklist->document());
 
-	// Ignored tags
-	ui->textRemovedTags->setPlainText(settings->value("ignoredtags").toString());
+	// Ignored / removed tags
+	ui->textRemovedTags->setPlainText(profile->getRemoved().toString());
 	ui->textIgnoredTags->setPlainText(profile->getIgnored().join('\n'));
 
 	// Monitoring
@@ -483,6 +483,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#000000").toString());
 			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#000000").toString());
 			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
+			ui->lineColoringRemoveds->setText(settings->value("removeds", "#6e6e6e").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
 			ui->lineColoringArtists->setFont(qFontFromString(settings->value("artists").toString()));
@@ -497,6 +498,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringKeptForLater->setFont(qFontFromString(settings->value("keptForLater").toString()));
 			ui->lineColoringBlacklisteds->setFont(qFontFromString(settings->value("blacklisteds").toString()));
 			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
+			ui->lineColoringRemoveds->setFont(qFontFromString(settings->value("removeds").toString()));
 		settings->endGroup();
 		settings->beginGroup("Borders");
 			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffc0cb").toString());
@@ -1063,6 +1065,8 @@ void OptionsWindow::on_lineColoringBlacklistedsBorder_textChanged()
 { setColor(ui->lineColoringBlacklistedsBorder); }
 void OptionsWindow::on_lineColoringIgnoreds_textChanged()
 { setColor(ui->lineColoringIgnoreds); }
+void OptionsWindow::on_lineColoringRemoveds_textChanged()
+{ setColor(ui->lineColoringRemoveds); }
 void OptionsWindow::on_lineBorderColor_textChanged()
 { setColor(ui->lineBorderColor); }
 
@@ -1094,6 +1098,8 @@ void OptionsWindow::on_buttonColoringBlacklistedsBorderColor_clicked()
 { setColor(ui->lineColoringBlacklistedsBorder, true); }
 void OptionsWindow::on_buttonColoringIgnoredsColor_clicked()
 { setColor(ui->lineColoringIgnoreds, true); }
+void OptionsWindow::on_buttonColoringRemovedsColor_clicked()
+{ setColor(ui->lineColoringRemoveds, true); }
 void OptionsWindow::on_buttonBorderColor_clicked()
 { setColor(ui->lineBorderColor, true); }
 
@@ -1121,6 +1127,8 @@ void OptionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 { setFont(ui->lineColoringBlacklisteds); }
 void OptionsWindow::on_buttonColoringIgnoredsFont_clicked()
 { setFont(ui->lineColoringIgnoreds); }
+void OptionsWindow::on_buttonColoringRemovedsFont_clicked()
+{ setFont(ui->lineColoringRemoveds); }
 
 void OptionsWindow::on_lineImageBackgroundColor_textChanged()
 { setColor(ui->lineImageBackgroundColor); }
@@ -1256,8 +1264,8 @@ void OptionsWindow::save()
 	settings->setValue("warnblacklisted", ui->checkWarnBlacklisted->isChecked());
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
-	// Ignored tags
-	m_profile->setRemovedTags(ui->textRemovedTags->toPlainText());
+	// Ignored / removed tags
+	m_profile->setRemoved(ui->textRemovedTags->toPlainText().split('\n', Qt::SkipEmptyParts));
 	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', Qt::SkipEmptyParts));
 
 	// Monitoring
@@ -1523,6 +1531,7 @@ void OptionsWindow::save()
 			settings->setValue("keptForLater", ui->lineColoringKeptForLater->text());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->text());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->text());
+			settings->setValue("removeds", ui->lineColoringRemoveds->text());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
 			settings->setValue("artists", ui->lineColoringArtists->font().toString());
@@ -1537,6 +1546,7 @@ void OptionsWindow::save()
 			settings->setValue("keptForLater", ui->lineColoringKeptForLater->font().toString());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->font().toString());
+			settings->setValue("removeds", ui->lineColoringRemoveds->font().toString());
 		settings->endGroup();
 		settings->beginGroup("Borders");
 			settings->setValue("favorites", ui->lineColoringFavoritesBorder->text());

@@ -43,7 +43,7 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 	}
 
 	// Removed tags
-	if (profile->getRemovedTags().contains(m_tag)) {
+	if (profile->getRemoved().contains(m_tag)) {
 		addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't remove"), this, &TagContextMenu::unremove);
 	} else {
 		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Remove"), this, &TagContextMenu::remove);
@@ -102,11 +102,12 @@ void TagContextMenu::unignore()
 
 void TagContextMenu::remove()
 {
-	m_profile->getRemovedTags().add(m_tag);
+	m_profile->addRemoved(m_tag);
 }
+
 void TagContextMenu::unremove()
 {
-	m_profile->getRemovedTags().remove(m_tag);
+	m_profile->removeRemoved(m_tag);
 }
 
 void TagContextMenu::blacklist()

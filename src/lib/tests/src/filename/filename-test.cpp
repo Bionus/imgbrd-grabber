@@ -106,7 +106,7 @@ TEST_CASE("Filename")
 	auto *profile = pProfile.data();
 
 	auto *settings = profile->getSettings();
-	profile->setRemovedTags("");
+	profile->setRemoved({});
 	settings->setValue("Save/separator", " ");
 	settings->setValue("Save/character_value", "group");
 	settings->setValue("Save/character_multiple", "replaceAll");
@@ -197,15 +197,15 @@ TEST_CASE("Filename")
 			"%artist%/%copyright%/%character%/%md5%.%ext%",
 			"artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
-	SECTION("PathIgnoredTags")
+	SECTION("PathRemovedTags")
 	{
-		profile->setRemovedTags("character1");
+		profile->setRemoved(QStringList() << "character1");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
 			"%artist%/%copyright%/%character%/%md5%.%ext%",
 			"artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		profile->setRemovedTags("character*");
+		profile->setRemoved(QStringList() << "character*");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
 			"%artist%/%copyright%/%character%/%md5%.%ext%",
@@ -216,6 +216,14 @@ TEST_CASE("Filename")
 		assertPath(profile, img,
 			"%artist%/%copyright%/%character%/%md5%.%ext%",
 			"artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	}
+	SECTION("PathRemovedTagsMultiple") //testing multiple removed tags
+	{
+		profile->setRemoved(QStringList() << "character1" << "copyright1");
+		img = ImageFactory::build(site, details, profile);
+		assertPath(profile, img,
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/copyright2/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathEmptyDirs")
 	{

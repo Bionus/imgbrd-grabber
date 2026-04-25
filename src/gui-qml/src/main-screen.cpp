@@ -250,3 +250,13 @@ void MainScreen::setIgnored(const QString &ignored)
 {
 	m_profile->setIgnored(ignored.split('\n', Qt::SkipEmptyParts));
 }
+
+QString MainScreen::getRemoved()
+{
+	return m_profile->getRemoved().toString();
+}
+
+void MainScreen::setRemoved(const QString &removed)
+{
+	m_profile->setRemoved(removed.split('\n', Qt::SkipEmptyParts));
+}

@@ -70,6 +70,11 @@ ColumnLayout {
         setting: gSettings.coloring_colors_ignoreds
         Layout.fillWidth: true
     }
+    ColorPickerSetting {
+        name: qsTr("Removed")
+        setting: gSettings.coloring_colors_removeds
+        Layout.fillWidth: true
+    }
 
     Item {
         Layout.fillHeight: true

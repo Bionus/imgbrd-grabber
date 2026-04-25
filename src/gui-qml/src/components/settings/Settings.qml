@@ -112,15 +112,18 @@ Item {
         def: false
         obj: root.obj
     }
-    property Setting removedTags: Setting {
-        key: "ignoredtags"
-        def: ""
-        obj: root.obj
+    property var removedTags: Item {
+        property string value: backend.getRemoved()
+        function setValue(val) {
+            backend.setRemoved(val)
+            value = val
+        }
     }
     property var ignoredTags: Item {
         property string value: backend.getIgnored()
         function setValue(val) {
             backend.setIgnored(val)
+            value = val
         }
     }
     property Setting viewer_viewSamples: Setting {
@@ -288,6 +291,11 @@ Item {
     }
     property Setting coloring_colors_ignoreds: Setting {
         key: "Coloring/Colors/ignoreds"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_removeds: Setting {
+        key: "Coloring/Colors/removeds"
         def: ""
         obj: root.obj
     }
