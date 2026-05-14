@@ -6,25 +6,25 @@ function completeImage(img: IImage): IImage {
 }
 
 const imgMap = {
-    "ext": "file.ext",
+    "ext": "files.meta.ext",
     "change": "change_seq",
     "creator_id": "uploader_id",
     "id": "id",
     "rating": "rating",
-    "file_url": "file.url",
-    "width": "file.width",
-    "height": "file.height",
-    "file_size": "file.size",
-    "preview_url": "preview.url",
-    "preview_width": "preview.width",
-    "preview_height": "preview.height",
-    "sample_url": "sample.url",
-    "sample_height": "sample.height",
-    "sample_width": "sample.width",
-    "md5": "file.md5",
-    "has_children": "relationships.has_children",
+    "file_url": "files.original.url",
+    "width": "files.original.width",
+    "height": "files.original.height",
+    "file_size": "files.meta.size",
+    "preview_url": "files.preview.jpg",
+    "preview_width": "files.preview.width",
+    "preview_height": "files.preview.height",
+    "sample_url": "files.sample.jpg",
+    "sample_height": "files.sample.height",
+    "sample_width": "files.sample.width",
+    "md5": "files.meta.md5",
+    "has_children": "has.children",
     "parent_id": "relationships.parent_id",
-    "score": "score.total",
+    "score": "stats.score.total",
     "sources": "sources",
 };
 
@@ -32,9 +32,7 @@ function parseImage(raw: any): IImage | null {
     const img = Grabber.mapFields(raw, imgMap);
 
     img.created_at = Math.floor(Date.parse(raw.created_at) / 1000);
-    img.has_comments = raw.comment_count > 0;
-
-    // Determine flags
+    img.has_comments = (raw.stats?.comment_count || 0) > 0;
     img.status = "active";
     if (raw.flags.pending === true) {
         img.status = "pending";
@@ -46,7 +44,13 @@ function parseImage(raw: any): IImage | null {
 
     const tags: ITag[] = [];
     for (const type in raw.tags) {
-        for (const name of raw.tags[type]) {
+        const tagList = raw.tags[type];
+
+        if (!Array.isArray(tagList)) {
+            continue;
+        }
+
+        for (const name of tagList) {
             tags.push({ name, type });
         }
     }
@@ -58,7 +62,6 @@ function parseImage(raw: any): IImage | null {
 
     return completeImage(img);
 }
-
 export const source: ISource = {
     name: "E621",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "rating:s", "rating:q", "rating:e", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "status:any", "status:deleted", "status:active", "status:flagged", "status:pending", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "order:random", "parent:none", "unlocked:rating"],
@@ -100,7 +103,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "{page}", "a{max}", "b{min}");
-                        return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                       return "/posts.json?v2=true&mode=extended&limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                     } catch (e: any) {
                         return { error: e.message };
                     }
@@ -112,9 +115,10 @@ export const source: ISource = {
                         return { error: data["message"] };
                     }
 
-                    const images: IImage[] = [];
-                    let invalid = 0;
-                    for (const image of data["posts"]) {
+                   const images: IImage[] = [];
+                   let invalid = 0;
+                   const posts = Array.isArray(data) ? data : data["posts"];
+                   for (const image of posts) {
                         const img = parseImage(image);
                         if (!img) {
                             continue;
@@ -139,7 +143,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IImage => {
                     const data = JSON.parse(src);
-                    return parseImage(data["post"])!;
+                    return parseImage(data["post"] || data)!;
                 },
             },
             tags: {
