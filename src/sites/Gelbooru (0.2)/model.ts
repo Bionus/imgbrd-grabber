@@ -1,5 +1,19 @@
+const tagTypeMap: Record<string, string> = {
+    "tag": "general",
+    "metadata": "meta",
+};
+
 function completeImage(img: IImage): IImage {
     img.author = (img as any).owner;
+
+    if ("tag_info" in img) {
+        const tagInfo: Array<{ tag: string; type: string; count: number }> = img["tag_info"] as any;
+        img.tags = tagInfo.map((tag) => ({
+            name: tag.tag,
+            type: tagTypeMap[tag.type] || tag.type,
+            count: tag.count,
+        }));
+    }
 
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url
@@ -94,6 +108,54 @@ export const source: ISource = {
                 },
             },
         },
+        json: {
+            name: "JSON",
+            auth: [],
+            maxLimit: 100,
+            search: {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                    const page: number = query.page - 1;
+                    const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                    const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                    if (fav) {
+                        return { error: "JSON API cannot search favorites" };
+                    }
+                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search) + "&json=1";
+                },
+                parse: (src: string): IParsedSearch | IError => {
+                    let parsed = JSON.parse(src);
+
+                    // Handle the old format
+                    if (Array.isArray(parsed)) {
+                        parsed = {
+                            "@attributes": {},
+                            "post": parsed,
+                        };
+                    }
+
+                    const images: IImage[] = [];
+                    for (const image of parsed["post"]) {
+                        images.push(completeImage(image));
+                    }
+
+                    return {
+                        images,
+                        imageCount: parsed["@attributes"]["count"],
+                    };
+                },
+            },
+            details: {
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    return "/index.php?page=dapi&s=post&q=index&id=" + id + "&fields=tag_info&json=1";
+                },
+                parse: (src: string): IImage => {
+                    const parsed = JSON.parse(src);
+                    const post = "post" in parsed ? parsed["post"] : parsed;
+                    const image = Array.isArray(post) ? post[0] : post;
+                    return completeImage(image);
+                },
+            },
+        },
         html: {
             name: "Regex",
             auth: [],
@@ -139,39 +201,10 @@ export const source: ISource = {
             },
             details: {
                 url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
-                    // rule34.xxx exposes typed tags through the dapi JSON endpoint with
-                    // fields=tag_info, letting us avoid the Cloudflare-protected HTML
-                    // post page used by sibling sites.
-                    if (opts.baseUrl && opts.baseUrl.indexOf("rule34.xxx") !== -1) {
-                        return "/index.php?page=dapi&s=post&q=index&id=" + id + "&fields=tag_info&json=1";
-                    }
                     const baseUrl = opts.baseUrl.replace("//api.", "//");
                     return baseUrl + "/index.php?page=post&s=view&id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {
-                    const head = src.replace(/^\s+/, "").charAt(0);
-                    if (head === "[" || head === "{") {
-                        const data = JSON.parse(src);
-                        const post = (Array.isArray(data) ? data[0] : data) || {};
-                        const typeMap: Record<string, string> = {
-                            "tag": "general",
-                            "copyright": "copyright",
-                            "character": "character",
-                            "artist": "artist",
-                            "metadata": "meta",
-                        };
-                        const tagInfo: Array<{ tag: string; type: string; count: number }> = post.tag_info || [];
-                        const tags = tagInfo.map((t) => ({
-                            name: t.tag,
-                            type: typeMap[t.type] || t.type,
-                            count: t.count,
-                        }));
-                        return {
-                            tags,
-                            imageUrl: post.file_url,
-                            source: post.source,
-                        };
-                    }
                     return {
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*(?:<span[^>]*>[^<]*)?<a[^>]*>[^<]*</a>(?:[^<]*</span>)?)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
                         imageUrl: Grabber.regexToConst("url", '<img[^>]+src="([^"]+)"[^>]+onclick="Note\\.toggle\\(\\);"[^>]*/>', src),
