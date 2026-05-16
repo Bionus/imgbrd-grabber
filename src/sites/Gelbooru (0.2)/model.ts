@@ -1,5 +1,19 @@
+const tagTypeMap: Record<string, string> = {
+    "tag": "general",
+    "metadata": "meta",
+};
+
 function completeImage(img: IImage): IImage {
     img.author = (img as any).owner;
+
+    if ("tag_info" in img) {
+        const tagInfo: Array<{ tag: string; type: string; count: number }> = img["tag_info"] as any;
+        img.tags = tagInfo.map((tag) => ({
+            name: tag.tag,
+            type: tagTypeMap[tag.type] || tag.type,
+            count: tag.count,
+        }));
+    }
 
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url
@@ -91,6 +105,54 @@ export const source: ISource = {
                         images,
                         imageCount: parsed.posts["@attributes"]["count"],
                     };
+                },
+            },
+        },
+        json: {
+            name: "JSON",
+            auth: [],
+            maxLimit: 100,
+            search: {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                    const page: number = query.page - 1;
+                    const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                    const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                    if (fav) {
+                        return { error: "JSON API cannot search favorites" };
+                    }
+                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search) + "&json=1";
+                },
+                parse: (src: string): IParsedSearch | IError => {
+                    let parsed = JSON.parse(src);
+
+                    // Handle the old format
+                    if (Array.isArray(parsed)) {
+                        parsed = {
+                            "@attributes": {},
+                            "post": parsed,
+                        };
+                    }
+
+                    const images: IImage[] = [];
+                    for (const image of parsed["post"]) {
+                        images.push(completeImage(image));
+                    }
+
+                    return {
+                        images,
+                        imageCount: parsed["@attributes"]["count"],
+                    };
+                },
+            },
+            details: {
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    return "/index.php?page=dapi&s=post&q=index&id=" + id + "&fields=tag_info&json=1";
+                },
+                parse: (src: string): IImage => {
+                    const parsed = JSON.parse(src);
+                    const post = "post" in parsed ? parsed["post"] : parsed;
+                    const image = Array.isArray(post) ? post[0] : post;
+                    return completeImage(image);
                 },
             },
         },
