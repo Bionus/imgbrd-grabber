@@ -426,6 +426,12 @@ QString savePath(const QString &file, bool exists, bool writable)
 		}
 	#endif
 
+	// Resources directory of app bundle on macOS
+	#if defined(Q_OS_MAC)
+		if (validSavePath(qApp->applicationDirPath() + "/../Resources/" + check, writable)) {
+			return QDir::toNativeSeparators(qApp->applicationDirPath() + "/../Resources/" + file);
+		}
+	#endif
 	// Install directory and portable mode
 	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
