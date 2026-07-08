@@ -85,13 +85,26 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const parsed = Grabber.parseXML(src);
+                    if (!parsed) {
+                        return { error: "Invalid XML response" };
+                    }
 
                     // Handle error messages
-                    if ("response" in parsed && parsed["response"]["@attributes"]["success"] === "false") {
+                    if ("response" in parsed && parsed["response"]["@attributes"] && parsed["response"]["@attributes"]["success"] === "false") {
                         return { error: parsed["response"]["@attributes"]["reason"] };
                     }
 
-                    const data = Grabber.makeArray(parsed.posts.post);
+                    // Some sites (e.g. api.rule34.xxx) return an <error> document, notably when unauthenticated
+                    if ("error" in parsed) {
+                        const error = parsed["error"];
+                        return { error: typeof error === "string" ? error : String(error["#text"] || "Unknown API error") };
+                    }
+
+                    if (!("posts" in parsed) || !parsed["posts"]) {
+                        return { error: "Invalid XML response (no posts found)" };
+                    }
+
+                    const data = parsed.posts.post !== undefined ? Grabber.makeArray(parsed.posts.post) : [];
                     const images: IImage[] = [];
                     for (const image of data) {
                         if (image && "id" in image) {
@@ -101,9 +114,10 @@ export const source: ISource = {
                         }
                     }
 
+                    const attrs = parsed.posts["@attributes"];
                     return {
                         images,
-                        imageCount: parsed.posts["@attributes"]["count"],
+                        imageCount: attrs ? attrs["count"] : undefined,
                     };
                 },
             },
