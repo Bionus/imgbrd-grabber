@@ -1,30 +1,60 @@
+// Kemono requires this Accept header on API calls, otherwise some
+// anti-scraping rules reject the request.
+const kemonoHeaders = {
+    "Accept": "text/css",
+};
+
 const map = {
     "id": "id",
     "author_id": "user",
     "name": "title",
-    "file_url": "file.path",
-    "created_at": "added",
+    "created_at": "published",
+    "tags": "tags",
 };
+
+// A post has a main "file" plus a list of "attachments", any of which can be
+// missing or overlap. Returns the de-duplicated list of all files of a post.
+function listFiles(data: any): any[] {
+    const files: any[] = [];
+    const seen: { [path: string]: boolean } = {};
+    const add = (file: any) => {
+        if (file && file["path"] && !seen[file["path"]]) {
+            seen[file["path"]] = true;
+            files.push(file);
+        }
+    };
+    add(data["file"]);
+    const attachments = data["attachments"] || [];
+    for (const attachment of attachments) {
+        add(attachment);
+    }
+    return files;
+}
+
 function parseJsonImage(data: any): IImage {
     const img: IImage = Grabber.mapFields(data, map);
     img.identity = {
         service: data["service"],
         user: data["user"],
         id: data["id"],
+    };
+    const files = listFiles(data);
+    if (files.length > 0) {
+        img.file_url = files[0]["path"];
     }
-    if (data["attachments"].length > 1) {
+    if (files.length > 1) {
         img.type = "gallery";
-        img.gallery_count = data["attachments"].length;
+        img.gallery_count = files.length;
     }
     return img;
 }
 
 function completeImage(img: IImage): IImage {
     if (img.file_url) {
-        if (img.file_url.indexOf('/data/') === -1 && img.file_url.substr(0, 4) !== 'http' && img.file_url[0] === '/') {
-            img.file_url = '/data' + img.file_url;
+        if (img.file_url.indexOf("/data/") === -1 && img.file_url.substr(0, 4) !== "http" && img.file_url[0] === "/") {
+            img.file_url = "/data" + img.file_url;
         }
-        img.preview_url = img.file_url.replace('/data/', '/thumbnail/data/');
+        img.preview_url = img.file_url.replace("/data/", "/thumbnail/data/");
     }
     return img;
 }
@@ -56,113 +86,62 @@ export const source: ISource = {
         json: {
             name: "JSON",
             auth: [],
-            maxLimit: 50,
+            forcedLimit: 50,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions): IRequest | IError => {
                     const offset = (query.page - 1) * opts.limit;
+                    let url = "/api/v1/posts?o=" + offset;
                     if (query.search) {
-                        return {error: "The JSON API does not support arbitrary search."};
+                        url += "&q=" + encodeURIComponent(query.search);
                     }
-                    return "/api/recent?limit=" + opts.limit + "&o=" + offset; // + "&q=" + encodeURIComponent(query.search);
+                    return { url, headers: kemonoHeaders };
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const data = JSON.parse(src);
-                    const images: IImage[] = data.map((img: any) => completeImage(parseJsonImage(img)));
-                    return { images };
+                    const posts = Array.isArray(data) ? data : (data["posts"] || []);
+                    const images: IImage[] = posts.map((img: any) => completeImage(parseJsonImage(img)));
+                    const result: IParsedSearch = { images };
+                    if (!Array.isArray(data) && data["count"]) {
+                        result.imageCount = data["count"];
+                    }
+                    return result;
                 },
             },
             gallery: {
-                url: (query: IGalleryQuery): string => {
+                url: (query: IGalleryQuery): IRequest => {
                     const identity = query.identity!;
-                    return `/api/${identity["service"]}/user/${identity["user"]}/post/${identity["id"]}`;
+                    return {
+                        url: `/api/v1/${identity["service"]}/user/${identity["user"]}/post/${identity["id"]}`,
+                        headers: kemonoHeaders,
+                    };
                 },
-                parse: (src: string): IParsedGallery => {
-                    const data = JSON.parse(src)[0];
+                parse: (src: string): IParsedGallery | IError => {
+                    const raw = JSON.parse(src);
+                    const data = Array.isArray(raw) ? raw[0] : (raw["post"] || raw);
                     const image = parseJsonImage(data);
+                    const files = listFiles(data);
 
-                    // Duplicate the root data for each attachment
-                    const images: IImage[] = data["attachments"].map((attachment: any) => completeImage({
+                    // Duplicate the root data for each file of the post
+                    const images: IImage[] = files.map((file: any) => completeImage({
                         ...image,
-                        file_url: attachment["path"],
+                        file_url: file["path"],
                         type: "image",
                         gallery_count: undefined,
                     }));
 
                     return {
                         images,
-                        imageCount: data["attachments"].length,
+                        imageCount: images.length,
                         pageCount: 1,
                     };
                 },
             },
-            /*details: {
-                fullResults: true,
-                url: (id: string, md5: string, opts: IUrlDetailsOptions, identity?: IImageIdentity): string | IError => {
-                    return `/api/${identity!["service"]}/user/${identity!["user"]}/post/${identity!["id"]}`;
-                },
-                parse: (src: string): IImage => {
-                    const data = JSON.parse(src)[0];
-                    return completeImage(parseJsonImage(data));
-                },
-            },*/
             check: {
-                url: (): string => {
-                    return "/";
+                url: (): IRequest => {
+                    return { url: "/api/v1/posts?o=0", headers: kemonoHeaders };
                 },
                 parse: (src: string): boolean => {
-                    return src.indexOf("https://github.com/OpenYiff") !== -1;
-                },
-            },
-        },
-        html: {
-            name: "Regex",
-            auth: [],
-            forcedLimit: 50,
-            search: {
-                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
-                    const offset = (query.page - 1) * opts.limit;
-                    return "/posts?o=" + offset + "&q=" + encodeURIComponent(query.search);
-                },
-                parse: (src: string): IParsedSearch | IError => {
-                    const html = Grabber.parseHTML(src);
-                    const articles = html.find("article.post-card");
-
-                    const images: IImage[] = [];
-                    for (const article of articles) {
-                        // Basic attributes
-                        const identity = {
-                            service: article.attr("data-service"),
-                            user: article.attr("data-user"),
-                            id: article.attr("data-id"),
-                        };
-                        const image: IImage = {
-                            identity,
-                            id: identity["id"],
-                            author_id: identity["user"],
-                            name: article.find("header")[0].innerText().trim(),
-                            created_at: article.find("time")[0].attr("datetime"),
-                        };
-
-                        // Not all posts have an image
-                        const img = article.find("img");
-                        if (img.length > 0) {
-                            image.preview_url = img[0].attr("src");
-                        }
-
-                        // Detect galleries with multiple files
-                        const attachmentCount = parseInt(Grabber.regexToConst("count", "(?<count>\\d+) attachments?", article.innerHTML()), 10)
-                        if (attachmentCount > 1) {
-                            image.type = "gallery";
-                            image.gallery_count = attachmentCount;
-                        }
-
-                        images.push(image);
-                    }
-
-                    return {
-                        images,
-                        imageCount: Grabber.regexToConst("count", "Showing \\d+ - \\d+ of (?<count>\\d+)", src),
-                    };
+                    return src.indexOf("\"posts\"") !== -1 || src[0] === "[";
                 },
             },
         },
