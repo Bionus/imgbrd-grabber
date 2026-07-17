@@ -57,7 +57,7 @@ export const source: any = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
-                    return "/post/index.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                    return "/post/index.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -100,7 +100,7 @@ export const source: any = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
-                    return "/post/index.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                    return "/post/index.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
@@ -149,7 +149,7 @@ export const source: any = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
-                    return "/post/index?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                    return "/post/index?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                 },
                 parse: (src: string): IParsedSearch => {
                     const images = Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src).map(completeImage);

@@ -303,6 +303,171 @@ Grabber.parseSearchQuery = (query: string, metas: Record<string, MetaField>): Re
     return ret;
 }
 
+/**
+ * Canonical order/sort intents people type in multi-site searches.
+ * Maps freestyle tokens (order:descending, order:newest, sort:id_desc, …)
+ * into the dialect each engine actually understands.
+ *
+ * - "danbooru": order:id_desc / order:score / …
+ * - "gelbooru": sort:id:desc / sort:score:desc / …  (NOT sort:id_desc)
+ * - "raw": return the resolved intent string (id_desc, score, …) without a prefix
+ */
+Grabber.normalizeOrderTags = (search: string, dialect: "danbooru" | "gelbooru" | "raw" = "danbooru"): string => {
+    const parts = search.split(/\s+/).filter((p) => p.length > 0);
+    const out: string[] = [];
+    let orderToken: string | undefined;
+
+    // freestyle value → danbooru-style order value
+    const aliases: { [key: string]: string } = {
+        // newest / recent
+        "id_desc": "id_desc",
+        "id-desc": "id_desc",
+        "id:desc": "id_desc",
+        "desc": "id_desc",
+        "descending": "id_desc",
+        "newest": "id_desc",
+        "new": "id_desc",
+        "recent": "id_desc",
+        "date": "id_desc",
+        "date_desc": "id_desc",
+        "date:desc": "id_desc",
+        "updated": "change_desc",
+        "updated_desc": "change_desc",
+        "change": "change_desc",
+        "change_desc": "change_desc",
+        // oldest
+        "id": "id",
+        "id_asc": "id",
+        "id-asc": "id",
+        "id:asc": "id",
+        "asc": "id",
+        "ascending": "id",
+        "oldest": "id",
+        "old": "id",
+        "date_asc": "id",
+        "date:asc": "id",
+        // score / popular
+        "score": "score",
+        "score_desc": "score",
+        "score:desc": "score",
+        "score_asc": "score_asc",
+        "score:asc": "score_asc",
+        "popular": "score",
+        "best": "score",
+        "rank": "rank",
+        // size
+        "mpixels": "mpixels",
+        "mpixels_asc": "mpixels_asc",
+        "filesize": "filesize",
+        "landscape": "landscape",
+        "portrait": "portrait",
+        "favcount": "favcount",
+        "random": "random",
+        // gelbooru-only fields mapped into closest danbooru then re-emitted
+        "rating": "score",
+        "user": "id_desc",
+        "height": "id_desc",
+        "width": "id_desc",
+        "parent": "id_desc",
+        "source": "id_desc",
+    };
+
+    const gelbooruMap: { [key: string]: string } = {
+        "id_desc": "sort:id:desc",
+        "id": "sort:id:asc",
+        "score": "sort:score:desc",
+        "score_asc": "sort:score:asc",
+        "change_desc": "sort:updated:desc",
+        "change": "sort:updated:desc",
+        "mpixels": "sort:width:desc", // closest available
+        "mpixels_asc": "sort:width:asc",
+        "filesize": "sort:id:desc",
+        "landscape": "sort:width:desc",
+        "portrait": "sort:height:desc",
+        "favcount": "sort:score:desc",
+        "rank": "sort:score:desc",
+        "random": "sort:random",
+    };
+
+    for (const part of parts) {
+        const lower = part.toLowerCase();
+        let val: string | undefined;
+
+        if (lower.indexOf("order:") === 0) {
+            val = part.substr(6);
+        } else if (lower.indexOf("sort:") === 0) {
+            val = part.substr(5);
+        } else {
+            out.push(part);
+            continue;
+        }
+
+        // Already correct Gelbooru form sort:field:dir — keep if dialect matches
+        if (lower.indexOf("sort:") === 0 && val.indexOf(":") >= 0) {
+            if (dialect === "gelbooru") {
+                orderToken = "sort:" + val.toLowerCase();
+            } else if (dialect === "raw") {
+                orderToken = val.toLowerCase().replace(":", "_");
+            } else {
+                // map sort:id:desc → order:id_desc
+                const mapped = aliases[val.toLowerCase()] || aliases[val.toLowerCase().replace(":", "_")];
+                orderToken = mapped ? "order:" + mapped : "order:" + val.toLowerCase().replace(":", "_");
+            }
+            continue;
+        }
+
+        const key = val.toLowerCase();
+        const resolved = aliases[key] || key;
+
+        if (dialect === "gelbooru") {
+            orderToken = gelbooruMap[resolved] || ("sort:" + resolved.replace(/_/g, ":"));
+            // ensure field:dir form when we only got a field
+            if (orderToken.indexOf(":") === orderToken.lastIndexOf(":") && orderToken.indexOf("sort:") === 0) {
+                // sort:score → sort:score:desc
+                const field = orderToken.substr(5);
+                if (field.indexOf(":") < 0 && field !== "random") {
+                    orderToken = "sort:" + field + ":desc";
+                }
+            }
+        } else if (dialect === "raw") {
+            orderToken = resolved;
+        } else {
+            orderToken = "order:" + resolved;
+        }
+    }
+
+    if (orderToken) {
+        out.push(orderToken);
+    }
+    return out.join(" ");
+}
+
+/**
+ * Drop booru-only meta tokens that free-text engines (Reddit/Twitter/DA) misread.
+ * Keeps order/sort tokens optionally via keepOrder.
+ */
+Grabber.stripBooruMetaTags = (search: string, opts?: { keepOrder?: boolean }): { query: string, order?: string } => {
+    const meta = /^(rating|width|height|filesize|filetype|status|parent|child|source|date|age|id|md5|pixiv_id|has|is|pool|ordfav|fav|approver|commenter|noter|noteupdater|artcomm|gen|copy|char|meta|limit|page|mpixels|gentags|arttags|chartags|copytags|unlocked|fastfav|sub):/i;
+    const parts = search.split(/\s+/).filter((p) => p.length > 0);
+    const tags: string[] = [];
+    let order: string | undefined;
+    for (const part of parts) {
+        const lower = part.toLowerCase();
+        if (lower.indexOf("order:") === 0 || lower.indexOf("sort:") === 0) {
+            if (opts && opts.keepOrder) {
+                order = part.substr(part.indexOf(":") + 1).toLowerCase();
+            }
+            continue;
+        }
+        if (meta.test(part) || (part.charAt(0) === "-" && meta.test(part.substr(1)))) {
+            continue;
+        }
+        // natural language for free-text sources
+        tags.push(part.replace(/_/g, " "));
+    }
+    return { query: tags.join(" ").trim(), order };
+}
+
 // Fix console calls since C++ handlers can't get variadic arguments
 const originalConsole = console
 function argToString(arg: any): string {

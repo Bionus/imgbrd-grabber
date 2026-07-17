@@ -33,7 +33,7 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery): string => {
                     const page: number = query.page - 1;
-                    const search = query.search && query.search.length > 0 ? encodeURIComponent(query.search) : "all";
+                    const search = query.search && query.search.length > 0 ? encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru")) : "all";
                     return "/index.php?r=posts/index&q=" + search + (page === 0 ? '' : "&page=" + page);
                 },
                 parse: (src: string): IParsedSearch => {

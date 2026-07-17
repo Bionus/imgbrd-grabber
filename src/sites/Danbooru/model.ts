@@ -96,7 +96,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index.json?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index.json?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                     } catch (e: any) {
                         return { error: e.message };
                     }
@@ -144,7 +144,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index.xml?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index.xml?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                     } catch (e: any) {
                         return { error: e.message };
                     }
@@ -198,7 +198,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                     } catch (e: any) {
                         return { error: e.message };
                     }

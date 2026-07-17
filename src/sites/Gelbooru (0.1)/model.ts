@@ -27,7 +27,7 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery): string => {
                     const page: number = (query.page - 1) * 20;
-                    const search = query.search && query.search.length > 0 ? encodeURIComponent(query.search) : "all";
+                    const search = query.search && query.search.length > 0 ? encodeURIComponent(Grabber.normalizeOrderTags(query.search, "gelbooru")) : "all";
                     return "/index.php?page=post&s=list&tags=" + search + "&pid=" + page;
                 },
                 parse: (src: string): IParsedSearch => {

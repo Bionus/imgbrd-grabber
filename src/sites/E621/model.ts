@@ -104,7 +104,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "{page}", "a{max}", "b{min}");
-                        return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search) + "&v2=true";
+                        return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru")) + "&v2=true";
                     } catch (e: any) {
                         return { error: e.message };
                     }
@@ -185,7 +185,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
-                        return "/posts?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                        return "/posts?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(Grabber.normalizeOrderTags(query.search, "danbooru"));
                     } catch (e: any) {
                         return { error: e.message };
                     }

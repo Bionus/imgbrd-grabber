@@ -26,7 +26,20 @@ function completeImage(img: IImage): IImage {
 
 export const source: ISource = {
     name: "Gelbooru (0.2)",
-    modifiers: ["rating:general", "rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating", "sort:updated", "sort:id", "sort:score", "sort:rating", "sort:user", "sort:height", "sort:width", "sort:parent", "sort:source", "sort:updated"],
+    modifiers: [
+        "rating:general", "rating:safe", "rating:questionable", "rating:explicit",
+        "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:",
+        "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "parent:none", "unlocked:rating",
+        // freestyle aliases (normalized to sort:field:dir)
+        "order:id", "order:id_desc", "order:id_asc", "order:score", "order:score_asc", "order:score_desc",
+        "order:newest", "order:recent", "order:descending", "order:desc", "order:ascending", "order:asc", "order:oldest",
+        "order:date", "order:updated", "order:popular", "order:rank", "order:random",
+        "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount",
+        // native Gelbooru form
+        "sort:id:desc", "sort:id:asc", "sort:score:desc", "sort:score:asc", "sort:updated:desc", "sort:updated:asc",
+        "sort:rating:desc", "sort:user:desc", "sort:height:desc", "sort:width:desc", "sort:parent:desc", "sort:source:desc",
+        "sort:random", "sort:updated", "sort:id", "sort:score", "sort:rating", "sort:user", "sort:height", "sort:width", "sort:parent", "sort:source",
+    ],
     tagFormat: {
         case: "lower",
         wordSeparator: "_",
@@ -76,7 +89,9 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
                     const page: number = query.page - 1;
-                    const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                    // BUGFIX: old code did order: → sort: so order:id_desc became sort:id_desc
+                    // Gelbooru needs sort:id:desc (colon between field and direction).
+                    const search: string = Grabber.normalizeOrderTags(query.search, "gelbooru");
                     const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
                     if (fav) {
                         return { error: "XML API cannot search favorites" };
@@ -164,7 +179,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const baseUrl = opts.baseUrl.replace("//api.", "//");
-                        const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                        const search: string = Grabber.normalizeOrderTags(query.search, "gelbooru");
                         const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
                         if (fav) {
                             const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 50);
