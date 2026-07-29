@@ -87,19 +87,36 @@ void NetworkManager::clear()
 
 void NetworkManager::next()
 {
-	if (m_queue.isEmpty()) {
-		m_activeQueries.fetchAndAddRelaxed(-1);
-		return;
-	}
+	// Loop rather than recurse: a queue full of dead or aborted replies used to
+	// recurse once per entry, which overflows the stack on a large batch.
+	forever {
+		if (m_queue.isEmpty()) {
+			m_activeQueries.fetchAndAddRelaxed(-1);
+			return;
+		}
 
-	auto pair = m_queue.dequeue();
-	int type = pair.first;
-	QPointer<NetworkReply> reply = pair.second;
+		auto pair = m_queue.dequeue();
+		int type = pair.first;
+		QPointer<NetworkReply> reply = pair.second;
 
-	if (!reply.isNull() && reply->isRunning()) {
-		connect(reply, &NetworkReply::finished, this, &NetworkManager::next);
-		m_throttlingManager.start(type, reply);
-	} else {
-		next();
+		if (!reply.isNull() && reply->isRunning()) {
+			// Release the slot on whichever comes first, and only once. Waiting on
+			// finished() alone leaks a slot forever when a reply is aborted or deleted
+			// before it completes, and a leaked slot per abort eventually wedges every
+			// download until the app is restarted.
+			auto released = std::make_shared<bool>(false);
+			auto release = [this, released]() {
+				if (*released) {
+					return;
+				}
+				*released = true;
+				next();
+			};
+			connect(reply, &NetworkReply::finished, this, release);
+			connect(reply, &QObject::destroyed, this, release);
+
+			m_throttlingManager.start(type, reply);
+			return;
+		}
 	}
 }

@@ -40,6 +40,7 @@ class NetworkReply : public QObject
 	protected slots:
 		void init();
 		void startNow();
+		void finishNow();
 
 	signals:
 		void readyRead();
@@ -54,6 +55,7 @@ class NetworkReply : public QObject
 		bool m_post = false;
 		bool m_started = false;
 		bool m_aborted = false;
+		bool m_finished = false;
 		QNetworkReply *m_reply = nullptr;
 		QTimer timer;
 };
