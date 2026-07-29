@@ -9,6 +9,9 @@ mkdir -p "$APP_DIR"
 # Copy built files
 cp build/gui/Grabber* "$APP_DIR" 2> /dev/null
 cp build/cli/Grabber-cli* "$APP_DIR" 2> /dev/null
+# The languages directory only arrives with src/dist/common below, so create it here or
+# the copy silently fails and the package ships without any compiled translations
+mkdir -p "$APP_DIR/languages"
 cp build/languages/*.qm "$APP_DIR/languages/" 2> /dev/null
 
 # Copy other required files to the release directory
