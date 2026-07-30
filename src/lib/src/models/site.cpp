@@ -261,7 +261,8 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	}
 
 	QNetworkRequest request(url);
-	QString referer = m_settings->value("referer" + (!ref.isEmpty() ? "_" + ref : QString())).toString();
+	const QString def = ref == "preview" ? "page" : (ref == "image" ? "details" : "");
+	QString referer = m_settings->value("referer" + (!ref.isEmpty() ? "_" + ref : QString()), def).toString();
 	if (referer.isEmpty() && !ref.isEmpty()) {
 		referer = m_settings->value("referer", "none").toString();
 	}

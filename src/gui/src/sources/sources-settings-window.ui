@@ -101,11 +101,9 @@
        </item>
        <item row="4" column="1">
         <widget class="QComboBox" name="comboRefererPreview">
-         <item>
-          <property name="text">
-           <string>Default</string>
-          </property>
-         </item>
+         <property name="currentIndex">
+          <number>2</number>
+         </property>
          <item>
           <property name="text">
            <string>None</string>
@@ -137,11 +135,9 @@
        </item>
        <item row="5" column="1">
         <widget class="QComboBox" name="comboRefererImage">
-         <item>
-          <property name="text">
-           <string>Default</string>
-          </property>
-         </item>
+         <property name="currentIndex">
+          <number>3</number>
+         </property>
          <item>
           <property name="text">
            <string>None</string>
