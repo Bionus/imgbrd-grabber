@@ -180,7 +180,12 @@ void Site::loadConfig()
 			m_userAgent = globalUserAgent;
 		}
 	} else {
+		if (!m_profile->getSettings()->contains("userAgentID")) {
+			m_profile->getSettings()->setValue("userAgentID", QUuid::createUuid().toString().mid(1, 36));
+		}
+
 		m_userAgent.replace("%version%", QString(VERSION));
+		m_userAgent.replace("%userAgentID%", m_profile->getSettings()->value("userAgentID").toString());
 	}
 }
 
