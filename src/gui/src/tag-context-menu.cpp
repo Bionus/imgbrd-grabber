@@ -5,6 +5,7 @@
 #include <QProcess>
 #include "functions.h"
 #include "models/profile.h"
+#include "models/site.h"
 #include "tags/tag.h"
 
 
@@ -111,6 +112,13 @@ void TagContextMenu::unremove()
 
 void TagContextMenu::blacklist()
 {
+	if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) && !m_sites.isEmpty()) {
+		for (const Site *site : qAsConst(m_sites)) {
+			m_profile->addBlacklistedTags({ "website:" + site->url(), m_tag });
+		}
+		return;
+	}
+
 	m_profile->addBlacklistedTag(m_tag);
 }
 void TagContextMenu::unblacklist()

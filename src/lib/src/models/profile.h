@@ -80,6 +80,7 @@ class Profile : public QObject
 		// Blacklist management
 		void setBlacklistedTags(const Blacklist &blacklist);
 		void addBlacklistedTag(const QString &tag);
+		void addBlacklistedTags(const QStringList &tags);
 		void removeBlacklistedTag(const QString &tag);
 
 		// Source registries

@@ -104,4 +104,19 @@ TEST_CASE("Blacklist")
 		REQUIRE(blacklist.match(tokensWith) == QStringList("re:zero"));
 		REQUIRE(blacklist.match(tokensWithout) == QStringList());
 	}
+
+	SECTION("Site-specific tag")
+	{
+		Blacklist blacklist;
+		blacklist.add({ "website:danbooru.donmai.us", "test_tag" });
+
+		QMap<QString, Token> matchingSite;
+		matchingSite.insert("website", Token("danbooru.donmai.us"));
+		matchingSite.insert("allos", Token(QStringList() << "test_tag"));
+		QMap<QString, Token> otherSite = matchingSite;
+		otherSite.insert("website", Token("gelbooru.com"));
+
+		REQUIRE(blacklist.match(matchingSite) == QStringList("website:danbooru.donmai.us test_tag"));
+		REQUIRE(blacklist.match(otherSite) == QStringList());
+	}
 }
