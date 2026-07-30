@@ -390,6 +390,7 @@ void SourcesSettingsWindow::saveSettings()
 	// Headers
 	MixedSettings *settings = m_site->settings();
 	settings->beginGroup("Headers");
+	settings->remove("");
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
 		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);
