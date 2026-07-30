@@ -192,7 +192,8 @@ export const source: ISource = {
 
                     return {
                         tags,
-                        createdAt: data["post"]["pubtime"],
+                        // Convert ISO 8601 date to Unix timestamp (string)
+                        createdAt: data["post"]["pubtime"] ? String(Math.floor(new Date(data["post"]["pubtime"]).getTime() / 1000)) : undefined,
                         imageUrl: img.file_url,
                     };
                 },
