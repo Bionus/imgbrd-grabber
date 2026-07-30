@@ -12,11 +12,21 @@ Blacklist::Blacklist(const QStringList &tags)
 	}
 }
 
-int Blacklist::indexOf(const QString &tag) const
+int Blacklist::indexOf(const QStringList &tags) const
 {
 	for (int i = 0; i < m_filters.count(); ++i) {
 		const auto &filters = m_filters[i];
-		if (filters.count() == 1 && QString::compare(filters[0]->toString(false), tag, Qt::CaseInsensitive) == 0) {
+		if (filters.count() != tags.count()) {
+			continue;
+		}
+		bool allMatch = true;
+		for (int j = 0; j < tags.count(); ++j) {
+			if (QString::compare(filters[j]->toString(false), tags[j], Qt::CaseInsensitive) != 0) {
+				allMatch = false;
+				break;
+			}
+		}
+		if (allMatch) {
 			return i;
 		}
 	}
@@ -30,7 +40,11 @@ bool Blacklist::isEmpty() const
 
 bool Blacklist::contains(const QString &tag) const
 {
-	return indexOf(tag) != -1;
+	return contains(QStringList(tag));
+}
+bool Blacklist::contains(const QStringList &tags) const
+{
+	return indexOf(tags) != -1;
 }
 
 void Blacklist::clear()
@@ -40,10 +54,7 @@ void Blacklist::clear()
 
 void Blacklist::add(const QString &tag)
 {
-	auto filter = QSharedPointer<Filter>(FilterFactory::build(tag));
-	if (!filter.isNull()) {
-		m_filters.append({ filter });
-	}
+	add(QStringList(tag));
 }
 
 void Blacklist::add(const QStringList &tags)
@@ -63,7 +74,11 @@ void Blacklist::add(const QStringList &tags)
 
 bool Blacklist::remove(const QString &tag)
 {
-	const int index = indexOf(tag);
+	return remove(QStringList(tag));
+}
+bool Blacklist::remove(const QStringList &tags)
+{
+	const int index = indexOf(tags);
 	if (index == -1) {
 		return false;
 	}
