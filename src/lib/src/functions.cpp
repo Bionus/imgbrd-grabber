@@ -294,34 +294,28 @@ QDateTime qDateTimeFromString(const QString &str)
 		return QDateTime::fromSecsSinceEpoch(toInt, Qt::UTC);
 	}
 
+	// ISO 8601
+	if (str.length() >= 16 && str[4] == '-' && (str[10] == 'T' || str[10] == ' ')) {
+		date = QDateTime::fromString(str, Qt::ISODate);
+
+		// If no offset is specified, assume UTC, not local timezone
+		const QString right = str.mid(qMax(str.lastIndexOf('T'), str.lastIndexOf(' ')) + 1);
+		if (!right.contains('+') && !right.contains('-')) {
+			date.setTimeSpec(Qt::UTC);
+		}
+
+		return date;
+	}
+
 	if ((str.length() == 23 || str.length() == 26) && str[19] == '.') {
 		date = QDateTime::fromString(str.left(23), QStringLiteral("yyyy/MM/dd HH:mm:ss.zzz"));
-		if (!date.isValid()) {
-			date = QDateTime::fromString(str.left(23), QStringLiteral("yyyy-MM-dd HH:mm:ss.zzz"));
-		}
 		date.setTimeSpec(Qt::UTC);
 	} else if (str.length() == 19) {
 		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm:ss"));
-		if (!date.isValid()) {
-			date = QDateTime::fromString(str, QStringLiteral("yyyy-MM-dd HH:mm:ss"));
-		}
 		date.setTimeSpec(Qt::UTC);
 	} else if (str.length() == 16) {
 		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm"));
-		if (!date.isValid()) {
-			date = QDateTime::fromString(str, QStringLiteral("yyyy-MM-dd HH:mm"));
-		}
 		date.setTimeSpec(Qt::UTC);
-	} else if (str[0].isDigit()) {
-		qreal decay = 0;
-
-		date = QDateTime::fromString(str.left(19), QStringLiteral("yyyy-MM-dd'T'HH:mm:ss"));
-		if (!date.isValid()) {
-			date = QDateTime::fromString(str.left(19), QStringLiteral("yyyy/MM/dd HH:mm:ss"));
-		} else {
-			decay = str.right(6).remove(':').toDouble() / 100;
-		}
-		date.setOffsetFromUtc(qFloor(3600 * decay));
 	} else {
 		QLocale myLoc(QLocale::English);
 		date = myLoc.toDateTime(str, QStringLiteral("ddd MMM dd HH:mm:ss yyyy"));
