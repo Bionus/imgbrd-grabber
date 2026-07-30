@@ -112,6 +112,7 @@ void TagContextMenu::unremove()
 
 void TagContextMenu::blacklist()
 {
+	// If the SHIFT key is pressed, add it as a site-specific blacklist
 	if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) && !m_sites.isEmpty()) {
 		for (const Site *site : qAsConst(m_sites)) {
 			m_profile->addBlacklistedTags({ "website:" + site->url(), m_tag });
@@ -123,6 +124,14 @@ void TagContextMenu::blacklist()
 }
 void TagContextMenu::unblacklist()
 {
+	// If the SHIFT key is pressed, add it as a site-specific blacklist
+	if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) && !m_sites.isEmpty()) {
+		for (const Site *site : qAsConst(m_sites)) {
+			m_profile->removeBlacklistedTags({ "website:" + site->url(), m_tag });
+		}
+		return;
+	}
+
 	m_profile->removeBlacklistedTag(m_tag);
 }
 

@@ -82,6 +82,7 @@ class Profile : public QObject
 		void addBlacklistedTag(const QString &tag);
 		void addBlacklistedTags(const QStringList &tags);
 		void removeBlacklistedTag(const QString &tag);
+		void removeBlacklistedTags(const QStringList &tags);
 
 		// Source registries
 		const QList<SourceRegistry*> &getSourceRegistries() const;
