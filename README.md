@@ -1,154 +1,134 @@
-<p align="center"><img src="src/gui/resources/images/readme-icon.png" alt="" /></p>
+﻿<p align="center"><img src="src/gui/resources/images/readme-icon.png" alt="" /></p>
 
-<h1 align="center">Grabber</h1>
+<h1 align="center">Grabber <sup><sub>(Fable fork)</sub></sup></h1>
 
-[![Discord chat](https://img.shields.io/discord/780466420877361156?logo=discord&logoColor=white)](https://discord.gg/pWnY5eW3rz)
-[![GitHub release](https://img.shields.io/github/release/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
-[![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/latest/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
-[![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases)
-[![GitHub issues](https://img.shields.io/github/issues/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/issues)
-[![Donate with PayPal](https://img.shields.io/badge/paypal-donate-orange.svg)](https://www.paypal.me/jvasti)
-[![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Bionus/imgbrd-grabber/build.yml)](https://github.com/Bionus/imgbrd-grabber/actions)
-[![Code Coverage](https://img.shields.io/codecov/c/github/Bionus/imgbrd-grabber.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3ab9cd9af181458fad287a2663129d98)](https://app.codacy.com/gh/Bionus/imgbrd-grabber/dashboard)
-[![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
+<p align="center">
+  <a href="https://github.com/ShugokiFable/imgbrd-grabber/releases/latest"><img src="https://img.shields.io/github/v/release/ShugokiFable/imgbrd-grabber?label=latest%20release" alt="Latest release" /></a>
+  <a href="https://github.com/ShugokiFable/imgbrd-grabber/releases"><img src="https://img.shields.io/github/downloads/ShugokiFable/imgbrd-grabber/total" alt="Downloads" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/ShugokiFable/imgbrd-grabber" alt="License" /></a>
+  <a href="https://github.com/Bionus/imgbrd-grabber"><img src="https://img.shields.io/badge/upstream-Bionus%2Fimgbrd--grabber-blue" alt="Upstream" /></a>
+</p>
 
-Imageboard/booru downloader which can download thousands of images from multiple boorus very easily.
+**This is a maintained fork of [Bionus/imgbrd-grabber](https://github.com/Bionus/imgbrd-grabber)** — the imageboard/booru downloader.
 
-Thanks to its powerful naming features, you just have to set your filename and save directory using all the tokens available, and the program will generate a filename using the image's information. With this, you can store and manage your pictures in advanced directory structures, and save image with custom filenames!
+It tracks upstream `develop`, then layers Fable fixes for reliability, broken sources, packaging, and UI themes. Use **this** repo’s releases if you want those changes; use [upstream](https://github.com/Bionus/imgbrd-grabber) for the official project.
 
-Grabber works on Windows, Mac, and Linux. It is available in English, French, Russian, simplified Chinese, and Spanish.
+---
 
-## Download
-You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
+## What this fork changes
 
-For users interested, a nightly version is built automatically on every commit on the `develop` branch, and can be downloaded [here](https://github.com/Bionus/imgbrd-grabber/releases/nightly). Note that it might be less stable than official releases, so use at your own risk.
+Compared to stock Grabber, this fork focuses on things that break real use: hung downloads, dead APIs, silent packaging bugs, and missing dark UI options.
 
-* [Install steps for Windows](https://www.bionus.org/imgbrd-grabber/docs/install/windows.html)
-* [Install steps for Linux](https://www.bionus.org/imgbrd-grabber/docs/install/linux.html)
-* [Install steps for macOS](https://www.bionus.org/imgbrd-grabber/docs/install/macos.html)
-* [Install steps for Android](https://www.bionus.org/imgbrd-grabber/docs/install/android.html)
+### Reliability
 
-## Features
+| Change | Why it matters |
+|--------|----------------|
+| **Download queue hang fix** | Aborted network replies no longer leak concurrency slots. Before this, canceling or failing requests could freeze *all* further downloads until you restarted the app. Also avoids a related shutdown crash. |
+| **Gelbooru 0.2 / Rule34 XML errors** | Sites that return HTTP 200 with an XML *error* body (e.g. unauthenticated Rule34) no longer crash the JS parser (`Cannot read property 'post' of undefined`). The engine reports the error and can fall back cleanly. |
 
-### Browse
+### Sources
 
-[<img src="https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/search-basic-thumb.png" align="right" />](https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/search-basic.png)
+| Change | Why it matters |
+|--------|----------------|
+| **Kemono → kemono.cr + v1 API** | Kemono left `kemono.su`; the old `/api/recent` path is dead. This fork uses `kemono.cr` and `/api/v1/posts` (tag search, attachments, required headers, HTTPS defaults). |
+| **Order / sort + free-text hygiene** | Real `order:` / `sort:` mapping across Gelbooru-family, Danbooru, E621, Moebooru, etc., plus freestyle aliases (`newest`, `popular`, …). Multi-site free-text search is cleaned so meta tags don’t poison APIs that don’t understand them. Also improves DeviantArt / Reddit / Twitter sort handling. |
+| **R34.xxx default source order** | Restores a sensible default source order for Rule34.xxx. |
 
-* Tabs to make multiple searches at the same time
-* Able to show results from multiple imageboards at the same time in a single tab
-* Remove duplicate results from multiple-imageboard searches
-* Auto-completion of tags in the search field
-* Blacklisting of tags to mark or hide images you don't want to see
-* Proxy support
-* Post-filtering (when the imageboard search is limited)
-* Auto-download images as you search according to a whitelist
+### Packaging & UI
 
-### Download
+| Change | Why it matters |
+|--------|----------------|
+| **Translations actually ship in zips** | Release packaging created `languages/` *after* copying `.qm` files, so every archive silently shipped `languages.ini` with **zero** compiled translations. The package script now creates the directory first (19 `.qm` files in current Windows builds). |
+| **8 modern dark themes** | Bundled alongside Default: **Catppuccin Mocha**, **Dracula**, **Fluent Dark**, **Gruvbox Dark**, **Nord Dark**, **One Dark**, **Solarized Dark**, **Tokyo Night** (plus existing QDarkStyleSheet). |
 
-[<img src="https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/download-thumb.png" align="right" />](https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/download.png)
+### Upstream kept in sync
 
-* Download thousands of images at once
-* Download single images using their MD5 or ID
-* Command line interface to download images
+`develop` is periodically merged from [Bionus/imgbrd-grabber](https://github.com/Bionus/imgbrd-grabber) so you still get official fixes (referers, date parsing, Danbooru user-agent, blacklist improvements, CI bumps, and so on) **on top of** the Fable changes above.
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+---
 
-### Customize
+## Download (this fork)
 
-[<img src="https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/sources-thumb.png" align="right" />](https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/sources.png)
+**Latest Windows build:** [Releases](https://github.com/ShugokiFable/imgbrd-grabber/releases/latest)
 
-* Add your own imageboards very easily
-* Authentication for sources behind a login wall
-* Theme support using CSS. See [Themes](https://www.bionus.org/imgbrd-grabber/docs/plugins/theme.html) for details.
-* Lots of options to customize the program's behaviour
+| Tag | Notes |
+|-----|--------|
+| [`v7.13.0-fable.2`](https://github.com/ShugokiFable/imgbrd-grabber/releases/tag/v7.13.0-fable.2) | Current. Full rebuild after upstream merge + all Fable fixes. Portable x64 zip (`Grabber.exe`). |
+| [`v7.13.0-fable.1`](https://github.com/ShugokiFable/imgbrd-grabber/releases/tag/v7.13.0-fable.1) | First Fable package with translation packaging fix. |
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+Unpack the zip and run `Grabber.exe`. No installer required.
 
-### Organize
+> Official upstream installers/nightlies remain at [Bionus releases](https://github.com/Bionus/imgbrd-grabber/releases) and do **not** include the Fable-only changes listed above.
 
-[<img src="https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/filename-thumb.png" align="right" />](https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/filename.png)
+Upstream docs still apply for install/usage details:
 
-* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using JavaScript code. See [Filename](https://www.bionus.org/imgbrd-grabber/docs/filename.html) for details.
-* Favorite tags to keep track of new images
-* "View it later" tags to save a search for later
-* Support saving images directly to a local booru, such as [Szurubooru](https://www.bionus.org/imgbrd-grabber/docs/commands/szurubooru.html), [MyImouto](https://www.bionus.org/imgbrd-grabber/docs/commands/my-imouto.html), [Gelbooru](https://www.bionus.org/imgbrd-grabber/docs/commands/gelbooru.html), or [Shimmie](https://www.bionus.org/imgbrd-grabber/docs/commands/shimmie.html).
-* Can add entries to a database for each image or tag while downloading. See [Commands](https://www.bionus.org/imgbrd-grabber/docs/commands/) for details.
-* Conditional filenames triggered by a tag
-* Rename already downloaded images
+* [Windows](https://www.bionus.org/imgbrd-grabber/docs/install/windows.html) · [Linux](https://www.bionus.org/imgbrd-grabber/docs/install/linux.html) · [macOS](https://www.bionus.org/imgbrd-grabber/docs/install/macos.html) · [Android](https://www.bionus.org/imgbrd-grabber/docs/install/android.html)
 
-## Default sources
-You can add additional sources very easily, but here's a short list of some sources that are included and supported by default:
-* Danbooru
-* Gelbooru
-* E-Hentai
-* Pixiv
-* yande.re
-* Shimmie
-* e621
-* Konachan
-* rule34
-* safebooru
-* Anime-Pictures
-* behoimi
-* Zerochan
-* Twitter
+---
 
-## Compilation
-See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.html) documentation to know how to build Grabber.
+## What Grabber is (upstream feature set)
 
-* Linux: run `./build.sh` at the root of the repository
-* macOS: run `./build-mac.sh` at the root of the repository
+Imageboard/booru downloader for bulk search and download across many sites, with powerful filename tokens, blacklists, multi-source tabs, themes, auth, CLI, and more.
 
-## Contributors
-<!-- ALL-CONTRIBUTORS-LIST:START -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/Bionus"><img src="https://avatars2.githubusercontent.com/u/882719?s=122?s=122" width="122px;" alt="Jack Vasti"/><br /><sub><b>Jack Vasti</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Bionus" title="Code">💻</a> <a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Bionus" title="Documentation">📖</a> <a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Bionus" title="Tests">⚠️</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/Zzzyyzzyxx"><img src="https://avatars0.githubusercontent.com/u/16903308?s=122?s=122" width="122px;" alt="YMI"/><br /><sub><b>YMI</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3AYMI" title="Bug reports">🐛</a> <a href="#ideas-YMI" title="Ideas, Planning, & Feedback">🤔</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/SultrySamthepennanceman"><img src="https://avatars2.githubusercontent.com/u/12085184?s=122?s=122" width="122px;" alt="SultrySamthepenna&hellip;"/><br /><sub><b>SultrySamthepenna&hellip;</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3ASultrySamthepennanceman" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/BarryMode"><img src="https://avatars1.githubusercontent.com/u/5648875?s=122?s=122" width="122px;" alt="BarryMode"/><br /><sub><b>BarryMode</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=BarryMode" title="Code">💻</a> <a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3ABarryMode" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/Flat"><img src="https://avatars3.githubusercontent.com/u/2048861?s=122?s=122" width="122px;" alt="Ken Swenson"/><br /><sub><b>Ken Swenson</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Flat" title="Code">💻</a> <a href="#platform-Flat" title="Packaging/porting to new platform">📦</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/larry-he"><img src="https://avatars0.githubusercontent.com/u/18506295?s=122?s=122" width="122px;" alt="Larry He"/><br /><sub><b>Larry He</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=larry-he" title="Code">💻</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/brodycas3"><img src="https://avatars3.githubusercontent.com/u/19770864?s=122?s=122" width="122px;" alt="brodycas3"/><br /><sub><b>brodycas3</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Abrodycas3" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/sanddudu"><img src="https://avatars1.githubusercontent.com/u/1650692?s=122?s=122" width="122px;" alt="Klion Xu"/><br /><sub><b>Klion Xu</b></sub></a><br /><a href="#translation-sanddudu" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/MasterPetrik"><img src="https://avatars2.githubusercontent.com/u/22294259?s=122?s=122" width="122px;" alt="MasterPetrik"/><br /><sub><b>MasterPetrik</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3AMasterPetrik" title="Bug reports">🐛</a> <a href="#translation-MasterPetrik" title="Translation">🌍</a> <a href="#ideas-MasterPetrik" title="Ideas, Planning, & Feedback">🤔</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/dyskette"><img src="https://avatars3.githubusercontent.com/u/6687927?s=122?s=122" width="122px;" alt="Eddy Castillo"/><br /><sub><b>Eddy Castillo</b></sub></a><br /><a href="#translation-dyskette" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/MrAndre96"><img src="https://avatars0.githubusercontent.com/u/6564956?s=122?s=122" width="122px;" alt="MrAndre96"/><br /><sub><b>MrAndre96</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3AMrAndre96" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/brazenvoid"><img src="https://avatars1.githubusercontent.com/u/8722533?s=122?s=122" width="122px;" alt="Umair Ahmed"/><br /><sub><b>Umair Ahmed</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Abrazenvoid" title="Bug reports">🐛</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/ccppoo"><img src="https://avatars0.githubusercontent.com/u/46418312?s=122?s=122" width="122px;" alt="ccppoo"/><br /><sub><b>ccppoo</b></sub></a><br /><a href="#translation-ccppoo" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/yami-no-tusbas"><img src="https://avatars2.githubusercontent.com/u/3921598?v=4?s=122" width="122px;" alt="YamiNoSho"/><br /><sub><b>YamiNoSho</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Ayami-no-tusbas" title="Bug reports">🐛</a> <a href="#question-yami-no-tusbas" title="Answering Questions">💬</a> <a href="#ideas-yami-no-tusbas" title="Ideas, Planning, & Feedback">🤔</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/waitingmoon"><img src="https://avatars.githubusercontent.com/u/16256443?v=4?s=122" width="122px;" alt="waitingmoon"/><br /><sub><b>waitingmoon</b></sub></a><br /><a href="#translation-waitingmoon" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/Penguin-Guru"><img src="https://avatars.githubusercontent.com/u/22182988?v=4?s=122" width="122px;" alt="Penguin-Guru"/><br /><sub><b>Penguin-Guru</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Penguin-Guru" title="Code">💻</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/lucas-04"><img src="https://avatars.githubusercontent.com/u/95548091?v=4?s=122" width="122px;" alt="lucas"/><br /><sub><b>lucas</b></sub></a><br /><a href="#translation-lucas-04" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/adem4ik"><img src="https://avatars.githubusercontent.com/u/4707112?v=4?s=122" width="122px;" alt="Andrei Stepanov"/><br /><sub><b>Andrei Stepanov</b></sub></a><br /><a href="#translation-adem4ik" title="Translation">🌍</a> <a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Aadem4ik" title="Bug reports">🐛</a> <a href="#ideas-adem4ik" title="Ideas, Planning, & Feedback">🤔</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="16.66%"><a href="https://crowdin.com/profile/noptiwhite"><img src="https://crowdin-static.downloads.crowdin.com/avatar/15784087/large/fb71788d44585300e7a35e5172bf23e6.jpg?s=122" width="122px;" alt="Noptiwhite"/><br /><sub><b>Noptiwhite</b></sub></a><br /><a href="#translation-Noptiwhite" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://github.com/Tunguso4ka"><img src="https://avatars.githubusercontent.com/u/71643624?v=4?s=122" width="122px;" alt="Tunguso4ka"/><br /><sub><b>Tunguso4ka</b></sub></a><br /><a href="#translation-Tunguso4ka" title="Translation">🌍</a></td>
-      <td align="center" valign="top" width="16.66%"><a href="https://crowdin.com/profile/gorgusm"><img src="https://crowdin-static.downloads.crowdin.com/avatar/13720583/large/8099e5675724971e1519f4ea6f305d41_default.png?s=122" width="122px;" alt="Gorgusm"/><br /><sub><b>Gorgusm</b></sub></a><br /><a href="#translation-Gorgusm" title="Translation">🌍</a></td>
-    </tr>
-  </tbody>
-</table>
+**Highlights:** multi-tab / multi-site search · tag autocomplete · blacklist & post-filter · bulk download · custom `%token%` or JS filenames · favorites / “view later” · CSS themes · optional local-booru / DB hooks.
 
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
+**Default sources include:** Danbooru, Gelbooru, E-Hentai, Pixiv, yande.re, Shimmie, e621, Konachan, rule34, safebooru, Anime-Pictures, Zerochan, Twitter, Kemono, and others you can add yourself.
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+Full feature write-up and screenshots: [upstream README / site](https://github.com/Bionus/imgbrd-grabber).
 
-This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification.
-Contributions of any kind are welcome!
+---
+
+## Branches
+
+| Branch | Role |
+|--------|------|
+| `develop` | **Default.** Fable fixes + synced upstream develop. Tagged Fable releases are cut from here. |
+| `feature/fable-develop` | Same tip as `develop` (integration / WIP line). |
+| `master` | Older merge line; prefer `develop` + Fable tags for builds. |
+
+---
+
+## Building from source
+
+Same stack as upstream (Qt 6, CMake/Ninja, OpenSSL). See [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.html).
+
+```bash
+# Linux
+./build.sh
+
+# macOS
+./build-mac.sh
+```
+
+Windows: configure with CMake against Qt 6 + MSVC, build `Release`, then package with `scripts/package-windows.bat` (needs Git Bash, 7-Zip, `windeployqt`).
+
+Fable Windows release builds use Qt **6.9.x** / MSVC and stamp portable zips as `Grabber_7.13.0-fable.N_x64.zip`.
+
+---
+
+## Relationship to upstream
+
+- **Upstream project:** [Bionus/imgbrd-grabber](https://github.com/Bionus/imgbrd-grabber) by [Jack Vasti (Bionus)](https://github.com/Bionus) and [contributors](https://github.com/Bionus/imgbrd-grabber#contributors).
+- **This fork:** [ShugokiFable/imgbrd-grabber](https://github.com/ShugokiFable/imgbrd-grabber).
+- License remains the upstream project license (see [`LICENSE`](LICENSE)).
+- Bug reports for **Fable-specific** behavior: open issues **here**. Core Grabber questions and PRs that belong upstream should go to Bionus when possible.
+
+Support the original author if you use Grabber:
+
+* [PayPal](https://www.paypal.me/jvasti) · [Patreon](https://www.patreon.com/bionus) · [Discord](https://discord.gg/pWnY5eW3rz)
+
+---
+
+## Changelog (Fable tags)
+
+### v7.13.0-fable.2
+- Rebuild on latest upstream `develop` merge (referer defaults, ISO 8601 dates, blacklist `QStringList`, Danbooru UA, removable site headers, …).
+- Retains all fable.1 fixes below.
+
+### v7.13.0-fable.1
+- Fix release packaging so compiled translations (`.qm`) are included.
+- Fix network abort path that wedged the download queue / could crash on exit.
+- Gelbooru 0.2 XML error-document handling.
+- Kemono `kemono.cr` + v1 API.
+- Order/sort + free-text hygiene across major sources.
+- Eight bundled modern dark themes.
