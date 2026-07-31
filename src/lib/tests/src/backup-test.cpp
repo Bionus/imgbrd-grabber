@@ -168,6 +168,17 @@ TEST_CASE("Backup")
 		REQUIRE(!fresh->getBlacklist().contains("another_tag"));
 	}
 
+	SECTION("site-specific blacklist.txt")
+	{
+		profile->addBlacklistedTags({ "website:danbooru.donmai.us", "test_tag" });
+		REQUIRE(profile->getBlacklist().toString() == "website:danbooru.donmai.us test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+
+		REQUIRE(unzipFile(zipFile, zipDir));
+		Profile after(zipDir);
+		REQUIRE(after.getBlacklist().toString() == "website:danbooru.donmai.us test_tag");
+	}
+
 	SECTION("monitors.json")
 	{
 		// Set a single setting on the profile and back it up

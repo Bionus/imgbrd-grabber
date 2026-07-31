@@ -535,10 +535,24 @@ void Profile::addBlacklistedTag(const QString &tag)
 	syncBlacklist();
 	emit blacklistChanged();
 }
+void Profile::addBlacklistedTags(const QStringList &tags)
+{
+	m_blacklist.add(tags);
+
+	syncBlacklist();
+	emit blacklistChanged();
+}
 
 void Profile::removeBlacklistedTag(const QString &tag)
 {
 	m_blacklist.remove(tag);
+
+	syncBlacklist();
+	emit blacklistChanged();
+}
+void Profile::removeBlacklistedTags(const QStringList &tags)
+{
+	m_blacklist.remove(tags);
 
 	syncBlacklist();
 	emit blacklistChanged();

@@ -29,7 +29,9 @@ class TagContextMenu : public QMenu
 		void remove();
 		void unremove();
 		void blacklist();
+		void blacklistSite();
 		void unblacklist();
+		void unblacklistSite();
 		void openInNewTab();
 		void openInNewWindow();
 		void openInBrowser();
