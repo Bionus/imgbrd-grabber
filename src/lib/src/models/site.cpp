@@ -163,7 +163,7 @@ void Site::loadConfig()
 	// Generate the User-Agent
 	m_userAgent = m_settings->value("Headers/User-Agent").toString();
 	if (m_userAgent.isEmpty()) {
-		const QString globalUserAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString();
+		const QString globalUserAgent = pSettings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0")).toString();
 		#if defined(USE_WEBENGINE)
 			const bool defaultUseQtUserAgent = true;
 		#else
@@ -180,7 +180,12 @@ void Site::loadConfig()
 			m_userAgent = globalUserAgent;
 		}
 	} else {
+		if (!m_profile->getSettings()->contains("userAgentID")) {
+			m_profile->getSettings()->setValue("userAgentID", QUuid::createUuid().toString().mid(1, 36));
+		}
+
 		m_userAgent.replace("%version%", QString(VERSION));
+		m_userAgent.replace("%userAgentID%", m_profile->getSettings()->value("userAgentID").toString());
 	}
 }
 
@@ -256,7 +261,8 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	}
 
 	QNetworkRequest request(url);
-	QString referer = m_settings->value("referer" + (!ref.isEmpty() ? "_" + ref : QString())).toString();
+	const QString def = ref == "preview" ? "page" : (ref == "image" ? "details" : "");
+	QString referer = m_settings->value("referer" + (!ref.isEmpty() ? "_" + ref : QString()), def).toString();
 	if (referer.isEmpty() && !ref.isEmpty()) {
 		referer = m_settings->value("referer", "none").toString();
 	}

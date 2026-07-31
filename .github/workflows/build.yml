@@ -44,12 +44,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Uncrustify cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: bin-cache
         with:
           path: bin
@@ -92,7 +92,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -141,7 +141,7 @@ jobs:
           lcov --list coverage.info
 
       - name: Upload coverage results
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -176,7 +176,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -193,7 +193,7 @@ jobs:
           modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
 
       - name: Vendor cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: vendor-cache
         with:
           path: vendor
@@ -296,7 +296,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -309,7 +309,7 @@ jobs:
 
 
       - name: Vendor cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: vendor-cache
         with:
           path: vendor
@@ -385,7 +385,7 @@ jobs:
         run: echo "BUILD_TYPE=$([ "$GRABBER_IS_NIGHTLY" = "1" ] && echo "Release" || echo "RelWithDebInfo")" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -397,7 +397,7 @@ jobs:
           modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
 
       - name: Vendor cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: vendor-cache
         with:
           path: vendor
@@ -527,7 +527,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: recursive
 

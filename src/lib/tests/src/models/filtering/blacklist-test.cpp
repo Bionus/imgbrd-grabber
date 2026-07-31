@@ -57,6 +57,22 @@ TEST_CASE("Blacklist")
 		REQUIRE(blacklist.contains("not_found") == false);
 	}
 
+	SECTION("Complex tag")
+	{
+		QStringList complex { "rating:safe", "test_tag" };
+		Blacklist blacklist;
+
+		REQUIRE(blacklist.contains(complex) == false);
+		REQUIRE(blacklist.remove(complex) == false);
+
+		blacklist.add(complex);
+		REQUIRE(blacklist.contains(complex) == true);
+		REQUIRE(blacklist.remove(complex) == true);
+
+		REQUIRE(blacklist.contains(complex) == false);
+		REQUIRE(blacklist.remove(complex) == false);
+	}
+
 	SECTION("Match")
 	{
 		QMap<QString, Token> tokens;

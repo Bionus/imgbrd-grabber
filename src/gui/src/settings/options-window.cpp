@@ -119,7 +119,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->checkUseQtUserAgent->setChecked(false);
 		ui->checkUseQtUserAgent->setDisabled(true);
 	#endif
-	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString());
+	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0")).toString());
 	ui->lineExtensionRotatorStatic->setText(settings->value("extensionRotationStatic", QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" }).toStringList().join(", "));
 	ui->lineExtensionRotatorAnimated->setText(settings->value("extensionRotationAnimated", QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }).toStringList().join(", "));
 

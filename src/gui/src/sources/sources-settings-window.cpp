@@ -49,11 +49,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	// Refferers
 	ui->lineSiteName->setText(site->setting("name", m_site->url()).toString());
 	const QStringList referers { "none", "host", "page", "image" };
-	const QStringList referers_preview { "", "none", "host", "page", "image" };
-	const QStringList referers_image { "", "none", "host", "page", "details", "image" };
+	const QStringList referers_preview { "none", "host", "page", "image" };
+	const QStringList referers_image { "none", "host", "page", "details", "image" };
 	ui->comboReferer->setCurrentIndex(referers.indexOf(site->setting("referer", "none").toString()));
-	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "").toString()));
-	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "").toString()));
+	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "page").toString()));
+	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "details").toString()));
 	ui->spinIgnoreAlways->setValue(site->setting("ignore/always", 0).toInt());
 	ui->spinIgnore1->setValue(site->setting("ignore/1", 0).toInt());
 	ui->checkSsl->setChecked(site->setting("ssl", false).toBool());
@@ -314,8 +314,8 @@ void SourcesSettingsWindow::saveSettings()
 {
 	m_site->setSetting("name", ui->lineSiteName->text(), m_site->url());
 	const QStringList referers { "none", "host", "page", "image" };
-	const QStringList referers_preview { "", "none", "host", "page", "image" };
-	const QStringList referers_image { "", "none", "host", "page", "details", "image" };
+	const QStringList referers_preview { "none", "host", "page", "image" };
+	const QStringList referers_image { "none", "host", "page", "details", "image" };
 	m_site->setSetting("referer", referers[ui->comboReferer->currentIndex()], "none");
 	m_site->setSetting("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()], "");
 	m_site->setSetting("referer_image", referers_image[ui->comboRefererImage->currentIndex()], "");
@@ -390,6 +390,7 @@ void SourcesSettingsWindow::saveSettings()
 	// Headers
 	MixedSettings *settings = m_site->settings();
 	settings->beginGroup("Headers");
+	settings->remove("");
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
 		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);
