@@ -41,7 +41,7 @@ class TagContextMenu : public QMenu
 
 	signals:
 		void setFavoriteImage();
-		void openNewTab();
+		void openNewTab(const QString & = QString());
 
 	private:
 		QString m_tag;

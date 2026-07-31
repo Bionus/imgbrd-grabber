@@ -566,10 +566,11 @@ void ViewerWindow::contextMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
-void ViewerWindow::openInNewTab()
+void ViewerWindow::openInNewTab(const QString &link)
 {
-	if (!m_link.isEmpty()) {
-		m_parent->addTab(m_link, false, true, m_tab);
+	QString activeLink = link.isEmpty() ? m_link : link;
+	if (!activeLink.isEmpty()) {
+		m_parent->addTab(activeLink, false, true, m_tab);
 	}
 }
 void ViewerWindow::setfavorite()

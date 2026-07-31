@@ -142,7 +142,7 @@ void TagContextMenu::unblacklistSite()
 
 void TagContextMenu::openInNewTab()
 {
-	emit openNewTab();
+	emit openNewTab(m_tag);
 }
 void TagContextMenu::openInNewWindow()
 {
