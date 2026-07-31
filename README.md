@@ -1,4 +1,4 @@
-﻿<p align="center"><img src="src/gui/resources/images/readme-icon.png" alt="" /></p>
+<p align="center"><img src="src/gui/resources/images/readme-icon.png" alt="" /></p>
 
 <h1 align="center">Grabber <sup><sub>(Fable fork)</sub></sup></h1>
 
