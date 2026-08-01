@@ -180,12 +180,14 @@ void Site::loadConfig()
 			m_userAgent = globalUserAgent;
 		}
 	} else {
-		if (!m_profile->getSettings()->contains("userAgentID")) {
-			m_profile->getSettings()->setValue("userAgentID", QUuid::createUuid().toString().mid(1, 36));
-		}
-
 		m_userAgent.replace("%version%", QString(VERSION));
-		m_userAgent.replace("%userAgentID%", m_profile->getSettings()->value("userAgentID").toString());
+
+		if (m_userAgent.contains("%userAgentID%")) {
+			if (!m_settings->contains("userAgentID")) {
+				m_settings->setValue("userAgentID", QUuid::createUuid().toString().mid(1, 36));
+			}
+			m_userAgent.replace("%userAgentID%", m_settings->value("userAgentID").toString());
+		}
 	}
 }
 
