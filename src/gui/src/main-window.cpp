@@ -20,6 +20,7 @@
 	#include <cfloat>
 	#include "Windows.h"
 #endif
+#include <QInputDialog>
 #include <qmath.h>
 #include <ui_main-window.h>
 #include "about-window.h"
@@ -484,13 +485,13 @@ void MainWindow::onFirstLoad()
 	swin->show();
 }
 
-void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTab *source)
+void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTab *source, bool preload)
 {
 	auto *w = new TagTab(m_profile, m_downloadQueue, this);
 	this->addSearchTab(w, background, save, source);
 
 	if (!tag.isEmpty()) {
-		w->setTags(tag);
+		w->setTags(tag, preload);
 	} else {
 		w->focusSearch();
 	}
@@ -551,6 +552,17 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 
 	if (save) {
 		saveTabs(m_profile->getPath() + "/tabs.json");
+	}
+}
+void MainWindow::addTabs()
+{
+	const QString text = QInputDialog::getMultiLineText(this, tr("New tabs"), tr("Tabs"));
+	const QStringList tags = text.trimmed().split('\n', Qt::SkipEmptyParts);
+
+	for (int i = 0; i < tags.count(); i++) {
+		const QString &tag = tags[i];
+		const bool saveTabs = i == tags.count() - 1;
+		addTab(tag, true, saveTabs, nullptr, false);
 	}
 }
 
