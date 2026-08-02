@@ -137,6 +137,11 @@ export const source: ISource = {
                 parse: (src: string): IParsedSearch | IError => {
                     let parsed = JSON.parse(src);
 
+                    // Handle error messages
+                    if (typeof parsed === "string") {
+                        return { error: parsed };
+                    }
+
                     // Handle the old format
                     if (Array.isArray(parsed)) {
                         parsed = {
