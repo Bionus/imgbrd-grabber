@@ -460,6 +460,8 @@ void DownloadsTab::batchConvert()
 	for (const int row : rows) {
 		const DownloadQueryGroup &group = m_groupBatchs[row];
 		Monitor monitor(m_settings, { group.site }, group.query, group.postFiltering);
+		monitor.setPathOverride(group.path);
+		monitor.setFilenameOverride(group.filename);
 		m_profile->monitorManager()->add(monitor);
 	}
 }
