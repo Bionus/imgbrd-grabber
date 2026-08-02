@@ -85,10 +85,22 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const parsed = Grabber.parseXML(src);
+                    if (!parsed) {
+                        return { error: "Invalid XML response" };
+                    }
 
                     // Handle error messages
-                    if ("response" in parsed && parsed["response"]["@attributes"]["success"] === "false") {
+                    if (parsed?.["response"]?.["@attributes"]?.["success"] === "false") {
                         return { error: parsed["response"]["@attributes"]["reason"] };
+                    }
+                    if ("error" in parsed) {
+                        const error = parsed["error"];
+                        return { error: typeof error === "string" ? error : String(error["#text"] || "Unknown API error") };
+                    }
+
+                    // Validate the shape of the response
+                    if (!parsed?.["posts"]) {
+                        return { error: "Invalid XML response (no posts found)" };
                     }
 
                     const data = Grabber.makeArray(parsed.posts.post);
@@ -103,7 +115,7 @@ export const source: ISource = {
 
                     return {
                         images,
-                        imageCount: parsed.posts["@attributes"]["count"],
+                        imageCount: parsed.posts["@attributes"]?.["count"],
                     };
                 },
             },
