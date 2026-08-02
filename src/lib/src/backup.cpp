@@ -110,6 +110,21 @@ bool loadBackup(Profile *profile, const QString &filePath)
 		}
 	}
 
+	// Directories
+	static const QMap<QString, QString> backupDirs {
+		{"thumbs/", savePath("thumbs")},
+		{"webservices/", profile->getPath() + "/webservices/"},
+	};
+	for (auto it = backupDirs.constBegin(); it != backupDirs.constEnd(); ++it) {
+		const QString source = tmpDir.filePath(it.key());
+		const QString &target = it.value();
+
+		if (QFile::exists(source) && !copyRecursively(source, target, true)) {
+			log("Could not restore " + it.key(), Logger::Error);
+			return false;
+		}
+	}
+
 	// Re-open SQLite connections once we're done
 	if (md5Database != nullptr) {
 		md5Database->load();
@@ -118,7 +133,7 @@ bool loadBackup(Profile *profile, const QString &filePath)
 	// Reload the profile
 	profile->reload();
 
-	// TODO(Bionus): restore.igl, tabs.json, thumbs/, webservices/
+	// TODO(Bionus): restore.igl, tabs.json
 
 	return true;
 }
