@@ -90,21 +90,20 @@ export const source: ISource = {
                     }
 
                     // Handle error messages
-                    if ("response" in parsed && parsed["response"]["@attributes"] && parsed["response"]["@attributes"]["success"] === "false") {
+                    if (parsed?.["response"]?.["@attributes"]?.["success"] === "false") {
                         return { error: parsed["response"]["@attributes"]["reason"] };
                     }
-
-                    // Some sites (e.g. api.rule34.xxx) return an <error> document, notably when unauthenticated
                     if ("error" in parsed) {
                         const error = parsed["error"];
                         return { error: typeof error === "string" ? error : String(error["#text"] || "Unknown API error") };
                     }
 
-                    if (!("posts" in parsed) || !parsed["posts"]) {
+                    // Validate the shape of the response
+                    if (!parsed?.["posts"]) {
                         return { error: "Invalid XML response (no posts found)" };
                     }
 
-                    const data = parsed.posts.post !== undefined ? Grabber.makeArray(parsed.posts.post) : [];
+                    const data = Grabber.makeArray(parsed.posts.post);
                     const images: IImage[] = [];
                     for (const image of data) {
                         if (image && "id" in image) {
@@ -114,10 +113,9 @@ export const source: ISource = {
                         }
                     }
 
-                    const attrs = parsed.posts["@attributes"];
                     return {
                         images,
-                        imageCount: attrs ? attrs["count"] : undefined,
+                        imageCount: parsed.posts["@attributes"]?.["count"],
                     };
                 },
             },
