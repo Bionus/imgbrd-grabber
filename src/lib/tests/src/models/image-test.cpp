@@ -318,6 +318,28 @@ TEST_CASE("Image")
 			REQUIRE(!QFile("tests/resources/tmp/source.png").exists());
 			file.remove();
 		}
+
+		SECTION("Empty path returns Error even when MD5 duplicate is ignore")
+		{
+			const QString sourcePath = QDir::toNativeSeparators("tests/resources/tmp/source-empty-path.png");
+			QFile::remove(sourcePath);
+			REQUIRE(QFile::copy("tests/resources/image_1x1.png", sourcePath));
+			REQUIRE(QFile::exists(sourcePath));
+			const auto cleanup = qScopeGuard([sourcePath]() {
+				QFile::remove(sourcePath);
+			});
+			img->setSavePath("tests/resources/image_1x1.png");
+			profile->addMd5(img->md5(), sourcePath);
+			const auto cleanupMd5 = qScopeGuard([&]() {
+				profile->removeMd5(img->md5(), sourcePath);
+			});
+
+			settings->setValue("Save/md5Duplicates", "ignore");
+			settings->setValue("Save/md5DuplicatesSameDir", "ignore");
+
+			const Image::SaveResult res = img->preSave(QString(), Image::Size::Full);
+			REQUIRE(res == Image::SaveResult::Error);
+		}
 	}
 
 	/*SECTION("SaveLog")
