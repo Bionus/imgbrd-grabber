@@ -287,7 +287,7 @@ void ImageDownloader::loadImage(bool rateLimit)
 
 	// Create download root directory
 	const QString rootDir = m_temporaryPath.section(QDir::separator(), 0, -2);
-	if (!ensureDirectoryExists(rootDir)) {
+	if (!rootDir.isEmpty() && !ensureDirectoryExists(rootDir)) {
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
@@ -465,7 +465,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 		}
 
 		const QString dir = path.section(QDir::separator(), 0, -2);
-		if (!ensureDirectoryExists(dir)) {
+		if (!dir.isEmpty() && !ensureDirectoryExists(dir)) {
 			result.append({ path, size, Image::SaveResult::Error });
 			continue;
 		}

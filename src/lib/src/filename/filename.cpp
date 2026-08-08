@@ -251,7 +251,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		}
 
 		// Include directory in result
-		if (flags.testFlag(PathFlag::IncludeFolder)) {
+		if (flags.testFlag(PathFlag::IncludeFolder) && !folder.isEmpty()) {
 			fns[i] = folder + "/" + fns[i];
 		}
 

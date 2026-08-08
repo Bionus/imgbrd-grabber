@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QScopedPointer>
+#include <QScopeGuard>
 #include <QSettings>
 #include <QSignalSpy>
 #include "loader/token.h"
@@ -210,6 +211,31 @@ TEST_CASE("Image")
 
 	SECTION("preSave")
 	{
+		SECTION("File saved in current directory")
+		{
+			const QString sourcePath = QDir::current().absoluteFilePath("tests/resources/image_1x1.png");
+			const QString previousCurrentPath = QDir::currentPath();
+			const auto restoreCurrentPath = qScopeGuard([previousCurrentPath]() {
+				QDir::setCurrent(previousCurrentPath);
+			});
+			REQUIRE(QDir::setCurrent(QDir(previousCurrentPath).absoluteFilePath("tests/resources/tmp")));
+
+			const QString savePath = "7331-cwd.jpg";
+			QFile file(savePath);
+			if (file.exists()) {
+				file.remove();
+			}
+			const auto removeFile = qScopeGuard([savePath]() {
+				QFile::remove(savePath);
+			});
+
+			img->setSavePath(sourcePath);
+			Image::SaveResult res = img->preSave(savePath, Image::Size::Full);
+
+			REQUIRE(res == Image::SaveResult::Saved);
+			REQUIRE(file.exists());
+		}
+
 		SECTION("File already saved somewhere else")
 		{
 			const QString savePath = QDir::toNativeSeparators("tests/resources/tmp/7331.jpg");
