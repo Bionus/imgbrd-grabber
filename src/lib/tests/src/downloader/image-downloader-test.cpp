@@ -1,5 +1,6 @@
 #include <QDir>
 #include <QFile>
+#include <QScopeGuard>
 #include <QSettings>
 #include <QSignalSpy>
 #include "custom-network-access-manager.h"
@@ -95,6 +96,56 @@ TEST_CASE("ImageDownloader")
 		QList<ImageSaveResult> expected;
 		expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::Size::Full, Image::SaveResult::Saved });
 
+		assertDownload(profile, img, &downloader, expected, true);
+	}
+
+	SECTION("SuccessBasicCurrentDirectoryPath")
+	{
+		auto img = createImage(profile, site);
+		const QString previousCurrentPath = QDir::currentPath();
+		const QString imagePath = QDir(previousCurrentPath).absoluteFilePath("tests/resources/image_1x1.png");
+		const auto restoreCurrentPath = qScopeGuard([previousCurrentPath]() {
+			QDir::setCurrent(previousCurrentPath);
+		});
+		REQUIRE(QDir::setCurrent(QDir(previousCurrentPath).absoluteFilePath("tests/resources/tmp")));
+		CustomNetworkAccessManager::NextFiles.enqueue(imagePath);
+		const auto clearNextFiles = qScopeGuard([]() {
+			CustomNetworkAccessManager::NextFiles.clear();
+		});
+
+		ImageDownloader downloader(profile, img, "out-cwd.jpg", "", 1, false, false, nullptr, false, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ "out-cwd.jpg", Image::Size::Full, Image::SaveResult::Saved });
+
+		const auto removeFile = qScopeGuard([]() {
+			QFile::remove("out-cwd.jpg");
+		});
+		assertDownload(profile, img, &downloader, expected, true);
+	}
+
+	SECTION("SuccessMd5CurrentDirectoryPath")
+	{
+		auto img = createImage(profile, site);
+		const QString previousCurrentPath = QDir::currentPath();
+		const QString imagePath = QDir(previousCurrentPath).absoluteFilePath("tests/resources/image_1x1.png");
+		const auto restoreCurrentPath = qScopeGuard([previousCurrentPath]() {
+			QDir::setCurrent(previousCurrentPath);
+		});
+		REQUIRE(QDir::setCurrent(QDir(previousCurrentPath).absoluteFilePath("tests/resources/tmp")));
+		CustomNetworkAccessManager::NextFiles.enqueue(imagePath);
+		const auto clearNextFiles = qScopeGuard([]() {
+			CustomNetworkAccessManager::NextFiles.clear();
+		});
+
+		ImageDownloader downloader(profile, img, "%md5%.%ext%", "", 1, false, false, nullptr, false, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ "1bc29b36f623ba82aaf6724fd3b16718.jpg", Image::Size::Full, Image::SaveResult::Saved });
+
+		const auto removeFile = qScopeGuard([]() {
+			QFile::remove("1bc29b36f623ba82aaf6724fd3b16718.jpg");
+		});
 		assertDownload(profile, img, &downloader, expected, true);
 	}
 
