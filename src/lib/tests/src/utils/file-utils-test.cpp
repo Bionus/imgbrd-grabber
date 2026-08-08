@@ -140,4 +140,50 @@ TEST_CASE("File utils")
 		REQUIRE(writeFile(file, "test"));
 		REQUIRE(QFile::exists(file));
 	}
+
+	SECTION("ensureDirectoryExists")
+	{
+		SECTION("Directory already exists")
+		{
+			REQUIRE(ensureDirectoryExists("tests/resources/tmp"));
+		}
+
+		SECTION("Directory can be created")
+		{
+			const QString dir = "tests/resources/tmp/ensure-dir/nested";
+			DirectoryDeleter deleter("tests/resources/tmp/ensure-dir/", false, true);
+
+			REQUIRE(!QDir(dir).exists());
+			REQUIRE(ensureDirectoryExists(dir));
+			REQUIRE(QDir(dir).exists());
+		}
+
+		SECTION("A file blocks the directory creation")
+		{
+			const QString file = "tests/resources/tmp/ensure-file.txt";
+			FileDeleter deleter(file, true);
+			REQUIRE(writeFile(file, "test"));
+
+			REQUIRE(!ensureDirectoryExists(file + "/sub"));
+		}
+	}
+
+	SECTION("diagnoseDirectoryCreationError")
+	{
+		SECTION("A file blocks the directory creation")
+		{
+			const QString file = "tests/resources/tmp/diagnose-file.txt";
+			FileDeleter deleter(file, true);
+			REQUIRE(writeFile(file, "test"));
+
+			const QString reason = diagnoseDirectoryCreationError(file + "/sub");
+			REQUIRE(reason.contains("is a file, not a folder"));
+			REQUIRE(reason.contains(file));
+		}
+
+		SECTION("No reason found for a creatable directory")
+		{
+			REQUIRE(diagnoseDirectoryCreationError("tests/resources/tmp/creatable") == QString());
+		}
+	}
 }
