@@ -666,6 +666,12 @@ Image::SaveResult Image::preSave(const QString &path, Size size)
 {
 	bool force = false;
 
+	// Reject empty destination paths before any disk or MD5 operations
+	if (path.isEmpty()) {
+		log(QStringLiteral("Cannot save image `%1`: destination path is empty").arg(m_url.toString()));
+		return SaveResult::Error;
+	}
+
 	// Check if file already exists on disk
 	QFile f(path);
 	if (f.exists() && !force) {
@@ -688,11 +694,6 @@ Image::SaveResult Image::preSave(const QString &path, Size size)
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsMd5;
 		}
-	}
-
-	// Reject empty destination paths before attempting directory creation or save
-	if (path.isEmpty()) {
-		return SaveResult::Error;
 	}
 
 	// Create the destination directory since we're going to put a file there
