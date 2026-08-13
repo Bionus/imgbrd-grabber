@@ -15,6 +15,7 @@ cp -r src/dist/macos/* "$APP_ROOT/Contents"
 
 # Prepare the app bundle (doesn't create the DMG file)
 macdeployqt $APP_ROOT
+codesign --verify --deep --strict --verbose=4 "$APP_ROOT"
 
 # Create LZMA compressed DMG using hdiutil (format ULMO)
 hdiutil create \
