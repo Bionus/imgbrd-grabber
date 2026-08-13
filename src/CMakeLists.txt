@@ -40,7 +40,7 @@ endif()
 set(QT_SILENCE_MISSING_DEPENDENCY_TARGET_WARNING ON)
 
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "7.13.0")
+	set(VERSION "7.14.0")
 else()
 	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 endif()
@@ -54,6 +54,13 @@ if(NOT DEFINED VERSION_PLATFORM)
 	endif()
 endif()
 set(USE_SSL 1)
+
+# Nightly version settings
+if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
+	add_definitions(-DNIGHTLY=1)
+	add_definitions(-DNIGHTLY_COMMIT="${COMMIT}")
+	message(STATUS "Configuring nightly with commit '${COMMIT}'")
+endif()
 
 # Android settings
 set(ANDROID_APP_NAME ${PROJECT_NAME})

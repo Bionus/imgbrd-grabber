@@ -6,7 +6,7 @@
 
 class Profile;
 
-Profile *makeProfile();
+Profile *makeProfile(bool clean = true);
 void setupSource(const QString &source, QString dir = QString());
 void setupSite(const QString &source, const QString &site, QString dir = QString());
 

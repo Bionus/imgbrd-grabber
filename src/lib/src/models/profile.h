@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include "history/history.h"
 #include "models/favorite.h"
 #include "models/filtering/blacklist.h"
 #include "models/filtering/tag-filter-list.h"
@@ -33,6 +34,7 @@ class Profile : public QObject
 		~Profile() override;
 
 		// Sync
+		void reload();
 		void sync();
 		void syncFavorites() const;
 		void syncKeptForLater() const;
@@ -68,6 +70,7 @@ class Profile : public QObject
 
 		// Auto-completion
 		void addAutoComplete(const QString &tag);
+		QStringList addAutoComplete(const QList<Tag> &tags);
 
 		// Sites management
 		void addSource(Source *source);
@@ -77,7 +80,9 @@ class Profile : public QObject
 		// Blacklist management
 		void setBlacklistedTags(const Blacklist &blacklist);
 		void addBlacklistedTag(const QString &tag);
+		void addBlacklistedTags(const QStringList &tags);
 		void removeBlacklistedTag(const QString &tag);
+		void removeBlacklistedTags(const QStringList &tags);
 
 		// Source registries
 		const QList<SourceRegistry*> &getSourceRegistries() const;
@@ -96,6 +101,7 @@ class Profile : public QObject
 		Exiftool &getExiftool();
 		QStringList &getAutoComplete();
 		Blacklist &getBlacklist();
+		History *getHistory();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
 		const QStringList &getAdditionalTokens() const;
@@ -114,6 +120,9 @@ class Profile : public QObject
 		void blacklistChanged();
 		void sourceRegistriesChanged();
 
+	protected:
+		void reload(bool init);
+
 	private:
 		QString m_path;
 		QSettings *m_settings;
@@ -126,6 +135,7 @@ class Profile : public QObject
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;
 		Blacklist m_blacklist;
+		History *m_history;
 		Md5Database *m_md5s;
 		QMap<QString, Source*> m_sources;
 		QMap<QString, Site*> m_sites;

@@ -11,6 +11,7 @@ Item {
     property string name
     property Setting setting
     property bool allowAuto: true
+    property bool preview: false
     property var currentValue: setting.value
     property color initialValueColor: setting.value || "black"
     property color currentValueColor: setting.value || "black"
@@ -22,6 +23,7 @@ Item {
 
         name: root.name
         subtitle: setting.value
+        subtitleColor: preview ? setting.value : undefined
         anchors.fill: parent
 
         onClicked: dialog.open()

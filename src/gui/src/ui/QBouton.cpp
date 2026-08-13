@@ -132,7 +132,7 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 	int h = iconSize().height();
 
 	if (wOnly && w <= regionWidth) {
-		return iconSize();
+		return iconSize() / devicePixelRatio();
 	}
 
 	// Calculate ratio to resize by keeping proportions

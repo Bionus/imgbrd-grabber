@@ -41,7 +41,7 @@ QString FFmpeg::version(int msecs)
 }
 
 
-QString FFmpeg::convert(const QString &file, const QString &extension, bool deleteOriginal, int msecs)
+QString FFmpeg::convert(const QString &file, const QString &extension, bool overwrite, bool deleteOriginal, int msecs)
 {
 	// Since the method takes an extension, build an absolute path to the input file with that extension
 	const QFileInfo info(file);
@@ -52,20 +52,24 @@ QString FFmpeg::convert(const QString &file, const QString &extension, bool dele
 		log(QStringLiteral("Cannot convert file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
+	if (QFile::exists(destination) && !overwrite) {
 		log(QStringLiteral("Converting the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
 		return file;
 	}
 
+	// Most video codecs require even dimensions, as well as some image formats
+	static const QStringList evenDimensionsFormats {"mp4", "mkv", "mov", "avi", "webm", "wmv", "mpg", "mpeg", "m4v", "ts", "flv", "3gp", "avif", "heic", "heif", "webp"};
+	const QStringList filters = evenDimensionsFormats.contains(extension) ? QStringList {"-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2"} : QStringList();
+
 	// Execute the conversion command
-	const QStringList params = { "-n", "-loglevel", "error", "-i", file, destination };
+	const QStringList params = QStringList() << (overwrite ? "-y" : "-n") << "-loglevel" << "error" << "-i" << file << filters << destination;
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
 	return destination;
 }
 
-QString FFmpeg::remux(const QString &file, const QString &extension, bool deleteOriginal, int msecs)
+QString FFmpeg::remux(const QString &file, const QString &extension, bool overwrite, bool deleteOriginal, int msecs)
 {
 	// Since the method takes an extension, build an absolute path to the input file with that extension
 	const QFileInfo info(file);
@@ -76,20 +80,20 @@ QString FFmpeg::remux(const QString &file, const QString &extension, bool delete
 		log(QStringLiteral("Cannot remux file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
+	if (QFile::exists(destination) && !overwrite) {
 		log(QStringLiteral("Remuxing the file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
 		return file;
 	}
 
 	// Execute the conversion command
-	const QStringList params = { "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
+	const QStringList params = { overwrite ? "-y" : "-n", "-loglevel", "error", "-i", file, "-c", "copy", destination };
 	if (!executeConvert(file, destination, deleteOriginal, params, msecs)) {
 		return file;
 	}
 	return destination;
 }
 
-QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, int>> &frameInformation, const QString &extension, bool deleteOriginal, int msecs)
+QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, int>> &frameInformation, const QString &extension, bool overwrite, bool deleteOriginal, int msecs)
 {
 	// Since the method takes an extension, build an absolute path to the input file with that extension
 	const QFileInfo info(file);
@@ -104,7 +108,7 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 		log(QStringLiteral("Cannot convert ugoira file that does not exist: `%1`").arg(file), Logger::Error);
 		return file;
 	}
-	if (QFile::exists(destination)) {
+	if (QFile::exists(destination) && !overwrite) {
 		log(QStringLiteral("Converting the ugoira file `%1` would overwrite another file: `%2`").arg(file, destination), Logger::Error);
 		return file;
 	}
@@ -118,8 +122,9 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 
 	// List all frame files from the ZIP
 	QStringList frameFiles = QDir(tmpDir.path()).entryList(QDir::Files | QDir::NoDotAndDotDot);
+	frameFiles.removeIf([](const QString &frameFile) { return frameFile.endsWith(".json"); }); // Exclude JSON metadata files (TODO: use it instead of frameInformation)
 	if (frameInformation.count() != frameFiles.count()) {
-		log(QStringLiteral("Could not extract ugoira ZIP file `%1` into directory: `%2`").arg(file, destination), Logger::Error);
+		log(QStringLiteral("Invalid file count in ZIP file `%1`: %2 / %3").arg(file, QString::number(frameFiles.count()), QString::number(frameInformation.count())), Logger::Error);
 		return file;
 	}
 
@@ -138,11 +143,11 @@ QString FFmpeg::convertUgoira(const QString &file, const QList<QPair<QString, in
 	ffconcatFile.close();
 
 	// Build the params
-	QStringList params = { "-n", "-loglevel", "error", "-i", ffconcatFile.fileName() };
+	QStringList params = { overwrite ? "-y" : "-n", "-loglevel", "error", "-i", ffconcatFile.fileName() };
 	if (extension == QStringLiteral("gif")) {
 		params.append({ "-filter_complex", "[0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle", "-fps_mode", "passthrough" });
 	} else if (extension == QStringLiteral("apng")) {
-		params.append({ "-c:v", "apng", "-plays", "0", "-fps_mode", "passthrough" });
+		params.append({ "-vf", "format=rgba", "-c:v", "apng", "-plays", "0", "-fps_mode", "passthrough" });
 	} else if (extension == QStringLiteral("webp")) {
 		params.append({ "-c:v", "libwebp_anim", "-pix_fmt", "yuva420p", "-lossless", "0", "-compression_level", "5", "-quality", "100", "-loop", "0", "-fps_mode", "passthrough" });
 	} else if (extension == QStringLiteral("webm")) {
@@ -176,7 +181,7 @@ bool FFmpeg::executeConvert(const QString &file, const QString &destination, boo
 {
 	// Execute the command
 	if (!execute(params, msecs)) {
-		// Clean-up failed conversions
+		// Cleanup failed conversions
 		if (QFile::exists(destination)) {
 			log(QStringLiteral("Cleaning up failed conversion target file: `%1`").arg(destination), Logger::Warning);
 			QFile::remove(destination);
@@ -198,6 +203,7 @@ bool FFmpeg::executeConvert(const QString &file, const QString &destination, boo
 
 bool FFmpeg::execute(const QStringList &params, int msecs)
 {
+	log(QString("[FFmpeg] %1 %2").arg("ffmpeg").arg(params.join(" ")), Logger::Debug);
 	QProcess process;
 	process.start("ffmpeg", params);
 

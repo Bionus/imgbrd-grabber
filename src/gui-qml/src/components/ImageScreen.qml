@@ -1,5 +1,5 @@
 import Grabber 1.0
-import QtMultimedia 5.12
+import QtMultimedia 6.6
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
@@ -29,8 +29,18 @@ Page {
             }
 
             ToolButton {
+                property var lastShare
+
+                // Limit sharing button to one click per second
+                function debouncedShareImage(img) {
+                    if (!lastShare || (new Date()) - lastShare >= 1000) {
+                        lastShare = new Date()
+                        backend.shareImage(img)
+                    }
+                }
+
                 icon.source: "/images/icons/share.png"
-                onClicked: backend.shareImage(image.image)
+                onClicked: debouncedShareImage(image.image)
             }
 
             ImageLoader {
@@ -112,7 +122,7 @@ Page {
             model: root.images
 
             Loader {
-                active: SwipeView.isPreviousItem || SwipeView.isCurrentItem || SwipeView.isNextItem
+                active: Math.abs(swipeView.currentIndex - SwipeView.index) <= gSettings.viewer_preload.value
 
                 sourceComponent: StackLayout {
                     id: stackLayout
@@ -174,7 +184,11 @@ Page {
     }
 
     Keys.onReleased: event => {
-        if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
+        if (event.key === Qt.Key_Left) {
+            swipeView.decrementCurrentIndex()
+        } else if (event.key === Qt.Key_Right) {
+            swipeView.incrementCurrentIndex()
+        } else if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
             if (root.showTags) {
                 root.showTags = false
             } else {

@@ -8,6 +8,21 @@ ColumnLayout {
 
     SettingTitle {
         Layout.fillWidth: true
+        text: qsTr("Search")
+    }
+    TextFieldSetting {
+        name: qsTr("Added tags")
+        setting: gSettings.globalAddedTags
+        Layout.fillWidth: true
+    }
+    TextFieldSetting {
+        name: qsTr("Post-filters")
+        setting: gSettings.globalPostFilters
+        Layout.fillWidth: true
+    }
+
+    SettingTitle {
+        Layout.fillWidth: true
         text: qsTr("Blacklist")
     }
     TextAreaSetting {

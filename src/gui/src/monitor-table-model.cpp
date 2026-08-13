@@ -13,6 +13,7 @@
 MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QSettings *settings, QObject *parent)
 	: QAbstractTableModel(parent), m_monitorManager(monitorManager), m_settings(settings)
 {
+	connect(m_monitorManager, &MonitorManager::changed, this, &MonitorTableModel::changed);
 	connect(m_monitorManager, &MonitorManager::inserted, this, &MonitorTableModel::inserted);
 	connect(m_monitorManager, &MonitorManager::removed, this, &MonitorTableModel::removed);
 
@@ -192,6 +193,14 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 	return {};
 }
 
+
+void MonitorTableModel::changed()
+{
+	if (!m_freeze) {
+		emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));
+		emit layoutChanged();
+	}
+}
 
 void MonitorTableModel::inserted(int position)
 {

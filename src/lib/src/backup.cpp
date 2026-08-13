@@ -1,10 +1,13 @@
 #include "backup.h"
 #include <QFile>
 #include <QHash>
+#include <QSettings>
 #include <QTemporaryDir>
 #include "functions.h"
+#include "logger.h"
 #include "models/favorite.h"
 #include "models/profile.h"
+#include "models/md5-database/md5-database-sqlite.h"
 #include "utils/zip.h"
 #include "reverse-search/reverse-search-engine.h"
 #include "reverse-search/reverse-search-loader.h"
@@ -14,8 +17,11 @@ bool saveBackup(Profile *profile, const QString &filePath)
 {
 	QHash<QString, QString> files;
 
+	// Save any pending changes
+	profile->sync();
+
 	// Common files
-	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json" };
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "restore.igl", "tabs.json", "history.json", "md5s.txt", "md5s.sqlite", "filenamehistory.txt" };
 	for (const QString &file : backupFiles) {
 		files.insert(profile->getPath() + "/" + file, file);
 	}
@@ -42,25 +48,92 @@ bool saveBackup(Profile *profile, const QString &filePath)
 		}
 	}
 
-	// Create backup ZIP
-	return createZip(filePath, zipFiles);
+	// Close SQLite connections while copying files
+	auto *md5Database = qobject_cast<Md5DatabaseSqlite*>(profile->md5Database());
+	if (md5Database != nullptr) {
+		md5Database->close();
+	}
+
+	// Create the backup ZIP
+	const bool ok = createZip(filePath, zipFiles);
+	if (!ok) {
+		log("Failed to create backup ZIP file", Logger::Error);
+	}
+
+	// Re-open SQLite connections once we're done
+	if (md5Database != nullptr) {
+		md5Database->load();
+	}
+
+	return ok;
 }
 
 bool loadBackup(Profile *profile, const QString &filePath)
 {
-	// Create temporary directory to store the backup
+	// Create a temporary directory to store the extracted backup
 	QTemporaryDir tmpDir;
 	if (!tmpDir.isValid()) {
+		log("Failed to create temporary directory to extract backup file", Logger::Error);
 		return false;
 	}
 
 	// Unzip file
 	if (!unzipFile(filePath, tmpDir.path())) {
+		log("Failed to extract backup ZIP file", Logger::Error);
 		return false;
 	}
 
-	// TODO(Bionus): actually implement loading here
-	Q_UNUSED(profile)
+	// Save any pending settings changes
+	profile->getSettings()->sync();
+
+	// Close SQLite connections while copying files
+	auto *md5Database = qobject_cast<Md5DatabaseSqlite*>(profile->md5Database());
+	if (md5Database != nullptr) {
+		md5Database->close();
+	}
+
+	// Common files
+	static const QStringList backupFiles { "settings.ini", "favorites.json", "viewitlater.txt", "ignore.txt", "wordsc.txt", "blacklist.txt", "monitors.json", "history.json", "md5s.txt", "md5s.sqlite", "filenamehistory.txt" };
+	for (const QString &file : backupFiles) {
+		const QString source = tmpDir.filePath(file);
+		const QString target = profile->getPath() + "/" + file;
+
+		if (QFile::exists(source)) {
+			if (QFile::exists(target) && !QFile::remove(target)) {
+				log("Could not remove existing " + file, Logger::Error);
+				return false;
+			}
+			if (!QFile::copy(source, target)) {
+				log("Could not restore " + file, Logger::Error);
+				return false;
+			}
+		}
+	}
+
+	// Directories
+	static const QMap<QString, QString> backupDirs {
+		{"thumbs/", savePath("thumbs")},
+		{"webservices/", profile->getPath() + "/webservices/"},
+	};
+	for (auto it = backupDirs.constBegin(); it != backupDirs.constEnd(); ++it) {
+		const QString source = tmpDir.filePath(it.key());
+		const QString &target = it.value();
+
+		if (QFile::exists(source) && !copyRecursively(source, target, true)) {
+			log("Could not restore " + it.key(), Logger::Error);
+			return false;
+		}
+	}
+
+	// Re-open SQLite connections once we're done
+	if (md5Database != nullptr) {
+		md5Database->load();
+	}
+
+	// Reload the profile
+	profile->reload();
+
+	// TODO(Bionus): restore.igl, tabs.json
 
 	return true;
 }

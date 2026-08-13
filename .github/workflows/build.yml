@@ -5,6 +5,8 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+    branches-ignore:
+      - crowdin
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -13,14 +15,15 @@ on:
       - crowdin
 
 env:
-  QT_VERSION: 6.6.3
+  QT_VERSION: 6.11.1
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
+  QT_MODULES_WEBENGINE: qtwebchannel qtpositioning qtwebengine qtwebview qtserialport
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
   CMAKE_BUILD_PARALLEL_LEVEL: 2
   QSCINTILLA_VERSION: 2.14.1
   QSCINTILLA_DIR: QScintilla_src-2.14.1
-  ANDROID_NDK_VERSION: 25.1.8937393
+  ANDROID_NDK_VERSION: 27.2.12479018
 
 jobs:
   # Gatekeeper job to skip build for Crowdin PRs
@@ -41,12 +44,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Uncrustify cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: bin-cache
         with:
           path: bin
@@ -81,7 +84,7 @@ jobs:
 
   coverage:
     name: Code coverage
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: gatekeeper
 
     env:
@@ -89,7 +92,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -99,7 +102,7 @@ jobs:
           sudo apt install libpulse-dev lcov libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxkbcommon-x11-0
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
@@ -138,7 +141,7 @@ jobs:
           lcov --list coverage.info
 
       - name: Upload coverage results
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -163,7 +166,7 @@ jobs:
 
   linux:
     name: Linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: version
 
     env:
@@ -173,24 +176,24 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libgstreamer-plugins-base1.0-0 zsync xvfb
+          sudo apt install libfuse2 libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libgstreamer-plugins-base1.0-0 zsync xvfb
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
-          modules: ${{ env.QT_MODULES }}
+          modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
 
       - name: Vendor cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: vendor-cache
         with:
           path: vendor
@@ -227,8 +230,8 @@ jobs:
       # This driver causes an issue in linuxdeployqt because Mimer SQL is not installed but the plugin depends on it
       - name: Delete unnecessary SQL driver
         run: |
-          rm $Qt6_DIR/plugins/sqldrivers/libqsqlmimer.so
-          rm $Qt6_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
+          rm $QT_ROOT_DIR/plugins/sqldrivers/libqsqlmimer.so
+          rm $QT_ROOT_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
 
       - name: Build
         run: |
@@ -257,14 +260,14 @@ jobs:
           mv Grabber_*-x86_64.AppImage.zsync Grabber-x86_64.AppImage.zsync
 
       - name: Upload AppImage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Grabber-x86_64.AppImage
           path: Grabber-x86_64.AppImage
           if-no-files-found: error
 
       - name: Upload AppImage update information
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Grabber-x86_64.AppImage.zsync
           path: Grabber-x86_64.AppImage.zsync
@@ -274,7 +277,7 @@ jobs:
         run: ./scripts/package-linux.sh
 
       - name: Upload archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Grabber.tar.gz
           path: Grabber.tar.gz
@@ -282,7 +285,7 @@ jobs:
 
   macos:
     name: macOS
-    runs-on: macos-13
+    runs-on: macos-14
     needs: version
 
     env:
@@ -293,19 +296,20 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
-          modules: ${{ env.QT_MODULES }}
+          modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
+
 
       - name: Vendor cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: vendor-cache
         with:
           path: vendor
@@ -336,7 +340,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
+          cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           cmake --build . --config Release --target sites
           cmake --build . --config Release
 
@@ -356,7 +360,7 @@ jobs:
         run: ./scripts/package-mac.sh
 
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Grabber.dmg
           path: Grabber.dmg
@@ -364,16 +368,16 @@ jobs:
 
   windows:
     name: Windows
-    runs-on: windows-2019
+    runs-on: windows-2022
     needs: version
 
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/14757676/qsqlmysql.dll_Qt_SQL_driver_6.6.3_MSVC2019_64-bit.zip
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/releases/download/qmysql_6.11.1/qsqlmysql.dll_Qt_SQL_driver_6.11.1_MSVC2022_64-bit.zip
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
-      VCINSTALLDIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
+      VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC
 
     steps:
       - name: Set environment
@@ -381,19 +385,20 @@ jobs:
         run: echo "BUILD_TYPE=$([ "$GRABBER_IS_NIGHTLY" = "1" ] && echo "Release" || echo "RelWithDebInfo")" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
-          modules: ${{ env.QT_MODULES }}
+          modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
+          aqtsource: git+https://github.com/miurahr/aqtinstall.git@8c3695d
 
       - name: Vendor cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: vendor-cache
         with:
           path: vendor
@@ -448,7 +453,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..\src -G "Visual Studio 16 2019" -A "x64" ^
+          cmake ..\src -G "Visual Studio 17 2022" -A "x64" ^
             -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
             -DCMAKE_SYSTEM_VERSION=10.0.18362.0 ^
             -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
@@ -465,24 +470,24 @@ jobs:
           ..\..\build\lib\tests\%BUILD_TYPE%\lib-tests.exe
           ..\..\build\cli\tests\%BUILD_TYPE%\cli-tests.exe
         env:
-          QTDIR: ${{ env.Qt6_Dir }}
-          QT_PLUGIN_PATH: ${{ env.Qt6_Dir }}\plugins
+          QTDIR: ${{ env.QT_ROOT_DIR }}
+          QT_PLUGIN_PATH: ${{ env.QT_ROOT_DIR }}\plugins
 
       - name: Generate installer
         shell: cmd
         run: |
-          copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt6_Dir%\plugins\sqldrivers"
+          copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%QT_ROOT_DIR%\plugins\sqldrivers"
           iscc /Q ^
             /DMyAppVersion="%GRABBER_VERSION%" ^
             /DPlatformName="x64" ^
-            /DQtDir="%Qt6_Dir%\bin" ^
+            /DQtDir="%QT_ROOT_DIR%\bin" ^
             /DOpenSSLDir="%OPENSSL_ROOT_DIR%" ^
             /DMySQLDir="%MYSQL_DRIVER_DIR%" ^
             scripts\windows-setup\setup.iss
           mv scripts/windows-setup/Grabber_*.exe "Grabber_x64.exe
 
       - name: Upload installer
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Grabber_x64.exe
           path: Grabber_x64.exe
@@ -493,7 +498,7 @@ jobs:
         run: scripts\package-windows.bat && mv Grabber.zip Grabber_x64.zip
 
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Grabber_x64.zip
           path: Grabber_x64.zip
@@ -505,7 +510,7 @@ jobs:
         run: 7z a "Grabber_x64_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
 
       - name: Upload symbols
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
         with:
           name: Grabber_x64_symbols.zip
@@ -523,7 +528,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -532,38 +537,52 @@ jobs:
         sudo apt update
         sudo apt install libpulse-dev
 
+    - name: Setup Java
+      uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: 17
+        cache: gradle
+        cache-dependency-path: |
+          **/*.gradle*
+          **/gradle-wrapper.properties
+
+    - name: Setup Android Environment
+      uses: android-actions/setup-android@v4
+      with:
+        cmdline-tools-version: 12266719
+        packages: 'platform-tools platforms;android-35 build-tools;35.0.0 ndk;${{ env.ANDROID_NDK_VERSION }}'
+        log-accepted-android-sdk-licenses: false
+
     - name: Install Qt (host)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
+        host: linux
         target: desktop
-        arch: gcc_64
+        arch: linux_gcc_64
 
     - name: Install Qt (android)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
+        host: linux
         target: android
         arch: android_armv7
 
     - name: Install Qt (android ARM64)
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
+        host: linux
         target: android
         arch: android_arm64_v8a
-
-    - name: Install Android platform and build tools
-      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "platform-tools" "build-tools;33.0.0"
-
-    - name: Install Android NDK 25
-      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;${ANDROID_NDK_VERSION}"
 
     - name: Download Android OpenSSL libraries
       working-directory: src/cmake
@@ -577,43 +596,30 @@ jobs:
         QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
         QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        Qt6_DIR_HOST: ${{ env.Qt6_DIR }}/../gcc_64
-        Qt6_DIR_V7: ${{ env.Qt6_DIR }}/../android_armv7
-        Qt6_DIR_V8: ${{ env.Qt6_DIR }}/../android_arm64_v8a
       run: |
         mkdir build
         cd build
-        export Qt6_DIR=Qt6_DIR_V7
-        export ANDROID_SDK_ROOT=$ANDROID_HOME
-        export ANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}"
-        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
-          -DANDROID_ABI:STRING=armeabi-v7a \
+        ${{ env.QT_ROOT_DIR }}/bin/qt-cmake ../src \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH="${{ env.QT_ROOT_DIR }}/lib/cmake/Qt6/qt.toolchain.cmake" \
+          -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
+          -DCMAKE_BUILD_TYPE:STRING=Release \
+          -DCMAKE_GENERATOR:STRING=Ninja \
+          -DCMAKE_WARN_DEPRECATED=FALSE \
+          -DANDROID_SDK_ROOT="${ANDROID_HOME}" \
+          -DANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}" \
+          -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
           -DQT_ANDROID_ABIS:STRING="armeabi-v7a;arm64-v8a" \
-          -DQT_PATH_ANDROID_ABI_armeabi-v7a:PATH=$Qt6_DIR_V7 \
-          -DQT_PATH_ANDROID_ABI_arm64-v8a:PATH=$Qt6_DIR_V8 \
-          -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-          -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
-          -DANDROID_SDK:PATH=$ANDROID_HOME \
-          -DANDROID_STL:STRING=c++_shared \
-          -DQT_HOST_PATH:STRING=$Qt6_DIR_HOST \
-          -DQT_HOST_PATH_CMAKE_DIR:STRING=$Qt6_DIR_HOST/lib/cmake \
-          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-          -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR_V7 \
-          -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR_V7 \
-          -DCMAKE_TOOLCHAIN_FILE:PATH=$Qt6_DIR_V7/lib/cmake/Qt6/qt.toolchain.cmake \
-          -DQT_DEBUG_FIND_PACKAGE=ON \
-          -DQT_QMAKE_EXECUTABLE:STRING=$Qt6_DIR_V7/bin/qmake
-        cmake --build . --config Release --target sites
+          -DQT_HOST_PATH:PATH="${{ env.QT_ROOT_DIR }}/../gcc_64"
         cmake --build . --config Release --target gui-qml_make_apk
 
     - name: Generate package
       run: |
         mv build/gui-qml/android-build/build/outputs/apk/debug/android-build-debug.apk Grabber.apk 2> /dev/null || true
+        mv build/gui-qml/android-build/build/outputs/apk/release/android-build-release-unsigned.apk Grabber.apk 2> /dev/null || true
         mv build/gui-qml/android-build/build/outputs/apk/release/android-build-release-signed.apk Grabber.apk 2> /dev/null || true
 
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: Grabber.apk
         path: Grabber.apk
@@ -632,43 +638,43 @@ jobs:
 
     steps:
       - name: Download artifact (Linux AppImage)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber-x86_64.AppImage
 
       - name: Download artifact (Linux AppImage update information)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber-x86_64.AppImage.zsync
 
       - name: Download artifact (Linux archive)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber.tar.gz
 
       - name: Download artifact (macOS)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber.dmg
 
       - name: Download artifact (Windows 64-bit installer)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber_x64.exe
 
       - name: Download artifact (Windows 64-bit archive)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber_x64.zip
 
       - name: Download artifact (Windows 64-bit symbols)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         if: needs.version.outputs.release == '1'
         with:
           name: Grabber_x64_symbols.zip
 
       - name: Download artifact (Android)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Grabber.apk
 

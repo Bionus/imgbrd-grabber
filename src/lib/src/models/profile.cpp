@@ -24,6 +24,7 @@
 #include "models/source-registry.h"
 #include "models/url-downloader/url-downloader-manager.h"
 #include "monitoring/monitor-manager.h"
+#include "tags/tag.h"
 #include "utils/file-utils.h"
 #include "utils/read-write-path.h"
 
@@ -39,8 +40,16 @@ Profile::Profile(QString path)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
-	// Rename deprecated settings keys
-	renameSettingsGroup(m_settings, "Zoom", "Viewer");
+	// Load auto-complete
+	QFile fileAutoComplete(savePath("words.txt", true, false));
+	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
+		QString line;
+		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
+			m_autoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
+		}
+
+		fileAutoComplete.close();
+	}
 
 	// Load sources
 	const QString defaultPath = savePath("sites/", true, false);
@@ -62,7 +71,59 @@ Profile::Profile(QString path)
 		addSource(source);
 	}
 
+	reload(true);
+
+	// Load removed
+	m_removedTags.add(splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true));
+
+	// Make a backup of MD5s in case the multi-location change broke everything
+	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
+		QFile::copy(m_path + "/md5s.txt", m_path + "/md5s.txt.bak");
+	}
+
+	// Load MD5s
+	m_md5s = QFile::exists(m_path + "/md5s.sqlite") || !QFile::exists(m_path + "/md5s.txt")
+		? static_cast<Md5Database*>(new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings))
+		: static_cast<Md5Database*>(new Md5DatabaseText(m_path + "/md5s.txt", m_settings));
+
+	m_commands = new Commands(this);
+	m_exiftool = new Exiftool(this);
+
+	// History
+	m_history = new History(m_path + "/history.json", this);
+
+	// Monitors
+	m_monitorManager = new MonitorManager(m_path + "/monitors.json", this);
+
+	// Downloads
+	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
+
+	// URL downloaders
+	m_urlDownloaderManager = new UrlDownloaderManager(ReadWritePath(defaultPath, customPath), this);
+
+	// Load source registries
+	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
+	for (const QString &url : sourceRegistries) {
+		auto *sourceRegistry = new SourceRegistry(url);
+		sourceRegistry->load();
+		m_sourceRegistries.append(sourceRegistry);
+		emit sourceRegistriesChanged();
+	}
+}
+
+void Profile::reload()
+{
+	reload(false);
+}
+void Profile::reload(bool init)
+{
+	m_settings->sync();
+
+	// Rename deprecated settings keys
+	renameSettingsGroup(m_settings, "Zoom", "Viewer");
+
 	// Load favorites
+	m_favorites.clear();
 	QSet<QString> unique;
 	QFile fileFavoritesJson(m_path + "/favorites.json");
 	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text)) {
@@ -72,6 +133,7 @@ Profile::Profile(QString path)
 		QJsonObject object = loadDoc.object();
 
 		QJsonArray favorites = object["favorites"].toArray();
+		m_favorites.reserve(favorites.count());
 		for (auto favoriteJson : favorites) {
 			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), this);
 			if (!unique.contains(fav.getName())) {
@@ -115,31 +177,8 @@ Profile::Profile(QString path)
 		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
 	}
 
-	// Load removed
-	m_removedTags.add(splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true));
-
-	// Make a backup of MD5s in case the multi-location change broke everything
-	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
-		QFile::copy(m_path + "/md5s.txt", m_path + "/md5s.txt.bak");
-	}
-
-	// Load MD5s
-	m_md5s = QFile::exists(m_path + "/md5s.sqlite") || !QFile::exists(m_path + "/md5s.txt")
-		? static_cast<Md5Database*>(new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings))
-		: static_cast<Md5Database*>(new Md5DatabaseText(m_path + "/md5s.txt", m_settings));
-
-	// Load auto-complete
-	QFile fileAutoComplete(savePath("words.txt", true, false));
-	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
-		QString line;
-		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
-			m_autoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
-		}
-
-		fileAutoComplete.close();
-	}
-
 	// Load custom auto-complete
+	m_customAutoComplete.clear();
 	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
 	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
@@ -150,11 +189,21 @@ Profile::Profile(QString path)
 		fileCustomAutoComplete.close();
 	}
 
-	m_commands = new Commands(this);
-	m_exiftool = new Exiftool(this);
+	// Complete auto-complete
+	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "grabber:monitored" };
+	m_autoComplete.clear();
+	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
+	m_autoComplete.append(m_customAutoComplete);
+	for (const Favorite &fav : qAsConst(m_favorites)) {
+		m_autoComplete.append(fav.getName());
+	}
+	m_autoComplete.append(specialCompletes);
+	m_autoComplete.removeDuplicates();
+	m_autoComplete.sort();
 
 	// Blacklisted tags
 	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
+	m_blacklist.clear();
 	for (const QString &bl : blacklist) {
 		m_blacklist.add(bl);
 	}
@@ -171,33 +220,10 @@ Profile::Profile(QString path)
 		fileBlacklist.close();
 	}
 
-	// Monitors
-	m_monitorManager = new MonitorManager(m_path + "/monitors.json", this);
-
-	// Downloads
-	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
-
-	// URL downloaders
-	m_urlDownloaderManager = new UrlDownloaderManager(ReadWritePath(defaultPath, customPath), this);
-
-	// Complete auto-complete
-	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "grabber:monitored" };
-	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
-	m_autoComplete.append(m_customAutoComplete);
-	for (const Favorite &fav : qAsConst(m_favorites)) {
-		m_autoComplete.append(fav.getName());
-	}
-	m_autoComplete.append(specialCompletes);
-	m_autoComplete.removeDuplicates();
-	m_autoComplete.sort();
-
-	// Load source registries
-	const QStringList sourceRegistries = m_settings->value("sourceRegistries").toStringList();
-	for (const QString &url : sourceRegistries) {
-		auto *sourceRegistry = new SourceRegistry(url);
-		sourceRegistry->load();
-		m_sourceRegistries.append(sourceRegistry);
-		emit sourceRegistriesChanged();
+	if (!init) {
+		m_monitorManager->load();
+		m_history->load();
+		m_md5s->load();
 	}
 }
 
@@ -233,16 +259,13 @@ void Profile::sync()
 	syncKeptForLater();
 	syncIgnored();
 	syncBlacklist();
+	m_history->save();
 
 	// MD5s
 	m_md5s->sync();
 
 	// Custom auto-complete
-	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
-	if (fileCustomAutoComplete.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileCustomAutoComplete.write(m_customAutoComplete.join("\r\n").toUtf8());
-		fileCustomAutoComplete.close();
-	}
+	safeWriteFile(m_path + "/wordsc.txt", m_customAutoComplete.join('\n').toUtf8());
 
 	// Update commands settings
 	auto *oldCommands = m_commands;
@@ -448,6 +471,26 @@ void Profile::addAutoComplete(const QString &tag)
 	m_customAutoComplete.append(tag);
 }
 
+QStringList Profile::addAutoComplete(const QList<Tag> &tags)
+{
+	const int autoAddThreshold = m_settings->value("tagsautoadd", 10).toInt();
+
+	QStringList ret;
+	for (const auto &tag : tags) {
+		if (tag.count() >= autoAddThreshold && !m_autoComplete.contains(tag.text())) {
+			addAutoComplete(tag.text());
+			ret.append(tag.text());
+		}
+	}
+
+	if (!ret.isEmpty()) {
+		m_autoComplete.append(ret);
+		m_autoComplete.sort();
+	}
+
+	return ret;
+}
+
 
 void Profile::addSource(Source *source)
 {
@@ -492,10 +535,24 @@ void Profile::addBlacklistedTag(const QString &tag)
 	syncBlacklist();
 	emit blacklistChanged();
 }
+void Profile::addBlacklistedTags(const QStringList &tags)
+{
+	m_blacklist.add(tags);
+
+	syncBlacklist();
+	emit blacklistChanged();
+}
 
 void Profile::removeBlacklistedTag(const QString &tag)
 {
 	m_blacklist.remove(tag);
+
+	syncBlacklist();
+	emit blacklistChanged();
+}
+void Profile::removeBlacklistedTags(const QStringList &tags)
+{
+	m_blacklist.remove(tags);
 
 	syncBlacklist();
 	emit blacklistChanged();
@@ -544,6 +601,7 @@ Commands &Profile::getCommands() { return *m_commands; }
 Exiftool &Profile::getExiftool() { return *m_exiftool; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
+History *Profile::getHistory() { return m_history; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }

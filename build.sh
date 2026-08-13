@@ -20,7 +20,7 @@ for pm in pacman apt-get emerge yum; do
 		case "$pm" in
 			pacman)
 				$permission pacman -Sy
-				$permission pacman -S "qt" "gcc" "cmake" "libpulse" "nodejs" "npm" && installed=1
+				$permission pacman -S "qt6" "gcc" "cmake" "libpulse" "nodejs" "npm" && installed=1
 				;;
 			apt-get)
 				$permission apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools" "libqt5networkauth5-dev" || continue
@@ -28,10 +28,11 @@ for pm in pacman apt-get emerge yum; do
 				;;
 			emerge)
 				## Assumes default USE flags are enabled.
-				$permission emerge --noreplace --ask --verbose \
+				echo 'Warning: net-libs/nodejs must be compiled with the "npm" USE flag. We will attempt to do so now, if necessary, but you may need to adjust your system configuration so this flag is applied to future builds.'
+				$permission USE='npm' emerge --noreplace --oneshot --ask --verbose --changed-use \
 					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" "dev-qt/qtsql" \
 					"dev-qt/qtnetwork" "dev-qt/qtnetworkauth" \
-					"sys-devel/gcc" "dev-util/cmake" "net-libs/nodejs" \
+					"sys-devel/gcc" "dev-build/cmake" "net-libs/nodejs" \
 				&& installed=1
 				;;
 			yum)

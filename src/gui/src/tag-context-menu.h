@@ -29,7 +29,9 @@ class TagContextMenu : public QMenu
 		void remove();
 		void unremove();
 		void blacklist();
+		void blacklistSite();
 		void unblacklist();
+		void unblacklistSite();
 		void openInNewTab();
 		void openInNewWindow();
 		void openInBrowser();
@@ -39,7 +41,7 @@ class TagContextMenu : public QMenu
 
 	signals:
 		void setFavoriteImage();
-		void openNewTab();
+		void openNewTab(const QString & = QString());
 
 	private:
 		QString m_tag;

@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QCompleter>
 #include <QMenu>
+#include <QMimeData>
 #include <QScrollBar>
 #include <QSettings>
 #include <QTextDocumentFragment>
@@ -48,6 +49,19 @@ QSize TextEdit::sizeHint() const
 void TextEdit::wheelEvent(QWheelEvent *e)
 {
 	e->ignore();
+}
+
+/**
+ * Remove line breaks when pasting text into the field.
+ */
+void TextEdit::insertFromMimeData(const QMimeData *source)
+{
+	QString text = source->text();
+	text.replace("\r\n", " ");
+	text.replace("\r", " ");
+	text.replace("\n", " ");
+
+	textCursor().insertText(text);
 }
 
 void TextEdit::setCompleter(QCompleter *completer)

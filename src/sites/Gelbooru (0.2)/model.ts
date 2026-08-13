@@ -1,5 +1,19 @@
+const tagTypeMap: Record<string, string> = {
+    "tag": "general",
+    "metadata": "meta",
+};
+
 function completeImage(img: IImage): IImage {
     img.author = (img as any).owner;
+
+    if ("tag_info" in img) {
+        const tagInfo: Array<{ tag: string; type: string; count: number }> = img["tag_info"] as any;
+        img.tags = tagInfo.map((tag) => ({
+            name: tag.tag,
+            type: tagTypeMap[tag.type] || tag.type,
+            count: tag.count,
+        }));
+    }
 
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url
@@ -71,10 +85,22 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const parsed = Grabber.parseXML(src);
+                    if (!parsed) {
+                        return { error: "Invalid XML response" };
+                    }
 
                     // Handle error messages
-                    if ("response" in parsed && parsed["response"]["@attributes"]["success"] === "false") {
+                    if (parsed?.["response"]?.["@attributes"]?.["success"] === "false") {
                         return { error: parsed["response"]["@attributes"]["reason"] };
+                    }
+                    if ("error" in parsed) {
+                        const error = parsed["error"];
+                        return { error: typeof error === "string" ? error : String(error["#text"] || "Unknown API error") };
+                    }
+
+                    // Validate the shape of the response
+                    if (!parsed?.["posts"]) {
+                        return { error: "Invalid XML response (no posts found)" };
                     }
 
                     const data = Grabber.makeArray(parsed.posts.post);
@@ -89,8 +115,61 @@ export const source: ISource = {
 
                     return {
                         images,
-                        imageCount: parsed.posts["@attributes"]["count"],
+                        imageCount: parsed.posts["@attributes"]?.["count"],
                     };
+                },
+            },
+        },
+        json: {
+            name: "JSON",
+            auth: [],
+            maxLimit: 100,
+            search: {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                    const page: number = query.page - 1;
+                    const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                    const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                    if (fav) {
+                        return { error: "JSON API cannot search favorites" };
+                    }
+                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search) + "&json=1";
+                },
+                parse: (src: string): IParsedSearch | IError => {
+                    let parsed = JSON.parse(src);
+
+                    // Handle error messages
+                    if (typeof parsed === "string") {
+                        return { error: parsed };
+                    }
+
+                    // Handle the old format
+                    if (Array.isArray(parsed)) {
+                        parsed = {
+                            "@attributes": {},
+                            "post": parsed,
+                        };
+                    }
+
+                    const images: IImage[] = [];
+                    for (const image of parsed["post"]) {
+                        images.push(completeImage(image));
+                    }
+
+                    return {
+                        images,
+                        imageCount: parsed["@attributes"]["count"],
+                    };
+                },
+            },
+            details: {
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    return "/index.php?page=dapi&s=post&q=index&id=" + id + "&fields=tag_info&json=1";
+                },
+                parse: (src: string): IImage => {
+                    const parsed = JSON.parse(src);
+                    const post = "post" in parsed ? parsed["post"] : parsed;
+                    const image = Array.isArray(post) ? post[0] : post;
+                    return completeImage(image);
                 },
             },
         },
@@ -119,21 +198,21 @@ export const source: ISource = {
                     if (src.indexOf("Unable to search this deep") !== -1) {
                         return { error: "Page too far" };
                     }
-                    const pageCountRaw = Grabber.regexMatch('<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a>\\s*(?:<b>(?<last>\\d+)</b>\\s*)?(?:</div>|<br ?/>)', src);
-                    const pageCount = pageCountRaw && (pageCountRaw["last"] || pageCountRaw["page"]);
-                    const images = Grabber.regexToImages('(?:<span[^>]*(?: id="?\\w(?<id>\\d+)"?)?>\\s*)?<a[^>]*(?: id="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src);
+                    const pageCountRaw = Grabber.regexMatch('<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a>\\s*(?:<b>(?<page_2>\\d+)</b>\\s*)?(?:</div>|<br ?/>)|<a href="[^"]+pid=(?<page_3>\\d+)[^"]*"[^>]*>(?:&raquo;|>>)</a>', src);
+                    const pageCount = pageCountRaw && pageCountRaw["page"];
+                    const images = Grabber.regexToImages('(?:<span[^>]*(?:\\sid="?\\w(?<id>\\d+)"?)?>\\s*)?<a[^>]*(?:\\sid="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src);
                     for (const img of images) {
-                        const json = src.match(new RegExp("posts\\[" + img.id + "\\]\\s*=\\s*({.+?})"))?.[1];
+                        const json = src.match(new RegExp("posts\\[" + img.id + "\\]\\s*=\\s*({[\\s*\\S]+?})"))?.[1];
                         if (json) {
-                            img.rating = json.match(/'rating'\s*:\s*'([^']+)'/)?.[1].toLowerCase();
-                            img.score = json.match(/'score'\s*:\s*(\d+)/)?.[1];
-                            img.author = json.match(/'user'\s*:\s*'([^']+)'/)?.[1];
+                            img.rating = json.match(/["']?rating["']?\s*:\s*["']([^"']+)["']/)?.[1].toLowerCase();
+                            img.score  = json.match(/["']?score["']?\s*:\s*["'](\d+)["']/)?.[1];
+                            img.author = json.match(/["']?user["']?\s*:\s*["']([^'"]+)["']/)?.[1];
                         }
                     }
                     return {
                         images: images.map(completeImage),
-                        tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
-                        pageCount: pageCount && parseInt(pageCount, 10) / 42 + 1,
+                        tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>\\s*(?<count>\\d+)\\s*</span>', src),
+                        pageCount: pageCount ? parseInt(pageCount, 10) / 42 + 1 : undefined,
                     };
                 },
             },

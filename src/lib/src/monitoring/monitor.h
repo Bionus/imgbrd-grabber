@@ -33,6 +33,8 @@ class Monitor
 		bool download() const;
 		const QString &pathOverride() const;
 		const QString &filenameOverride() const;
+		void setPathOverride(const QString &path);
+		void setFilenameOverride(const QString &filename);
 		const SearchQuery &query() const;
 		const QStringList &postFilters() const;
 		bool notify() const;

@@ -421,6 +421,7 @@ export const source: ISource = {
                         || src.indexOf("https://github.com/danbooru/danbooru") !== -1
                         || src.indexOf("ATFBooru") !== -1
                         || src.indexOf("All The Fallen") !== -1
+                        || src.indexOf("https://github.com/cosbooru/cosbooru") !== -1
                         || src.indexOf("https://github.com/Iratu/atfbooru") !== -1;
                 },
             },

@@ -23,11 +23,11 @@ Page {
         id: pageLoader
 
         site: searchTab.site.url
-        query: textFieldSearch.text
+        query: (textFieldSearch.text + " " + gSettings.globalAddedTags.value).trim()
         page: searchTab.page
-        perPage: 20
+        perPage: gSettings.imagesPerPage.value
         endpoint: site.endpoints[comboEndpoint.currentIndex].id
-        postFilter: textFieldPostFiltering.text
+        postFilter: (textFieldPostFiltering.text + " " + gSettings.globalPostFilters.value).trim()
         profile: backend.profile
 
         onQueryChanged: searchTab.queryChanged = true
@@ -42,7 +42,7 @@ Page {
     }
 
     function load(tag) {
-        if (tag) {
+        if (tag !== undefined) {
             textFieldSearch.text = tag.trim()
             queryChanged = true
         }
@@ -225,6 +225,36 @@ Page {
 
                 background: Rectangle {
                     color: nextButton.background.color
+                }
+
+                MouseArea {
+                    enabled: !infiniteScroll
+                    anchors.fill: parent
+                    onClicked: pageNumberDialog.open()
+                }
+
+                Dialog {
+                    id: pageNumberDialog
+
+                    title: qsTr("Page number")
+                    anchors.centerIn: Overlay.overlay
+                    modal: true
+                    standardButtons: Dialog.Ok | Dialog.Cancel
+
+                    onAccepted: {
+                        searchTab.page = pageNumberBox.value
+                        searchTab.load()
+                    }
+                    onRejected: pageNumberBox.value = searchTab.page
+
+                    SpinBox {
+                        id: pageNumberBox
+                        anchors.fill: parent
+                        value: searchTab.page
+                        editable: true
+                        from: 1
+                        to: pageLoader.pageCount
+                    }
                 }
             }
 

@@ -30,34 +30,33 @@ if(USE_BREAKPAD)
 	endif()
 endif()
 
-# Nightly version settings
-if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
-	add_definitions(-DNIGHTLY=1)
-	add_definitions(-DNIGHTLY_COMMIT="${COMMIT}")
-	message(STATUS "Configuring nightly with commit '${COMMIT}'")
-endif()
-
 # Qt libraries
-find_package(Qt6 COMPONENTS Core Concurrent Gui Network NetworkAuth Multimedia MultimediaWidgets Qml Sql Widgets Xml REQUIRED) # OPTIONAL_COMPONENTS WebEngineCore WebEngineWidgets
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network NetworkAuth Multimedia MultimediaWidgets Qml Sql Widgets Xml REQUIRED)
+if(NOT ANDROID)
+	find_package(Qt6 OPTIONAL_COMPONENTS WebEngineCore WebEngineWidgets)
+endif()
 set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::NetworkAuth Qt6::Qml Qt6::Sql Qt6::Widgets Qt6::Xml)
 
 # Optional WebEngine components
-if(FALSE AND TARGET Qt6::WebEngineCore AND TARGET Qt6::WebEngineWidgets)
+if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1") AND TARGET Qt6::WebEngineCore AND TARGET Qt6::WebEngineWidgets)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WebEngineCore Qt6::WebEngineWidgets)
 	set(USE_WEBENGINE 1)
 	add_definitions(-DUSE_WEBENGINE=1)
-	message(STATUS "Compiling with WebEngine support")
+	message(STATUS "Compiling GUI with WebEngine support")
 else()
-	message(STATUS "Compiling without WebEngine support")
+	message(STATUS "Compiling GUI without WebEngine support")
 endif()
 
 # Android specials
 if(ANDROID)
+    find_package(Qt6 COMPONENTS Core CorePrivate REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
 # QScintilla
 if(USE_QSCINTILLA)
+	set(QT_INCLUDE_DIR "${QT6_INSTALL_PREFIX}/include")
+	set(QT_LIBRARY_DIR "${QT6_INSTALL_PREFIX}/lib")
 	find_package(QScintilla)
 	if(QSCINTILLA_FOUND)
 		message(STATUS "Building with QScintilla2 support")
@@ -189,8 +188,8 @@ if(ANDROID)
 	# NAME ${ANDROID_APP_NAME}
 	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
 
-	# Sign package if the keystore was provided
-	if(DEFINED ENV{QT_ANDROID_KEYSTORE_PATH})
+	# Sign package if the keystore and its password were provided
+	if(NOT "$ENV{QT_ANDROID_KEYSTORE_PATH}" STREQUAL "" AND NOT "$ENV{QT_ANDROID_KEYSTORE_STORE_PASS}" STREQUAL "")
 		set(QT_ANDROID_SIGN_APK ON)
 	else()
 		message(WARNING "No keystore provided, APK signing disabled")

@@ -125,6 +125,8 @@ void FixedSizeGridLayout::setGeometry(const QRect &rect)
 
 int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 {
+	const int fixedWidth = m_fixedWidth / parentWidget()->devicePixelRatio();
+
 	int left, top, right, bottom;
 	getContentsMargins(&left, &top, &right, &bottom);
 	QRect effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
@@ -137,8 +139,8 @@ int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 		int spaceX = widgetSpacing(horizontalSpacing(), item->widget(), Qt::Horizontal);
 		int spaceY = widgetSpacing(verticalSpacing(), item->widget(), Qt::Vertical);
 
-		const int nbElements = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
-		const int totalSpace = w - (m_fixedWidth * nbElements);
+		const int nbElements = qMax(1, (w + spaceX) / (fixedWidth + spaceX));
+		const int totalSpace = w - (fixedWidth * nbElements);
 		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElements - 1));
 
 		int nextX = x + item->sizeHint().width() + spaceX;

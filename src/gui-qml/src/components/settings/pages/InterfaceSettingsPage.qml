@@ -79,6 +79,12 @@ ColumnLayout {
         setting: gSettings.resultsRoundImages
         Layout.fillWidth: true
     }
+    CheckBoxSetting {
+        name: qsTr("Video indicator")
+        subtitle: qsTr("Overlay video indicator on thumbnails.")
+        setting: gSettings.previewVideoIndicator
+        Layout.fillWidth: true
+    }
 
     SettingTitle {
         Layout.fillWidth: true
@@ -88,6 +94,13 @@ ColumnLayout {
         name: qsTr("Load samples")
         subtitle: qsTr("Load sample-sized versions of the images by default if available.")
         setting: gSettings.viewer_viewSamples
+        Layout.fillWidth: true
+    }
+    SpinBoxSetting {
+        name: qsTr("Preloading")
+        min: 0
+        max: 99
+        setting: gSettings.viewer_preload
         Layout.fillWidth: true
     }
     CheckBoxSetting {

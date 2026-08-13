@@ -22,6 +22,18 @@ ColumnLayout {
 
     SettingTitle {
         Layout.fillWidth: true
+        text: qsTr("Auto-complete")
+    }
+    SpinBoxSetting {
+        name: qsTr("Auto tag add")
+        min: 0
+        max: 100000
+        setting: gSettings.tagsAutoAdd
+        Layout.fillWidth: true
+    }
+
+    SettingTitle {
+        Layout.fillWidth: true
         text: qsTr("Backup")
     }
     SettingItem {
@@ -54,6 +66,46 @@ ColumnLayout {
             currentFolder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
 
             onAccepted: backend.importSettings(backend.toLocalFile(importDialog.fileUrl.toString()))
+        }
+    }
+    SettingItem {
+        name: qsTr("Export backup")
+        subtitle: qsTr("Backup all setting files as a ZIP on your device.")
+        Layout.fillWidth: true
+
+        onClicked: exportBackupDialog.open()
+
+        FolderDialog {
+            id: exportBackupDialog
+
+            title: qsTr("Please choose a directory")
+            currentFolder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
+
+            onAccepted: {
+                const datePart = new Date().toISOString()
+                    .replace(/[:-]/g, '.')
+                    .replace('T', '-')
+                    .replace('Z', '')
+                const filename = "backup-" + datePart + ".zip"
+                backend.exportBackup(backend.toLocalFile(exportBackupDialog.selectedFolder.toString() + "/" + filename))
+            }
+        }
+    }
+    SettingItem {
+        enabled: false
+        name: qsTr("Import backup")
+        subtitle: qsTr("Import all app settings from an existing ZIP file.")
+        Layout.fillWidth: true
+
+        onClicked: importBackupDialog.open()
+
+        FileDialog {
+            id: importBackupDialog
+
+            title: qsTr("Please choose a file")
+            currentFolder: Labs.StandardPaths.standardLocations(Labs.StandardPaths.DownloadLocation)[0]
+
+            onAccepted: backend.importBackup(backend.toLocalFile(importBackupDialog.fileUrl.toString()))
         }
     }
 

@@ -97,6 +97,14 @@ const QString &Monitor::filenameOverride() const
 {
 	return m_filenameOverride;
 }
+void Monitor::setPathOverride(const QString &path)
+{
+	m_pathOverride = path;
+}
+void Monitor::setFilenameOverride(const QString &filename)
+{
+	m_filenameOverride = filename;
+}
 const SearchQuery &Monitor::query() const
 {
 	return m_query;

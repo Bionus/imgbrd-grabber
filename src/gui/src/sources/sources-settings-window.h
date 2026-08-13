@@ -29,6 +29,7 @@ class SourcesSettingsWindow : public QDialog
 	public slots:
 		void deleteSite();
 		void addCookie();
+		void importCookies();
 		void addHeader();
 		void save();
 		void setLoginType(int index);

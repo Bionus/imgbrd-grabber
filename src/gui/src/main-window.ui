@@ -107,6 +107,7 @@
      <string>File</string>
     </property>
     <addaction name="actionAddtab"/>
+    <addaction name="actionAddTabs"/>
     <addaction name="actionAddpooltab"/>
     <addaction name="actionClosetab"/>
     <addaction name="actionRestoreLastClosedTab"/>
@@ -127,8 +128,8 @@
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuOutils"/>
    <addaction name="menuView"/>
+   <addaction name="menuOutils"/>
    <addaction name="menu_propos"/>
   </widget>
   <widget class="QDockWidget" name="dock_internet">
@@ -487,6 +488,15 @@
     <string>Prune sources</string>
    </property>
   </action>
+  <action name="actionAddTabs">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>New tabs</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -839,6 +849,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAddTabs</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addTabs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -890,5 +916,6 @@
   <slot>aboutDonatePaypal()</slot>
   <slot>aboutDonatePatreon()</slot>
   <slot>pruneSources()</slot>
+  <slot>addTabs()</slot>
  </slots>
 </ui>

@@ -65,10 +65,11 @@ class MainWindow : public QMainWindow
 		void utilMd5DatabaseConverter();
 		void changeEvent(QEvent *event) override;
 		// Tabs
-		void addTab(const QString &tag = "", bool background = false, bool save = true, SearchTab *source = nullptr);
+		void addTab(const QString &tag = "", bool background = false, bool save = true, SearchTab *source = nullptr, bool preload = true);
 		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addSearchTab(SearchTab*, bool background = false, bool save = true, SearchTab *source = nullptr);
+		void addTabs();
 		void tabTitleChanged();
 		void updateTabTitle(QWidget*);
 		void tabClosed(SearchTab*);

@@ -1,0 +1,255 @@
+#include <QDir>
+#include <QFile>
+#include <QSettings>
+#include <QTemporaryDir>
+#include "catch.h"
+#include "backup.h"
+#include "models/profile.h"
+#include "source-helpers.h"
+#include "monitoring/monitor-manager.h"
+#include "utils/zip.h"
+
+
+TEST_CASE("Backup")
+{
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+	const QScopedPointer<Profile> profile(makeProfile());
+	Site *site = profile->getSites().value("danbooru.donmai.us");
+	QTemporaryDir tmpDir;
+
+	const QString zipFile = "backup-test.zip";
+	const QString zipDir = tmpDir.path();
+
+	SECTION("settings.ini")
+	{
+		// Set a single setting on the profile and back it up
+		profile->getSettings()->setValue("foo", "bar");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a settings.ini file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("settings.ini"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getSettings()->childKeys() == QStringList() << "foo");
+		REQUIRE(after.getSettings()->value("foo").toString() == "bar");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->getSettings()->setValue("key", "value"); // This should be overwritten by the backup
+		REQUIRE(fresh->getSettings()->childKeys() == QStringList() << "key");
+		REQUIRE(fresh->getSettings()->value("key").toString() == "value");
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getSettings()->childKeys() == QStringList() << "foo");
+		REQUIRE(fresh->getSettings()->value("foo").toString() == "bar");
+	}
+
+	SECTION("favorites.json")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addFavorite(Favorite("test_tag"));
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a favorites.json file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("favorites.json"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getFavorites().count() == 1);
+		REQUIRE(after.getFavorites()[0].getName() == "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addFavorite(Favorite("another_tag")); // This should be overwritten by the backup
+		REQUIRE(fresh->getFavorites().count() == 1);
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getFavorites().count() == 1);
+		REQUIRE(fresh->getFavorites()[0].getName() == "test_tag");
+	}
+
+	SECTION("viewitlater.txt")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addKeptForLater("test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a viewitlater.txt file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("viewitlater.txt"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getKeptForLater() == QStringList() << "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addKeptForLater("another_tag"); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getKeptForLater() == QStringList() << "test_tag");
+	}
+
+	SECTION("ignore.txt")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addIgnored("test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a ignore.txt file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("ignore.txt"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getIgnored() == QStringList() << "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addIgnored("another_tag"); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getIgnored() == QStringList() << "test_tag");
+	}
+
+	SECTION("wordsc.txt")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addAutoComplete("test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a wordsc.txt file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("wordsc.txt"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getAutoComplete().contains("test_tag"));
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addAutoComplete("another_tag"); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getAutoComplete().contains("test_tag"));
+		REQUIRE(!fresh->getAutoComplete().contains("another_tag"));
+	}
+
+	SECTION("blacklist.txt")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addBlacklistedTag("test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a blacklist.txt file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("blacklist.txt"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getBlacklist().contains("test_tag"));
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addBlacklistedTag("another_tag"); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getBlacklist().contains("test_tag"));
+		REQUIRE(!fresh->getBlacklist().contains("another_tag"));
+	}
+
+	SECTION("site-specific blacklist.txt")
+	{
+		profile->addBlacklistedTags({ "website:danbooru.donmai.us", "test_tag" });
+		REQUIRE(profile->getBlacklist().toString() == "website:danbooru.donmai.us test_tag");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+
+		REQUIRE(unzipFile(zipFile, zipDir));
+		Profile after(zipDir);
+		REQUIRE(after.getBlacklist().toString() == "website:danbooru.donmai.us test_tag");
+	}
+
+	SECTION("monitors.json")
+	{
+		// Set a single setting on the profile and back it up
+		profile->monitorManager()->add(Monitor(profile->getSettings(), {site}, QStringList() << "test_tag"));
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a monitors.json file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("monitors.json"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.monitorManager()->monitors().count() == 1);
+		REQUIRE(after.monitorManager()->monitors()[0].query().tags == QStringList() << "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->monitorManager()->add(Monitor(profile->getSettings(), {site}, QStringList() << "another_tag")); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->monitorManager()->monitors().count() == 1);
+		REQUIRE(fresh->monitorManager()->monitors()[0].query().tags == QStringList() << "test_tag");
+	}
+
+	SECTION("history.json")
+	{
+		// Set a single setting on the profile and back it up
+		profile->getHistory()->addQuery(QStringList() << "test_tag", {site});
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a history.json file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("history.json"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(after.getHistory()->entries().count() == 1);
+		REQUIRE(after.getHistory()->entries()[0]->query.tags == QStringList() << "test_tag");
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->getHistory()->addQuery(QStringList() << "another_tag", {site}); // This should be overwritten by the backup
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(fresh->getHistory()->entries().count() == 1);
+		REQUIRE(fresh->getHistory()->entries()[0]->query.tags == QStringList() << "test_tag");
+	}
+
+	SECTION("md5s.sqlite")
+	{
+		// Set a single setting on the profile and back it up
+		profile->addMd5("098f6bcd4621d373cade4e832627b4f6", "tests/resources/image_1x1.png");
+		REQUIRE(saveBackup(profile.data(), zipFile));
+		REQUIRE(QFile::exists(zipFile));
+
+		// Unzipping the backup should contain a md5s.sqlite file
+		REQUIRE(unzipFile(zipFile, zipDir));
+		const QStringList files = QDir(zipDir).entryList(QDir::Files | QDir::NoDotAndDotDot);
+		REQUIRE(files.contains("md5s.sqlite"));
+
+		// Creating a profile file from the backup directory should have the previous setting
+		Profile after(zipDir);
+		REQUIRE(!after.md5Exists("098f6bcd4621d373cade4e832627b4f6").isEmpty());
+
+		// Create a fresh profile and import the backup in it, the setting key should be available
+		const QScopedPointer<Profile> fresh(makeProfile());
+		fresh->addMd5("b32d73e56ec99bc5ec8f83871cde708a", "tests/resources/image_200x200.png");
+		REQUIRE(loadBackup(fresh.data(), zipFile));
+		REQUIRE(!fresh->md5Exists("098f6bcd4621d373cade4e832627b4f6").isEmpty());
+		REQUIRE(fresh->md5Exists("b32d73e56ec99bc5ec8f83871cde708a").isEmpty());
+	}
+}

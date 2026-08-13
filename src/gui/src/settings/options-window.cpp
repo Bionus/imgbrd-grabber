@@ -45,10 +45,10 @@
 #include "viewer/viewer-window-buttons.h"
 
 
-void disableItem(QComboBox *combo, int index, const QString &toolTip = {}) {
+void disableItem(QComboBox *combo, int index, const QString &toolTip = {}, bool enable = false) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
 	QStandardItem *item = model->item(index);
-	item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+	item->setFlags(enable ? item->flags() | Qt::ItemIsEnabled : item->flags() & ~Qt::ItemIsEnabled);
 	if (!toolTip.isEmpty()) {
 		item->setToolTip(toolTip);
 	}
@@ -119,11 +119,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->checkUseQtUserAgent->setChecked(false);
 		ui->checkUseQtUserAgent->setDisabled(true);
 	#endif
-	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0")).toString());
+	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0")).toString());
+	ui->lineExtensionRotatorStatic->setText(settings->value("extensionRotationStatic", QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" }).toStringList().join(", "));
+	ui->lineExtensionRotatorAnimated->setText(settings->value("extensionRotationAnimated", QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }).toStringList().join(", "));
 
 	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
-	m_filenamesConditions = QList<QLineEdit*>();
-	m_filenamesFilenames = QList<QLineEdit*>();
 	for (const auto &fn : filenames) {
 		addFilename(fn.condition, fn.filename.format(), fn.path);
 	}
@@ -146,11 +146,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	});
 	auto *ffmpegVersionWatcher = new QFutureWatcher<QString>(this);
 	connect(ffmpegVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
-		const QString &version = ffmpegVersion.result();
-		ui->labelConversionFFmpegVersion->setText(version.isEmpty() ? tr("FFmpeg not found") : version);
-		if (version.isEmpty()) {
+		m_ffmpegVersion = ffmpegVersion.result();
+		ui->labelConversionFFmpegVersion->setText(m_ffmpegVersion.isEmpty() ? tr("FFmpeg not found") : m_ffmpegVersion);
+		if (m_ffmpegVersion.isEmpty()) {
 			ui->labelConversionFFmpegVersion->setStyleSheet("color: red");
-			disableItem(ui->comboConversionImageBackend, 1);
+		}
+		for (const auto &pair : m_imageConversion) {
+			disableItem(pair.backend, 1, "", !m_ffmpegVersion.isEmpty());
 		}
 	});
 	ffmpegVersionWatcher->setFuture(ffmpegVersion);
@@ -161,11 +163,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	});
 	auto *imageMagickVersionWatcher = new QFutureWatcher<QString>(this);
 	connect(imageMagickVersionWatcher, &QFutureWatcher<QString>::finished, [=]() {
-		const QString &version = imageMagickVersion.result();
-		ui->labelConversionImageMagickVersion->setText(version.isEmpty() ? tr("ImageMagick not found") : version);
-		if (version.isEmpty()) {
+		m_imageMagickVersion = imageMagickVersion.result();
+		ui->labelConversionImageMagickVersion->setText(m_imageMagickVersion.isEmpty() ? tr("ImageMagick not found") : m_imageMagickVersion);
+		if (m_imageMagickVersion.isEmpty()) {
 			ui->labelConversionImageMagickVersion->setStyleSheet("color: red");
-			disableItem(ui->comboConversionImageBackend, 0);
+		}
+		for (const auto &pair : m_imageConversion) {
+			disableItem(pair.backend, 0, "", !m_imageMagickVersion.isEmpty());
 		}
 	});
 	imageMagickVersionWatcher->setFuture(imageMagickVersion);
@@ -173,24 +177,34 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Video conversion
 	ui->checkConversionFFmpegRemuxWebmToMp4->setChecked(settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool());
 	ui->checkConversionFFmpegConvertWebmToMp4->setChecked(settings->value("Save/FFmpegConvertWebmToMp4", false).toBool());
+	ui->checkConversionFFmpegOverwrite->setChecked(settings->value("Save/FFmpegConvertOverwrite", true).toBool());
 	ui->spinConversionFFmpegTimeout->setValue(settings->value("Save/FFmpegConvertTimeout", 30000).toDouble() / 1000);
 
 	// Image conversion
-	ui->comboConversionImageBackend->setCurrentText(settings->value("Save/ImageConversionBackend", "ImageMagick").toString());
+	ui->checkConversionImageOverwrite->setChecked(settings->value("Save/ImageConversionOverwrite", true).toBool());
 	ui->spinConversionImageTimeout->setValue(settings->value("Save/ImageConversionTimeout", 30000).toDouble() / 1000);
 	settings->beginGroup("Save/ImageConversion");
 	for (const QString &from : settings->childGroups()) {
 		settings->beginGroup(from);
 		const QString to = settings->value("to").toString();
+		const QString backend = settings->value("backend", settings->value("Save/ImageConversionBackend", "ImageMagick")).toString();
 		settings->endGroup();
 
 		auto *leFrom = new QLineEdit(from, this);
+		leFrom->setPlaceholderText(tr("From"));
 		auto *leTo = new QLineEdit(to, this);
-		m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
+		leTo->setPlaceholderText(tr("To"));
+		auto *comboBackend = new QComboBox(this);
+		comboBackend->addItems({ QStringLiteral("ImageMagick"), QStringLiteral("FFmpeg") });
+		comboBackend->setCurrentText(backend);
+		if (m_imageMagickVersion.isEmpty()) { disableItem(comboBackend, 0); }
+		if (m_ffmpegVersion.isEmpty()) { disableItem(comboBackend, 1); }
+		m_imageConversion.append({ leFrom, leTo, comboBackend });
 
 		auto *layout = new QHBoxLayout();
 		layout->addWidget(leFrom);
 		layout->addWidget(leTo);
+		layout->addWidget(comboBackend);
 		ui->layoutConversionImageList->addLayout(layout);
 	}
 	settings->endGroup();
@@ -199,6 +213,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkConversionUgoiraEnabled->setChecked(settings->value("Save/ConvertUgoira", false).toBool());
 	ui->comboConversionUgoiraTargetExtension->setCurrentText(settings->value("Save/ConvertUgoiraFormat", "gif").toString().toUpper());
 	ui->checkConversionUgoiraDelete->setChecked(settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool());
+	ui->checkConversionUgoiraOverwrite->setChecked(settings->value("Save/ConvertUgoiraOverwrite", true).toBool());
 	ui->spinConversionUgoiraTimeout->setValue(settings->value("Save/ConvertUgoiraTimeout", 30000).toDouble() / 1000);
 
 	// Metadata using Windows Property System
@@ -281,6 +296,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
 	ui->checkScaleFontSize->setChecked(settings->value("Interface/scaleFontSize", true).toBool());
+	ui->checkPreviewVideoIndicator->setChecked(settings->value("Interface/previewVideoIndicator", false).toBool());
 
 	// Resize
 	settings->beginGroup("ImageSize");
@@ -355,6 +371,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		tagsTree->addChild(new QTreeWidgetItem({ "Species" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Meta" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Lore" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Contributor" }, tagsTree->type()));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "general", false, "", "", " ", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "artist", false, "anonymous", "multiple artists", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "copyright", true, "misc", "crossover", "+", this));
@@ -364,6 +381,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", "+", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "lore", false, "none", "multiple", "+", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "contributor", false, "none", "multiple", "+", this));
 		const int tagsStackIndex = ui->stackedWidget->indexOf(ui->pageTags);
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
 			ui->stackedWidget->insertWidget(i + tagsStackIndex + 1, m_tokenSettings[i]);
@@ -477,12 +495,12 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringCharacters->setText(settings->value("characters", "#00aa00").toString());
 			ui->lineColoringSpecies->setText(settings->value("species", "#ee6600").toString());
 			ui->lineColoringMetas->setText(settings->value("metas", "#ee6600").toString());
-			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
+			ui->lineColoringModels->setText(settings->value("models", "#00aaff").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
-			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
-			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#000000").toString());
-			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#000000").toString());
-			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
+			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffaaff").toString());
+			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#aaaa00").toString());
+			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#444444").toString());
+			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#777777").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
 			ui->lineColoringArtists->setFont(qFontFromString(settings->value("artists").toString()));
@@ -499,8 +517,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
 		settings->endGroup();
 		settings->beginGroup("Borders");
-			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffc0cb").toString());
-			ui->lineColoringBlacklistedsBorder->setText(settings->value("blacklisteds", "#000000").toString());
+			ui->lineColoringFavoritesBorder->setText(settings->value("favorites", "#ffaaff").toString());
+			ui->lineColoringBlacklistedsBorder->setText(settings->value("blacklisteds", "#444444").toString());
 		settings->endGroup();
 	settings->endGroup();
 
@@ -622,16 +640,81 @@ void OptionsWindow::addFilename(const QString &condition, const QString &filenam
 	auto *leCondition = new QLineEdit(condition);
 	auto *leFilename = new QLineEdit(filename);
 	auto *leFolder = new QLineEdit(folder);
+	auto *buttonUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), "");
+	auto *buttonDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), "");
+	auto *buttonRemove = new QPushButton(QIcon(":/images/icons/remove.png"), "");
+
+	connect(buttonUp, &QPushButton::clicked, [=]() {
+		const int index = m_filenamesConditions.indexOf(leCondition);
+		swapConditionals(index, index - 1);
+	});
+	connect(buttonDown, &QPushButton::clicked, [=]() {
+		const int index = m_filenamesConditions.indexOf(leCondition);
+		swapConditionals(index, index + 1);
+	});
+	connect(buttonRemove, &QPushButton::clicked, [=]() {
+		removeConditional(m_filenamesConditions.indexOf(leCondition));
+	});
 
 	m_filenamesConditions.append(leCondition);
 	m_filenamesFilenames.append(leFilename);
 	m_filenamesFolders.append(leFolder);
+	m_filenamesButtonsUp.append(buttonUp);
+	m_filenamesButtonsDown.append(buttonDown);
 
 	auto *layout = new QHBoxLayout();
 	layout->addWidget(leCondition);
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
+	layout->addWidget(buttonUp);
+	layout->addWidget(buttonDown);
+	layout->addWidget(buttonRemove);
 	ui->layoutConditionals->addLayout(layout);
+
+	updateConditionalButtons();
+}
+
+void OptionsWindow::swapConditionals(const int a, const int b)
+{
+	m_filenamesConditions.swapItemsAt(a, b);
+	m_filenamesFilenames.swapItemsAt(a, b);
+	m_filenamesFolders.swapItemsAt(a, b);
+	m_filenamesButtonsUp.swapItemsAt(a, b);
+	m_filenamesButtonsDown.swapItemsAt(a, b);
+
+	const int low = qMin(a, b);
+	const int high = qMax(a, b);
+	auto *itemHigh = ui->layoutConditionals->takeAt(high);
+	auto *itemLow = ui->layoutConditionals->takeAt(low);
+	ui->layoutConditionals->insertItem(low, itemHigh);
+	ui->layoutConditionals->insertItem(high, itemLow);
+
+	updateConditionalButtons();
+}
+
+void OptionsWindow::removeConditional(const int index)
+{
+	m_filenamesConditions.removeAt(index);
+	m_filenamesFilenames.removeAt(index);
+	m_filenamesFolders.removeAt(index);
+	m_filenamesButtonsUp.removeAt(index);
+	m_filenamesButtonsDown.removeAt(index);
+
+	auto *item = ui->layoutConditionals->takeAt(index);
+	clearLayout(item->layout());
+	item->layout()->deleteLater();
+	delete item;
+
+	updateConditionalButtons();
+}
+
+void OptionsWindow::updateConditionalButtons()
+{
+	const int count = m_filenamesConditions.size();
+	for (int i = 0; i < count; ++i) {
+		m_filenamesButtonsUp[i]->setEnabled(i > 0);
+		m_filenamesButtonsDown[i]->setEnabled(i < count - 1);
+	}
 }
 
 
@@ -654,12 +737,19 @@ void OptionsWindow::on_buttonMetadataExiftoolAdd_clicked()
 void OptionsWindow::on_buttonConversionImageListAdd_clicked()
 {
 	auto *leFrom = new QLineEdit(this);
+	leFrom->setPlaceholderText(tr("From"));
 	auto *leTo = new QLineEdit(this);
-	m_imageConversion.append(QPair<QLineEdit*, QLineEdit*> { leFrom, leTo });
+	leTo->setPlaceholderText(tr("To"));
+	auto *comboBackend = new QComboBox(this);
+	comboBackend->addItems({ QStringLiteral("ImageMagick"), QStringLiteral("FFmpeg") });
+	if (m_imageMagickVersion.isEmpty()) { disableItem(comboBackend, 0); }
+	if (m_ffmpegVersion.isEmpty()) { disableItem(comboBackend, 1); }
+	m_imageConversion.append({ leFrom, leTo, comboBackend });
 
 	auto *layout = new QHBoxLayout();
 	layout->addWidget(leFrom);
 	layout->addWidget(leTo);
+	layout->addWidget(comboBackend);
 	ui->layoutConversionImageList->addLayout(layout);
 }
 
@@ -1004,6 +1094,7 @@ void OptionsWindow::backupRestore()
 	settings->setValue("lastDirBackup", QDir::toNativeSeparators(path).section(QDir::separator(), 0, -2));
 	if (loadBackup(m_profile, path)) {
 		QMessageBox::information(this, QObject::tr("Success"), tr("Backup restored successfully."));
+		emit settingsChanged();
 	} else {
 		error(this, tr("Error restoring backup."));
 	}
@@ -1197,6 +1288,10 @@ void OptionsWindow::save()
 	settings->setValue("tagsautoadd", ui->spinAutoTagAdd->value());
 	settings->setValue("useQtUserAgent", ui->checkUseQtUserAgent->isChecked());
 	settings->setValue("userAgent", ui->lineUserAgent->text());
+	static const QRegularExpression rxSplitComma(R"(\s*,\s*)");
+	settings->setValue("extensionRotationStatic", ui->lineExtensionRotatorStatic->text().split(rxSplitComma));
+	settings->setValue("extensionRotationAnimated", ui->lineExtensionRotatorAnimated->text().split(rxSplitComma));
+
 	const QStringList starts { "none", "loadfirst", "restore" };
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());
@@ -1281,6 +1376,7 @@ void OptionsWindow::save()
 	const QStringList infiniteScroll { "disabled", "button", "scroll" };
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
 	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
+	settings->setValue("Interface/previewVideoIndicator", ui->checkPreviewVideoIndicator->isChecked());
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
@@ -1353,19 +1449,21 @@ void OptionsWindow::save()
 		// Video conversion
 		settings->setValue("FFmpegRemuxWebmToMp4", ui->checkConversionFFmpegRemuxWebmToMp4->isChecked());
 		settings->setValue("FFmpegConvertWebmToMp4", ui->checkConversionFFmpegConvertWebmToMp4->isChecked());
+		settings->setValue("FFmpegConvertOverwrite", ui->checkConversionFFmpegOverwrite->isChecked());
 		settings->setValue("FFmpegConvertTimeout", qRound(ui->spinConversionFFmpegTimeout->value() * 1000));
 
 		// Image conversion
-		settings->setValue("ImageConversionBackend", ui->comboConversionImageBackend->currentText());
+		settings->setValue("ImageConversionOverwrite", ui->checkConversionImageOverwrite->isChecked());
 		settings->setValue("ImageConversionTimeout", qRound(ui->spinConversionImageTimeout->value() * 1000));
 		settings->beginGroup("ImageConversion");
 		settings->remove("");
 		for (int i = 0, j = 0; i < m_imageConversion.count(); ++i) {
-			const QString &from = m_imageConversion[i].first->text();
-			const QString &to = m_imageConversion[i].second->text();
+			const QString &from = m_imageConversion[i].from->text();
+			const QString &to = m_imageConversion[i].to->text();
 			if (!from.isEmpty() && !to.isEmpty()) {
 				settings->beginGroup(from.toUpper());
 				settings->setValue("to", to.toUpper());
+				settings->setValue("backend", m_imageConversion[i].backend->currentText());
 				settings->endGroup();
 				++j;
 			}
@@ -1376,6 +1474,7 @@ void OptionsWindow::save()
 		settings->setValue("ConvertUgoira", ui->checkConversionUgoiraEnabled->isChecked());
 		settings->setValue("ConvertUgoiraFormat", ui->comboConversionUgoiraTargetExtension->currentText().toLower());
 		settings->setValue("ConvertUgoiraDeleteOriginal", ui->checkConversionUgoiraDelete->isChecked());
+		settings->setValue("ConvertUgoiraOverwrite", ui->checkConversionUgoiraOverwrite->isChecked());
 		settings->setValue("ConvertUgoiraTimeout", qRound(ui->spinConversionUgoiraTimeout->value() * 1000));
 
 		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());

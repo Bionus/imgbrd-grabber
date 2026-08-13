@@ -175,7 +175,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 
 			// Preview gets the biggest size between 150 and 300
 			if (
-				sizes[Image::Thumbnail].isEmpty() || // Default
+				sizes[Image::Thumbnail].isNull() || // Default
 				(isInRange(size, 150, 300) && (
 					 isBigger(size, sizes[Image::Thumbnail]) || // Biggest under 300px
 					 !isInRange(sizes[Image::Thumbnail], 150, 300)) // If the default was bigger than 300px
@@ -284,10 +284,12 @@ void Image::init()
 	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
 
 	// Setup extension rotator
+	static const QStringList defaultExtensionsStatic { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
+	static const QStringList defaultExtensionsAnimated { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" };
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated") || hasTag("video");
 	const QStringList extensions = animated
-		? QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }
-		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
+		? m_settings->value("extensionRotationAnimated", defaultExtensionsAnimated).toStringList()
+		: m_settings->value("extensionRotationStatic", defaultExtensionsStatic).toStringList();
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 }
 
@@ -554,6 +556,7 @@ void Image::parseDetails()
 	}
 	if (!ret.tags.isEmpty()) {
 		m_tags = ret.tags;
+		m_profile->addAutoComplete(ret.tags);
 	}
 	if (ret.createdAt.isValid()) {
 		m_data["date"] = ret.createdAt;
@@ -831,14 +834,15 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	if (ext == QStringLiteral("webm")) {
 		const bool remux = m_settings->value("Save/FFmpegRemuxWebmToMp4", false).toBool();
 		const bool convert = m_settings->value("Save/FFmpegConvertWebmToMp4", false).toBool();
+		const bool overwrite = m_settings->value("Save/FFmpegConvertOverwrite", true).toBool();
 		const int timeout = m_settings->value("Save/FFmpegConvertTimeout", 30000).toInt();
 
 		// We can only remux VP9 to MP4 as VP8 is not compatible with the MP4 container and needs conversion instead
 		if (remux && FFmpeg::getVideoCodec(path) == QStringLiteral("vp9")) {
-			path = FFmpeg::remux(path, "mp4", true, timeout);
+			path = FFmpeg::remux(path, "mp4", overwrite, true, timeout);
 			ext = getExtension(path);
 		} else if (convert) {
-			path = FFmpeg::convert(path, "mp4", true, timeout);
+			path = FFmpeg::convert(path, "mp4", overwrite, true, timeout);
 			ext = getExtension(path);
 		}
 	}
@@ -846,12 +850,13 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	// Image conversion
 	const QString targetImgExt = m_settings->value("Save/ImageConversion/" + ext.toUpper() + "/to").toString().toLower();
 	if (!targetImgExt.isEmpty()) {
-		const QString backend = m_settings->value("Save/ImageConversionBackend", "ImageMagick").toString();
+		const QString backend = m_settings->value("Save/ImageConversion/" + ext.toUpper() + "/backend", m_settings->value("Save/ImageConversionBackend", "ImageMagick")).toString();
+		const bool overwrite = m_settings->value("Save/ImageConversionOverwrite", true).toBool();
 		const int timeout = m_settings->value("Save/ConvertUgoiraTimeout", 30000).toInt();
 		if (backend == QStringLiteral("ImageMagick")) {
-			path = ImageMagick::convert(path, targetImgExt, true, timeout);
+			path = ImageMagick::convert(path, targetImgExt, overwrite, true, timeout);
 		} else if (backend == QStringLiteral("FFmpeg")) {
-			path = FFmpeg::convert(path, targetImgExt, true, timeout);
+			path = FFmpeg::convert(path, targetImgExt, overwrite, true, timeout);
 		}
 		ext = getExtension(path);
 	}
@@ -860,8 +865,9 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	if (ext == QStringLiteral("zip") && m_settings->value("Save/ConvertUgoira", false).toBool()) {
 		const QString targetUgoiraExt = m_settings->value("Save/ConvertUgoiraFormat", "gif").toString();
 		const bool deleteOriginal = m_settings->value("Save/ConvertUgoiraDeleteOriginal", false).toBool();
+		const bool overwrite = m_settings->value("Save/ConvertUgoiraOverwrite", true).toBool();
 		const int timeout = m_settings->value("Save/ConvertUgoiraTimeout", 30000).toInt();
-		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, deleteOriginal, timeout);
+		path = FFmpeg::convertUgoira(path, ugoiraFrameInformation(), targetUgoiraExt, overwrite, deleteOriginal, timeout);
 		ext = getExtension(path);
 	}
 
@@ -918,6 +924,29 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 
 	setSavePath(path, size);
 	return path;
+}
+
+void Image::remove(const QStringList &paths)
+{
+	const auto logFiles = getExternalLogFiles(m_profile->getSettings());
+
+	for (const QString &path : paths) {
+		// Delete the file
+		QFile(path).remove();
+
+		// Delete external log files
+		for (const auto &logFile : logFiles) {
+			const int locationType = logFile["locationType"].toInt();
+			if (locationType == 2) {
+				QFile(path + logFile["suffix"].toString()).remove();
+			} else if (locationType == 3) {
+				QFile(setExtension(path, "") + logFile["suffixWithoutExtension"].toString()).remove();
+			}
+		}
+
+		// Remove the MD5 from the database
+		m_profile->removeMd5(md5(), path);
+	}
 }
 
 
@@ -1313,6 +1342,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	// Tags
 	tokens.insert("general", Token(details["general"], "keepAll", "", ""));
 	tokens.insert("artist", Token(details["artist"], "keepAll", "anonymous", "multiple artists"));
+	tokens.insert("contributor", Token(details["contributor"], "keepAll", "none", "multiple"));
 	tokens.insert("copyright", Token(details["copyright"], "keepAll", "misc", "crossover"));
 	tokens.insert("character", Token(details["character"], "keepAll", "unknown", "group"));
 	tokens.insert("model", Token(details["model"] + details["idol"], "keepAll", "unknown", "multiple"));

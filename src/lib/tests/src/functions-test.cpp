@@ -292,18 +292,26 @@ TEST_CASE("Functions")
 		// Timestamps
 		REQUIRE(qDateTimeFromString("1492192180").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 
-		// Standart dates
+		// Standard dates
 		REQUIRE(qDateTimeFromString("2017/04/14 17:49:40.123456").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
-		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40.123456").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017/04/14 17:49:40.123").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
-		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40.123").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017/04/14 17:49:40").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
-		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017/04/14 17:49").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+
+		// ISO 8601
+		REQUIRE(qDateTimeFromString("2017-04-14T17:49:40.123456").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14T17:49:40.123").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14T17:49:40").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14T17:49").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+
+		// ISO 8601 with spaces
+		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40.123456").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40.123").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40, 123), Qt::UTC));
+		REQUIRE(qDateTimeFromString("2017-04-14 17:49:40").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 		REQUIRE(qDateTimeFromString("2017-04-14 17:49").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
 
-		// Danbooru dates
-		REQUIRE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
+		// ISO 8601 with offset
+		REQUIRE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC() == QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40, 498), Qt::UTC));
 
 		// Gelbooru dates
 		REQUIRE(qDateTimeFromString("Tue Apr  4 17:49:40 2017").toUTC() == QDateTime(QDate(2017, 4, 4), QTime(17, 49, 40), Qt::UTC));
@@ -570,8 +578,8 @@ TEST_CASE("Functions")
 		REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Open, Qt::Key_D).toString() == QString("Ctrl+O"));
 
 		#ifndef Q_OS_MAC
-			// On macOS, QKeySequence::Preferences is defined, so it would return "Ctrl+," rather than "D"
-			REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Preferences, Qt::Key_D).toString() == QString("D"));
+			// QKeySequence::SelectStartOfBlock is only defined on macOS (see src/gui/kernel/qplatformtheme.cpp)
+			REQUIRE(getKeySequence(settings, "not-found", QKeySequence::SelectStartOfBlock, Qt::Key_D).toString() == QString("D"));
 		#endif
 	}
 

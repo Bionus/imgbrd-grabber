@@ -5,6 +5,7 @@
 #include <QProcess>
 #include "functions.h"
 #include "models/profile.h"
+#include "models/site.h"
 #include "tags/tag.h"
 
 
@@ -29,10 +30,19 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 	}
 
 	// Blacklist
-	if (profile->getBlacklist().contains(m_tag)) {
-		addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist()));
+	// If the SHIFT key is pressed, add it as a site-specific blacklist
+	if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) && !m_sites.isEmpty()) {
+		if (profile->getBlacklist().contains({ "website:" + m_sites[0]->url(), m_tag })) {
+			addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist (site)"), this, SLOT(unblacklistSite()));
+		} else {
+			addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist (site)"), this, SLOT(blacklistSite()));
+		}
 	} else {
-		addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist()));
+		if (profile->getBlacklist().contains(m_tag)) {
+			addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist()));
+		} else {
+			addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist()));
+		}
 	}
 
 	// Ignored tags
@@ -113,14 +123,26 @@ void TagContextMenu::blacklist()
 {
 	m_profile->addBlacklistedTag(m_tag);
 }
+void TagContextMenu::blacklistSite()
+{
+	for (const Site *site : qAsConst(m_sites)) {
+		m_profile->addBlacklistedTags({ "website:" + site->url(), m_tag });
+	}
+}
 void TagContextMenu::unblacklist()
 {
 	m_profile->removeBlacklistedTag(m_tag);
 }
+void TagContextMenu::unblacklistSite()
+{
+	for (const Site *site : qAsConst(m_sites)) {
+		m_profile->removeBlacklistedTags({ "website:" + site->url(), m_tag });
+	}
+}
 
 void TagContextMenu::openInNewTab()
 {
-	emit openNewTab();
+	emit openNewTab(m_tag);
 }
 void TagContextMenu::openInNewWindow()
 {

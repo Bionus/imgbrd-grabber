@@ -10,6 +10,7 @@ Item {
     property int min: 0
     property int max: 99
     property int step: 1
+    property bool editable: true
     property Setting setting
 
     implicitHeight: item.implicitHeight
@@ -41,6 +42,7 @@ Item {
                 from: root.min
                 to: root.max
                 stepSize: root.step
+                editable: root.editable
             }
         }
     }

@@ -32,6 +32,17 @@ TEST_CASE("Blacklist")
 		REQUIRE(Blacklist(QStringList() << "tag1" << "tag2").isEmpty() == false);
 	}
 
+	SECTION("Clear")
+	{
+		Blacklist blacklist;
+		blacklist.add("tag1");
+		blacklist.add("tag2");
+		blacklist.add("tag3");
+		blacklist.clear();
+
+		REQUIRE(Blacklist().isEmpty() == true);
+	}
+
 	SECTION("Remove")
 	{
 		Blacklist blacklist(QStringList() << "tag1" << "tag2");
@@ -44,6 +55,22 @@ TEST_CASE("Blacklist")
 		REQUIRE(blacklist.contains("tag1") == true);
 		REQUIRE(blacklist.contains("tag2") == false);
 		REQUIRE(blacklist.contains("not_found") == false);
+	}
+
+	SECTION("Complex tag")
+	{
+		QStringList complex { "rating:safe", "test_tag" };
+		Blacklist blacklist;
+
+		REQUIRE(blacklist.contains(complex) == false);
+		REQUIRE(blacklist.remove(complex) == false);
+
+		blacklist.add(complex);
+		REQUIRE(blacklist.contains(complex) == true);
+		REQUIRE(blacklist.remove(complex) == true);
+
+		REQUIRE(blacklist.contains(complex) == false);
+		REQUIRE(blacklist.remove(complex) == false);
 	}
 
 	SECTION("Match")
@@ -76,5 +103,20 @@ TEST_CASE("Blacklist")
 
 		REQUIRE(blacklist.match(tokensWith) == QStringList("re:zero"));
 		REQUIRE(blacklist.match(tokensWithout) == QStringList());
+	}
+
+	SECTION("Site-specific tag")
+	{
+		Blacklist blacklist;
+		blacklist.add({ "website:danbooru.donmai.us", "test_tag" });
+
+		QMap<QString, Token> matchingSite;
+		matchingSite.insert("website", Token("danbooru.donmai.us"));
+		matchingSite.insert("allos", Token(QStringList() << "test_tag"));
+		QMap<QString, Token> otherSite = matchingSite;
+		otherSite.insert("website", Token("gelbooru.com"));
+
+		REQUIRE(blacklist.match(matchingSite) == QStringList("website:danbooru.donmai.us test_tag"));
+		REQUIRE(blacklist.match(otherSite) == QStringList());
 	}
 }

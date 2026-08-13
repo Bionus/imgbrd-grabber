@@ -9,7 +9,7 @@ on:
     - cron: '30 15 * * 4'
 
 env:
-  QT_VERSION: 6.6.3
+  QT_VERSION: 6.9.1
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
 
 jobs:
@@ -28,24 +28,24 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Qt
         if: matrix.language == 'cpp'
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           config-file: ./.github/codeql/codeql-config.yml
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v4
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v4
