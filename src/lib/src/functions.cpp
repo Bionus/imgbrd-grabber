@@ -420,6 +420,13 @@ QString savePath(const QString &file, bool exists, bool writable)
 		}
 	#endif
 
+	// macOS application resources live in "Contents/Resources"/ instead of "Contents/MacOS" with the binary
+	#ifdef Q_OS_MACOS
+		if (validSavePath(qApp->applicationDirPath() + "/../Resources/" + check, writable)) {
+			return QDir::toNativeSeparators(qApp->applicationDirPath() + "/../Resources/" + file);
+		}
+	#endif
+
 	// Install directory and portable mode
 	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);

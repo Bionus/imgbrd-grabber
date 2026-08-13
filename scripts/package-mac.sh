@@ -6,11 +6,13 @@ set -e
 # Create the application directory
 APP_ROOT="Grabber.app"
 APP_DIR="$APP_ROOT/Contents/MacOS"
-mkdir -p $APP_DIR
+APP_RESOURCES="$APP_ROOT/Contents/Resources"
+mkdir -p "$APP_DIR" "$APP_RESOURCES"
 
-# Copy all required files to the application directory
-./scripts/package.sh $APP_DIR
-rm "$APP_DIR/settings.ini"
+# Package data as resources, keeping only executables in Contents/MacOS
+./scripts/package.sh "$APP_RESOURCES"
+mv "$APP_RESOURCES/Grabber" "$APP_RESOURCES/Grabber-cli" "$APP_DIR/"
+rm "$APP_RESOURCES/settings.ini"
 cp -r src/dist/macos/* "$APP_ROOT/Contents"
 
 # Prepare the app bundle (doesn't create the DMG file)
