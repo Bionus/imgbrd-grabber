@@ -8,7 +8,7 @@ endif()
 set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Network Qt6::NetworkAuth Qt6::Qml Qt6::Sql Qt6::Xml)
 
 # Optional WebEngine component
-if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1") AND TARGET Qt6::WebEngineCore)
+if(TARGET Qt6::WebEngineCore)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WebEngineCore)
 	set(USE_WEBENGINE 1)
 	add_definitions(-DUSE_WEBENGINE=1)
