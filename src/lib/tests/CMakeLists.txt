@@ -16,7 +16,7 @@ include_directories("src/" "." "../src/" "../vendor/lexbor/source/" "../../tests
 
 # Executable
 add_executable(${PROJECT_NAME} ${SOURCES})
-add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib Catch2::Catch2)
 
 add_subdirectory(languages)
