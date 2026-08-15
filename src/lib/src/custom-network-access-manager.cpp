@@ -4,6 +4,8 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkReply>
+#include <QSslError>
+#include <QStringList>
 #include "functions.h"
 #include "logger.h"
 #include "vendor/qcustomnetworkreply.h"
@@ -125,22 +127,30 @@ QNetworkReply *CustomNetworkAccessManager::post(const QNetworkRequest &request, 
 	return QNetworkAccessManager::post(request, data);
 }
 
+void CustomNetworkAccessManager::setIgnoreSslErrors(bool ignore)
+{
+	m_ignoreSslErrors = ignore;
+}
+
 /**
- * Log SSL errors in debug mode only.
+ * Report SSL errors while preserving Qt's default certificate rejection.
  *
- * @param reply		The network reply who generated the SSL errors
+ * @param reply		The network reply that generated the SSL errors
  * @param errors	The list of SSL errors that occurred
  */
 void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors)
 {
-	#ifdef QT_DEBUG
-		qDebug() << errors;
-	#else
-		Q_UNUSED(errors)
-	#endif
-	#ifndef TEST
+	QStringList errorMessages;
+	errorMessages.reserve(errors.size());
+	for (const QSslError &error : errors) {
+		errorMessages.append(error.errorString());
+	}
+
+	const QString message = QStringLiteral("TLS certificate validation failed for site '%1': %2. ").arg(reply->url().host().isEmpty() ? QStringLiteral("unknown") : reply->url().host(), errorMessages.join(QStringLiteral("; ")));
+	if (m_ignoreSslErrors) {
+		log(message + QStringLiteral("Connection allowed by the site's ignoreSslErrors setting."), Logger::Warning);
 		reply->ignoreSslErrors();
-	#else
-		Q_UNUSED(reply)
-	#endif
+	} else {
+		log(message + QStringLiteral("Connection rejected."), Logger::Error);
+	}
 }

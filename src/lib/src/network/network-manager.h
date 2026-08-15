@@ -32,6 +32,7 @@ class NetworkManager : public QObject
 		void setCache(QAbstractNetworkCache *cache);
 		QNetworkCookieJar *cookieJar() const;
 		void setCookieJar(QNetworkCookieJar *cookieJar);
+		void setIgnoreSslErrors(bool ignore);
 
 		NetworkReply *get(QNetworkRequest request, int type = -1);
 		NetworkReply *post(QNetworkRequest request, QByteArray data, int type = -1);
