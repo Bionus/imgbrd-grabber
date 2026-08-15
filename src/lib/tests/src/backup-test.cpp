@@ -18,8 +18,9 @@ TEST_CASE("Backup")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	QTemporaryDir tmpDir;
 
-	const QString zipFile = "backup-test.zip";
-	const QString zipDir = tmpDir.path();
+	const QString zipFile = tmpDir.filePath("backup-test.zip");
+	const QString zipDir = tmpDir.filePath("unpacked");
+	REQUIRE(QDir().mkpath(zipDir));
 
 	SECTION("settings.ini")
 	{
