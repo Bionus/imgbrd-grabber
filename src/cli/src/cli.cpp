@@ -24,6 +24,20 @@
 #include "models/site.h"
 
 
+static int parseLimit(const QString &value, bool supplied, int defaultValue)
+{
+	if (!supplied) {
+		return defaultValue;
+	}
+	if (value == QStringLiteral("all")) {
+		return -1;
+	}
+
+	bool ok = false;
+	const int limit = value.toInt(&ok);
+	return ok && limit > 0 ? limit : 0;
+}
+
 /**
  * New version of the CLI parser.
  *
@@ -115,7 +129,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 	const QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
 	const QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
 	const QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
-	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
+	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum images per source, or 'all'. Defaults to the per-page value.", "count|all");
 	const QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
 	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path", dPath);
 	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename", dFilename);
@@ -285,7 +299,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 		const int perPage = parser.value(perPageOption).toInt();
 		const QString filename = parser.value(filenameOption);
 		const QString folder = parser.value(pathOption);
-		const int max = parser.value(limitOption).toInt();
+		const int max = parseLimit(parser.value(limitOption), parser.isSet(limitOption), perPage);
 		const bool login = !parser.isSet(noLoginOption);
 		const bool noDuplicates = parser.isSet(noDuplicatesOption);
 		const bool getBlacklisted = parser.isSet(blacklistOption);
@@ -299,7 +313,7 @@ int parseAndRunCliArgs(QCoreApplication *app, Profile *profile, bool defaultToGu
 		const int perPage = parser.value(perPageOption).toInt();
 		const QString filename = parser.value(filenameOption);
 		const QString folder = parser.value(pathOption);
-		const int max = parser.value(limitOption).toInt();
+		const int max = parseLimit(parser.value(limitOption), parser.isSet(limitOption), perPage);
 		const bool login = !parser.isSet(noLoginOption);
 		const bool noDuplicates = parser.isSet(noDuplicatesOption);
 		const bool getBlacklisted = parser.isSet(blacklistOption);
