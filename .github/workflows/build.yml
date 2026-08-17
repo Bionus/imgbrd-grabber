@@ -98,6 +98,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install packages
         run: |
           sudo apt update
@@ -114,7 +119,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Debug -DNIGHTLY=0 -DCOMMIT="$GITHUB_SHA" -DVERSION="9.9.9"
+          cmake ../src -DCMAKE_BUILD_TYPE=Debug -DNIGHTLY=0 -DCOMMIT="$GITHUB_SHA" -DVERSION="9.9.9" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 
       - name: Build
         working-directory: build
@@ -186,6 +191,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -243,7 +253,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
+          cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 
       - name: Build
         working-directory: build
@@ -310,6 +320,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -350,7 +365,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 
       - name: Build
         working-directory: build
@@ -392,6 +407,7 @@ jobs:
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC
+      SCCACHE_DIR: ${{ github.workspace }}\.sccache
 
     steps:
       - name: Set environment
@@ -402,6 +418,12 @@ jobs:
         uses: actions/checkout@v7
         with:
           submodules: recursive
+
+      - name: Setup sccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          variant: sccache
+          key: ${{ runner.os }}-${{ github.job }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -474,7 +496,9 @@ jobs:
             -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
             -DCOMMIT="%GITHUB_SHA%" ^
             -DVERSION="%GRABBER_VERSION%" ^
-            -DVERSION_PLATFORM="x64"
+            -DVERSION_PLATFORM="x64" ^
+            -DCMAKE_C_COMPILER_LAUNCHER=sccache ^
+            -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
       - name: Build
         shell: cmd
@@ -554,6 +578,11 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Setup ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ runner.os }}-${{ github.job }}
+
     - name: Install packages
       run: |
         sudo apt update
@@ -626,6 +655,8 @@ jobs:
           -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
           -DCMAKE_BUILD_TYPE:STRING=Release \
           -DCMAKE_GENERATOR:STRING=Ninja \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           -DCMAKE_WARN_DEPRECATED=FALSE \
           -DANDROID_SDK_ROOT="${ANDROID_HOME}" \
           -DANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}" \
