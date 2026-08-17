@@ -467,7 +467,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..\src -G "Visual Studio 17 2022" -A "x64" ^
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" x64
+          cmake ..\src -G Ninja ^
             -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
             -DCMAKE_SYSTEM_VERSION=10.0.18362.0 ^
             -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
@@ -479,15 +480,16 @@ jobs:
         shell: cmd
         working-directory: build
         run: |
-          cmake --build . --config %BUILD_TYPE% --target sites
-          cmake --build . --config %BUILD_TYPE%
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" x64
+          cmake --build . --target sites
+          cmake --build .
 
       - name: Test
         shell: cmd
         working-directory: src/lib
         run: |
-          ..\..\build\lib\tests\%BUILD_TYPE%\lib-tests.exe
-          ..\..\build\cli\tests\%BUILD_TYPE%\cli-tests.exe
+          ..\..\build\lib\tests\lib-tests.exe
+          ..\..\build\cli\tests\cli-tests.exe
         env:
           QTDIR: ${{ env.QT_ROOT_DIR }}
           QT_PLUGIN_PATH: ${{ env.QT_ROOT_DIR }}\plugins
