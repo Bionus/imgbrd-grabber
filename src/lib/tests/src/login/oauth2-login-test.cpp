@@ -80,8 +80,8 @@ TEST_CASE("OAuth2Login")
 		QTemporaryFile response;
 		REQUIRE(response.open());
 		response.write(QString(R"({"token_type":"bearer","access_token":"%1","refresh_token":"%2"})")
-					   .arg(accessToken, refreshToken)
-					   .toUtf8());
+			.arg(accessToken, refreshToken)
+			.toUtf8());
 		response.close();
 
 		Logger &logger = Logger::getInstance();
