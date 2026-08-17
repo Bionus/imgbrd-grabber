@@ -569,6 +569,7 @@ jobs:
 
     env:
       QT_VERSION: 6.10.3
+      CCACHE_COMPILERCHECK: content
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
 
