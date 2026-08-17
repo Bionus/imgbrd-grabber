@@ -110,11 +110,15 @@ jobs:
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
-      - name: Build
+      - name: Configure
         run: |
           mkdir build
           cd build
           cmake ../src -DCMAKE_BUILD_TYPE=Debug -DNIGHTLY=0 -DCOMMIT="$GITHUB_SHA" -DVERSION="9.9.9"
+
+      - name: Build
+        working-directory: build
+        run: |
           cmake --build . --config Debug --target sites
           cmake --build . --config Debug
 
@@ -235,11 +239,15 @@ jobs:
           rm $QT_ROOT_DIR/plugins/sqldrivers/libqsqlmimer.so
           rm $QT_ROOT_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
 
-      - name: Build
+      - name: Configure
         run: |
           mkdir build
           cd build
           cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
+
+      - name: Build
+        working-directory: build
+        run: |
           cmake --build . --config Release --target sites
           cmake --build . --config Release
 
@@ -338,11 +346,15 @@ jobs:
           cd "${QSCINTILLA_DIR}/src"
           make install
 
-      - name: Build
+      - name: Configure
         run: |
           mkdir build
           cd build
           cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+
+      - name: Build
+        working-directory: build
+        run: |
           cmake --build . --config Release --target sites
           cmake --build . --config Release
 
@@ -450,7 +462,7 @@ jobs:
           7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
           rm "mysql_driver.zip"
 
-      - name: Build
+      - name: Configure
         shell: cmd
         run: |
           mkdir build
@@ -462,6 +474,11 @@ jobs:
             -DCOMMIT="%GITHUB_SHA%" ^
             -DVERSION="%GRABBER_VERSION%" ^
             -DVERSION_PLATFORM="x64"
+
+      - name: Build
+        shell: cmd
+        working-directory: build
+        run: |
           cmake --build . --config %BUILD_TYPE% --target sites
           cmake --build . --config %BUILD_TYPE%
 
@@ -594,7 +611,7 @@ jobs:
     - name: Restore keystore file
       run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
 
-    - name: Build
+    - name: Configure
       env:
         QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
@@ -613,6 +630,14 @@ jobs:
           -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
           -DQT_ANDROID_ABIS:STRING="armeabi-v7a;arm64-v8a" \
           -DQT_HOST_PATH:PATH="${{ env.QT_ROOT_DIR }}/../gcc_64"
+
+    - name: Build
+      working-directory: build
+      env:
+        QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
+        QT_ANDROID_KEYSTORE_ALIAS: release
+        QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      run: |
         cmake --build . --config Release --target gui-qml_make_apk
 
     - name: Generate package
