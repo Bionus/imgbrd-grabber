@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.2)
 
+if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
+    set(VERSION "7.14.0")
+else()
+    string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
+endif()
+project(Grabber VERSION ${VERSION})
+
 enable_testing()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -38,13 +45,6 @@ endif()
 
 # Disable Qt dependency walking warnings
 set(QT_SILENCE_MISSING_DEPENDENCY_TARGET_WARNING ON)
-
-if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "7.13.0")
-else()
-	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
-endif()
-project(Grabber VERSION ${VERSION})
 
 if(NOT DEFINED VERSION_PLATFORM)
 	if(CMAKE_SYSTEM_PROCESSOR MATCHES "[aA][mM][dD]64")
@@ -162,3 +162,4 @@ add_subdirectory(sites)
 add_dependencies(gui sites)
 add_dependencies(gui-qml sites)
 add_dependencies(cli sites)
+add_dependencies(lib-tests sites)

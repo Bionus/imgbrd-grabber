@@ -17,6 +17,12 @@ SqlWorker::SqlWorker(QString driver, QString host, QString user, QString passwor
 	m_started = false;
 }
 
+SqlWorker::~SqlWorker()
+{
+	close();
+}
+
+
 bool SqlWorker::connect()
 {
 	if (!m_enabled || m_started) {
@@ -44,6 +50,19 @@ bool SqlWorker::connect()
 	m_started = true;
 	return true;
 }
+
+void SqlWorker::close()
+{
+	const QString connectionName = m_db.connectionName();
+	m_db.close();
+
+	m_db = QSqlDatabase();
+	if (!connectionName.isEmpty()) {
+		QSqlDatabase::removeDatabase(connectionName);
+	}
+	m_started = false;
+}
+
 
 QString SqlWorker::escape(const QVariant &val)
 {

@@ -7,6 +7,8 @@ on:
       - '**.md'
     branches-ignore:
       - crowdin
+    tags:
+      - 'v*'
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -15,7 +17,7 @@ on:
       - crowdin
 
 env:
-  QT_VERSION: 6.10.0
+  QT_VERSION: 6.11.1
   QT_MODULES: qtmultimedia qtimageformats qtnetworkauth qtshadertools
   QT_MODULES_WEBENGINE: qtwebchannel qtpositioning qtwebengine qtwebview qtserialport
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -96,6 +98,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install packages
         run: |
           sudo apt update
@@ -108,11 +115,15 @@ jobs:
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
-      - name: Build
+      - name: Configure
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Debug -DNIGHTLY=0 -DCOMMIT="$GITHUB_SHA" -DVERSION="9.9.9"
+          cmake ../src -DCMAKE_BUILD_TYPE=Debug -DNIGHTLY=0 -DCOMMIT="$GITHUB_SHA" -DVERSION="9.9.9" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+      - name: Build
+        working-directory: build
+        run: |
           cmake --build . --config Debug --target sites
           cmake --build . --config Debug
 
@@ -180,6 +191,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -233,11 +249,15 @@ jobs:
           rm $QT_ROOT_DIR/plugins/sqldrivers/libqsqlmimer.so
           rm $QT_ROOT_DIR/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPlugin*.cmake
 
-      - name: Build
+      - name: Configure
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
+          cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+      - name: Build
+        working-directory: build
+        run: |
           cmake --build . --config Release --target sites
           cmake --build . --config Release
 
@@ -300,6 +320,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -336,11 +361,15 @@ jobs:
           cd "${QSCINTILLA_DIR}/src"
           make install
 
-      - name: Build
+      - name: Configure
         run: |
           mkdir build
           cd build
-          cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+      - name: Build
+        working-directory: build
+        run: |
           cmake --build . --config Release --target sites
           cmake --build . --config Release
 
@@ -374,10 +403,11 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/releases/download/qmysql_6.10.0/qsqlmysql.dll_Qt_SQL_driver_6.10.0_MSVC2022_64-bit.zip
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/releases/download/qmysql_6.11.1/qsqlmysql.dll_Qt_SQL_driver_6.11.1_MSVC2022_64-bit.zip
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC
+      SCCACHE_DIR: ${{ github.workspace }}\.sccache
 
     steps:
       - name: Set environment
@@ -389,12 +419,19 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup sccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          variant: sccache
+          key: ${{ runner.os }}-${{ github.job }}
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           cache: true
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }} ${{ env.IS_NIGHTLY && env.QT_MODULES_WEBENGINE || '' }}
+          aqtsource: git+https://github.com/miurahr/aqtinstall.git@8c3695d
 
       - name: Vendor cache
         uses: actions/cache@v6
@@ -447,27 +484,36 @@ jobs:
           7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
           rm "mysql_driver.zip"
 
-      - name: Build
+      - name: Configure
         shell: cmd
         run: |
           mkdir build
           cd build
-          cmake ..\src -G "Visual Studio 17 2022" -A "x64" ^
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" x64
+          cmake ..\src -G Ninja ^
             -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
             -DCMAKE_SYSTEM_VERSION=10.0.18362.0 ^
             -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
             -DCOMMIT="%GITHUB_SHA%" ^
             -DVERSION="%GRABBER_VERSION%" ^
-            -DVERSION_PLATFORM="x64"
-          cmake --build . --config %BUILD_TYPE% --target sites
-          cmake --build . --config %BUILD_TYPE%
+            -DVERSION_PLATFORM="x64" ^
+            -DCMAKE_C_COMPILER_LAUNCHER=sccache ^
+            -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+
+      - name: Build
+        shell: cmd
+        working-directory: build
+        run: |
+          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" x64
+          cmake --build . --target sites
+          cmake --build .
 
       - name: Test
         shell: cmd
         working-directory: src/lib
         run: |
-          ..\..\build\lib\tests\%BUILD_TYPE%\lib-tests.exe
-          ..\..\build\cli\tests\%BUILD_TYPE%\cli-tests.exe
+          ..\..\build\lib\tests\lib-tests.exe
+          ..\..\build\cli\tests\cli-tests.exe
         env:
           QTDIR: ${{ env.QT_ROOT_DIR }}
           QT_PLUGIN_PATH: ${{ env.QT_ROOT_DIR }}\plugins
@@ -522,6 +568,8 @@ jobs:
     needs: version
 
     env:
+      QT_VERSION: 6.10.3
+      CCACHE_COMPILERCHECK: content
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
 
@@ -530,6 +578,11 @@ jobs:
       uses: actions/checkout@v7
       with:
         submodules: recursive
+
+    - name: Setup ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ runner.os }}-${{ github.job }}
 
     - name: Install packages
       run: |
@@ -590,7 +643,7 @@ jobs:
     - name: Restore keystore file
       run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
 
-    - name: Build
+    - name: Configure
       env:
         QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
@@ -598,16 +651,27 @@ jobs:
       run: |
         mkdir build
         cd build
-        export ANDROID_SDK_ROOT="${ANDROID_HOME}"
-        export ANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}"
         ${{ env.QT_ROOT_DIR }}/bin/qt-cmake ../src \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH="${{ env.QT_ROOT_DIR }}/lib/cmake/Qt6/qt.toolchain.cmake" \
           -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
           -DCMAKE_BUILD_TYPE:STRING=Release \
           -DCMAKE_GENERATOR:STRING=Ninja \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           -DCMAKE_WARN_DEPRECATED=FALSE \
+          -DANDROID_SDK_ROOT="${ANDROID_HOME}" \
+          -DANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}" \
           -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
           -DQT_ANDROID_ABIS:STRING="armeabi-v7a;arm64-v8a" \
           -DQT_HOST_PATH:PATH="${{ env.QT_ROOT_DIR }}/../gcc_64"
+
+    - name: Build
+      working-directory: build
+      env:
+        QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
+        QT_ANDROID_KEYSTORE_ALIAS: release
+        QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      run: |
         cmake --build . --config Release --target gui-qml_make_apk
 
     - name: Generate package

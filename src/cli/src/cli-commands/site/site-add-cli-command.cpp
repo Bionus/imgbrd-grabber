@@ -70,9 +70,9 @@ void SiteAddCliCommand::run()
 	}
 
 	// Otherwise, we need to guess which type this site is
-	SourceGuesser sourceGuesser(url, m_profile->getSources().values(), this);
+	SourceGuesser *sourceGuesser = new SourceGuesser(url, m_profile->getSources().values(), this);
 	// TODO: show a progress bar
-	connect(&sourceGuesser, &SourceGuesser::finished, [&](Source *source) {
+	connect(sourceGuesser, &SourceGuesser::finished, [&](Source *source) {
 		if (source == nullptr) {
 			qWarning() << "The source could not be guessed:" << url;
 			emit finished(1);
@@ -83,5 +83,5 @@ void SiteAddCliCommand::run()
 		stdOut << "Site added: " << url << Qt::endl;
 		emit finished(0);
 	});
-	sourceGuesser.start();
+	sourceGuesser->start();
 }

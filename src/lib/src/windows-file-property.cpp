@@ -9,16 +9,9 @@
 #include <QDebug>
 #include <QMap>
 #include <QString>
+#include <string>
 #include "logger.h"
 
-
-wchar_t *toWCharT2(const QString &str)
-{
-	auto *out = new wchar_t[str.length() + 1];
-	str.toWCharArray(out);
-	out[str.length()] = 0;
-	return out;
-}
 
 HRESULT GetPropertyStore(PCWSTR pszFilename, GETPROPERTYSTOREFLAGS gpsFlags, IPropertyStore** ppps)
 {
@@ -63,14 +56,14 @@ void uninitializeWindowsProperties()
 
 bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &out)
 {
-	PCWSTR pszFilename = toWCharT2(filename);
+	const std::wstring wideFilename = filename.toStdWString();
 	IPropertyStore* pps = NULL;
 
 	// Call the helper to get the property store for the initialized item
 	// Note that as long as you have the property store, you are keeping the file open
 	// So always release it once you are done.
 
-	HRESULT hr = GetPropertyStore(pszFilename, GPS_DEFAULT, &pps);
+	HRESULT hr = GetPropertyStore(wideFilename.c_str(), GPS_DEFAULT, &pps);
 	if (SUCCEEDED(hr)) {
 		// Retrieve the number of properties stored in the item.
 		DWORD cProperties = 0;
@@ -101,24 +94,22 @@ bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &ou
 		log(QString("Error %1 getting the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 	}
 
-	delete pszFilename;
-
 	return SUCCEEDED(hr);
 }
 
 bool getWindowsProperty(const QString &filename, const QString &property, QString &out)
 {
-	PCWSTR pszFilename = toWCharT2(filename);
-	PCWSTR pszCanonicalName = toWCharT2(property);
+	const std::wstring wideFilename = filename.toStdWString();
+	const std::wstring wideCanonicalName = property.toStdWString();
 
 	// Convert the Canonical name of the property to PROPERTYKEY
 	PROPERTYKEY key;
-	HRESULT hr = PSGetPropertyKeyFromName(pszCanonicalName, &key);
+	HRESULT hr = PSGetPropertyKeyFromName(wideCanonicalName.c_str(), &key);
 	if (SUCCEEDED(hr)) {
 		IPropertyStore* pps = NULL;
 
 		// Call the helper to get the property store for the initialized item
-		hr = GetPropertyStore(pszFilename, GPS_DEFAULT, &pps);
+		hr = GetPropertyStore(wideFilename.c_str(), GPS_DEFAULT, &pps);
 		if (SUCCEEDED(hr)) {
 			GetProperty(pps, key, out);
 			pps->Release();
@@ -129,30 +120,27 @@ bool getWindowsProperty(const QString &filename, const QString &property, QStrin
 		log(QString("Invalid property specified: %1").arg(property), Logger::Error);
 	}
 
-	delete pszFilename;
-	delete pszCanonicalName;
-
 	return SUCCEEDED(hr);
 }
 
 bool setWindowsProperty(const QString &filename, const QString &property, const QString &value)
 {
-	PCWSTR pszFilename = toWCharT2(filename);
-	PCWSTR pszCanonicalName = toWCharT2(property);
-	PCWSTR pszValue = toWCharT2(value);
+	const std::wstring wideFilename = filename.toStdWString();
+	const std::wstring wideCanonicalName = property.toStdWString();
+	const std::wstring wideValue = value.toStdWString();
 
 	// Convert the Canonical name of the property to PROPERTYKEY
 	PROPERTYKEY key;
-	HRESULT hr = PSGetPropertyKeyFromName(pszCanonicalName, &key);
+	HRESULT hr = PSGetPropertyKeyFromName(wideCanonicalName.c_str(), &key);
 	if (SUCCEEDED(hr)) {
 		IPropertyStore* pps = NULL;
 
 		// Call the helper to get the property store for the
 		// initialized item
-		hr = GetPropertyStore(pszFilename, GPS_READWRITE, &pps);
+		hr = GetPropertyStore(wideFilename.c_str(), GPS_READWRITE, &pps);
 		if (SUCCEEDED(hr)) {
 			PROPVARIANT propvarValue = {0};
-			hr = InitPropVariantFromString(pszValue, &propvarValue);
+			hr = InitPropVariantFromString(wideValue.c_str(), &propvarValue);
 			if (SUCCEEDED(hr)) {
 				hr = PSCoerceToCanonicalValue(key, &propvarValue);
 				if (SUCCEEDED(hr)) {
@@ -178,20 +166,15 @@ bool setWindowsProperty(const QString &filename, const QString &property, const 
 		log(QString("Invalid property specified: %1").arg(property), Logger::Error);
 	}
 
-	delete pszFilename;
-	delete pszCanonicalName;
-	delete pszValue;
-
 	return SUCCEEDED(hr);
 }
 
 bool clearAllWindowsProperties(const QString &filename)
 {
-	PCWSTR pszFilename = toWCharT2(filename);
-	PCWSTR pszValue = toWCharT2(QString());
+	const std::wstring wideFilename = filename.toStdWString();
 	IPropertyStore* pps = NULL;
 
-	HRESULT hr = GetPropertyStore(pszFilename, GPS_READWRITE, &pps);
+	HRESULT hr = GetPropertyStore(wideFilename.c_str(), GPS_READWRITE, &pps);
 	if (SUCCEEDED(hr)) {
 		// Retrieve the number of properties stored in the item.
 		DWORD cProperties = 0;
@@ -227,9 +210,6 @@ bool clearAllWindowsProperties(const QString &filename)
 	} else {
 		log(QString("Error %1 getting the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 	}
-
-	delete pszFilename;
-	delete pszValue;
 
 	return SUCCEEDED(hr);
 }

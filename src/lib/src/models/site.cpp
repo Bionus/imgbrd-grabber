@@ -153,6 +153,7 @@ void Site::loadConfig()
 	m_tagDatabase->open();
 
 	// Setup throttling
+	m_manager->setIgnoreSslErrors(setting("ignoreSslErrors", false).toBool());
 	m_manager->setMaxConcurrency(setting("download/simultaneous", 10).toInt());
 	m_manager->setInterval(QueryType::List, setting("download/throttle_page", 1).toInt() * 1000);
 	m_manager->setInterval(QueryType::Img, setting("download/throttle_image", 1).toInt() * 1000);

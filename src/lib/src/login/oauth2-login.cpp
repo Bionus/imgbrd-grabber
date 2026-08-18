@@ -442,8 +442,7 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 	// Ensure we got a proper JSON
 	if (jsonDocument.isNull()) {
-		const QString extract = (parseError.offset < 100 ? "" : "...") + result.mid(parseError.offset - 100, 200) + (parseError.offset > result.length() - 100 ? "" : "...");
-		log(QStringLiteral("[%1] Error parsing JSON response: %2 at position %3 - %4").arg(m_site->url(), parseError.errorString()).arg(parseError.offset).arg(extract), Logger::Warning);
+		log(QStringLiteral("[%1] Error parsing OAuth2 JSON response: %2 at position %3").arg(m_site->url(), parseError.errorString()).arg(parseError.offset), Logger::Warning);
 		return false;
 	}
 
@@ -459,7 +458,7 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 		if (!error.isUndefined()) {
 			log(QStringLiteral("[%1] Error during OAuth2 login: %2").arg(m_site->url(), error.toString()), Logger::Warning);
 		} else {
-			log(QStringLiteral("[%1] No OAuth2 token type received: %2").arg(m_site->url(), result), Logger::Warning);
+			log(QStringLiteral("[%1] No OAuth2 token type received").arg(m_site->url()), Logger::Warning);
 		}
 		return false;
 	}
@@ -470,13 +469,13 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 	m_accessToken = jsonObject.value("access_token").toString();
 	m_settings->setValue("auth/accessToken", m_accessToken);
-	log(QStringLiteral("[%1] Successfully received OAuth2 access token '%2'").arg(m_site->url(), m_accessToken), Logger::Debug);
+	log(QStringLiteral("[%1] Successfully received OAuth2 access token").arg(m_site->url()), Logger::Debug);
 
 	if (jsonObject.contains("refresh_token")) {
 		m_refreshToken = jsonObject.value("refresh_token").toString();
 		m_refreshTokenExpiration = extractJwtExpiration(m_refreshToken);
 		m_settings->setValue("auth/refreshToken", m_refreshToken);
-		log(QStringLiteral("[%1] Successfully received OAuth2 refresh token '%2'").arg(m_site->url(), m_refreshToken), Logger::Debug);
+		log(QStringLiteral("[%1] Successfully received OAuth2 refresh token").arg(m_site->url()), Logger::Debug);
 	}
 
 	bool expires = jsonObject.contains("expires");

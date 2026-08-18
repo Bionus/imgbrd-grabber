@@ -4,6 +4,7 @@ src/cmake/android_openssl/
 src/e2e/viewer/result.json
 src/sites/helper.js
 src/sites/*/model.js
+src/sites/*/downloader.js
 src/sites/*/*/cookies.txt
 src/sites/*/*/settings.ini
 src/sites/*/*/tags.txt

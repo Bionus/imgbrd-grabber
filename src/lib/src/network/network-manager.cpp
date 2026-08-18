@@ -52,6 +52,11 @@ void NetworkManager::setCookieJar(QNetworkCookieJar *cookieJar)
 	return m_manager->setCookieJar(cookieJar);
 }
 
+void NetworkManager::setIgnoreSslErrors(bool ignore)
+{
+	m_manager->setIgnoreSslErrors(ignore);
+}
+
 
 NetworkReply *NetworkManager::get(QNetworkRequest request, int type)
 {

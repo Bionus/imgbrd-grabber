@@ -14,7 +14,10 @@ class SqlWorker : public QThread
 
 	public:
 		SqlWorker(QString driver, QString host, QString user, QString password, QString database, bool dryRun = false, QObject *parent = nullptr);
+		~SqlWorker() override;
+
 		bool connect();
+		void close();
 		static QString escape(const QVariant &val);
 
 	public slots:

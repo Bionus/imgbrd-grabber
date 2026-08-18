@@ -10,6 +10,7 @@
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "cli.h"
 
 
 SearchImagesCliCommand::SearchImagesCliCommand(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sites, int page, int perPage, QString filename, QString folder, int max, bool login, bool noDuplicates, bool getBlacklisted, QObject *parent)
@@ -23,13 +24,18 @@ bool SearchImagesCliCommand::validate()
 		return false;
 	}
 
+	if (m_page <= 0) {
+		log("The starting page must be more than 0", Logger::Error);
+		return false;
+	}
+
 	if (m_perPage <= 0) {
 		log("The number of images per page must be more than 0", Logger::Error);
 		return false;
 	}
 
-	if (m_max <= 0) {
-		log("The image limit must be more than 0", Logger::Error);
+	if (m_max <= 0 && m_max != -1) {
+		log("The image limit must be more than 0 or 'all'", Logger::Error);
 		return false;
 	}
 

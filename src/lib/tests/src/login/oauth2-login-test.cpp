@@ -1,8 +1,10 @@
 #include <QNetworkRequest>
 #include <QSettings>
 #include <QSignalSpy>
+#include <QTemporaryFile>
 #include "auth/oauth2-auth.h"
 #include "custom-network-access-manager.h"
+#include "logger.h"
 #include "login/oauth2-login.h"
 #include "mixed-settings.h"
 #include "models/profile.h"
@@ -69,6 +71,36 @@ TEST_CASE("OAuth2Login")
 		testLogin("client_credentials", "header", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
 		testLogin("client_credentials", "body", "tests/resources/oauth2/ok_in_response.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
 		testLogin("password", "body", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
+	}
+
+	SECTION("TokensAreNotLogged")
+	{
+		const QString accessToken = "test_token";
+		const QString refreshToken = "test_refresh_token";
+		QTemporaryFile response;
+		REQUIRE(response.open());
+		response.write(QString(R"({"token_type":"bearer","access_token":"%1","refresh_token":"%2"})")
+			.arg(accessToken, refreshToken)
+			.toUtf8());
+		response.close();
+
+		Logger &logger = Logger::getInstance();
+
+		logger.setLogLevel(Logger::Debug);
+		QSignalSpy logSpy(&logger, SIGNAL(newLog(QString)));
+
+		testLogin("client_credentials", "body", response.fileName(), Login::Result::Success, QString(), site, &accessManager);
+		logger.setLogLevel(Logger::Info);
+
+		QString capturedLogs;
+		for (const QList<QVariant> &entry : logSpy) {
+			capturedLogs += entry.at(0).toString() + '\n';
+		}
+
+		REQUIRE(capturedLogs.contains("Successfully received OAuth2 access token"));
+		REQUIRE(capturedLogs.contains("Successfully received OAuth2 refresh token"));
+		REQUIRE_FALSE(capturedLogs.contains(accessToken));
+		REQUIRE_FALSE(capturedLogs.contains(refreshToken));
 	}
 
 	SECTION("LoginFailure")

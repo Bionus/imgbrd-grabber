@@ -18,6 +18,7 @@ class CustomNetworkAccessManager : public QNetworkAccessManager
 		explicit CustomNetworkAccessManager(QObject *parent = nullptr);
 		QNetworkReply *get(const QNetworkRequest &request);
 		QNetworkReply *post(const QNetworkRequest &request, const QByteArray &data);
+		void setIgnoreSslErrors(bool ignore);
 		void sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors);
 
 		static QQueue<QString> NextFiles;
@@ -25,6 +26,9 @@ class CustomNetworkAccessManager : public QNetworkAccessManager
 	protected:
 		QNetworkReply *makeErrorReply(const QNetworkRequest &request, const QString &code = QString());
 		QNetworkReply *makeTestReply(const QNetworkRequest &request);
+
+	private:
+		bool m_ignoreSslErrors = false;
 };
 
 #endif // CUSTOMNETWORKACCESSMANAGER_H

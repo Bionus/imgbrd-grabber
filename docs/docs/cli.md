@@ -118,7 +118,7 @@ https://img3.gelbooru.com/images/ee/a3/eea3d1e72f2f33521ccf68874b408d38.png
 #### Images per page
 You can use the "-i" or "--perpage" option to choose how many images per page the program should return. The default value is 20.
 
-You can use the "-m" or "--max" option to choose how many images you want to return. By default, the program returns everything it finds on the requested pages.
+You can use the "-m" or "--max" option to choose how many images you want to return. By default, the limit is the "--perpage" value, so the program returns everything it finds on the requested page. Use "--max all" to return everything.
 
 Mixed together, they can allow you to get multiple pages for a single request. For example, "-i 2 -m 10" will return the same result as "-i 10", but will use 5 requests to do so.
 ```
