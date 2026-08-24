@@ -2,6 +2,7 @@
 #include <QColor>
 #include <QRegularExpression>
 #include <QSettings>
+#include "functions.h"
 #include "models/profile.h"
 
 
@@ -45,13 +46,13 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 	if (m_profile != nullptr) {
 		// Favorites format "favorited_tag"
 		rule.format.setForeground(QColor(profile->getSettings()->value("Coloring/Colors/favorites", "#ffaaff").toString()));
-		rule.format.setFont(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
+		rule.format.setFont(qFontFromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString()));
 		highlightingRules.append(rule);
 		m_favoritesRule = &highlightingRules.last();
 
 		// Favorites format "kfl_tag"
 		rule.format.setForeground(QColor(profile->getSettings()->value("Coloring/Colors/keptForLater", "#aaaa00").toString()));
-		rule.format.setFont(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
+		rule.format.setFont(qFontFromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString()));
 		highlightingRules.append(rule);
 		m_kflRule = &highlightingRules.last();
 
