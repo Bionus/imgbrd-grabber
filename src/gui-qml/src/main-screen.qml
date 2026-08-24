@@ -17,13 +17,14 @@ ApplicationWindow {
 
     property string currentPage: "search"
     property var activeSite: backend.sites.filter(site => site.url === gSettings.activeSource.value)[0]
+    property bool exitRequested: false
 
     Material.theme: gSettings.appearance_materialTheme.value
     Material.primary: gSettings.appearance_materialPrimary.value
     Material.accent: gSettings.appearance_materialAccent.value
 
     onClosing: close => {
-        if (mainStackView.handleBack()) {
+        if (!exitRequested && mainStackView.handleBack()) {
             close.accepted = false
         }
     }
@@ -192,6 +193,7 @@ ApplicationWindow {
                     if (dontAskAgain.checked) {
                         gSettings.mobile_confirmExit.setValue(false)
                     }
+                    exitRequested = true
                     Qt.quit()
                 }
 
