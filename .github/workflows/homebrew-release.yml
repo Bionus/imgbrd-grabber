@@ -21,10 +21,15 @@ jobs:
       - name: Tap repository
         run: brew tap ${{ env.BREW_TAP }} "https://Bionus:${{ secrets.HOMEBREW_TOKEN }}@github.com/Bionus/homebrew-imgbrd-grabber.git"
 
+      - name: Trust tap
+        run: brew trust ${{ env.BREW_TAP }}
+
       - name: Check new version
         id: version
         run: |
-          VERSION=$(brew livecheck --cask --quiet --newer-only --full-name --json --tap=${{ env.BREW_TAP }} ${{ env.BREW_CASK }} | jq -r ".[0].version.latest//empty")
+          LIVE_CHECK=$(brew livecheck --cask --newer-only --full-name --json --tap=${{ env.BREW_TAP }} ${{ env.BREW_CASK }})
+          echo "$LIVE_CHECK"
+          VERSION=$(jq -r ".[0].version.latest//empty" <<< "$LIVE_CHECK")
           echo "Version $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
