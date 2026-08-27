@@ -200,9 +200,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>lineClassic</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>FilenameWindow</receiver>
+   <slot>validateClassicFilename(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>380</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>402</x>
+     <y>110</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>helpClassic()</slot>
   <slot>helpJavascript()</slot>
+  <slot>validateClassicFilename(QString)</slot>
  </slots>
 </ui>
