@@ -181,6 +181,11 @@
 	<developer_name>Bionus</developer_name>
 	<update_contact>bio.nus@hotmail.fr</update_contact>
 
+	<branding>
+		<color type="primary" scheme_preference="light">#4051b5</color>
+		<color type="primary" scheme_preference="dark">#303fa1</color>
+	</branding>
+
 	<content_rating type="oars-1.0">
 		<content_attribute id="sex-nudity">intense</content_attribute>
 		<content_attribute id="sex-themes">intense</content_attribute>
