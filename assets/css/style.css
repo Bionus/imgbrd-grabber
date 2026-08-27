@@ -1,0 +1,63 @@
+/* Global */
+
+:root {
+	--md-accent-fg-color: #FF8C00 !important;
+	--md-accent-fg-color--light: #FFAA1E !important;
+	--md-accent-fg-color--dark:  #E16E00 !important;
+}
+
+
+
+/* Header */
+
+.md-tabs .md-icon.external svg {
+	display: inline-block;
+	height: 0.7rem;
+	width: 0.7rem;
+	padding-bottom: 5px;
+}
+
+@media screen and (min-width: 60em) {
+	.md-header__source {
+		width: 10rem;
+	}
+}
+
+.md-tabs__item:last-child {
+	margin-left: auto;
+}
+
+
+
+/* GLightbox */
+
+.gdesc-inner h4.gslide-title {
+	margin-bottom: 0;
+}
+
+
+
+/* Left navigation menu */
+
+@media screen and (min-width:60em) {
+	nav.md-nav[data-md-level="0"] > ul {
+		padding-right: .2rem;
+	}
+
+	nav.md-nav[data-md-level="0"] > ul > li > label,
+	nav.md-nav[data-md-level="1"] > ul > li > label {
+		font-size: 1rem;
+		font-weight: 400 !important;
+		color: var(--md-typeset-color) !important;
+		border-bottom: 1px dotted var(--md-accent-fg-color);
+		padding: 0 0 .1rem 0 !important;
+		margin: 0 0 .2rem 0;
+	}
+
+	nav.md-nav[data-md-level="0"] > ul > li > label {
+		font-size: 1.3rem;
+		font-weight: 300;
+		padding-bottom: .4rem !important;
+		margin: 0;
+	}
+}

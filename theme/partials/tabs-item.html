@@ -1,0 +1,57 @@
+<!-- Render navigation link content -->
+{% macro render_content(nav_item, ref = nav_item) %}
+
+  <!-- Navigation link icon -->
+  {% if nav_item == ref or "navigation.indexes" in features %}
+    {% if nav_item.is_index and nav_item.meta.icon %}
+      {% include ".icons/" ~ nav_item.meta.icon ~ ".svg" %}
+    {% endif %}
+  {% endif %}
+
+  <!-- Navigation link title -->
+  {{ ref.title }}
+  
+  {% if nav_item.url and nav_item.url.startswith("http") %}
+    <span class="md-icon external">
+      {% include ".icons/fontawesome/solid/arrow-up-right-from-square.svg" %}
+    </span>
+  {% endif %}
+{% endmacro %}
+
+<!-- Render navigation item -->
+{% macro render(nav_item, ref = nav_item) %}
+
+  <!-- Determine classes -->
+  {% set class = "md-tabs__item" %}
+  {% if ref.active %}
+    {% set class = class ~ " md-tabs__item--active" %}
+  {% endif %}
+
+  <!-- Navigation item with nested items -->
+  {% if nav_item.children %}
+    {% set first = nav_item.children | first %}
+
+    <!-- Recurse, if the first item has further nested items -->
+    {% if first.children %}
+      {{ render(first, ref) }}
+
+    <!-- Nested navigation item -->
+    {% else %}
+      {% set first_url = first.url[:-10] if first.url and first.url.endswith("index.html") else first.url %}
+      <li class="{{ class }}">
+        <a href="{{ first_url | url }}" class="md-tabs__link" {% if first_url and first_url.startswith("http") %}target="_blank"{% endif %}>
+          {{ render_content(first, ref) }}
+        </a>
+      </li>
+    {% endif %}
+
+  <!-- Navigation item -->
+  {% else %}
+    {% set nav_item_url = nav_item.url[:-10] if nav_item.url and nav_item.url.endswith("index.html") else nav_item.url %}
+    <li class="{{ class }}">
+      <a href="{{ nav_item_url | url }}" class="md-tabs__link" {% if nav_item.url and nav_item.url.startswith("http") %}target="_blank"{% endif %}>
+        {{ render_content(nav_item) }}
+      </a>
+    </li>
+  {% endif %}
+{% endmacro %}
