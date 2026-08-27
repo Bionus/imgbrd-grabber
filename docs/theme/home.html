@@ -43,8 +43,8 @@
         </div>
 
         <div class="image">
-            <a href="{{ 'assets/img/screenshots/search-basic.png' | url }}">
-                <img src="{{ 'assets/img/screenshots/search-basic.png' | url }}" class="glightbox" data-gallery="hero" alt="" />
+            <a href="{{ 'assets/img/screenshots/search-basic.png' | url }}" data-linux-href="{{ 'assets/img/screenshots/search-basic-linux.png' | url }}">
+                <img src="{{ 'assets/img/screenshots/search-basic.png' | url }}" data-linux-src="{{ 'assets/img/screenshots/search-basic-linux.png' | url }}" class="glightbox" data-gallery="hero" alt="" />
             </a>
         </div>
     </div>
@@ -58,6 +58,15 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript">
         $(function() {
+            // Linux-specific images
+            const platform = navigator.userAgentData?.platform || navigator.platform || "";
+            const isLinux = /linux/i.test(platform) && !/android/i.test(navigator.userAgent);
+            if (isLinux) {
+                $("[data-linux-src]").attr("src", function() { return $(this).data("linux-src"); });
+                $("[data-linux-href]").attr("href", function() { return $(this).data("linux-href"); });
+            }
+
+            // Lightbox
             var feature = 1;
             $(".features > .feature").each(function() {
                 $(this).find("a > img").each(function() {

@@ -12,7 +12,7 @@ glightbox: false
 <div class="features" markdown="1">
 <div class="feature" markdown="1">
 
-[![basic search](assets/img/screenshots/search-basic-thumb.png)](assets/img/screenshots/search-basic.png "You can use Grabber's interface to search the same way as you would on the website directly.")
+[![basic search](assets/img/screenshots/search-basic-thumb.png){ data-linux-src="assets/img/screenshots/search-basic-linux.png" }](assets/img/screenshots/search-basic.png "You can use Grabber's interface to search the same way as you would on the website directly."){ data-linux-href="assets/img/screenshots/search-basic-linux.png" }
 [![multi-source search](assets/img/screenshots/search-multiple-thumb.png)](assets/img/screenshots/search-multiple.png "You can search from as many sources as you want at the same time.")
 [![merged search](assets/img/screenshots/search-merged-thumb.png)](assets/img/screenshots/search-merged.png "If you don't want to see the same images on different sources, you can easily merge results to remove all duplicates.")
 
@@ -31,7 +31,7 @@ glightbox: false
 
 <div class="feature" markdown="1">
 
-[![download window](assets/img/screenshots/download-thumb.png)](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download.")
+[![download window](assets/img/screenshots/download-thumb.png){ data-linux-src="assets/img/screenshots/download-linux.png" }](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download."){ data-linux-href="assets/img/screenshots/download-linux.png" }
 
 ### Download
 
@@ -43,7 +43,7 @@ glightbox: false
 
 <div class="feature" markdown="1">
 
-[![sources window](assets/img/screenshots/sources-thumb.png)](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL.")
+[![sources window](assets/img/screenshots/sources-thumb.png){ data-linux-src="assets/img/screenshots/sources-linux.png" }](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL."){ data-linux-href="assets/img/screenshots/sources-linux.png" }
 
 ### Customize
 
@@ -56,7 +56,7 @@ glightbox: false
 
 <div class="feature" markdown="1">
 
-[![filename window](assets/img/screenshots/filename-thumb.png)](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename.")
+[![filename window](assets/img/screenshots/filename-thumb.png){ data-linux-src="assets/img/screenshots/filename-linux.png" }](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename."){ data-linux-href="assets/img/screenshots/filename-linux.png" }
 
 ### Organize
 
