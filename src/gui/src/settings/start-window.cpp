@@ -105,6 +105,7 @@ void StartWindow::save()
 		emit languageChanged(lang, settings->value("useSystemLocale", true).toBool());
 	}
 
+	settings->setValue("sites", QStringList { ui->comboSource->currentText() });
 	emit sourceChanged(ui->comboSource->currentText());
 
 	settings->sync();
@@ -116,8 +117,10 @@ void StartWindow::save()
  */
 void StartWindow::openOptions()
 {
-	auto *ow = new OptionsWindow(m_profile, parentWidget());
-	ow->show();
+	this->hide();
+
+	auto *ow = new OptionsWindow(m_profile, this);
+	ow->exec();
 
 	this->close();
 }

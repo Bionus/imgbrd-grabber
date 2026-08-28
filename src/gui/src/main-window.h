@@ -94,7 +94,6 @@ class MainWindow : public QMainWindow
 		void trayClose();
 		// Others
 		void closeEvent(QCloseEvent *event) override;
-		void onFirstLoad();
 		void init(const QStringList &args, const QMap<QString, QString> &params);
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
 		void setSource(const QString &site);

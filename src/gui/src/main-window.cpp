@@ -25,7 +25,6 @@
 #include <ui_main-window.h>
 #include "about-window.h"
 #include "analytics.h"
-#include "danbooru-downloader-importer.h"
 #include "docks/favorites-dock.h"
 #include "docks/keep-for-later-dock.h"
 #include "docks/settings-dock.h"
@@ -45,7 +44,6 @@
 #include "monitoring/monitoring-center.h"
 #include "network/network-reply.h"
 #include "settings/options-window.h"
-#include "settings/start-window.h"
 #include "tabs/downloads-tab.h"
 #include "tabs/favorites-tab.h"
 #include "tabs/gallery-tab.h"
@@ -241,12 +239,6 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(tagsDock, &TagsDock::openInNewTab, this, &MainWindow::loadTagTab);
 	connect(this, &MainWindow::tabChanged, tagsDock, &TagsDock::tabChanged);
 	ui->dockTagsLayout->addWidget(tagsDock);
-
-	// Action on first load
-	if (m_settings->value("firstload", true).toBool()) {
-		this->onFirstLoad();
-		m_settings->setValue("firstload", false);
-	}
 
 	// Crash restoration
 	m_restore = m_settings->value("start", "restore").toString() == "restore";
@@ -458,31 +450,6 @@ void MainWindow::focusSearch()
 	if (tab != nullptr) {
 		tab->focusSearch();
 	}
-}
-
-void MainWindow::onFirstLoad()
-{
-	// Save all default settings
-	auto *ow = new OptionsWindow(m_profile, m_themeLoader, this);
-	ow->save();
-	ow->deleteLater();
-
-	// Detect and Danbooru Downloader settings
-	DanbooruDownloaderImporter ddImporter;
-	if (ddImporter.isInstalled()) {
-		int reponse = QMessageBox::question(this, "", tr("The Mozilla Firefox addon \"Danbooru Downloader\" has been detected on your system. Do you want to load its preferences?"), QMessageBox::Yes | QMessageBox::No);
-		if (reponse == QMessageBox::Yes) {
-			ddImporter.import(m_settings);
-			return;
-		}
-	}
-
-	// Open startup window
-	auto *swin = new StartWindow(m_profile, this);
-	connect(swin, &StartWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
-	connect(swin, &StartWindow::settingsChanged, m_settingsDock, &SettingsDock::reset);
-	connect(swin, &StartWindow::sourceChanged, this, &MainWindow::setSource);
-	swin->show();
 }
 
 void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTab *source, bool preload)

@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QEventLoop>
 #include <QMap>
+#include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -37,11 +38,15 @@
 #include <QStringList>
 #include "analytics.h"
 #include "cli.h"
+#include "danbooru-downloader-importer.h"
 #include "functions.h"
 #include "logger.h"
 #include "main-window.h"
 #include "models/page-api.h"
 #include "models/profile.h"
+#include "settings/options-window.h"
+#include "settings/start-window.h"
+#include "theme-loader.h"
 #include "updater/update-dialog.h"
 #if !defined(USE_CLI) && defined(USE_BREAKPAD)
 	#include <QFileInfo>
@@ -184,6 +189,32 @@ int main(int argc, char *argv[])
 		if (shouldQuit) {
 			return 0;
 		}
+	}
+
+	// Action on first load
+	if (settings->value("firstload", true).toBool()) {
+		// Save all default settings
+		ThemeLoader themeLoader(savePath("themes/", true, false), settings);
+		OptionsWindow optionsWindow(&profile, &themeLoader);
+		optionsWindow.save();
+
+		// Detect and Danbooru Downloader settings
+		DanbooruDownloaderImporter ddImporter;
+		bool importDanbooruDownloader = false;
+		if (ddImporter.isInstalled()) {
+			const int response = QMessageBox::question(nullptr, "", QObject::tr("The Mozilla Firefox addon \"Danbooru Downloader\" has been detected on your system. Do you want to load its preferences?"), QMessageBox::Yes | QMessageBox::No);
+			importDanbooruDownloader = response == QMessageBox::Yes;
+		}
+
+		if (importDanbooruDownloader) {
+			ddImporter.import(settings);
+		} else {
+			// Open startup window
+			StartWindow startWindow(&profile);
+			startWindow.exec();
+		}
+
+		settings->setValue("firstload", false);
 	}
 
 	// Run the main window
