@@ -2,6 +2,7 @@
 #include "logger.h"
 #include <QDir>
 #include <QFileInfo>
+#include <QRegularExpression>
 #include <QSaveFile>
 #include <QString>
 #include <QStringList>
@@ -124,4 +125,72 @@ bool writeFile(const QString &filePath, const QByteArray &data)
 	file.close();
 
 	return true;
+}
+
+QString diagnoseDirectoryCreationError(const QString &dir)
+{
+	const QString cleaned = QDir::cleanPath(dir);
+
+	// Walk up the tree to find the deepest existing ancestor
+	QString existing = cleaned;
+	QStringList missing;
+	while (!existing.isEmpty() && !QFileInfo::exists(existing)) {
+		const QFileInfo info(existing);
+		const QString parent = info.path();
+		if (parent == existing) {
+			break;
+		}
+		missing.prepend(info.fileName());
+		existing = parent;
+	}
+
+	const QFileInfo existingInfo(existing);
+
+	// No part of the path exists at all (invalid drive, unreachable network share...)
+	if (!existingInfo.exists()) {
+		return QStringLiteral("no part of the path exists (invalid drive or unreachable location)");
+	}
+
+	// A file with the same name as one of the path components blocks the directory creation
+	if (!existingInfo.isDir()) {
+		return QStringLiteral("`%1` already exists and is a file, not a folder").arg(existing);
+	}
+
+	// The deepest existing ancestor is not writable
+	if (!missing.isEmpty() && !existingInfo.isWritable()) {
+		return QStringLiteral("the folder `%1` is not writable").arg(existing);
+	}
+
+	// Check for folder names that are not valid on Windows
+	#ifdef Q_OS_WIN
+		static const QStringList reserved { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+		static const QRegularExpression forbiddenChars(QStringLiteral("[<>:\"|?*\\\\]"));
+		for (const QString &part : missing) {
+			if (part.endsWith('.') || part != part.trimmed() || part.contains(forbiddenChars) || reserved.contains(part.section('.', 0, 0), Qt::CaseInsensitive)) {
+				return QStringLiteral("`%1` is not a valid folder name on Windows").arg(part);
+			}
+		}
+	#endif
+
+	return QString();
+}
+
+bool ensureDirectoryExists(const QString &dir)
+{
+	if (dir.isEmpty()) {
+		log(QStringLiteral("Impossible to create the destination folder: empty path."), Logger::Error);
+		return false;
+	}
+
+	if (QDir(dir).exists() || QDir().mkpath(dir)) {
+		return true;
+	}
+
+	const QString reason = diagnoseDirectoryCreationError(dir);
+	if (!reason.isEmpty()) {
+		log(QStringLiteral("Impossible to create the destination folder: %1 (%2).").arg(dir, reason), Logger::Error);
+	} else {
+		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+	}
+	return false;
 }
