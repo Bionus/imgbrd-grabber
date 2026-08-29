@@ -1,0 +1,9 @@
+0,general
+1,meta
+2,meta
+3,medium
+4,copyright
+5,general
+6,species
+7,artist
+8,character
