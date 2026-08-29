@@ -166,8 +166,8 @@ void FavoritesTab::updateFavorites()
 
 			QPixmap img = fav.getImage();
 			auto *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
-				image->scale(img, QSize(imageSize, imageSize) / devicePixelRatio());
-				image->setFixedSize(QSize(dim, dim) / devicePixelRatio());
+				image->scale(img, QSize(imageSize, imageSize));
+				image->setFixedSize(QSize(dim, dim) / image->devicePixelRatio());
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
