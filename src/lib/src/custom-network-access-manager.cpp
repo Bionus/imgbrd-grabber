@@ -30,6 +30,10 @@ QNetworkReply *CustomNetworkAccessManager::makeErrorReply(const QNetworkRequest 
 	if (code == QLatin1String("404")) {
 		reply->setHttpStatusCode(404, "Not Found");
 		reply->setNetworkError(QNetworkReply::ContentNotFoundError, QStringLiteral("Not Found"));
+	} else if (code == QLatin1String("429") || code == QLatin1String("503") || code == QLatin1String("509")) {
+		const int statusCode = code.toInt();
+		reply->setHttpStatusCode(statusCode, "Retryable error");
+		reply->setNetworkError(QNetworkReply::UnknownNetworkError, QStringLiteral("Retryable error"));
 	} else if (code == QLatin1String("cookie")) {
 		cookieJar()->insertCookie(QNetworkCookie("test_cookie", "test_value"));
 		reply->setHttpStatusCode(200, "OK");
@@ -60,7 +64,7 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 	}
 
 	// Error testing
-	if (path == QLatin1String("404") || path == QLatin1String("500") || path == QLatin1String("cookie") || path == QLatin1String("redirect")) {
+	if (path == QLatin1String("404") || path == QLatin1String("429") || path == QLatin1String("500") || path == QLatin1String("503") || path == QLatin1String("509") || path == QLatin1String("cookie") || path == QLatin1String("redirect")) {
 		return makeErrorReply(request, path);
 	}
 
