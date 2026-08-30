@@ -63,7 +63,32 @@ ScrollView {
             onColumnsChanged: resultsRefresher.restart()
 
             delegate: Item {
+                readonly property real safeRatio: img.status === Image.Ready
+                    && img.implicitWidth > 0
+                    && img.implicitHeight > 0
+                        ? img.implicitHeight / img.implicitWidth
+                        : 1
+
                 height: img.height + root.thumbnailSpacing
+
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: parent.width - root.thumbnailSpacing
+                    height: img.height
+                    radius: root.thumbnailRadius
+                    color: "transparent"
+                    border.color: Material.hintTextColor
+                    border.width: 1
+                    visible: img.status === Image.Error
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "!"
+                        color: Material.secondaryTextColor
+                        font.pixelSize: Math.max(18, parent.width * 0.18)
+                        font.bold: true
+                    }
+                }
 
                 Image {
                     id: img
@@ -72,8 +97,9 @@ ScrollView {
                     anchors.centerIn: parent
                     width: parent.width - root.thumbnailSpacing
                     height: root.thumbnailHeightToWidthRatio < 0.1
-                        ? img.width * (img.implicitHeight / img.implicitWidth)
+                        ? img.width * parent.safeRatio
                         : img.width * root.thumbnailHeightToWidthRatio
+                    visible: status !== Image.Error
 
                     onHeightChanged: resultsRefresher.restart()
 

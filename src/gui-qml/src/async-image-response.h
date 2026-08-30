@@ -13,6 +13,7 @@ class AsyncImageResponse : public QQuickImageResponse
 	public:
 		explicit AsyncImageResponse(QNetworkReply *reply, const QRect &rect);
 		QQuickTextureFactory *textureFactory() const override;
+		QString errorString() const override;
 
 	protected slots:
 		void replyFinished();
@@ -21,6 +22,7 @@ class AsyncImageResponse : public QQuickImageResponse
 		QNetworkReply *m_reply;
 		QRect m_rect;
 		QQuickTextureFactory *m_texture = nullptr;
+		QString m_error;
 };
 
 #endif // ASYNC_IMAGE_RESPONSE_H
