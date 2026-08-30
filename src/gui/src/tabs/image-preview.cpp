@@ -27,6 +27,16 @@
 #include "ui/QBouton.h"
 
 
+namespace
+{
+	void appendUniqueUrl(QList<QUrl> &urls, const QUrl &url)
+	{
+		if (url.isValid() && !url.isEmpty() && !urls.contains(url)) {
+			urls.append(url);
+		}
+	}
+}
+
 QMovie *ImagePreview::m_loadingMovie = nullptr;
 
 ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Profile *profile, DownloadQueue *downloadQueue, MainWindow *mainWindow, QObject *parent)
@@ -38,6 +48,14 @@ ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Prof
 		m_thumbnailUrl = image->mediaForSize(QSize(imageSize, imageSize), true).url;
 	} else {
 		m_thumbnailUrl = image->url(Image::Size::Thumbnail);
+	}
+
+	appendUniqueUrl(m_thumbnailFallbackUrls, m_thumbnailUrl);
+	appendUniqueUrl(m_thumbnailFallbackUrls, image->url(Image::Size::Thumbnail));
+	appendUniqueUrl(m_thumbnailFallbackUrls, image->url(Image::Size::Sample));
+	appendUniqueUrl(m_thumbnailFallbackUrls, image->url(Image::Size::Full));
+	if (!m_thumbnailFallbackUrls.isEmpty()) {
+		m_thumbnailUrl = m_thumbnailFallbackUrls.first();
 	}
 
 	m_name = image->name();
@@ -53,7 +71,9 @@ ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Prof
 
 ImagePreview::~ImagePreview()
 {
-	m_reply->deleteLater();
+	if (m_reply != nullptr) {
+		m_reply->deleteLater();
+	}
 	m_reply = nullptr;
 
 	// We don't own the button, but it will likely be deleted soon as well
@@ -102,7 +122,7 @@ void ImagePreview::load()
 void ImagePreview::abort()
 {
 	m_aborted = true;
-	if (m_reply->isRunning()) {
+	if (m_reply != nullptr && m_reply->isRunning()) {
 		m_reply->abort();
 	}
 }
@@ -121,6 +141,20 @@ void ImagePreview::setDownloadProgress(qint64 v1, qint64 v2)
 	if (m_bouton != nullptr) {
 		m_bouton->setProgress(v1, v2);
 	}
+}
+
+bool ImagePreview::tryNextThumbnailUrl(const QString &reason)
+{
+	while (++m_thumbnailFallbackIndex < m_thumbnailFallbackUrls.count()) {
+		m_thumbnailUrl = m_thumbnailFallbackUrls.at(m_thumbnailFallbackIndex);
+		m_triedJpegFallback = false;
+
+		log(QStringLiteral("Thumbnail failed (%1), trying fallback `%2`.").arg(reason, m_thumbnailUrl.toString()), Logger::Warning);
+		load();
+		return true;
+	}
+
+	return false;
 }
 
 
@@ -147,10 +181,15 @@ void ImagePreview::finishedLoadingPreview()
 	if (m_reply->error() != NetworkReply::NetworkError::NoError) {
 		// Retry with JPG in case the original thumbnail had a weird extension
 		const QString ext = getExtension(m_reply->url());
-		if (!ext.isEmpty() && ext != "jpg") {
+		if (!m_triedJpegFallback && !ext.isEmpty() && ext != "jpg") {
+			m_triedJpegFallback = true;
 			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(m_reply->errorString()), Logger::Warning);
 			m_thumbnailUrl = setExtension(m_reply->url(), "jpg");
 			load();
+			return;
+		}
+
+		if (tryNextThumbnailUrl(m_reply->errorString())) {
 			return;
 		}
 
@@ -163,6 +202,10 @@ void ImagePreview::finishedLoadingPreview()
 	QPixmap thumbnail;
 	thumbnail.loadFromData(m_reply->readAll());
 	if (thumbnail.isNull()) {
+		if (tryNextThumbnailUrl(QStringLiteral("empty image data"))) {
+			return;
+		}
+
 		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(m_reply->url().toString()), Logger::Error);
 		finishedLoading();
 		return;
