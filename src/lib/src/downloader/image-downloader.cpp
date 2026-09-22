@@ -1,6 +1,7 @@
 #include "downloader/image-downloader.h"
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QImageReader>
 #include <QSettings>
 #include <QSize>
@@ -82,13 +83,33 @@ void ImageDownloader::save()
 	const int filenameTagLevel = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const bool filenameNeedExactTags = filenameTagLevel == 2 || (filenameTagLevel == 1 && m_image->hasUnknownTag());
 	const QStringList paths = m_image->paths(m_filename, m_path, m_count);
-	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty() ? paths.first() : QString();
+	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty()
+		? paths.first()
+		: QDir(m_path).filePath(QStringLiteral("."));
 
-	// We don't need to load the image details of files already in the MD5 list and that should be skipped
+	// Skip details for MD5 hits that will not be downloaded from the network.
+	// "ignore" never needs details. "copy"/"move"/"link" only skip details when
+	// the destination path is already known, or the duplicate is already in the
+	// target directory (re-downloading files you already have).
 	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
-	if (md5action == "ignore" && !m_force) {
-		loadedSave(Image::LoadTagsResult::Ok);
-		return;
+	if (!m_force && md5action != QLatin1String("save")) {
+		if (md5action == QLatin1String("ignore") || !filenameNeedExactTags) {
+			loadedSave(Image::LoadTagsResult::Ok);
+			return;
+		}
+
+		const QDir targetDir(m_path);
+		QStringList existingInTarget;
+		for (const QString &existing : m_profile->md5Exists(m_image->md5())) {
+			if (QFile::exists(existing) && QFileInfo(existing).dir() == targetDir) {
+				existingInTarget.append(existing);
+			}
+		}
+		if (!existingInTarget.isEmpty()) {
+			m_paths = existingInTarget;
+			loadedSave(Image::LoadTagsResult::Ok);
+			return;
+		}
 	}
 
 	// Always load details if the API doesn't provide the file URL in the listing page
