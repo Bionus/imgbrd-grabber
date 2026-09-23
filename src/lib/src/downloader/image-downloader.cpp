@@ -20,6 +20,28 @@
 #include "network/network-reply.h"
 
 
+static bool fileIsInsideDirectory(const QString &filePath, const QString &directory)
+{
+	if (directory.isEmpty() || filePath.isEmpty()) {
+		return false;
+	}
+
+	const QString root = QDir::cleanPath(QDir(directory).absolutePath());
+	const QString fileDir = QDir::cleanPath(QFileInfo(filePath).absolutePath());
+
+	#ifdef Q_OS_WIN
+		const Qt::CaseSensitivity cs = Qt::CaseInsensitive;
+	#else
+		const Qt::CaseSensitivity cs = Qt::CaseSensitive;
+	#endif
+
+	if (fileDir.compare(root, cs) == 0) {
+		return true;
+	}
+	return fileDir.startsWith(root + QLatin1Char('/'), cs);
+}
+
+
 static void addMd5(Profile *profile, const QString &path)
 {
 	QCryptographicHash hash(QCryptographicHash::Md5);
@@ -87,10 +109,30 @@ void ImageDownloader::save()
 		? paths.first()
 		: QDir(m_path).filePath(QStringLiteral("."));
 
+	// A known destination that is already on disk does not need details or a download.
+	// Commands are not executed for files that already exist. Still load details when a
+	// blacklist needs tags that the listing did not provide, so blacklisted files stay ignored.
+	const bool blacklistNeedTagsEarly = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
+	if (!m_force && !blacklistNeedTagsEarly && !filenameNeedExactTags && !paths.isEmpty()) {
+		bool allExists = true;
+		for (const QString &path : paths) {
+			if (!QFile::exists(path)) {
+				allExists = false;
+				break;
+			}
+		}
+		if (allExists) {
+			loadedSave(Image::LoadTagsResult::Ok);
+			return;
+		}
+	}
+
 	// Skip details for MD5 hits that will not be downloaded from the network.
-	// "ignore" never needs details. "copy"/"move"/"link" only skip details when
-	// the destination path is already known, or the duplicate is already in the
-	// target directory (re-downloading files you already have).
+	// "ignore" never needs details. "copy"/"move"/"link" skip details when the
+	// destination path is already known, or the duplicate already lives somewhere
+	// under the target directory. Batch downloads usually store files in tag
+	// subfolders (%artist%/%md5%.%ext%), so an exact directory comparison is not
+	// enough and was still fetching details for every already-owned file.
 	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
 	if (!m_force && md5action != QLatin1String("save")) {
 		if (md5action == QLatin1String("ignore") || !filenameNeedExactTags) {
@@ -98,10 +140,9 @@ void ImageDownloader::save()
 			return;
 		}
 
-		const QDir targetDir(m_path);
 		QStringList existingInTarget;
 		for (const QString &existing : m_profile->md5Exists(m_image->md5())) {
-			if (QFile::exists(existing) && QFileInfo(existing).dir() == targetDir) {
+			if (QFile::exists(existing) && fileIsInsideDirectory(existing, m_path)) {
 				existingInTarget.append(existing);
 			}
 		}

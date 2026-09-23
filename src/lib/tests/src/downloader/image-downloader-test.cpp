@@ -414,6 +414,73 @@ TEST_CASE("ImageDownloader")
 		REQUIRE(img->token("copyright", QString()) == QString());
 	}
 
+	SECTION("Skip details for copy in a tag subdirectory")
+	{
+		auto img = createImage(profile, site);
+		const QString sourceDir = QStringLiteral("tests/resources/tmp/artist");
+		QDir().mkpath(sourceDir);
+		const QString source = QDir::toNativeSeparators(sourceDir + QStringLiteral("/already.png"));
+		QFile::remove(source);
+		REQUIRE(QFile(QStringLiteral("tests/resources/image_1x1.png")).copy(source));
+
+		ImageDownloader downloader(profile, img, "%copyright%/%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ source, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "copy");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "copy");
+		profile->getSettings()->setValue("Exec/SQL/image", "SELECT %copyright%");
+		profile->addMd5(img->md5(), source);
+
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+		REQUIRE(img->token("copyright", QString()) == QString());
+
+		profile->removeMd5(img->md5(), source);
+		QFile::remove(source);
+		QDir().rmdir(sourceDir);
+	}
+
+	SECTION("Skip details when the known destination already exists")
+	{
+		auto img = createImage(profile, site);
+		const QString dest = QDir::toNativeSeparators("tests/resources/tmp/something.jpg");
+		QFile::remove(dest);
+		REQUIRE(QFile(QStringLiteral("tests/resources/image_1x1.png")).copy(dest));
+
+		ImageDownloader downloader(profile, img, "something.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "save");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "save");
+		profile->getSettings()->setValue("Exec/SQL/image", "SELECT %copyright%");
+
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+		REQUIRE(img->token("copyright", QString()) == QString());
+
+		QFile::remove(dest);
+	}
+
+	SECTION("Load details when copying into another directory with filename tags")
+	{
+		auto img = createImage(profile, site);
+		const QString dest = QDir::toNativeSeparators("tests/resources/tmp/to heart 2.jpg");
+		QFile::remove(dest);
+
+		ImageDownloader downloader(profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ dest, Image::Size::Full, Image::SaveResult::Copied });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "copy");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "save");
+		profile->addMd5(img->md5(), "tests/resources/image_1x1.png");
+
+		assertDownload(profile, img, &downloader, expected, true);
+	}
+
 	SECTION("Fix extension from header")
 	{
 		profile->getSettings()->setValue("Save/headerDetection", true);
