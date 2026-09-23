@@ -42,6 +42,30 @@ static bool fileIsInsideDirectory(const QString &filePath, const QString &direct
 }
 
 
+static int metadataNeedExactTags(QSettings *settings)
+{
+	int need = 0;
+
+	for (const auto &pair : getMetadataExiftool(settings)) {
+		need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
+		if (need == 2) {
+			return need;
+		}
+	}
+
+	#ifdef WIN_FILE_PROPS
+		for (const auto &pair : getMetadataPropsys(settings)) {
+			need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
+			if (need == 2) {
+				return need;
+			}
+		}
+	#endif
+
+	return need;
+}
+
+
 static void addMd5(Profile *profile, const QString &path)
 {
 	QCryptographicHash hash(QCryptographicHash::Md5);
@@ -113,6 +137,8 @@ void ImageDownloader::save()
 	// Commands are not executed for files that already exist. Still load details when a
 	// blacklist needs tags that the listing did not provide, so blacklisted files stay ignored.
 	const bool blacklistNeedTagsEarly = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
+	const int metadataTagLevel = metadataNeedExactTags(m_profile->getSettings());
+	const bool metadataNeedExactTags = metadataTagLevel == 2 || (metadataTagLevel == 1 && m_image->hasUnknownTag());
 	if (!m_force && !blacklistNeedTagsEarly && !filenameNeedExactTags && !paths.isEmpty()) {
 		bool allExists = true;
 		for (const QString &path : paths) {
@@ -128,28 +154,31 @@ void ImageDownloader::save()
 	}
 
 	// Skip details for MD5 hits that will not be downloaded from the network.
-	// "ignore" never needs details. "copy"/"move"/"link" skip details when the
-	// destination path is already known, or the duplicate already lives somewhere
-	// under the target directory. Batch downloads usually store files in tag
-	// subfolders (%artist%/%md5%.%ext%), so an exact directory comparison is not
-	// enough and was still fetching details for every already-owned file.
+	// "ignore" never writes a file. "copy"/"move"/"link" also skip when the
+	// destination name is already known and metadata does not need tags.
+	// A new name (%website%-%id%_%md5%.%ext% for another post id) is still
+	// created, but details are loaded first when the sidecar uses tags such
+	// as %artist%. Batch re-downloads of a path that already exists do not.
 	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
 	if (!m_force && md5action != QLatin1String("save")) {
-		if (md5action == QLatin1String("ignore") || !filenameNeedExactTags) {
+		const bool destinationKnown = !filenameNeedExactTags;
+		if (md5action == QLatin1String("ignore") || (destinationKnown && !metadataNeedExactTags && !blacklistNeedTagsEarly)) {
 			loadedSave(Image::LoadTagsResult::Ok);
 			return;
 		}
 
-		QStringList existingInTarget;
-		for (const QString &existing : m_profile->md5Exists(m_image->md5())) {
-			if (QFile::exists(existing) && fileIsInsideDirectory(existing, m_path)) {
-				existingInTarget.append(existing);
+		if (!destinationKnown) {
+			QStringList existingInTarget;
+			for (const QString &existing : m_profile->md5Exists(m_image->md5())) {
+				if (QFile::exists(existing) && fileIsInsideDirectory(existing, m_path)) {
+					existingInTarget.append(existing);
+				}
 			}
-		}
-		if (!existingInTarget.isEmpty()) {
-			m_paths = existingInTarget;
-			loadedSave(Image::LoadTagsResult::Ok);
-			return;
+			if (!existingInTarget.isEmpty()) {
+				m_paths = existingInTarget;
+				loadedSave(Image::LoadTagsResult::Ok);
+				return;
+			}
 		}
 	}
 
@@ -210,23 +239,8 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 		}
 	}
 
-	// Check Exiftool metadata
-	for (const auto &pair : getMetadataExiftool(settings)) {
-		need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
-		if (need == 2) {
-			return need;
-		}
-	}
-
-	#ifdef WIN_FILE_PROPS
-		// Check Windows Property System
-		for (const auto &pair : getMetadataPropsys(settings)) {
-			need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
-			if (need == 2) {
-				return need;
-			}
-		}
-	#endif
+	// Check Exiftool metadata and Windows Property System
+	need = qMax(need, metadataNeedExactTags(settings));
 
 	return need;
 }

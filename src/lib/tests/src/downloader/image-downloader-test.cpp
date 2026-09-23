@@ -481,6 +481,65 @@ TEST_CASE("ImageDownloader")
 		assertDownload(profile, img, &downloader, expected, true);
 	}
 
+	SECTION("Load details when copying a new id for metadata")
+	{
+		auto img = createImage(profile, site);
+		const QString oldName = QDir::toNativeSeparators("tests/resources/tmp/1_1bc29b36f623ba82aaf6724fd3b16718.jpg");
+		const QString dest = QDir::toNativeSeparators("tests/resources/tmp/7331_1bc29b36f623ba82aaf6724fd3b16718.jpg");
+		QFile::remove(oldName);
+		QFile::remove(dest);
+		REQUIRE(QFile(QStringLiteral("tests/resources/image_1x1.png")).copy(oldName));
+
+		ImageDownloader downloader(profile, img, "%id%_%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ dest, Image::Size::Full, Image::SaveResult::Copied });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "copy");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "copy");
+		profile->getSettings()->beginWriteArray("Save/MetadataExiftool");
+		profile->getSettings()->setArrayIndex(0);
+		profile->getSettings()->setValue("key", "XMP:Creator");
+		profile->getSettings()->setValue("value", "%copyright%");
+		profile->getSettings()->endArray();
+		profile->addMd5(img->md5(), oldName);
+
+		assertDownload(profile, img, &downloader, expected, true);
+		REQUIRE(img->token("copyright", QString()) == QString("to heart 2"));
+
+		profile->removeMd5(img->md5(), oldName);
+		QFile::remove(oldName);
+		QFile::remove(dest + ".xmp");
+	}
+
+	SECTION("Skip details when the same id filename already exists")
+	{
+		auto img = createImage(profile, site);
+		const QString dest = QDir::toNativeSeparators("tests/resources/tmp/7331_1bc29b36f623ba82aaf6724fd3b16718.jpg");
+		QFile::remove(dest);
+		REQUIRE(QFile(QStringLiteral("tests/resources/image_1x1.png")).copy(dest));
+
+		ImageDownloader downloader(profile, img, "%id%_%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk });
+
+		profile->getSettings()->setValue("Save/md5Duplicates", "copy");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "copy");
+		profile->getSettings()->beginWriteArray("Save/MetadataExiftool");
+		profile->getSettings()->setArrayIndex(0);
+		profile->getSettings()->setValue("key", "XMP:Creator");
+		profile->getSettings()->setValue("value", "%copyright%");
+		profile->getSettings()->endArray();
+		profile->addMd5(img->md5(), dest);
+
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+		REQUIRE(img->token("copyright", QString()) == QString());
+
+		profile->removeMd5(img->md5(), dest);
+		QFile::remove(dest);
+	}
+
 	SECTION("Fix extension from header")
 	{
 		profile->getSettings()->setValue("Save/headerDetection", true);
