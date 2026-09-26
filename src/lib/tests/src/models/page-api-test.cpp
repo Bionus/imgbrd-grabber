@@ -1,5 +1,7 @@
 #include <QScopedPointer>
 #include <QSettings>
+#include <QSignalSpy>
+#include "custom-network-access-manager.h"
 #include "models/page.h"
 #include "models/page-api.h"
 #include "models/profile.h"
@@ -22,6 +24,8 @@ TEST_CASE("PageApi")
 	QSettings settings(path, QSettings::IniFormat);
 	settings.setValue("auth/pseudo", "user");
 	settings.setValue("auth/apiKey", "test-api-key");
+	settings.setValue("download/throttle_retry", 0);
+	settings.setValue("download/throttle_max_retries", 2);
 	settings.sync();
 
 	const QScopedPointer<Profile> pProfile(makeProfile());
@@ -64,5 +68,27 @@ TEST_CASE("PageApi")
 		pageApi.setLastPage(prevPage.pageInformation());
 
 		REQUIRE(pageApi.url().toString() == QString("https://danbooru.donmai.us/posts.xml?limit=25&page=b0&tags=test tag&login=user&api_key=test-api-key"));
+	}
+
+	SECTION("RateLimitRetriesAreBounded")
+	{
+		Site *site = sites.first();
+		const QString statusCode = GENERATE(QString("429"), QString("503"), QString("509"));
+		CustomNetworkAccessManager::NextFiles.enqueue(statusCode);
+		CustomNetworkAccessManager::NextFiles.enqueue(statusCode);
+		CustomNetworkAccessManager::NextFiles.enqueue(statusCode);
+
+		QStringList tags = QStringList() << "test";
+		Page page(profile, site, sites, tags);
+		PageApi pageApi(&page, profile, site, site->getApis().first(), tags);
+		QSignalSpy spy(&pageApi, SIGNAL(finishedLoading(PageApi*, PageApi::LoadResult)));
+
+		pageApi.load();
+		REQUIRE(spy.wait());
+
+		const QList<QVariant> arguments = spy.takeFirst();
+		REQUIRE(arguments.at(1).value<PageApi::LoadResult>() == PageApi::LoadResult::Error);
+		REQUIRE(pageApi.errors().contains("Rate limit reached after 2 retries (HTTP " + statusCode + ")."));
+		REQUIRE(CustomNetworkAccessManager::NextFiles.isEmpty());
 	}
 }
