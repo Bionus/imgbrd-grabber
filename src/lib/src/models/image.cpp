@@ -106,7 +106,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 	// Other details
 	m_isGallery = details.contains("type") && details["type"] == "gallery";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
-	m_name = details.contains("name") ? details["name"] : "";
+	m_name = details.contains("name") ? decodeHtmlEntities(details["name"]) : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList { details["source"] } : QStringList());
@@ -417,7 +417,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	}
 
 	// Basic fields
-	m_name = json["name"].toString();
+	m_name = decodeHtmlEntities(json["name"].toString());
 	m_id = json["id"].toString().toULongLong();
 	m_md5 = json["md5"].toString();
 

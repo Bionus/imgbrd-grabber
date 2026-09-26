@@ -110,6 +110,21 @@ TEST_CASE("Image")
 		REQUIRE(clone.parentUrl() == img->parentUrl());
 	}
 
+	SECTION("HTML-encoded name")
+	{
+		details["name"] = "Tom&#x20;&amp;&#x20;Jerry";
+		img = ImageFactory::build(site, details, profile);
+		REQUIRE(img->name() == QString("Tom & Jerry"));
+
+		QJsonObject json;
+		img->write(json);
+		json["name"] = "Rock&#x20;&amp;&#x20;Roll";
+
+		Image restored(profile);
+		REQUIRE(restored.read(json, profile->getSites()));
+		REQUIRE(restored.name() == QString("Rock & Roll"));
+	}
+
 	SECTION("HasTag")
 	{
 		REQUIRE(img->hasTag("tag1"));
