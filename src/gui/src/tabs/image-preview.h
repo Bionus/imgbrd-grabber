@@ -2,6 +2,7 @@
 #define IMAGE_PREVIEW_H
 
 #include <functional>
+#include <QList>
 #include <QObject>
 #include <QPixmap>
 #include <QPointer>
@@ -38,6 +39,7 @@ class ImagePreview : public QObject
 	protected:
 		void showLoadingMessage();
 		void finishedLoading();
+		bool tryNextThumbnailUrl(const QString &reason);
 
 	protected slots:
 		void finishedLoadingPreview();
@@ -65,6 +67,9 @@ class ImagePreview : public QObject
 		bool m_checked = false;
 
 		QUrl m_thumbnailUrl;
+		QList<QUrl> m_thumbnailFallbackUrls;
+		int m_thumbnailFallbackIndex = 0;
+		bool m_triedJpegFallback = false;
 		QString m_name;
 		QString m_counter;
 		QPointer<QBouton> m_bouton = nullptr;
