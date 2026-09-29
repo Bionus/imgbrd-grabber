@@ -1,5 +1,4 @@
 #include "batch-downloader.h"
-#include <QCoreApplication>
 #include <QSettings>
 #include <QTimer>
 #include "commands/commands.h"
@@ -235,7 +234,8 @@ void BatchDownloader::loadImageFinished(const QSharedPointer<Image> &img, QList<
 	if (!diskError) {
 		m_counterSum++;
 
-		QCoreApplication::processEvents();
+		// save() emits this inline when the file is already on disk. Pumping the
+		// event loop here would start the next download before save() returns.
 		QTimer::singleShot(0, this, SLOT(nextImage()));
 	}
 }

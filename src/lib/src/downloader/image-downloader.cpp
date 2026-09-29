@@ -1,6 +1,7 @@
 #include "downloader/image-downloader.h"
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QImageReader>
 #include <QSettings>
 #include <QSize>
@@ -19,8 +20,76 @@
 #include "network/network-reply.h"
 
 
-static void addMd5(Profile *profile, const QString &path)
+static bool fileIsInsideDirectory(const QString &filePath, const QString &directory)
 {
+	if (directory.isEmpty() || filePath.isEmpty()) {
+		return false;
+	}
+
+	const QString root = QDir::cleanPath(QDir(directory).absolutePath());
+	const QString fileDir = QDir::cleanPath(QFileInfo(filePath).absolutePath());
+
+	#ifdef Q_OS_WIN
+		const Qt::CaseSensitivity cs = Qt::CaseInsensitive;
+	#else
+		const Qt::CaseSensitivity cs = Qt::CaseSensitive;
+	#endif
+
+	if (fileDir.compare(root, cs) == 0) {
+		return true;
+	}
+	return fileDir.startsWith(root + QLatin1Char('/'), cs);
+}
+
+
+static int metadataNeedExactTags(QSettings *settings)
+{
+	int need = 0;
+
+	for (const auto &pair : getMetadataExiftool(settings)) {
+		need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
+		if (need == 2) {
+			return need;
+		}
+	}
+
+	#ifdef WIN_FILE_PROPS
+		for (const auto &pair : getMetadataPropsys(settings)) {
+			need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
+			if (need == 2) {
+				return need;
+			}
+		}
+	#endif
+
+	return need;
+}
+
+
+static QStringList registeredMd5Paths(Profile *profile, const QString &md5)
+{
+	QStringList normalized;
+	if (md5.isEmpty()) {
+		return normalized;
+	}
+
+	const QStringList existing = profile->md5Exists(md5);
+	normalized.reserve(existing.size());
+	for (const QString &path : existing) {
+		normalized.append(QDir::toNativeSeparators(path));
+	}
+	return normalized;
+}
+
+// `alreadyRegistered` holds native paths already stored for this post's MD5.
+// Re-reading those files just to hash them again is what stalls a batch of
+// "File already exists" hits. Files not yet in the database are still hashed.
+static void addMd5(Profile *profile, const QString &path, const QStringList *alreadyRegistered = nullptr)
+{
+	if (alreadyRegistered != nullptr && alreadyRegistered->contains(QDir::toNativeSeparators(path))) {
+		return;
+	}
+
 	QCryptographicHash hash(QCryptographicHash::Md5);
 
 	QFile f(path);
@@ -82,13 +151,57 @@ void ImageDownloader::save()
 	const int filenameTagLevel = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const bool filenameNeedExactTags = filenameTagLevel == 2 || (filenameTagLevel == 1 && m_image->hasUnknownTag());
 	const QStringList paths = m_image->paths(m_filename, m_path, m_count);
-	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty() ? paths.first() : QString();
+	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty()
+		? paths.first()
+		: QDir(m_path).filePath(QStringLiteral("."));
 
-	// We don't need to load the image details of files already in the MD5 list and that should be skipped
+	// A known destination that is already on disk does not need details or a download.
+	// Commands are not executed for files that already exist. Still load details when a
+	// blacklist needs tags that the listing did not provide, so blacklisted files stay ignored.
+	const bool blacklistNeedTagsEarly = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
+	const int metadataTagLevel = metadataNeedExactTags(m_profile->getSettings());
+	const bool metadataNeedExactTags = metadataTagLevel == 2 || (metadataTagLevel == 1 && m_image->hasUnknownTag());
+	if (!m_force && !blacklistNeedTagsEarly && !filenameNeedExactTags && !paths.isEmpty()) {
+		bool allExists = true;
+		for (const QString &path : paths) {
+			if (!QFile::exists(path)) {
+				allExists = false;
+				break;
+			}
+		}
+		if (allExists) {
+			loadedSave(Image::LoadTagsResult::Ok);
+			return;
+		}
+	}
+
+	// Skip details for MD5 hits that will not be downloaded from the network.
+	// "ignore" never writes a file. "copy"/"move"/"link" also skip when the
+	// destination name is already known and metadata does not need tags.
+	// A new name (%website%-%id%_%md5%.%ext% for another post id) is still
+	// created, but details are loaded first when the sidecar uses tags such
+	// as %artist%. Batch re-downloads of a path that already exists do not.
 	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
-	if (md5action == "ignore" && !m_force) {
-		loadedSave(Image::LoadTagsResult::Ok);
-		return;
+	if (!m_force && md5action != QLatin1String("save")) {
+		const bool destinationKnown = !filenameNeedExactTags;
+		if (md5action == QLatin1String("ignore") || (destinationKnown && !metadataNeedExactTags && !blacklistNeedTagsEarly)) {
+			loadedSave(Image::LoadTagsResult::Ok);
+			return;
+		}
+
+		if (!destinationKnown) {
+			QStringList existingInTarget;
+			for (const QString &existing : m_profile->md5Exists(m_image->md5())) {
+				if (QFile::exists(existing) && fileIsInsideDirectory(existing, m_path)) {
+					existingInTarget.append(QDir::toNativeSeparators(existing));
+				}
+			}
+			if (!existingInTarget.isEmpty()) {
+				m_paths = existingInTarget;
+				loadedSave(Image::LoadTagsResult::Ok);
+				return;
+			}
+		}
 	}
 
 	// Always load details if the API doesn't provide the file URL in the listing page
@@ -148,23 +261,8 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 		}
 	}
 
-	// Check Exiftool metadata
-	for (const auto &pair : getMetadataExiftool(settings)) {
-		need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
-		if (need == 2) {
-			return need;
-		}
-	}
-
-	#ifdef WIN_FILE_PROPS
-		// Check Windows Property System
-		for (const auto &pair : getMetadataPropsys(settings)) {
-			need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
-			if (need == 2) {
-				return need;
-			}
-		}
-	#endif
+	// Check Exiftool metadata and Windows Property System
+	need = qMax(need, metadataNeedExactTags(settings));
 
 	return need;
 }
@@ -233,8 +331,9 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		if (allExists) {
 			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
 			if (m_addMd5) {
+				const QStringList already = registeredMd5Paths(m_profile, m_image->md5());
 				for (const QString &path : qAsConst(m_paths)) {
-					addMd5(m_profile, path);
+					addMd5(m_profile, path, &already);
 				}
 			}
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::AlreadyExistsDisk));
@@ -449,6 +548,8 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 
 	QFile tmp(m_temporaryPath + suffix);
 	bool moved = false;
+	QStringList alreadyRegistered;
+	bool alreadyRegisteredLoaded = false;
 
 	QList<ImageSaveResult> result;
 	for (const QString &file : qAsConst(m_paths)) {
@@ -458,7 +559,11 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path))) {
 			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
 			if (suffix.isEmpty() && m_addMd5) {
-				addMd5(m_profile, file);
+				if (!alreadyRegisteredLoaded) {
+					alreadyRegistered = registeredMd5Paths(m_profile, m_image->md5());
+					alreadyRegisteredLoaded = true;
+				}
+				addMd5(m_profile, file, &alreadyRegistered);
 			}
 			result.append({ path, size, Image::SaveResult::AlreadyExistsDisk });
 			continue;
