@@ -115,11 +115,11 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	if (monitor.download() && newImages > 0) {
 		QString path = monitor.pathOverride();
 		if (path.isEmpty()) {
-			path = m_profile->getSettings()->value("save/path").toString();
+			path = m_profile->getSettings()->value("Save/path").toString();
 		}
 		QString filename = monitor.filenameOverride();
 		if (filename.isEmpty()) {
-			filename = m_profile->getSettings()->value("save/filename").toString();
+			filename = m_profile->getSettings()->value("Save/filename").toString();
 		}
 
 		for (const QSharedPointer<Image> &img : newImagesList) {

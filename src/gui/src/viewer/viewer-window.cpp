@@ -573,9 +573,9 @@ void ViewerWindow::openInNewTab(const QString &link)
 		m_parent->addTab(activeLink, false, true, m_tab);
 	}
 }
-void ViewerWindow::setfavorite()
+void ViewerWindow::setfavorite(const QString &tag)
 {
-	Favorite fav(m_link);
+	Favorite fav(tag);
 	const int pos = m_favorites.indexOf(fav);
 	if (pos >= 0) {
 		m_favorites[pos].setImage(m_loadedImage ? m_displayImage : m_image->previewImage());

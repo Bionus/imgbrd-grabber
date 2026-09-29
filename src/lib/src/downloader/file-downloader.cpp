@@ -73,6 +73,7 @@ void FileDownloader::replyFinished()
 
 		m_file.remove();
 		if (failedLastWrite || m_writeError) {
+			log(QStringLiteral("Unable to write file '%1': %2 (%3)").arg(m_file.fileName(), m_file.errorString(), QString::number(m_file.error())), Logger::Error);
 			emit writeError();
 		} else if (invalidHtml && error == NetworkReply::NetworkError::NoError) {
 			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);

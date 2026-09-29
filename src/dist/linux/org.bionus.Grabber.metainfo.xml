@@ -6,7 +6,7 @@
 	<project_license>Apache-2.0</project_license>
 
 	<name>Grabber</name>
-	<summary>Very customizable imageboard/booru downloader with powerful filenaming features</summary>
+	<summary>Booru browsing made easy</summary>
 
 	<description>
 		<p>Very customizable imageboard/booru downloader with powerful filenaming features.</p>
@@ -17,19 +17,19 @@
 	<screenshots>
 		<screenshot type="default">
 			<caption>Search results</caption>
-			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/search-basic.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/search-basic-linux.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Batch download window</caption>
-			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/download.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/download-linux.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Source settings</caption>
-			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/sources.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/sources-linux.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Filename settings</caption>
-			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/filename.png</image>
+			<image>https://www.bionus.org/imgbrd-grabber/assets/img/screenshots/filename-linux.png</image>
 		</screenshot>
 	</screenshots>
 
@@ -180,6 +180,11 @@
 
 	<developer_name>Bionus</developer_name>
 	<update_contact>bio.nus@hotmail.fr</update_contact>
+
+	<branding>
+		<color type="primary" scheme_preference="light">#4051b5</color>
+		<color type="primary" scheme_preference="dark">#303fa1</color>
+	</branding>
 
 	<content_rating type="oars-1.0">
 		<content_attribute id="sex-nudity">intense</content_attribute>

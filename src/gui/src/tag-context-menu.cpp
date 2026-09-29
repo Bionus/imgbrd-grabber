@@ -81,11 +81,11 @@ void TagContextMenu::favorite()
 	Favorite fav(m_tag);
 	fav.setSites(m_sites);
 	m_profile->addFavorite(fav);
-	emit setFavoriteImage();
+	emit setFavoriteImage(m_tag);
 }
 void TagContextMenu::setfavorite()
 {
-	emit setFavoriteImage();
+	emit setFavoriteImage(m_tag);
 }
 void TagContextMenu::unfavorite()
 {

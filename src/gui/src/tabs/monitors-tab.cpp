@@ -135,11 +135,11 @@ void MonitorsTab::convertSelected()
 		for (Site *site : monitor.sites()) {
 			QString path = monitor.pathOverride();
 			if (path.isEmpty()) {
-				path = m_settings->value("save/path").toString();
+				path = m_settings->value("Save/path").toString();
 			}
 			QString filename = monitor.filenameOverride();
 			if (filename.isEmpty()) {
-				filename = m_settings->value("save/filename").toString();
+				filename = m_settings->value("Save/filename").toString();
 			}
 			emit batchAddGroup(DownloadQueryGroup(monitor.query(), 1, 200, -1, monitor.postFilters(), monitor.getBlacklisted(), site, filename, path));
 		}

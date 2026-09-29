@@ -19,8 +19,8 @@ Tired of waiting for the next update? Want to get the latest developer version? 
 Bullets marked with `*` are mandatory, other are optional.
 
 * `*` Qt 6.6 or higher
-* `*` A C++ compiler such as MSVC 2019
-* `*` CMake 3.2 or higher
+* `*` A C++17 compiler such as MSVC 2019 or newer
+* `*` CMake 3.16 or higher (the minimum supported by Qt 6.6)
 * `*` Node.js (for building images sources)
 * QScintilla2 (for syntax highlighting in JavaScript filename window)
 * Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
@@ -78,8 +78,8 @@ If you want to use it, I won't explain here how to configure it to work with Qt,
 Bullets marked with `*` are mandatory, other are optional.
 
 * `*` Qt 6.6 or higher
-* `*` A C++ compiler such as g++
-* `*` CMake 3.2 or higher
+* `*` A C++17 compiler such as GCC 9 or newer
+* `*` CMake 3.16 or higher (the minimum supported by Qt 6.6)
 * `*` Node.js (for building images sources)
 * OpenSSL (for HTTPS websites)
 * QScintilla2 (for syntax highlighting in JavaScript filename window)
@@ -97,6 +97,8 @@ aqt install-qt linux desktop 6.6.3 gcc_64 -m qtmultimedia qtimageformats qtnetwo
 
 #### Compiler
 You can use the g++ compiler to compile the program. If it's not already installed, the process may vary depending on your Linux distribution. Note that you can also replace g++ with clang if you want, but make sure to use the proper Qt version for your compiler.
+
+Grabber requires C++17. The first compiler releases with C++17 support are GCC 7, Clang 5, Apple Clang 10, and MSVC 19.14 (Visual Studio 2017 15.7), but Qt 6.6's supported toolchains are newer. For supported Grabber builds, use GCC 9+, Clang 10+, Apple Clang 12+, or Visual Studio 2019+.
 
 You'll also need `cmake` for the makefile generation, and `make` for executing it.
 

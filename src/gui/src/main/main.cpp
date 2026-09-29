@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+	app.setDesktopFileName("org.bionus.Grabber");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	Logger::getInstance().initialize();

@@ -70,7 +70,7 @@ class ViewerWindow : public QWidget
 		void linkHovered(const QString &);
 		void contextMenu(const QPoint &pos);
 		void openInNewTab(const QString & = QString());
-		void setfavorite();
+		void setfavorite(const QString &tag);
 		void downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
 		void showDetails();
