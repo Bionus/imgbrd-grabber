@@ -161,10 +161,19 @@ void Logger::log(const QString &message, LogLevel level)
 	const QDateTime time = QDateTime::currentDateTime();
 	const QString timeStr = time.toString(timeFormat);
 
-	// Write ASCII log to file
+	// Write ASCII log to file. Flushing every Info line stalls once "File
+	// already exists" is no longer paced by a details request.
 	const QString strippedMsg("[" + timeStr + "][" + levelStr + "] " + stripTags(message));
 	m_logFile.write((strippedMsg + "\n").toUtf8());
-	m_logFile.flush();
+	if (level >= LogLevel::Warning) {
+		m_logFile.flush();
+	} else {
+		static int pendingLines = 0;
+		if (++pendingLines >= 32) {
+			m_logFile.flush();
+			pendingLines = 0;
+		}
+	}
 
 	// Emit colored HTML log
 	const QString msg("[" + timeStr + "][" + levelStr + "] " + message);
