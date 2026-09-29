@@ -512,8 +512,8 @@ jobs:
         shell: cmd
         working-directory: src/lib
         run: |
-          ..\..\build\lib\tests\lib-tests.exe
-          ..\..\build\cli\tests\cli-tests.exe
+          ..\..\build\lib\tests\lib-tests.exe || exit /b 1
+          ..\..\build\cli\tests\cli-tests.exe || exit /b 1
         env:
           QTDIR: ${{ env.QT_ROOT_DIR }}
           QT_PLUGIN_PATH: ${{ env.QT_ROOT_DIR }}\plugins
@@ -622,7 +622,8 @@ jobs:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
-        host: linux
+        # Qt 6.8+ Android archives are published under all_os, not linux.
+        host: all_os
         target: android
         arch: android_armv7
 
@@ -632,7 +633,8 @@ jobs:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
-        host: linux
+        # Qt 6.8+ Android archives are published under all_os, not linux.
+        host: all_os
         target: android
         arch: android_arm64_v8a
 

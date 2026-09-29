@@ -193,7 +193,7 @@ void ImageDownloader::save()
 			QStringList existingInTarget;
 			for (const QString &existing : m_profile->md5Exists(m_image->md5())) {
 				if (QFile::exists(existing) && fileIsInsideDirectory(existing, m_path)) {
-					existingInTarget.append(existing);
+					existingInTarget.append(QDir::toNativeSeparators(existing));
 				}
 			}
 			if (!existingInTarget.isEmpty()) {
