@@ -505,7 +505,7 @@ TEST_CASE("ImageDownloader")
 		profile->addMd5(img->md5(), oldName);
 
 		assertDownload(profile, img, &downloader, expected, true);
-		REQUIRE(img->token("copyright", QString()) == QString("to heart 2"));
+		REQUIRE(img->token("copyright", QString()) == QString("to_heart_2"));
 
 		profile->removeMd5(img->md5(), oldName);
 		QFile::remove(oldName);
