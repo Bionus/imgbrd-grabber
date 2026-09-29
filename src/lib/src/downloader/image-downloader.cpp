@@ -66,8 +66,30 @@ static int metadataNeedExactTags(QSettings *settings)
 }
 
 
-static void addMd5(Profile *profile, const QString &path)
+static QStringList registeredMd5Paths(Profile *profile, const QString &md5)
 {
+	QStringList normalized;
+	if (md5.isEmpty()) {
+		return normalized;
+	}
+
+	const QStringList existing = profile->md5Exists(md5);
+	normalized.reserve(existing.size());
+	for (const QString &path : existing) {
+		normalized.append(QDir::toNativeSeparators(path));
+	}
+	return normalized;
+}
+
+// `alreadyRegistered` holds native paths already stored for this post's MD5.
+// Re-reading those files just to hash them again is what stalls a batch of
+// "File already exists" hits. Files not yet in the database are still hashed.
+static void addMd5(Profile *profile, const QString &path, const QStringList *alreadyRegistered = nullptr)
+{
+	if (alreadyRegistered != nullptr && alreadyRegistered->contains(QDir::toNativeSeparators(path))) {
+		return;
+	}
+
 	QCryptographicHash hash(QCryptographicHash::Md5);
 
 	QFile f(path);
@@ -309,8 +331,9 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		if (allExists) {
 			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
 			if (m_addMd5) {
+				const QStringList already = registeredMd5Paths(m_profile, m_image->md5());
 				for (const QString &path : qAsConst(m_paths)) {
-					addMd5(m_profile, path);
+					addMd5(m_profile, path, &already);
 				}
 			}
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::AlreadyExistsDisk));
@@ -525,6 +548,8 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 
 	QFile tmp(m_temporaryPath + suffix);
 	bool moved = false;
+	QStringList alreadyRegistered;
+	bool alreadyRegisteredLoaded = false;
 
 	QList<ImageSaveResult> result;
 	for (const QString &file : qAsConst(m_paths)) {
@@ -534,7 +559,11 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path))) {
 			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
 			if (suffix.isEmpty() && m_addMd5) {
-				addMd5(m_profile, file);
+				if (!alreadyRegisteredLoaded) {
+					alreadyRegistered = registeredMd5Paths(m_profile, m_image->md5());
+					alreadyRegisteredLoaded = true;
+				}
+				addMd5(m_profile, file, &alreadyRegistered);
 			}
 			result.append({ path, size, Image::SaveResult::AlreadyExistsDisk });
 			continue;
