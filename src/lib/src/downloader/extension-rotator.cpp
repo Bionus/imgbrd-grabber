@@ -14,6 +14,17 @@ ExtensionRotator::ExtensionRotator(const QString &initialExtension, const QStrin
 	: QObject(parent), m_initialExtensionIndex(extensions.indexOf(initialExtension)), m_extensions(extensions)
 {}
 
+QStringList ExtensionRotator::withoutStillImages(const QStringList &extensions)
+{
+	static const QStringList stillImages { "jpg", "jpeg", "jpe", "png", "apng", "gif", "swf" };
+
+	QStringList result = extensions;
+	for (const QString &still : stillImages) {
+		result.removeAll(still);
+	}
+	return result;
+}
+
 QString ExtensionRotator::next()
 {
 	// Always return an empty string for empty lists
