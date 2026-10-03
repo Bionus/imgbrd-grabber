@@ -2,6 +2,7 @@
 Type=Application
 Name=Grabber
 Comment=Very customizable imageboard/booru downloader with powerful filenaming features
+Comment[ru]=Гибкий загрузчик изображений с имиджбордов и booru-сайтов с настройкой формата имён файлов
 Exec=Grabber
 Icon=grabber
 Categories=Network;
