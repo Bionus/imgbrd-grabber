@@ -35,6 +35,22 @@ TEST_CASE("FilenameConditionVisitor")
 		REQUIRE(!FilenameConditionVisitor(tokensWithoutAnyTag, &settings).run(condition));
 	}
 
+	SECTION("Tag with empty name")
+	{
+		// FilterFactory::build() returns nullptr for an empty tag, so the
+		// condition built from <""> carries no filter to match against
+		NTag condition(Tag(""));
+
+		QMap<QString, Token> tokensWithTag = {
+			{ "allos", Token(QStringList() << "tag1" << "tag2" << "my_tag" << "tag3") },
+		};
+		QMap<QString, Token> tokensWithoutAnyTag;
+
+		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+		REQUIRE(!FilenameConditionVisitor(tokensWithTag, &settings).run(condition));
+		REQUIRE(!FilenameConditionVisitor(tokensWithoutAnyTag, &settings).run(condition));
+	}
+
 	SECTION("Token")
 	{
 		NToken condition("my_token");
