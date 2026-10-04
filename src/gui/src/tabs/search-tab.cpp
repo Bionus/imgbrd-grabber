@@ -1493,8 +1493,17 @@ void SearchTab::setFavoriteImage(const QString &name)
 
 	for (Favorite &fav : m_favorites) {
 		if (fav.getName() == name) {
-			fav.setImage(m_images.first()->previewImage());
-			m_profile->emitFavorite();
+			// m_images is the page of the last executed search, which is not necessarily
+			// the search the favorite comes from: only reuse it if it actually shows the
+			// tag, otherwise the thumbnail would belong to an unrelated search
+			for (const QSharedPointer<Image> &image : m_images) {
+				if (image->hasTag(name)) {
+					fav.setImage(image->previewImage());
+					m_profile->emitFavorite();
+					return;
+				}
+			}
+
 			return;
 		}
 	}
