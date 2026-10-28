@@ -864,7 +864,8 @@ void DownloadsTab::getAllImageOk(const BatchDownloadImage &download, int siteId,
 	}
 
 	m_getAllDownloading.removeAll(download);
-	QCoreApplication::processEvents();
+	// save() emits this inline when the file is already on disk. Pumping the
+	// event loop here would start the next download before save() returns.
 	QTimer::singleShot(0, this, SLOT(_getAll()));
 }
 

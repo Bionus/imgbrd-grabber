@@ -85,9 +85,19 @@ void MainScreen::refreshHistory()
 void MainScreen::newLog(const QString &message)
 {
 	if (!m_log.isEmpty()) {
-		m_log += "<br/>";
+		m_log += QLatin1String("<br/>");
 	}
 	m_log += logToHtml(message);
+
+	// The whole string is re-parsed on every line. Cap it so a long run of
+	// "File already exists" does not rebuild an ever-growing document.
+	constexpr int maxChars = 100000;
+	if (m_log.size() > maxChars) {
+		const int cut = m_log.indexOf(QLatin1String("<br/>"), m_log.size() - maxChars);
+		if (cut >= 0) {
+			m_log.remove(0, cut + 5);
+		}
+	}
 
 	emit logChanged();
 }

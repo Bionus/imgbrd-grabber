@@ -3,7 +3,6 @@
 #include <QDir>
 #include <QFile>
 #include <QRegularExpression>
-#include <QScrollBar>
 #include <ui_log-tab.h>
 #include "functions.h"
 #include "helpers.h"
@@ -15,6 +14,10 @@ LogTab::LogTab(QWidget *parent)
 	: QWidget(parent), ui(new Ui::LogTab)
 {
 	ui->setupUi(this);
+	// A long run of "File already exists" used to relayout an ever-growing
+	// document on every line, and the forced scroll made that cost climb.
+	ui->labelLog->setUndoRedoEnabled(false);
+	ui->labelLog->setMaximumBlockCount(5000);
 
 	// Load already written log
 	QFile logFile(Logger::getInstance().logFile());
@@ -37,7 +40,6 @@ LogTab::~LogTab()
 void LogTab::write(const QString &msg)
 {
 	ui->labelLog->appendHtml(logToHtml(msg));
-	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
 }
 
 void LogTab::clear()
