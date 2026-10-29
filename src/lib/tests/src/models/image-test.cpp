@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QScopedPointer>
+#include <QScopeGuard>
 #include <QSettings>
 #include <QSignalSpy>
 #include "loader/token.h"
@@ -210,6 +211,31 @@ TEST_CASE("Image")
 
 	SECTION("preSave")
 	{
+		SECTION("File saved in current directory")
+		{
+			const QString sourcePath = QDir::current().absoluteFilePath("tests/resources/image_1x1.png");
+			const QString previousCurrentPath = QDir::currentPath();
+			const auto restoreCurrentPath = qScopeGuard([previousCurrentPath]() {
+				QDir::setCurrent(previousCurrentPath);
+			});
+			REQUIRE(QDir::setCurrent(QDir(previousCurrentPath).absoluteFilePath("tests/resources/tmp")));
+
+			const QString savePath = "7331-cwd.jpg";
+			QFile file(savePath);
+			if (file.exists()) {
+				file.remove();
+			}
+			const auto removeFile = qScopeGuard([savePath]() {
+				QFile::remove(savePath);
+			});
+
+			img->setSavePath(sourcePath);
+			Image::SaveResult res = img->preSave(savePath, Image::Size::Full);
+
+			REQUIRE(res == Image::SaveResult::Saved);
+			REQUIRE(file.exists());
+		}
+
 		SECTION("File already saved somewhere else")
 		{
 			const QString savePath = QDir::toNativeSeparators("tests/resources/tmp/7331.jpg");
@@ -291,6 +317,28 @@ TEST_CASE("Image")
 			REQUIRE(file.exists());
 			REQUIRE(!QFile("tests/resources/tmp/source.png").exists());
 			file.remove();
+		}
+
+		SECTION("Empty path returns Error even when MD5 duplicate is ignore")
+		{
+			const QString sourcePath = QDir::toNativeSeparators("tests/resources/tmp/source-empty-path.png");
+			QFile::remove(sourcePath);
+			REQUIRE(QFile::copy("tests/resources/image_1x1.png", sourcePath));
+			REQUIRE(QFile::exists(sourcePath));
+			const auto cleanup = qScopeGuard([sourcePath]() {
+				QFile::remove(sourcePath);
+			});
+			img->setSavePath("tests/resources/image_1x1.png");
+			profile->addMd5(img->md5(), sourcePath);
+			const auto cleanupMd5 = qScopeGuard([&]() {
+				profile->removeMd5(img->md5(), sourcePath);
+			});
+
+			settings->setValue("Save/md5Duplicates", "ignore");
+			settings->setValue("Save/md5DuplicatesSameDir", "ignore");
+
+			const Image::SaveResult res = img->preSave(QString(), Image::Size::Full);
+			REQUIRE(res == Image::SaveResult::Error);
 		}
 	}
 

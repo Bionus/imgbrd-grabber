@@ -99,7 +99,7 @@ jobs:
           submodules: recursive
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@v1.2.24
         with:
           key: ${{ runner.os }}-${{ github.job }}
 
@@ -192,7 +192,7 @@ jobs:
           submodules: recursive
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@v1.2.24
         with:
           key: ${{ runner.os }}-${{ github.job }}
 
@@ -321,7 +321,7 @@ jobs:
           submodules: recursive
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@v1.2.24
         with:
           key: ${{ runner.os }}-${{ github.job }}
 
@@ -420,7 +420,7 @@ jobs:
           submodules: recursive
 
       - name: Setup sccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@v1.2.24
         with:
           variant: sccache
           key: ${{ runner.os }}-${{ github.job }}
@@ -512,8 +512,8 @@ jobs:
         shell: cmd
         working-directory: src/lib
         run: |
-          ..\..\build\lib\tests\lib-tests.exe
-          ..\..\build\cli\tests\cli-tests.exe
+          ..\..\build\lib\tests\lib-tests.exe || exit /b 1
+          ..\..\build\cli\tests\cli-tests.exe || exit /b 1
         env:
           QTDIR: ${{ env.QT_ROOT_DIR }}
           QT_PLUGIN_PATH: ${{ env.QT_ROOT_DIR }}\plugins
@@ -580,7 +580,7 @@ jobs:
         submodules: recursive
 
     - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.24
       with:
         key: ${{ runner.os }}-${{ github.job }}
 
@@ -622,7 +622,8 @@ jobs:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
-        host: linux
+        # Qt 6.8+ Android archives are published under all_os, not linux.
+        host: all_os
         target: android
         arch: android_armv7
 
@@ -632,13 +633,21 @@ jobs:
         cache: true
         version: ${{ env.QT_VERSION }}
         modules: ${{ env.QT_MODULES }}
-        host: linux
+        # Qt 6.8+ Android archives are published under all_os, not linux.
+        host: all_os
         target: android
         arch: android_arm64_v8a
 
     - name: Download Android OpenSSL libraries
       working-directory: src/cmake
       run: git clone https://github.com/KDAB/android_openssl.git
+
+    - name: Make Qt Android host tools executable
+      run: |
+        # all_os Android 7z archives are packed without the executable bit.
+        # aqt only chmods qmake/qtpaths, so qt-cmake exits 126 until this.
+        qt_prefix="$(dirname "$QT_ROOT_DIR")"
+        find "$qt_prefix" \( -path '*/bin/*' -o -path '*/libexec/*' \) -type f ! -name '*.bat' ! -name '*.exe' -exec chmod a+x {} +
 
     - name: Restore keystore file
       run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
