@@ -92,6 +92,12 @@ Images can access information on the gallery by using the `gallery.` prefix. Man
 
 * `gallery.id`: the ID of the gallery.
 * `gallery.name`: the name/title of the gallery.
+* `gallery.position`: for E-Hentai, the absolute, 1-based image index in the gallery, independent of thumbnail pagination and Grabber's page-size setting.
+* `gallery.count`: for E-Hentai, the total number of images in the gallery, not the number of thumbnail pages or downloaded files.
+
+For E-Hentai, these values are read from the gallery's image range and saved with each image. An unavailable or inconsistent range produces empty values; if the thumbnail count does not match the range, only the position is empty. Previously saved images without this metadata need to be loaded from the gallery again. Other sources retain their existing gallery token behavior; these two values are not guaranteed for every source. The ordinary `%position%` and `%count%` tokens are unchanged.
+
+For example, `%gallery.position% of %gallery.count%` gives `23 of 100` for the third image on the second 20-image thumbnail page of a 100-image gallery.
 
 ### Special tokens
 Some tokens do not strictly relate to the image itself. Those tokens are:
