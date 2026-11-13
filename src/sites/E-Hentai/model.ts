@@ -158,8 +158,9 @@ function parseList(src: string): IParsedSearch {
         images,
         pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
         imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing (?<count>[0-9,]+) results<|Found(?: about)? (?<count_2>[0-9,]+) results.", src)),
-        urlNextPage: Grabber.regexToConst("url", '<a id="unext" href="(?<url_2>[^"]+)">', src),
-        urlPrevPage: Grabber.regexToConst("url", '<a id="uprev" href="(?<url_2>[^"]+)">', src),
+        // HTML attributes decode entities, so '&amp;next=' becomes a real cursor parameter.
+        urlNextPage: html.find("a#unext")[0]?.attr("href"),
+        urlPrevPage: html.find("a#uprev")[0]?.attr("href"),
     };
 }
 
