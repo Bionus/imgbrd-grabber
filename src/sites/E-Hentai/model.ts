@@ -239,6 +239,14 @@ export const source: ISource = {
                         tags.push(...list.map((name: string) => ({ type, name })));
                     }
 
+                    // Use the site's absolute range, not Grabber's configured thumbnail page size.
+                    const rangeText = html.find(".gpc")[0]?.innerText() || "";
+                    const range = rangeText.match(/^\s*Showing\s+([0-9,]+)\s*-\s*([0-9,]+)\s+of\s+([0-9,]+)\s+images\s*$/);
+                    const firstPosition = range ? parseInt(range[1].replace(/,/g, ""), 10) : 0;
+                    const lastPosition = range ? parseInt(range[2].replace(/,/g, ""), 10) : 0;
+                    const imageCount = range ? parseInt(range[3].replace(/,/g, ""), 10) : -1;
+                    const validRange = firstPosition > 0 && lastPosition >= firstPosition && imageCount >= lastPosition;
+
                     const images: IImage[] = [];
                     let matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
                     if (matches.length < 1) {
@@ -248,7 +256,9 @@ export const source: ISource = {
                         matches = Grabber.regexMatches('<a href="(?<page_url>[^"]+/s/[^"]+)">(?:<div>)?<div title="Page [0-9]+: (?<filename>[^"]+)" style="(?<div_style>[^"]+)"></div>', src);
                     }
 
-                    for (const match of matches) {
+                    const completeRange = validRange && matches.length === lastPosition - firstPosition + 1;
+                    for (let index = 0; index < matches.length; index++) {
+                        const match = matches[index];
                         if ("div_style" in match) {
                             const styles = cssToObject(match["div_style"]);
                             delete match["div_style"];
@@ -266,13 +276,18 @@ export const source: ISource = {
                         match["created_at"] = posted;
                         match["author"] = author;
                         match["tags"] = tags;
+                        // Persist explicit gallery metadata with each image, including unknown values.
+                        match["tokens"] = {
+                            gallery_position: completeRange ? firstPosition + index : 0,
+                            gallery_count: validRange ? imageCount : -1,
+                        };
                         images.push(match);
                     }
 
                     return {
                         images,
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
-                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", '<p class="gpc">Showing [0-9,]+ - [0-9,]+ of (?<count>[0-9,]+) images</p>', src)),
+                        imageCount: validRange ? imageCount : -1,
                         urlNextPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&gt;</a></td>', src),
                         urlPrevPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&lt;</a></td>', src),
                     };
