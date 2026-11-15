@@ -5,9 +5,22 @@
 #include "models/profile.h"
 
 
-Profile *makeProfile()
+Profile *makeProfile(bool clean)
 {
-	QFile::remove("tests/resources/settings.ini");
+	if (clean) {
+		QFile::remove("tests/resources/blacklist.txt");
+		QFile::remove("tests/resources/favorites.json");
+		QFile::remove("tests/resources/favorites.txt");
+		QFile::remove("tests/resources/ignore.txt");
+		QFile::remove("tests/resources/md5s.sqlite");
+		QFile::remove("tests/resources/md5s.txt");
+		QFile::remove("tests/resources/viewitlater.txt");
+		QFile::remove("tests/resources/wordsc.txt");
+	}
+
+	QFile settings("tests/resources/settings.ini");
+	settings.open(QFile::Truncate | QFile::WriteOnly | QFile::Text);
+	settings.close();
 
 	auto *profile = new Profile("tests/resources");
 	profile->getSettings()->clear();

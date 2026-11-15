@@ -111,7 +111,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		return makeTestReply(request);
 	}
 
-	log(QStringLiteral("Loading `%1`").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
+	log(QStringLiteral("Loading `%1`").arg(request.url().toString()), Logger::Debug);
 	return QNetworkAccessManager::get(request);
 }
 
@@ -121,7 +121,7 @@ QNetworkReply *CustomNetworkAccessManager::post(const QNetworkRequest &request, 
 		return makeTestReply(request);
 	}
 
-	log(QStringLiteral("Posting to `%1`").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
+	log(QStringLiteral("Posting to `%1`").arg(request.url().toString()), Logger::Debug);
 	return QNetworkAccessManager::post(request, data);
 }
 

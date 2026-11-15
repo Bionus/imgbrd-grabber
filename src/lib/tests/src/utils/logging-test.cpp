@@ -28,6 +28,8 @@ TEST_CASE("Logging")
 			REQUIRE(logToHtml("`https://test.com`") == QString("<a href=\"https://test.com\">https://test.com</a>"));
 			REQUIRE(logToHtml("test `https://test.com`") == QString("test <a href=\"https://test.com\">https://test.com</a>"));
 			REQUIRE(logToHtml("`https://test.com` test") == QString("<a href=\"https://test.com\">https://test.com</a> test"));
+			REQUIRE(logToHtml("`https://test.com?a=1&b=2`") == QString("<a href=\"https://test.com?a=1&b=2\">https://test.com?a=1&amp;b=2</a>"));
+			REQUIRE(logToHtml("`https://test.com/hello%20world`") == QString("<a href=\"https://test.com/hello%20world\">https://test.com/hello%20world</a>"));
 		}
 	}
 }

@@ -23,7 +23,7 @@ export const source: ISource = {
                     if (query.search.length === 0) {
                         return "/browse/?order-by=date&page=" + query.page + "&perpage=" + perpage;
                     }
-                    return "/search/?q=" + encodeURIComponent(query.search) + "&order-by=date&page=" + query.page + "&perpage=" + perpage;
+                    return "/search/?q=" + encodeURIComponent(query.search) + "&order-by=date&range=all&page=" + query.page + "&perpage=" + perpage;
                 },
                 parse: (src: string, statusCode: number): IParsedSearch | IError => {
                     return {

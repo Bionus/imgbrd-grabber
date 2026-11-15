@@ -20,22 +20,24 @@ class FFmpeg
 		 *
 		 * @param file The file to convert.
 		 * @param extension The target extension (ex: "mp4").
+		 * @param overwrite Whether to overwrite the target file if it already exists.
 		 * @param deleteOriginal Whether to delete the original file on success.
 		 * @param msecs The duration to wait in milliseconds for the command to run.
 		 * @return The destination file path on success, the original file path on error.
 		 */
-		static QString convert(const QString &file, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
+		static QString convert(const QString &file, const QString &extension, bool overwrite = true, bool deleteOriginal = true, int msecs = 30000);
 
 		/**
 		 * Remux a file to a different format, copying the streams.
 		 *
 		 * @param file The file to remux.
 		 * @param extension The target extension (ex: "mp4").
+		 * @param overwrite Whether to overwrite the target file if it already exists.
 		 * @param deleteOriginal Whether to delete the original file on success.
 		 * @param msecs The duration to wait in milliseconds for the command to run.
 		 * @return The destination file path on success, the original file path on error.
 		 */
-		static QString remux(const QString &file, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
+		static QString remux(const QString &file, const QString &extension, bool overwrite = true, bool deleteOriginal = true, int msecs = 30000);
 
 		/**
 		 * Convert a ugoira ZIP file to a different format.
@@ -43,11 +45,12 @@ class FFmpeg
 		 * @param file The file to remux.
 		 * @param frameInformation A list of (frameFile, delay) tuples representing each frame in this ugoira ZIP file.
 		 * @param extension The target extension (ex: "gif").
+		 * @param overwrite Whether to overwrite the target file if it already exists.
 		 * @param deleteOriginal Whether to delete the original file on success.
 		 * @param msecs The duration to wait in milliseconds for the command to run.
 		 * @return The destination file path on success if the original was deleted, the original file path otherwise.
 		 */
-		static QString convertUgoira(const QString &file, const QList<QPair<QString, int>> &frameInformation, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
+		static QString convertUgoira(const QString &file, const QList<QPair<QString, int>> &frameInformation, const QString &extension, bool overwrite = true, bool deleteOriginal = true, int msecs = 30000);
 
 		/**
 		 * Get the video codec of the given file using FFprobe.

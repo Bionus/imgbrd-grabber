@@ -141,7 +141,7 @@ void PageApi::load(bool rateLimit, bool force)
 	m_maxImagesCount = -1;
 	m_pagesCount = -1;
 
-	log(QStringLiteral("[%1][%2] Loading page `%3`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1][%2] Loading page `%3`").arg(m_site->url(), m_format, m_url.toString()), Logger::Info);
 	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
 	setReply(m_isPost
 		? m_site->post(m_url, m_payload, type, QUrl(), "", nullptr, m_headers)
@@ -181,13 +181,13 @@ void PageApi::parse()
 		return;
 	}
 
-	log(QStringLiteral("[%1][%2] Receiving page `%3`").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1][%2] Receiving page `%3`").arg(m_site->url(), m_format, m_reply->url().toString()), Logger::Info);
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty()) {
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
-		log(QStringLiteral("[%1][%2] Redirecting page `%3` to `%4`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1][%2] Redirecting page `%3` to `%4`").arg(m_site->url(), m_format, m_url.toString(), newUrl.toString()), Logger::Info);
 
 		// HTTP -> HTTPS redirects
 		const bool ssl = m_site->setting("ssl", false).toBool();
@@ -383,7 +383,7 @@ void PageApi::parseActual()
 		m_images.removeLast();
 	}
 
-	log(QStringLiteral("[%1][%2] Parsed page `%3`: %4 images (%5), %6 tags (%7), %8 total (%9), %10 pages (%11)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(m_pageImageCount).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+	log(QStringLiteral("[%1][%2] Parsed page `%3`: %4 images (%5), %6 tags (%7), %8 total (%9), %10 pages (%11)").arg(m_site->url(), m_format, m_reply->url().toString()).arg(m_images.count()).arg(m_pageImageCount).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
 
 	setReply(nullptr);
 	m_loaded = true;

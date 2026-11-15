@@ -327,7 +327,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Looking for unknown tokens
-	QStringList knownTokens {"tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid", "grabber", "grabber_branch", "grabber_version" };
+	QStringList knownTokens {"tags", "artist", "contributor", "general", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid", "grabber", "grabber_branch", "grabber_version" };
 	if (profile != nullptr) {
 		knownTokens.append(profile->getAdditionalTokens());
 		knownTokens.append(getCustoms(profile->getSettings()).keys());
@@ -429,7 +429,7 @@ int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &
 	// Some sources require loading to get the tag list
 	if (forcedTokens.contains("tags")) {
 		// The filename use tags
-		static const QStringList forbidden { "tags", "all", "allo", "artist", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "general" };
+		static const QStringList forbidden { "tags", "all", "allo", "artist", "contributor", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "general" };
 		for (const QString &token : forbidden) {
 			if (toks.contains(token)) {
 				return 2;
@@ -445,7 +445,7 @@ int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &
 	}
 
 	// The filename contains one of the special tags
-	static const QStringList forbidden { "artist", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "general" };
+	static const QStringList forbidden { "artist", "contributor", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "general" };
 	for (const QString &token : forbidden) {
 		if (toks.contains(token)) {
 			return 1;

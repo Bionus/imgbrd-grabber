@@ -6,25 +6,25 @@ function completeImage(img: IImage): IImage {
 }
 
 const imgMap = {
-    "ext": "file.ext",
+    "ext": "files.meta.ext",
     "change": "change_seq",
     "creator_id": "uploader_id",
     "id": "id",
     "rating": "rating",
-    "file_url": "file.url",
-    "width": "file.width",
-    "height": "file.height",
-    "file_size": "file.size",
-    "preview_url": "preview.url",
-    "preview_width": "preview.width",
-    "preview_height": "preview.height",
-    "sample_url": "sample.url",
-    "sample_height": "sample.height",
-    "sample_width": "sample.width",
-    "md5": "file.md5",
-    "has_children": "relationships.has_children",
+    "file_url": "files.original.url",
+    "width": "files.original.width",
+    "height": "files.original.height",
+    "file_size": "files.meta.size",
+    "preview_url": "files.preview.jpg",
+    "preview_width": "files.preview.width",
+    "preview_height": "files.preview.height",
+    "sample_url": "files.sample.jpg",
+    "sample_height": "files.sample.height",
+    "sample_width": "files.sample.width",
+    "md5": "files.meta.md5",
+    "has_children": "has.children",
     "parent_id": "relationships.parent_id",
-    "score": "score.total",
+    "score": "stats.score.total",
     "sources": "sources",
 };
 
@@ -32,7 +32,7 @@ function parseImage(raw: any): IImage | null {
     const img = Grabber.mapFields(raw, imgMap);
 
     img.created_at = Math.floor(Date.parse(raw.created_at) / 1000);
-    img.has_comments = raw.comment_count > 0;
+    img.has_comments = raw.stats?.comment_count > 0;
 
     // Determine flags
     img.status = "active";
@@ -44,13 +44,17 @@ function parseImage(raw: any): IImage | null {
         img.status = "deleted";
     }
 
-    const tags: ITag[] = [];
-    for (const type in raw.tags) {
-        for (const name of raw.tags[type]) {
-            tags.push({ name, type });
+    if (Array.isArray(raw.tags)) {
+        img.tags = raw.tags;
+    } else {
+        const tags: ITag[] = [];
+        for (const type in raw.tags) {
+            for (const name of raw.tags[type]) {
+                tags.push({ name, type });
+            }
         }
+        img.tags = tags;
     }
-    img.tags = tags;
 
     if (!img.md5 || img.md5.length === 0) {
         return null;
@@ -100,7 +104,7 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "{page}", "a{max}", "b{min}");
-                        return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                        return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search) + "&v2=true";
                     } catch (e: any) {
                         return { error: e.message };
                     }
@@ -114,7 +118,8 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     let invalid = 0;
-                    for (const image of data["posts"]) {
+                    const posts = Array.isArray(data) ? data : data["posts"];
+                    for (const image of posts) {
                         const img = parseImage(image);
                         if (!img) {
                             continue;
@@ -135,11 +140,12 @@ export const source: ISource = {
             details: {
                 fullResults: true,
                 url: (id: string, md5: string): string => {
-                    return "/posts/" + id + ".json";
+                    return "/posts/" + id + ".json?v2=true&mode=extended";
                 },
                 parse: (src: string): IImage => {
                     const data = JSON.parse(src);
-                    return parseImage(data["post"])!;
+                    const post = "id" in data ? data : data["post"];
+                    return parseImage(post)!;
                 },
             },
             tags: {
@@ -198,7 +204,7 @@ export const source: ISource = {
                     let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
                     wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
                     return {
-                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
+                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>|<li[^>]*\\sdata-name="(?<name_2>[^"]+)"[^>]*\\sdata-category="(?<type>[^"]+)"[^>]*\\sdata-count="(?<count_2>\\d+)"[^>]*>', src),
                         images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-uploader-id="(?<creator_id>[^"]*)"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+[^>]*data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
                         wiki,
                         pageCount: Grabber.regexToConst("page", '>(?<page>\\d+)</(?:a|span)></li><li[^<]*><(?:a|span)[^>]*>(?:&gt;&gt;|<i class="[^"]+"></i>)<', src),

@@ -118,7 +118,7 @@ function parseList(src: string): IParsedSearch {
         console.warn("Parsing mode not found, falling back to 'Compact'"); // tslint:disable-line: no-console
     } else {
         const possibleModes = ["Minimal", "Minimal+", "Compact", "Extended", "Thumbnail"];
-        const allowedModeOptions = modeOption.filter(mode => possibleModes.indexOf(mode.innerText().trim()) !== -1);
+        const allowedModeOptions = modeOption.filter(m => possibleModes.indexOf(m.innerText().trim()) !== -1);
         const validOption = allowedModeOptions.length > 0 ? allowedModeOptions[0] : modeOption[0];
         mode = validOption.attr("value");
         if (["m", "p", "l", "e", "t"].indexOf(mode) === -1) {
@@ -227,9 +227,9 @@ export const source: ISource = {
                     const html = Grabber.parseHTML(src);
 
                     const posted = src.match(/>Posted:<\/td>\s*<td.*?>(.+?)</)?.[1];
-                    const author = html.find("#gdn a")[0].innerText();
+                    const author = html.find("#gdn a")?.[0]?.innerText();
 
-                    /*const tags: ITag[] = [];
+                    const tags: ITag[] = [];
                     const tagGroups = html.find("#taglist")[0].find("tr");
                     for (const tagGroup of tagGroups) {
                         const td = tagGroup.find("td");
@@ -237,13 +237,17 @@ export const source: ISource = {
                         type = type.substr(0, type.length - 1);
                         const list = td[1].find("a").map((tag: any) => tag.innerText());
                         tags.push(...list.map((name: string) => ({ type, name })));
-                    }*/
+                    }
 
                     const images: IImage[] = [];
                     let matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
                     if (matches.length < 1) {
                         matches = Grabber.regexMatches('<div class="gdtl"[^>]*><a href="(?<page_url>[^"]+)"><img[^>]*src="(?<preview_url>[^"]+)"[^>]*></a></div>', src);
                     }
+                    if (matches.length < 1) {
+                        matches = Grabber.regexMatches('<a href="(?<page_url>[^"]+/s/[^"]+)">(?:<div>)?<div title="Page [0-9]+: (?<filename>[^"]+)" style="(?<div_style>[^"]+)"></div>', src);
+                    }
+
                     for (const match of matches) {
                         if ("div_style" in match) {
                             const styles = cssToObject(match["div_style"]);
@@ -261,7 +265,7 @@ export const source: ISource = {
 
                         match["created_at"] = posted;
                         match["author"] = author;
-                        // match["tags"] = tags;
+                        match["tags"] = tags;
                         images.push(match);
                     }
 

@@ -1,4 +1,4 @@
-#include "search-loader.h"
+ #include "search-loader.h"
 #include <QEventLoop>
 #include <QSettings>
 #include <QSharedPointer>
@@ -23,6 +23,8 @@ void SearchLoader::search(SearchQuery query)
 	Site *site = m_profile->getSites().value(m_site);
 	site->setAutoLogin(false);
 
+	m_profile->getHistory()->addQuery(query, {site});
+
 	QEventLoop loop;
 	QObject::connect(site, &Site::loggedIn, &loop, &QEventLoop::quit, Qt::QueuedConnection);
 	site->login();
@@ -32,7 +34,6 @@ void SearchLoader::search(SearchQuery query)
 	connect(page, &Page::finishedLoading, this, &SearchLoader::searchFinished);
 	connect(page, &Page::failedLoading, this, &SearchLoader::searchFinished);
 	page->load(false);
-
 }
 
 void SearchLoader::searchFinished(Page *page)
@@ -74,6 +75,8 @@ void SearchLoader::searchFinished(Page *page)
 		? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(page->imagesCount())
 		: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
 	emit imageCountChanged();
+
+	m_profile->addAutoComplete(page->tags());
 
 	emit resultsChanged();
 	setStatus(Status::Ready);

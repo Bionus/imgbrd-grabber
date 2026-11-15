@@ -153,14 +153,9 @@ void SearchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 		}
 
 		QList<Tag> tags = page->tags();
+ 		m_completion.append(m_profile->addAutoComplete(tags));
 		for (const Tag &tag : tags) {
 			if (!tag.text().isEmpty()) {
-				// Add to auto-complete list if it has enough count
-				if (tag.count() >= m_settings->value("tagsautoadd", 10).toInt() && !m_completion.contains(tag.text())) {
-					m_profile->addAutoComplete(tag.text());
-					m_completion.append(tag.text());
-				}
-
 				// If we already have this tag in the list, we increase its count
 				if (tagsGot.contains(tag.text())) {
 					const int index = tagsGot.indexOf(tag.text());
@@ -855,7 +850,7 @@ QWidget *SearchTab::createImageThumbnail()
 
 	if (fixedWidthLayout) {
 		const int dim = imageSize + borderSize * 2;
-		w->setFixedSize(dim, dim);
+		w->setFixedSize(QSize(dim, dim)  / devicePixelRatio());
 	}
 
 	return w;
@@ -1282,6 +1277,9 @@ void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 void SearchTab::loadTags(SearchQuery query)
 {
 	log(QStringLiteral("Loading results..."));
+
+	// Save history
+	m_profile->getHistory()->addQuery(query, loadSites());
 
 	// Enable or disable scroll mode
 	const bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();

@@ -41,6 +41,7 @@
         <file>components/settings/pages/SourcesSettingsPage.qml</file>
         <file>components/SearchEdit.qml</file>
         <file>components/FavoritesScreen.qml</file>
+        <file>components/HistoryScreen.qml</file>
         <file>components/AutoCompleteSearchEdit.qml</file>
         <file>components/settings/pages/AdvancedSettingsPage.qml</file>
         <file>components/settings/items/ColorPickerSetting.qml</file>

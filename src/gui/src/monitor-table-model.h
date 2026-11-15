@@ -34,6 +34,7 @@ class MonitorTableModel : public QAbstractTableModel
 
 	protected slots:
 		// Handle signals when the underlying data changes
+		void changed();
 		void inserted(int position);
 		void removed(int position);
 

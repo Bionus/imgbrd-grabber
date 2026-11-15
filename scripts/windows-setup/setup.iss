@@ -12,6 +12,7 @@
 #endif
 #define QtPlugins QtDir + "\..\plugins"
 #define QtLib QtDir + "\..\lib"
+#define QtResources QtDir + "\..\resources"
 
 #ifndef OpenSSLDir
 # define OpenSSLDir "C:\bin\OpenSSL-Win32-1.1.1d"
@@ -22,7 +23,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.13.0"
+# define MyAppVersion "7.14.0"
 #endif
 
 #define PlatformNamePrefix ""
@@ -117,6 +118,22 @@ Source: "{#QtDir}\Qt6Sql.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt6Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6WebEngineCore.dll";        DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6WebEngineWidgets.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6Positioning.dll";          DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6Quick.dll";                DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6QuickWidgets.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6QmlMeta.dll";              DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6QmlModels.dll";            DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6WebChannel.dll";           DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\Qt6QmlWorkerScript.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\QtWebEngineProcess.exe";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\icudtl.dat";                         DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_devtools_resources.pak"; DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_resources.pak";          DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_resources_100p.pak";     DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\qtwebengine_resources_200p.pak";     DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtResources}\v8_context_snapshot.bin";            DestDir: "{app}\resources"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
@@ -163,7 +180,7 @@ Source: "{#QtPlugins}\sqldrivers\qsqlite.dll";     DestDir: "{app}\sqldrivers"; 
 Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlodbc.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlpsql.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
-Source: "{#QtPlugins}\styles\qwindowsvistastyle.dll";  DestDir: "{app}\styles"; Flags: ignoreversion
+Source: "{#QtPlugins}\styles\qmodernwindowsstyle.dll"; DestDir: "{app}\styles"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\helper.js";                   DestDir: "{app}\sites"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\icon.png";     DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\model.js";     DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion

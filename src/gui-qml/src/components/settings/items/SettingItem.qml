@@ -12,6 +12,7 @@ Rectangle {
     default property alias contents: placeholder.data
     property string name
     property string subtitle
+    property string subtitleColor
 
     implicitHeight: Math.max(42, Math.max(placeholder.implicitHeight, colLayout.implicitHeight) + rowLayout.anchors.topMargin + rowLayout.anchors.bottomMargin)
     color: mouseArea.pressed ? Qt.rgba(0, 0, 0, 0.1) : "transparent"
@@ -41,7 +42,7 @@ Rectangle {
                     visible: !!subtitle
                     text: subtitle
                     font.italic: true
-                    color: Material.secondaryTextColor
+                    color: subtitleColor || (enabled ? Material.secondaryTextColor : Material.hintTextColor)
                 }
             }
         }

@@ -276,58 +276,73 @@
     <name>BlacklistSettingsPage</name>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
+      <source>Search</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
+      <source>Added tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="19"/>
+      <source>Post-filters</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="29"/>
       <source>Blacklist</source>
       <translation>블랙리스트</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="30"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
       <translation>블랙리스트 할 태그를 한 줄에 하나씩 입력하세요.
 동시에 여러 개의 태그를 블랙리스트로 등록하려면 AND (예: 'female'AND'male') 같이 작성하세요</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="35"/>
       <source>Hide blacklisted</source>
       <translation>블랙리스트 숨기기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="21"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="36"/>
       <source>Hide blacklisted images from the results.</source>
       <translation>결과에서 블랙리스트 숨기기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="41"/>
       <source>Download blacklisted</source>
       <translation>블랙리스트도 다운로드하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="27"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="42"/>
       <source>Download blacklisted images during batch downloads.</source>
       <translation>일괄 다운로드 중에 블랙리스트 처리된 이미지도 다운로드</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="34"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="49"/>
       <source>Tagging</source>
       <translation>태그 달기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="37"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="52"/>
       <source>Removed tags</source>
       <translation>제거된 태그</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="53"/>
       <source>These won't be taken into account when saving the image.</source>
       <translation>이 것들은 이미지를 저장할 때 상관없습니다.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="58"/>
       <source>Ignored tags</source>
       <translation>무시된 태그</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="44"/>
+      <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="59"/>
       <source>One per line. Their tag type will be reset to the default.</source>
       <translation>한 줄에 하나씩.
 태그 타입은 기본값으로 리셋 될 겁니다.</translation>
@@ -336,9 +351,19 @@
   <context>
     <name>FavoritesScreen</name>
     <message>
-      <location filename="../src/components/FavoritesScreen.qml" line="22"/>
+      <location filename="../src/components/FavoritesScreen.qml" line="40"/>
       <source>Favorites</source>
       <translation>즐겨찾기</translation>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="55"/>
+      <source>Sort</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="58"/>
+      <source>Name</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -360,6 +385,14 @@
     <message>
       <location filename="../src/components/GalleryScreen.qml" line="131"/>
       <source>No result</source>
+      <translation type="unfinished"/>
+    </message>
+  </context>
+  <context>
+    <name>HistoryScreen</name>
+    <message>
+      <location filename="../src/components/HistoryScreen.qml" line="22"/>
+      <source>History</source>
       <translation type="unfinished"/>
     </message>
   </context>
@@ -389,7 +422,7 @@
   <context>
     <name>ImageScreen</name>
     <message>
-      <location filename="../src/components/ImageScreen.qml" line="72"/>
+      <location filename="../src/components/ImageScreen.qml" line="82"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
@@ -478,32 +511,37 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="94"/>
+      <source>Preloading</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="101"/>
       <source>Buttons at the bottom</source>
       <translation>아래쪽 버튼</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
       <source>Move the action buttons to the bottom of the screen.</source>
       <translation>액션 버튼 화면 아래로 이동하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="102"/>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="109"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
       <source>Confirm exit</source>
       <translation>종료 확인</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="106"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="113"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>종료하기 전에 확인 창 보여주기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="111"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="118"/>
       <source>Double tap to exit</source>
       <translation>두 번 클릭해서 닫기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="112"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="119"/>
       <source>Tap back button twice to exit.</source>
       <translation>뒤로가기 두 번 클릭해서 닫기</translation>
     </message>
@@ -739,8 +777,8 @@
   <context>
     <name>SearchLoader</name>
     <message>
-      <location filename="../src/loaders/search-loader.cpp" line="70"/>
-      <location filename="../src/loaders/search-loader.cpp" line="75"/>
+      <location filename="../src/loaders/search-loader.cpp" line="72"/>
+      <location filename="../src/loaders/search-loader.cpp" line="77"/>
       <source>max %1</source>
       <translation type="unfinished"/>
     </message>
@@ -793,8 +831,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
-      <source>Blacklist</source>
-      <translation>블랙리스트</translation>
+      <source>Search</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -1056,72 +1094,72 @@
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="58"/>
+      <location filename="../src/main-screen.qml" line="68"/>
       <source>Through URL</source>
       <translation>URL 통해서</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="59"/>
+      <location filename="../src/main-screen.qml" line="69"/>
       <source>HTTP Basic</source>
       <translation>HTTP Basic</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="60"/>
+      <location filename="../src/main-screen.qml" line="70"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="61"/>
+      <location filename="../src/main-screen.qml" line="71"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="62"/>
+      <location filename="../src/main-screen.qml" line="72"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="63"/>
+      <location filename="../src/main-screen.qml" line="73"/>
       <source>OAuth 2</source>
       <translation>OAuth 2</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="66"/>
+      <location filename="../src/main-screen.qml" line="76"/>
       <source>Username</source>
       <translation>사용자 이름</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="67"/>
+      <location filename="../src/main-screen.qml" line="77"/>
       <source>User ID</source>
       <translation>사용자 아이디</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="68"/>
+      <location filename="../src/main-screen.qml" line="78"/>
       <source>Password</source>
       <translation>비밀번호</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="69"/>
+      <location filename="../src/main-screen.qml" line="79"/>
       <source>Salt</source>
       <translation>솔트(Salt)</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="70"/>
+      <location filename="../src/main-screen.qml" line="80"/>
       <source>API key</source>
       <translation>API 키</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="88"/>
+      <location filename="../src/main-screen.qml" line="98"/>
       <source>Update available</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="157"/>
+      <location filename="../src/main-screen.qml" line="167"/>
       <source>Do you want to exit?</source>
       <translation>종료 하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="171"/>
+      <location filename="../src/main-screen.qml" line="181"/>
       <source>Don't ask again</source>
       <translation>다시 표시하지 않기</translation>
     </message>

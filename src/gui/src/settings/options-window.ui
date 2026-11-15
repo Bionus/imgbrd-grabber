@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
-    <height>628</height>
+    <width>751</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -656,6 +656,43 @@
           </property>
          </widget>
         </item>
+        <item row="10" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupExtensionRotatorStatic">
+          <property name="title">
+           <string>Extension rotation</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_31">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelExtensionRotatorStatic">
+             <property name="text">
+              <string>Static media</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineExtensionRotatorStatic">
+             <property name="text">
+              <string>jpg, png, gif, jpeg, webm, swf, mp4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineExtensionRotatorAnimated">
+             <property name="text">
+              <string>mp4, webm, gif, jpg, png, jpeg, swf</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelExtensionRotatorAnimated">
+             <property name="text">
+              <string>Animated media</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSourcesRegistries">
@@ -1184,8 +1221,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>472</width>
-             <height>494</height>
+             <width>486</width>
+             <height>502</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1555,14 +1592,14 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="labelConversionFFmpegTimeout">
              <property name="text">
               <string>Timeout</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="3" column="1">
             <widget class="QDoubleSpinBox" name="spinConversionFFmpegTimeout">
              <property name="suffix">
               <string> s</string>
@@ -1581,6 +1618,16 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionFFmpegOverwrite">
+             <property name="text">
+              <string>Overwrite destination file if it already exists</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1590,34 +1637,23 @@
            <string>Image conversion</string>
           </property>
           <layout class="QFormLayout" name="formLayout_30">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelConversionImageBackend">
-             <property name="text">
-              <string>Back-end</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="comboConversionImageBackend">
-             <item>
-              <property name="text">
-               <string notr="true">ImageMagick</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string notr="true">FFmpeg</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
+           <item row="0" column="0" colspan="2">
             <layout class="QVBoxLayout" name="layoutConversionImageList"/>
            </item>
-           <item row="2" column="0" colspan="2">
+           <item row="1" column="0" colspan="2">
             <widget class="QPushButton" name="buttonConversionImageListAdd">
              <property name="text">
               <string>Add new image conversion</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionImageOverwrite">
+             <property name="text">
+              <string>Overwrite destination file if it already exists</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1706,14 +1742,14 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="labelConversionUgoiraTimeout">
              <property name="text">
               <string>Timeout</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="4" column="1">
             <widget class="QDoubleSpinBox" name="spinConversionUgoiraTimeout">
              <property name="suffix">
               <string> s</string>
@@ -1729,6 +1765,16 @@
              </property>
              <property name="value">
               <double>30.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkConversionUgoiraOverwrite">
+             <property name="text">
+              <string>Overwrite destination file if it already exists</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -2074,7 +2120,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutocompletion">
           <property name="text">
            <string>Enable autocompletion</string>
@@ -2084,7 +2130,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
            <string>Show warning if an incompatible modifier is found</string>
@@ -2094,7 +2140,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowWarnings">
           <property name="text">
            <string>Show other warnings</string>
@@ -2104,14 +2150,14 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="labelGetUnloadedPages">
           <property name="font">
            <font>
@@ -2126,14 +2172,14 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkInvertToggle">
           <property name="text">
            <string>Invert Click and Ctrl+Click actions</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
+        <item row="13" column="0" colspan="2">
          <widget class="QLabel" name="labelInvertToggle">
           <property name="font">
            <font>
@@ -2148,13 +2194,20 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowFilteredImagesCount">
           <property name="text">
            <string>Show filtered images count</string>
           </property>
           <property name="checked">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkPreviewVideoIndicator">
+          <property name="text">
+           <string>Show video indicator on previews</string>
           </property>
          </widget>
         </item>
@@ -2897,8 +2950,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>338</width>
-             <height>630</height>
+             <width>406</width>
+             <height>650</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_12">

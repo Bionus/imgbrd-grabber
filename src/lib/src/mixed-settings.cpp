@@ -17,6 +17,14 @@ MixedSettings::~MixedSettings()
 }
 
 
+
+bool MixedSettings::contains(const QString &key) const
+{
+	return std::any_of(m_settings.constBegin(), m_settings.constEnd(), [&key](const QSettings *setting) {
+		return setting->contains(key);
+	});
+}
+
 QVariant MixedSettings::value(const QString &key, const QVariant &defaultValue) const
 {
 	for (QSettings *setting : qAsConst(m_settings)) {

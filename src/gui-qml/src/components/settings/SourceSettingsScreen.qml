@@ -122,7 +122,7 @@ Page {
                 Layout.fillWidth: true
 
                 delegate: Item {
-                    height: 100
+                    height: modelData.fields.length * 53
                     width: parent.width
                     visible: modelData.id === loginTypeSetting.value
 

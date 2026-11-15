@@ -9,6 +9,7 @@ set(QT_LIBRARIES Qt6::Core Qt6::Quick Qt6::Multimedia Qt6::Network Qt6::Sql)
 
 # Android specials
 if(ANDROID)
+    find_package(Qt6 COMPONENTS Core CorePrivate REQUIRED)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
@@ -89,8 +90,8 @@ if(ANDROID)
 	# NAME ${ANDROID_APP_NAME}
 	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
 
-	# Sign package if the keystore was provided
-	if(DEFINED ENV{QT_ANDROID_KEYSTORE_PATH})
+	# Sign package if the keystore and its password were provided
+	if(NOT "$ENV{QT_ANDROID_KEYSTORE_PATH}" STREQUAL "" AND NOT "$ENV{QT_ANDROID_KEYSTORE_STORE_PASS}" STREQUAL "")
 		set(QT_ANDROID_SIGN_APK ON)
 	else()
 		message(WARNING "No keystore provided, APK signing disabled")

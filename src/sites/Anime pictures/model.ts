@@ -29,7 +29,7 @@ function completeImage(img: IImage, raw: any): IImage {
     if (!img.preview_url && !img.sample_url && !img.file_url) {
         const domain = "anime-pictures.net";
         const md5Part = img.md5?.substring(0, 3) + "/" + img.md5;
-        const previewExt = raw["have_alpha"] === true ? "png" : "jpg";
+        const previewExt = "png";
         img.preview_url = `//opreviews.${domain}/${md5Part}_sp.${previewExt}`;
         img.sample_url = `//opreviews.${domain}/${md5Part}_bp.${previewExt}`;
         img.file_url = `//oimages.${domain}/${md5Part}.${img.ext}`;

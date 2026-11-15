@@ -6,6 +6,7 @@
 #include <QMimeDatabase>
 #include <QSettings>
 #include <QStandardPaths>
+#include "backup.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
@@ -17,6 +18,7 @@
 #include "models/site-factory.h"
 #include "models/source.h"
 #include "settings.h"
+#include "models/qml-history-entry.h"
 #include "share/share-utils.h"
 #include "utils/logging.h"
 #include "models/qml-site.h"
@@ -31,9 +33,11 @@ MainScreen::MainScreen(Profile *profile, ShareUtils *shareUtils, QObject *parent
 	refreshSites();
 	refreshSources();
 	refreshFavorites();
+	refreshHistory();
 
 	connect(m_profile, &Profile::sitesChanged, this, &MainScreen::refreshSites);
 	connect(m_profile, &Profile::favoritesChanged, this, &MainScreen::refreshFavorites);
+	connect(m_profile->getHistory(), &History::changed, this, &MainScreen::refreshHistory);
 }
 
 void MainScreen::refreshSites()
@@ -65,6 +69,17 @@ void MainScreen::refreshFavorites()
 		m_favorites.append(fav.getName(false));
 	}
 	emit favoritesChanged();
+}
+
+void MainScreen::refreshHistory()
+{
+	qDeleteAll(m_history);
+	m_history.clear();
+
+	for (const auto &entry : m_profile->getHistory()->entries()) {
+		m_history.append(new QmlHistoryEntry(entry));
+	}
+	emit historyChanged();
 }
 
 void MainScreen::newLog(const QString &message)
@@ -101,11 +116,13 @@ void MainScreen::shareImage(const QSharedPointer<Image> &image)
 	ImageDownloader downloader(m_profile, image, filename, path, 0, false, false, this);
 
 	QEventLoop loop;
-	QObject::connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+	connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit, Qt::QueuedConnection);
 	downloader.save();
 	loop.exec();
 
-	const QString savePath = image->savePath();
+	const QString savePath = !image->savePath(Image::Size::Full).isEmpty()
+		? image->savePath(Image::Size::Full)
+		: image->savePath(Image::Size::Sample);
 	const QString mimeType = QMimeDatabase().mimeTypeForFile(savePath).name();
 	m_shareUtils->sendFile(savePath, mimeType, "Share image");
 }
@@ -144,6 +161,16 @@ void MainScreen::removeFavorite(const QString &query)
 	m_profile->removeFavorite(Favorite(query));
 }
 
+void MainScreen::removeHistory(const QString &query, const QString &siteUrl)
+{
+	Site *site = m_profile->getSites().value(siteUrl);
+	m_profile->getHistory()->removeQuery(query.split(' ', Qt::SkipEmptyParts), {site});
+}
+void MainScreen::clearHistory()
+{
+	m_profile->getHistory()->clear();
+}
+
 void MainScreen::loadSuggestions(const QString &prefix, int limit)
 {
 	m_autoComplete.clear();
@@ -166,6 +193,7 @@ void MainScreen::loadSuggestions(const QString &prefix, int limit)
 
 	emit autoCompleteChanged();
 }
+
 
 bool MainScreen::exportSettings(const QString &dest)
 {
@@ -191,6 +219,17 @@ bool MainScreen::importSettings(const QString &source)
 
 	return true;
 }
+
+bool MainScreen::exportBackup(const QString &dest)
+{
+	return saveBackup(m_profile, dest);
+}
+
+bool MainScreen::importBackup(const QString &source)
+{
+	return loadBackup(m_profile, source);
+}
+
 
 bool MainScreen::removeSite(QmlSite *site)
 {

@@ -39,13 +39,12 @@ TEST_CASE("E621")
 	SECTION("JSON search with typed tags")
 	{
 		QList<QSharedPointer<Image>> images = getImages("E621", "e621.net", "json", "rating:safe", "results.json");
-		REQUIRE(!images.isEmpty());
+		REQUIRE(images.count() == 20);
 
 		QList<Tag> tags = images.first()->tags();
-		REQUIRE(tags.count() == 24);
-
-		REQUIRE(tags[16].text() == QString("zenfry"));
-		REQUIRE(tags[16].type().name() == QString("artist"));
+		REQUIRE(tags.count() == 39);
+		REQUIRE(tags[29].text() == QString("flippin-rad"));
+		REQUIRE(tags[29].type().name() == QString("artist"));
 	}
 
 	SECTION("HTML tags")

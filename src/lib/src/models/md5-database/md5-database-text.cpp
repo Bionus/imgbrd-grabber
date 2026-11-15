@@ -11,17 +11,7 @@ Md5DatabaseText::Md5DatabaseText(QString path, QSettings *settings)
 	: Md5Database(settings), m_path(std::move(path)), m_flushTimer(this)
 {
 	// Read all MD5 from the database and load them in memory
-	log("Start loading MD5 database");
-	QFile fileMD5(m_path);
-	if (fileMD5.open(QFile::ReadOnly | QFile::Text)) {
-		QString line;
-		while (!(line = fileMD5.readLine()).isEmpty()) {
-			m_md5s.insert(line.left(32), line.mid(32).trimmed());
-		}
-
-		fileMD5.close();
-	}
-	log(QString("MD5 database loaded (%1 entries)").arg(m_md5s.count()));
+	load();
 
 	// Connect the timer to the flush slot
 	m_flushTimer.setSingleShot(true);
@@ -55,6 +45,21 @@ void Md5DatabaseText::flush()
 
 	m_pendingAdd.clear();
 	emit flushed();
+}
+
+void Md5DatabaseText::load()
+{
+	log("Start loading MD5 database");
+	QFile fileMD5(m_path);
+	if (fileMD5.open(QFile::ReadOnly | QFile::Text)) {
+		QString line;
+		while (!(line = fileMD5.readLine()).isEmpty()) {
+			m_md5s.insert(line.left(32), line.mid(32).trimmed());
+		}
+
+		fileMD5.close();
+	}
+	log(QString("MD5 database loaded (%1 entries)").arg(m_md5s.count()));
 }
 
 /**

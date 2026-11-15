@@ -22,6 +22,12 @@ ApplicationWindow {
     Material.primary: gSettings.appearance_materialPrimary.value
     Material.accent: gSettings.appearance_materialAccent.value
 
+    onClosing: close => {
+        if (mainStackView.handleBack()) {
+            close.accepted = false
+        }
+    }
+
     SB.StatusBar {
         theme: gSettings.appearance_materialTheme.value
         color: Material.color(gSettings.appearance_materialPrimary.value, Material.Shade700)
@@ -52,7 +58,17 @@ ApplicationWindow {
             "model": qsTr("Model"),
             "photo_set": qsTr("Photo set"),
             "species": qsTr("Species"),
-            "meta": qsTr("Meta")
+            "meta": qsTr("Meta"),
+        }
+        property var tagTypeColorSettings: {
+            "artist": gSettings.coloring_colors_artists,
+            "circle": gSettings.coloring_colors_circles,
+            "copyright": gSettings.coloring_colors_copyrights,
+            "character": gSettings.coloring_colors_characters,
+            "species": gSettings.coloring_colors_species,
+            "meta": gSettings.coloring_colors_metas,
+            "model": gSettings.coloring_colors_models,
+            "general": gSettings.coloring_colors_generals,
         }
         property var authTypes: {
             "url": qsTr("Through URL"),
@@ -133,6 +149,19 @@ ApplicationWindow {
                 }
             }
 
+            HistoryScreen {
+                id: historyScreen
+                visible: currentPage === "history"
+                anchors.fill: parent
+                history: backend.history
+
+                onOpenSearch: (query, site) => {
+                    gSettings.activeSource.setValue(site)
+                    searchScreen.load(query)
+                    currentPage = "search"
+                }
+            }
+
             SourcesScreen {
                 visible: currentPage === "sources"
                 anchors.fill: parent
@@ -191,7 +220,9 @@ ApplicationWindow {
             onActiveSourceChanged: { gSettings.activeSource.setValue(activeSource); }
             onBack: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
-            onEditSource: mainStackView.push(editSourceScreen, { site: activeSite })
+             onEditSource: function (site) {
+                mainStackView.push(editSourceScreen, { site: site })
+            }
         }
 
         AddSourceScreen {
@@ -218,22 +249,33 @@ ApplicationWindow {
         }
 
         property double backPressed: 0
+
+        function handleBack() {
+            const now = new Date().getTime()
+            if (mainStackView.depth > 1) {
+                mainStackView.pop()
+            } else if (currentPage !== "search") {
+                currentPage = "search"
+            } else if (gSettings.mobile_confirmExit.value) {
+                confirmExitDialog.open()
+            } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 1000) {
+                backPressed = now
+            } else {
+                return false
+            }
+            return true
+        }
+
         Keys.onReleased: event => {
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-                const now = new Date().getTime()
-                if (mainStackView.depth > 1) {
-                    mainStackView.pop()
-                } else if (currentPage !== "search") {
-                    currentPage = "search";
-                } else if (gSettings.mobile_confirmExit.value) {
-                    confirmExitDialog.open()
-                } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 200) {
-                    backPressed = now
-                } else {
+                if (!mainStackView.handleBack()) {
                     Qt.quit()
                 }
                 event.accepted = true
             }
         }
+
+        // Ensure the current stack is focused, so key events are handled there
+        onCurrentItemChanged: if (currentItem) currentItem.forceActiveFocus()
     }
 }

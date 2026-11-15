@@ -23,7 +23,6 @@
         android:hardwareAccelerated="true"
         android:label="Grabber"
         android:requestLegacyExternalStorage="true"
-        android:allowNativeHeapPointerTagging="false"
         android:allowBackup="true"
         android:fullBackupOnly="false"
         android:icon="@mipmap/ic_launcher"
@@ -76,7 +75,7 @@
 
         <!-- Custom -->
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name="org.bionus.grabber.GrabberFileProvider"
             android:authorities="org.bionus.grabber.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

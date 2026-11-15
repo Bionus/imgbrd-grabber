@@ -26,11 +26,15 @@ void MonitorManager::load()
 
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
-
 	QJsonArray monitors = object["monitors"].toArray();
+
+	m_monitors.clear();
+	m_monitors.reserve(monitors.count());
 	for (const auto &monitorJson : monitors) {
 		m_monitors.append(Monitor::fromJson(monitorJson.toObject(), m_profile));
 	}
+
+	emit changed();
 }
 
 void MonitorManager::save() const

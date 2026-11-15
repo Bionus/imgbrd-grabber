@@ -24,7 +24,7 @@ void TagApiBase::setUrl(QUrl url, QMap<QString, QString> headers)
 
 void TagApiBase::load(bool rateLimit)
 {
-	log(QStringLiteral("[%1] Loading tags page `%2`").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1] Loading tags page `%2`").arg(m_site->url(), m_url.toString()), Logger::Info);
 
 	if (m_reply != nullptr) {
 		if (m_reply->isRunning()) {
@@ -48,13 +48,13 @@ void TagApiBase::abort()
 
 void TagApiBase::parseInternal()
 {
-	log(QStringLiteral("[%1] Receiving tags page `%2`").arg(m_site->url(), m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1] Receiving tags page `%2`").arg(m_site->url(), m_reply->url().toString()), Logger::Info);
 
 	// Check redirection
 	QUrl redirection = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty()) {
 		QUrl newUrl = m_site->fixUrl(redirection.toString(), m_url);
-		log(QStringLiteral("[%1] Redirecting tags page `%2` to `%3`").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1] Redirecting tags page `%2` to `%3`").arg(m_site->url(), m_url.toString(), newUrl.toString()), Logger::Info);
 		m_url = newUrl;
 		load();
 		return;

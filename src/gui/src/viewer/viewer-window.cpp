@@ -241,7 +241,9 @@ ViewerWindow::~ViewerWindow()
 	m_detailsWindow->deleteLater();
 
 	m_gifPlayer->deleteLater();
-	m_videoPlayer->deleteLater();
+	if (m_videoPlayer != nullptr) {
+		m_videoPlayer->deleteLater();
+	}
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();
@@ -564,10 +566,11 @@ void ViewerWindow::contextMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
-void ViewerWindow::openInNewTab()
+void ViewerWindow::openInNewTab(const QString &link)
 {
-	if (!m_link.isEmpty()) {
-		m_parent->addTab(m_link, false, true, m_tab);
+	QString activeLink = link.isEmpty() ? m_link : link;
+	if (!activeLink.isEmpty()) {
+		m_parent->addTab(activeLink, false, true, m_tab);
 	}
 }
 void ViewerWindow::setfavorite()
@@ -907,12 +910,15 @@ void ViewerWindow::update(bool onlySize, bool force)
 		return;
 	}
 
+	m_displayImage.setDevicePixelRatio(m_labelImage->devicePixelRatio());
+	const QSize labelSize = m_labelImage->size() * m_labelImage->devicePixelRatio();
 	const bool needScaling = m_settings->value("Viewer/scaleUp", false).toBool()
-		|| m_displayImage.width() > m_labelImage->width()
-		|| m_displayImage.height() > m_labelImage->height();
+		|| m_displayImage.width() > labelSize.width()
+		|| m_displayImage.height() > labelSize.height();
+
 	if (needScaling && (onlySize || m_loadedImage || force)) {
 		const Qt::TransformationMode mode = onlySize ? Qt::FastTransformation : Qt::SmoothTransformation;
-		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
+		m_labelImage->setImage(m_displayImage.scaled(labelSize.width(), labelSize.height(), Qt::KeepAspectRatio, mode));
 		m_labelImageScaled = true;
 	} else if (m_loadedImage || force || (m_labelImageScaled && !needScaling)) {
 		m_labelImage->setImage(m_displayImage);
@@ -965,15 +971,13 @@ void ViewerWindow::saveImage(bool fav)
 			if (m_imagePath.isEmpty() || m_imagePath == m_source) {
 				m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + "." + m_image->extension();
 			}
-			if (QFile::exists(m_imagePath)) {
-				QFile::remove(m_source);
-			} else {
+			if (!QFile::exists(m_imagePath)) {
 				QFile::rename(m_source, m_imagePath);
 			}
+			m_image->remove({ m_source });
 			m_image->setTemporaryPath(m_imagePath);
 			m_source = "";
 			setButtonState(fav, SaveButtonState::Save);
-			m_profile->removeMd5(m_image->md5());
 			break;
 		}
 

@@ -1,5 +1,8 @@
 // Usage:
-// node szurubooru.js "username" "token" "tagType1:tag1 tagType2:tag2" "safe" "http://source" "path/to/file.jpg"
+// node /full/path/to/grabber/szurubooru.js "username" "token" "%path:nobackslash%" "%all:includenamespace,unsafe,underscores%" "%rating%" "%source:raw%"
+
+// Config:
+const BASE_URL = "http://localhost:8080"; // https://your_booru.tld
 
 const axios = require("axios");
 const fs = require("fs");
@@ -46,9 +49,10 @@ async function setTagCategory(name, category) {
 }
 
 (async () => {
-    // Szurubooru doesn't use the same ratings as most boorus, so we need to map them
+    // Ratings map updated to include szurubooru default ratings, and anime-pictures default 'unknown' safety, which defaults to 'safe'
+    const defaultRating = "safe";
     const ratingsMap = {
-        "": "safe",
+        "": defaultRating,
         "g": "safe",
         "general": "safe",
         "safe": "safe",
@@ -56,23 +60,31 @@ async function setTagCategory(name, category) {
         "sensitive": "sketchy",
         "q": "sketchy",
         "questionable": "sketchy",
+        "sketchy": "sketchy",
         "e": "unsafe",
         "explicit": "unsafe",
+        "unsafe": "unsafe",
+        "unknown": defaultRating,
     };
 
     // Get parameters
     const argv = process.argv.slice(2);
     const username = argv.shift();
     const token = argv.shift();
+    const filePath = argv[0];
+    const rawTags = argv[1] || "";
+    const rating = argv[2] || "safe";
+    const source = argv[3] || undefined;
 
     // Axios settings
-    axios.defaults.baseURL = "http://localhost:8080/api";
+    axios.defaults.baseURL = BASE_URL + "/api";
     axios.defaults.headers.common["Authorization"] = "Token " + Buffer.from(username + ":" + token).toString("base64");
     axios.defaults.headers.common["Accept"] = "application/json";
 
     // Parse tags and update categories
-    const tags = argv[0].split(" ");
+    const tags = rawTags.split(" ");
     for (let i = 0; i < tags.length; ++i) {
+        if (!tags[i]) continue;
         const parts = tags[i].split(":");
         const category = parts.shift();
         const name = parts.join(":");
@@ -83,13 +95,13 @@ async function setTagCategory(name, category) {
     // Actual data to send to the server
     const data = {
         tags,
-        safety: ratingsMap[argv[1]],
-        source: argv[2] || undefined,
+        safety: ratingsMap[rating.toLowerCase()],
+        source,
     };
 
     // Create a multipart form data request
     const form = new FormData();
-    form.append("content", fs.createReadStream(argv[3]), "test.tmp");
+    form.append("content", fs.createReadStream(filePath), "image.tmp");
     form.append("metadata", JSON.stringify(data));
 
     // Create image post
@@ -100,9 +112,12 @@ async function setTagCategory(name, category) {
             maxBodyLength: 999999999999,
         }
         await axios.post("/posts/", form, config);
+        console.log("Post created successfully!");
     } catch (e) {
         console.error("Error creating post: " + e.message);
-        console.error(e.response.data);
+        if (e.response) {
+            console.error(e.response.data);
+        }
         process.exit(1);
     }
 })();

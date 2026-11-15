@@ -2,8 +2,12 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US" sourcelanguage="en_US">
 <context>
-    <name>LanguageLoaderTest</name>
+    <name>LanguageLoader</name>
     <message>
+        <location filename="../src/language-loader-test.cpp" line="33"/>
+        <location filename="../src/language-loader-test.cpp" line="39"/>
+        <location filename="../src/language-loader-test.cpp" line="43"/>
+        <location filename="../src/language-loader-test.cpp" line="48"/>
         <source>Translation test</source>
         <translation>Translation test</translation>
     </message>

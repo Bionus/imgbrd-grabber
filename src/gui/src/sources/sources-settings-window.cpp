@@ -1,11 +1,13 @@
 #include "sources/sources-settings-window.h"
 #include <QCryptographicHash>
+#include <QFileDialog>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QNetworkCookie>
 #include <QSettings>
 #include <ui_sources-settings-window.h>
 #include "auth/auth.h"
+#include "cookies.h"
 #include "functions.h"
 #include "mixed-settings.h"
 #include "models/api/api.h"
@@ -13,7 +15,7 @@
 #include "models/source-engine.h"
 #include "network/persistent-cookie-jar.h"
 #include "login/login-factory.h"
-#if !defined(USE_WEBENGINE)
+#if defined(USE_WEBENGINE)
 	#include "webview-window.h"
 #endif
 
@@ -47,11 +49,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	// Refferers
 	ui->lineSiteName->setText(site->setting("name", m_site->url()).toString());
 	const QStringList referers { "none", "host", "page", "image" };
-	const QStringList referers_preview { "", "none", "host", "page", "image" };
-	const QStringList referers_image { "", "none", "host", "page", "details", "image" };
+	const QStringList referers_preview { "none", "host", "page", "image" };
+	const QStringList referers_image { "none", "host", "page", "details", "image" };
 	ui->comboReferer->setCurrentIndex(referers.indexOf(site->setting("referer", "none").toString()));
-	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "").toString()));
-	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "").toString()));
+	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "page").toString()));
+	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "details").toString()));
 	ui->spinIgnoreAlways->setValue(site->setting("ignore/always", 0).toInt());
 	ui->spinIgnore1->setValue(site->setting("ignore/1", 0).toInt());
 	ui->checkSsl->setChecked(site->setting("ssl", false).toBool());
@@ -199,6 +201,25 @@ void SourcesSettingsWindow::addCookie()
 {
 	ui->tableCookies->setRowCount(ui->tableCookies->rowCount() + 1);
 }
+
+void SourcesSettingsWindow::importCookies()
+{
+	const QString path = QFileDialog::getOpenFileName(this, tr("Import cookies"), "", tr("Cookie files (*.txt *.json)"));
+	if (path.isEmpty()) {
+		return;
+	}
+
+	const QList<QNetworkCookie> cookies = loadCookiesFromFile(path);
+	for (const QNetworkCookie &cookie : cookies) {
+		const int row = ui->tableCookies->rowCount();
+		ui->tableCookies->setRowCount(ui->tableCookies->rowCount() + 1);
+		ui->tableCookies->setItem(row, 0, new QTableWidgetItem(QString(cookie.name())));
+		ui->tableCookies->setItem(row, 1, new QTableWidgetItem(QString(cookie.value())));
+	}
+
+	QMessageBox::information(this, QObject::tr("Success"), tr("%n cookie(s) imported.", nullptr, cookies.count()));
+}
+
 void SourcesSettingsWindow::addHeader()
 {
 	ui->tableHeaders->setRowCount(ui->tableHeaders->rowCount() + 1);
@@ -293,8 +314,8 @@ void SourcesSettingsWindow::saveSettings()
 {
 	m_site->setSetting("name", ui->lineSiteName->text(), m_site->url());
 	const QStringList referers { "none", "host", "page", "image" };
-	const QStringList referers_preview { "", "none", "host", "page", "image" };
-	const QStringList referers_image { "", "none", "host", "page", "details", "image" };
+	const QStringList referers_preview { "none", "host", "page", "image" };
+	const QStringList referers_image { "none", "host", "page", "details", "image" };
 	m_site->setSetting("referer", referers[ui->comboReferer->currentIndex()], "none");
 	m_site->setSetting("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()], "");
 	m_site->setSetting("referer_image", referers_image[ui->comboRefererImage->currentIndex()], "");
@@ -369,6 +390,7 @@ void SourcesSettingsWindow::saveSettings()
 	// Headers
 	MixedSettings *settings = m_site->settings();
 	settings->beginGroup("Headers");
+	settings->remove("");
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
 		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);

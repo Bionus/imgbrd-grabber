@@ -14,7 +14,6 @@
 #include "monitoring/monitor.h"
 #include "monitoring/monitor-manager.h"
 
-#define MONITOR_CHECK_LIMIT 20
 #define MONITOR_CHECK_TOTAL 1000
 
 
@@ -59,11 +58,12 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	QList<QSharedPointer<Image>> newImagesList;
 	QString state = "";
 	bool success = true;
+	const int perPage = m_profile->getSettings()->value("limit", 20).toInt();
 
 	for (Site *site : monitor.sites()) {
 		// Create a pack loader
-		DownloadQueryGroup query(m_profile->getSettings(), search, 1, MONITOR_CHECK_LIMIT, MONITOR_CHECK_TOTAL, postFiltering, site);
-		PackLoader loader(m_profile, query, MONITOR_CHECK_LIMIT, this);
+		DownloadQueryGroup query(m_profile->getSettings(), search, 1, perPage, MONITOR_CHECK_TOTAL, postFiltering, site);
+		PackLoader loader(m_profile, query, perPage, this);
 		loader.start();
 
 		// Load all images

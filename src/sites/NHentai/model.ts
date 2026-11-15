@@ -1,3 +1,6 @@
+const THUMBNAILS_DOMAIN = "t4.nhentai.net";
+const IMAGES_DOMAIN = "i4.nhentai.net";
+
 const extensionMap: any = {
     j: "jpg",
     p: "png",
@@ -13,7 +16,7 @@ function makeGallery(gallery: any): IImage {
 
 function makeImage(image: any): IImage {
     image["file_url"] = image["preview_url"]
-        .replace("https://t.", "https://i.")
+        .replace(/https:\/\/t([\d]?)\./, "https://i$1.")
         .replace(/t.jpg$/, ".jpg")
         .replace(/t.png$/, ".png")
         .replace(/t.gif$/, ".gif")
@@ -84,7 +87,7 @@ export const source: ISource = {
                             name: gallery["title"]["english"],
                             created_at: gallery["upload_date"],
                             tags: gallery["tags"].map(makeTag),
-                            preview_url: "https://t.nhentai.net/galleries/" + gallery["media_id"] + "/thumb." + extensionMap[thumb["t"]],
+                            preview_url: "https://" + THUMBNAILS_DOMAIN + "/galleries/" + gallery["media_id"] + "/thumb." + extensionMap[thumb["t"]],
                             preview_width: thumb["w"],
                             preview_height: thumb["h"],
                         };
@@ -112,10 +115,10 @@ export const source: ISource = {
                         images.push({
                             created_at: data["upload_date"],
                             tags: data["tags"].map(makeTag),
-                            file_url: "https://i.nhentai.net/galleries/" + data["media_id"] + "/" + index + "." + extensionMap[image["t"]],
+                            file_url: "https://" + IMAGES_DOMAIN + "/galleries/" + data["media_id"] + "/" + index + "." + extensionMap[image["t"]],
                             width: image["w"],
                             height: image["h"],
-                            preview_url: "https://t.nhentai.net/galleries/" + data["media_id"] + "/" + index + "t." + extensionMap[image["t"]],
+                            preview_url: "https://" + THUMBNAILS_DOMAIN + "/galleries/" + data["media_id"] + "/" + index + "t." + extensionMap[image["t"]],
                         });
                     }
 

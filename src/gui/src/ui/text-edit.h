@@ -25,6 +25,7 @@ class TextEdit : public QTextEdit
 		void keyPressEvent(QKeyEvent *e) override;
 		void focusInEvent(QFocusEvent *e) override;
 		void wheelEvent(QWheelEvent *e) override;
+		void insertFromMimeData(const QMimeData *source) override;
 
 	private:
 		QString textUnderCursor() const;

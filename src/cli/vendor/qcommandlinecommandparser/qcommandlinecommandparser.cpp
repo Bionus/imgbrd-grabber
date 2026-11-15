@@ -1,4 +1,5 @@
 #include "qcommandlinecommandparser.h"
+#include <QDebug>
 #include <QString>
 #include "vendor.h"
 

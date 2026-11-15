@@ -20,11 +20,12 @@ class ImageMagick
 		 *
 		 * @param file The file to convert.
 		 * @param extension The target extension (ex: "jpg").
+		 * @param overwrite Whether to overwrite the target file if it already exists.
 		 * @param deleteOriginal Whether to delete the original file on success.
 		 * @param msecs The duration to wait in milliseconds for the command to run.
 		 * @return The destination file path on success, the original file path on error.
 		 */
-		static QString convert(const QString &file, const QString &extension, bool deleteOriginal = true, int msecs = 30000);
+		static QString convert(const QString &file, const QString &extension, bool overwrite = true, bool deleteOriginal = true, int msecs = 30000);
 
 	protected:
 		static bool execute(const QStringList &params, int msecs = 30000);
