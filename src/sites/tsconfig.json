@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "declaration": false,
+        "ignoreDeprecations": "6.0",
         "module": "es6",
         "noImplicitReturns": true,
         "noUnusedLocals": true,
