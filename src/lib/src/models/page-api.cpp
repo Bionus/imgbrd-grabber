@@ -122,6 +122,10 @@ void PageApi::load(bool rateLimit, bool force)
 		setReply(nullptr);
 	}
 
+	if (!rateLimit) {
+		m_rateLimitRetryCount = 0;
+	}
+
 	if (m_url.isEmpty() && !m_errors.isEmpty()) {
 		for (const QString &err : qAsConst(m_errors)) {
 			log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, err), Logger::Warning);
@@ -206,7 +210,20 @@ void PageApi::parse()
 	// Detect HTTP 429 / 503 / 509 usage limit reached
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429 || statusCode == 503 || statusCode == 509) {
-		log(QStringLiteral("[%1][%2] Limit reached (%3). New try.").arg(m_site->url(), m_format, QString::number(statusCode)), Logger::Warning);
+		const int maxRetries = qMax(0, m_site->setting("download/throttle_max_retries", 2).toInt());
+		if (m_rateLimitRetryCount >= maxRetries) {
+			const QString error = QStringLiteral("Rate limit reached after %1 retries (HTTP %2).").arg(m_rateLimitRetryCount).arg(statusCode);
+			m_errors.append(error);
+			log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, error), Logger::Warning);
+			setReply(nullptr);
+			m_loaded = true;
+			m_loading = false;
+			emit finishedLoading(this, LoadResult::Error);
+			return;
+		}
+
+		m_rateLimitRetryCount++;
+		log(QStringLiteral("[%1][%2] Limit reached (%3). New try %4/%5.").arg(m_site->url(), m_format).arg(statusCode).arg(m_rateLimitRetryCount).arg(maxRetries), Logger::Warning);
 		load(true, true);
 		return;
 	}

@@ -104,6 +104,7 @@ class PageApi : public QObject
 		QList<Tag> m_tags;
 		NetworkReply *m_reply;
 		int m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount, m_filteredImageCount;
+		int m_rateLimitRetryCount = 0;
 		bool m_imagesCountSafe, m_pagesCountSafe;
 		bool m_loading = false;
 		bool m_loaded = false;
