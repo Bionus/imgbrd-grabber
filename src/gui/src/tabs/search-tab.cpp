@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QPalette>
 #include <QSet>
 #include <QShortcut>
 #include <QtMath>
@@ -252,7 +253,9 @@ QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, 
 
 		if (c > 0) {
 			QStringList res = results.values(), cl = clean.values();
-			*meant = QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(cl.join(" ").toHtmlEscaped(), res.join(" "));
+			const QString linkColor = palette().color(QPalette::Link).name(QColor::HexRgb);
+			*meant = QString(R"(<a href="%1" style="color:%3;text-decoration:none;">%2</a>)")
+				.arg(cl.join(" ").toHtmlEscaped(), res.join(" ").toHtmlEscaped(), linkColor);
 		}
 	}
 
