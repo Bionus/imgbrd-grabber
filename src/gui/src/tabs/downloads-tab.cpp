@@ -40,7 +40,7 @@
 
 
 DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::DownloadsTab), m_profile(profile), m_settings(profile->getSettings()), m_downloadQueue(downloadQueue), m_parent(parent), m_getAll(false), m_progressDialog(nullptr), m_batchAutomaticRetries(0), m_finishedSoundEffect(this)
+	: QWidget(parent), ui(new Ui::DownloadsTab), m_profile(profile), m_settings(profile->getSettings()), m_downloadQueue(downloadQueue), m_parent(parent), m_getAll(false), m_progressDialog(nullptr), m_batchAutomaticRetries(0)
 {
 	ui->setupUi(this);
 
@@ -73,14 +73,21 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	m_saveLinkList->setInterval(100);
 	m_saveLinkList->setSingleShot(true);
 	connect(m_saveLinkList, &QTimer::timeout, this, &DownloadsTab::saveLinkListDefault);
-
-	m_finishedSoundEffect.setSource(QUrl(":/sounds/finished.wav"));
 }
 
 DownloadsTab::~DownloadsTab()
 {
 	close();
 	delete ui;
+}
+
+void DownloadsTab::playFinishedSound()
+{
+	if (m_finishedSoundEffect == nullptr) {
+		m_finishedSoundEffect = new QSoundEffect(this);
+		m_finishedSoundEffect->setSource(QUrl(":/sounds/finished.wav"));
+	}
+	m_finishedSoundEffect->play();
 }
 
 void DownloadsTab::changeEvent(QEvent *event)
@@ -1094,7 +1101,7 @@ void DownloadsTab::getAllFinished()
 			switch (m_progressDialog->endAction())
 			{
 				case 2: openTray();                   	break;
-				case 4: m_finishedSoundEffect.play();	break;
+				case 4: playFinishedSound(); break;
 			}
 			activateWindow();
 
@@ -1151,7 +1158,7 @@ void DownloadsTab::getAllFinished()
 		case 1: m_progressDialog->close();      break;
 		case 2: openTray();                     break;
 		case 3: m_parent->saveFolder();         break;
-		case 4: m_finishedSoundEffect.play();	break;
+		case 4: playFinishedSound(); break;
 		case 5: shutDown();                     break;
 	}
 	activateWindow();

@@ -110,6 +110,7 @@ class DownloadsTab : public QWidget
 		void changeEvent(QEvent *event) override;
 		void closeEvent(QCloseEvent *event) override;
 		QSet<int> selectedRows(QTableView *table) const;
+		void playFinishedSound();
 
 	private:
 		Ui::DownloadsTab *ui;
@@ -139,7 +140,7 @@ class DownloadsTab : public QWidget
 		QTimer *m_saveLinkList;
 		DownloadGroupTableModel *m_groupBatchsModel;
 		DownloadImageTableModel *m_batchsModel;
-		QSoundEffect m_finishedSoundEffect;
+		QSoundEffect *m_finishedSoundEffect = nullptr;
 };
 
 #endif // DOWNLOADS_TAB_H
