@@ -7,7 +7,7 @@ function completeImage(img: IImage): IImage {
     img.author = (img as any).owner;
 
     if ("tag_info" in img) {
-        const tagInfo: Array<{ tag: string; type: string; count: number }> = img["tag_info"] as any;
+        const tagInfo: { tag: string; type: string; count: number }[] = img["tag_info"] as any;
         img.tags = tagInfo.map((tag) => ({
             name: tag.tag,
             type: tagTypeMap[tag.type] || tag.type,
