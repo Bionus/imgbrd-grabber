@@ -175,7 +175,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap identity, Q
 
 			// Preview gets the biggest size between 150 and 300
 			if (
-				sizes[Image::Thumbnail].isNull() || // Default
+				sizes[Image::Thumbnail].isEmpty() || // Default
 				(isInRange(size, 150, 300) && (
 					 isBigger(size, sizes[Image::Thumbnail]) || // Biggest under 300px
 					 !isInRange(sizes[Image::Thumbnail], 150, 300)) // If the default was bigger than 300px
@@ -1366,7 +1366,20 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Variables
 	if (!m_parentGallery.isNull()) {
-		tokens.insert("gallery", Token([this, profile]() { return QVariant::fromValue(m_parentGallery->tokens(profile)); }));
+		tokens.insert("gallery", Token([this, profile]() {
+			auto galleryTokens = m_parentGallery->tokens(profile);
+			// Only override inherited tokens when the source supplies explicit gallery metadata.
+			// Neither the parent's result position nor its display counter is a reliable fallback.
+			if (m_data.contains("gallery_position")) {
+				const int position = m_data.value("gallery_position").toInt();
+				galleryTokens.insert("position", position > 0 ? Token(position) : Token(""));
+			}
+			if (m_data.contains("gallery_count")) {
+				const int count = m_data.value("gallery_count").toInt();
+				galleryTokens.insert("count", count >= 0 ? Token(count) : Token(""));
+			}
+			return QVariant::fromValue(galleryTokens);
+		}));
 	}
 
 	// Extra tokens

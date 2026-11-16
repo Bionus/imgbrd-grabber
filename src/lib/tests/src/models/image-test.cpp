@@ -369,6 +369,58 @@ TEST_CASE("Image")
 		REQUIRE(dest.url(Image::Size::Thumbnail) == img->url(Image::Size::Thumbnail));
 	}
 
+	SECTION("Explicit gallery tokens")
+	{
+		auto galleryDetails = details;
+		galleryDetails["type"] = "gallery";
+		galleryDetails["name"] = "Gallery";
+		galleryDetails["position"] = "9";
+		galleryDetails["gallery_count"] = "5"; // Must not become the image total.
+		const auto gallery = ImageFactory::build(site, galleryDetails, profile);
+		details["position"] = "53"; // Legacy result position can differ from the gallery index.
+		QVariantMap data { { "gallery_position", 23 }, { "gallery_count", 100 } };
+
+		SECTION("Known metadata")
+		{
+		}
+		SECTION("Unknown metadata does not fall back to result positions or display counts")
+		{
+			data["gallery_position"] = 0;
+			data["gallery_count"] = -1;
+		}
+		SECTION("Zero images is a known count")
+		{
+			data["gallery_count"] = 0;
+		}
+		SECTION("Sources without explicit metadata keep inherited gallery tokens")
+		{
+			data.clear();
+		}
+
+		img = ImageFactory::build(site, details, {}, data, profile);
+		img->setParentGallery(gallery);
+		const auto tokens = img->tokens(profile);
+		const auto galleryTokens = tokens["gallery"].value<QMap<QString, Token>>();
+		REQUIRE(tokens["position"].value().toInt() == 53);
+		REQUIRE(galleryTokens["name"].value().toString() == "Gallery");
+		if (data.isEmpty()) {
+			REQUIRE(galleryTokens == gallery->tokens(profile));
+		} else {
+			const QString expectedPosition = data["gallery_position"].toInt() > 0 ? "23" : "";
+			const QString expectedCount = data["gallery_count"].toInt() >= 0 ? data["gallery_count"].toString() : "";
+			REQUIRE(galleryTokens["position"].value().toString() == expectedPosition);
+			REQUIRE(galleryTokens["count"].value().toString() == expectedCount);
+
+			QJsonObject json;
+			img->write(json);
+			Image restored(profile);
+			REQUIRE(restored.read(json, profile->getSites()));
+			const auto restoredGallery = restored.tokens(profile)["gallery"].value<QMap<QString, Token>>();
+			REQUIRE(restoredGallery["position"].value().toString() == expectedPosition);
+			REQUIRE(restoredGallery["count"].value().toString() == expectedCount);
+		}
+	}
+
 	SECTION("Default tokens")
 	{
 		details.remove("rating");
