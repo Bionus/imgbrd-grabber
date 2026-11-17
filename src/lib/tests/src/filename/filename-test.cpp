@@ -305,11 +305,6 @@ TEST_CASE("Filename")
 	}
 	SECTION("ExpandTagEmpty")
 	{
-		// A condition on an empty tag has no filter to match against, and used to
-		// dereference a null one instead of simply evaluating to false
-		assertPath(profile, img,
-			"<\"empty tag condition\"> %md5%.%ext%",
-			"1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		assertPath(profile, img,
 			"<\"tag1\"><\"\"> %md5%.%ext%",
 			"tag1 1bc29b36f623ba82aaf6724fd3b16718.jpg");

@@ -69,8 +69,7 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionOp &node)
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionTag &node)
 {
-	// FilterFactory::build() returns nullptr for an empty tag, which is what a
-	// condition like <""> parses to, so the filter cannot be dereferenced blindly
+	// The filter can be null for an empty tag
 	m_result = m_tags.contains(node.tag.text())
 		|| (node.filter != nullptr && node.filter->match(m_tokens).isEmpty());
 }

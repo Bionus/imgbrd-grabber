@@ -37,8 +37,6 @@ TEST_CASE("FilenameConditionVisitor")
 
 	SECTION("Tag with empty name")
 	{
-		// FilterFactory::build() returns nullptr for an empty tag, so the
-		// condition built from <""> carries no filter to match against
 		NTag condition(Tag(""));
 
 		QMap<QString, Token> tokensWithTag = {
