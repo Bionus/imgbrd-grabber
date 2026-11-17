@@ -129,6 +129,7 @@ nav:
         - docs/commands/shimmie.md
         - docs/commands/my-imouto.md
         - docs/commands/gelbooru.md
+        - docs/commands/blombooru.md
       - docs/compilation.md
       - docs/cli.md
       - docs/portable-version.md
