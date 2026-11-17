@@ -303,6 +303,15 @@ TEST_CASE("Filename")
 			"<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
 			"1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
+	SECTION("ExpandTagEmpty")
+	{
+		assertPath(profile, img,
+			"<\"tag1\"><\"\"> %md5%.%ext%",
+			"tag1 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+		assertPath(profile, img,
+			"<\"unknown\"><\"\"> %md5%.%ext%",
+			"1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	}
 	SECTION("ExpandTagWithInvalidCharacter")
 	{
 		assertPath(profile, img, "<\"fate/stay_night\"/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
