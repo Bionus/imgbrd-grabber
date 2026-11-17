@@ -1496,8 +1496,13 @@ void SearchTab::setFavoriteImage(const QString &name)
 
 	for (Favorite &fav : m_favorites) {
 		if (fav.getName() == name) {
-			fav.setImage(m_images.first()->previewImage());
-			m_profile->emitFavorite();
+			const auto image = std::find_if(m_images.constBegin(), m_images.constEnd(), [&name](const QSharedPointer<Image> &image) {
+				return image->hasTag(name);
+			});
+			if (image != m_images.constEnd()) {
+				fav.setImage((*image)->previewImage());
+				m_profile->emitFavorite();
+			}
 			return;
 		}
 	}
