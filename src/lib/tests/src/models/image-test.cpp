@@ -4,6 +4,7 @@
 #include <QScopedPointer>
 #include <QSettings>
 #include <QSignalSpy>
+#include "downloader/extension-rotator.h"
 #include "loader/token.h"
 #include "models/image.h"
 #include "models/image-factory.h"
@@ -99,6 +100,30 @@ TEST_CASE("Image")
 		details["date"] = "2016-08-26T16:26:30+01:00";
 		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->createdAt().toString("yyyy-MM-dd HH:mm:ss") == QString("2016-08-26 16:26:30"));
+	}
+
+	SECTION("Extension rotation")
+	{
+		settings->setValue("extensionRotationStatic", QStringList { "jpg", "png" });
+		settings->setValue("extensionRotationAnimated", QStringList { "gif", "apng" });
+		settings->setValue("extensionRotationVideo", QStringList { "mp4", "webm" });
+
+		const auto &[ext, tags, expected] = GENERATE(Catch::Generators::table<QString, QString, QString>({
+			{ "jpg", "", "png" },
+			{ "gif", "animated", "apng" },
+			{ "mp4", "", "webm" },
+			{ "webm", "", "mp4" },
+			{ "webm", "animated", "mp4" },
+		}));
+		CAPTURE(ext, tags);
+
+		details["ext"] = ext;
+		details["file_url"] = "https://test.com/img/file." + ext;
+		details["tags_general"] = tags;
+		img = ImageFactory::build(site, details, profile);
+
+		REQUIRE(img->extensionRotator()->next() == expected);
+		REQUIRE(img->extensionRotator()->next().isEmpty());
 	}
 
 	SECTION("Copy")

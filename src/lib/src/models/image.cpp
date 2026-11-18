@@ -286,15 +286,13 @@ void Image::init()
 	// Setup extension rotator
 	static const QStringList defaultExtensionsStatic { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
 	static const QStringList defaultExtensionsAnimated { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" };
+	static const QStringList defaultExtensionsVideo { "mp4", "webm" };
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated") || hasTag("video");
-	QStringList extensions = animated
-		? m_settings->value("extensionRotationAnimated", defaultExtensionsAnimated).toStringList()
-		: m_settings->value("extensionRotationStatic", defaultExtensionsStatic).toStringList();
-	if (isVideo()) {
-		// A video must never fall back to a still image: the retry would succeed
-		// with the thumbnail and save a JPEG in place of the video.
-		extensions = ExtensionRotator::withoutStillImages(extensions);
-	}
+	const QStringList extensions = isVideo()
+		? m_settings->value("extensionRotationVideo", defaultExtensionsVideo).toStringList()
+		: animated
+			? m_settings->value("extensionRotationAnimated", defaultExtensionsAnimated).toStringList()
+			: m_settings->value("extensionRotationStatic", defaultExtensionsStatic).toStringList();
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 }
 
