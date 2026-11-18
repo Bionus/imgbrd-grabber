@@ -63,12 +63,6 @@ ScrollView {
             onColumnsChanged: resultsRefresher.restart()
 
             delegate: Item {
-                readonly property real safeRatio: img.status === Image.Ready
-                    && img.implicitWidth > 0
-                    && img.implicitHeight > 0
-                        ? img.implicitHeight / img.implicitWidth
-                        : 1
-
                 height: img.height + root.thumbnailSpacing
 
                 Image {
@@ -82,12 +76,19 @@ ScrollView {
 
                 Image {
                     id: img
+
+                    readonly property real safeRatio: status === Image.Ready
+                        && implicitWidth > 0
+                        && implicitHeight > 0
+                            ? implicitHeight / implicitWidth
+                            : 1
+
                     source: "image://async/" + modelData.siteUrl + "¤" + modelData.smartPreviewUrl(width, height) + "¤" + modelData.previewRect
                     fillMode: root.thumbnailFillMode
                     anchors.centerIn: parent
                     width: parent.width - root.thumbnailSpacing
                     height: root.thumbnailHeightToWidthRatio < 0.1
-                        ? img.width * parent.safeRatio
+                        ? img.width * safeRatio
                         : img.width * root.thumbnailHeightToWidthRatio
                     visible: status !== Image.Error
 
