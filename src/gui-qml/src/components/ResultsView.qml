@@ -71,23 +71,13 @@ ScrollView {
 
                 height: img.height + root.thumbnailSpacing
 
-                Rectangle {
+                Image {
                     anchors.centerIn: parent
                     width: parent.width - root.thumbnailSpacing
                     height: img.height
-                    radius: root.thumbnailRadius
-                    color: "transparent"
-                    border.color: Material.hintTextColor
-                    border.width: 1
+                    source: "/images/noimage.png"
+                    fillMode: Image.PreserveAspectFit
                     visible: img.status === Image.Error
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: "!"
-                        color: Material.secondaryTextColor
-                        font.pixelSize: Math.max(18, parent.width * 0.18)
-                        font.bold: true
-                    }
                 }
 
                 Image {
