@@ -122,6 +122,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->lineUserAgent->setText(settings->value("userAgent", QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0")).toString());
 	ui->lineExtensionRotatorStatic->setText(settings->value("extensionRotationStatic", QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" }).toStringList().join(", "));
 	ui->lineExtensionRotatorAnimated->setText(settings->value("extensionRotationAnimated", QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }).toStringList().join(", "));
+	ui->lineExtensionRotatorVideo->setText(settings->value("extensionRotationVideo", QStringList { "mp4", "webm" }).toStringList().join(", "));
 
 	QList<ConditionalFilename> filenames = getConditionalFilenames(settings);
 	for (const auto &fn : filenames) {
@@ -1291,6 +1292,7 @@ void OptionsWindow::save()
 	static const QRegularExpression rxSplitComma(R"(\s*,\s*)");
 	settings->setValue("extensionRotationStatic", ui->lineExtensionRotatorStatic->text().split(rxSplitComma));
 	settings->setValue("extensionRotationAnimated", ui->lineExtensionRotatorAnimated->text().split(rxSplitComma));
+	settings->setValue("extensionRotationVideo", ui->lineExtensionRotatorVideo->text().split(rxSplitComma));
 
 	const QStringList starts { "none", "loadfirst", "restore" };
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
