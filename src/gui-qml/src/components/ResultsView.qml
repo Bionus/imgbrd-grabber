@@ -66,14 +66,31 @@ ScrollView {
                 height: img.height + root.thumbnailSpacing
 
                 Image {
+                    anchors.centerIn: parent
+                    width: parent.width - root.thumbnailSpacing
+                    height: img.height
+                    source: "/images/noimage.png"
+                    fillMode: Image.PreserveAspectFit
+                    visible: img.status === Image.Error
+                }
+
+                Image {
                     id: img
+
+                    readonly property real safeRatio: status === Image.Ready
+                        && implicitWidth > 0
+                        && implicitHeight > 0
+                            ? implicitHeight / implicitWidth
+                            : 1
+
                     source: "image://async/" + modelData.siteUrl + "¤" + modelData.smartPreviewUrl(width, height) + "¤" + modelData.previewRect
                     fillMode: root.thumbnailFillMode
                     anchors.centerIn: parent
                     width: parent.width - root.thumbnailSpacing
                     height: root.thumbnailHeightToWidthRatio < 0.1
-                        ? img.width * (img.implicitHeight / img.implicitWidth)
+                        ? img.width * safeRatio
                         : img.width * root.thumbnailHeightToWidthRatio
+                    visible: status !== Image.Error
 
                     onHeightChanged: resultsRefresher.restart()
 
