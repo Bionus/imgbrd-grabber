@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QSize>
 #include <QUuid>
+#include <algorithm>
 #include <utility>
 #include "extension-rotator.h"
 #include "file-downloader.h"
@@ -29,6 +30,23 @@ static void addMd5(Profile *profile, const QString &path)
 	f.close();
 
 	profile->addMd5(hash.result().toHex(), path);
+}
+
+
+/**
+ * Register existing destination files that may be missing from the MD5 database.
+ * Trust paths already registered for the source MD5, otherwise hash the existing file,
+ * since a filename collision does not mean it contains the requested image.
+ */
+static void registerExistingFiles(Profile *profile, const QString &md5, const QStringList &paths)
+{
+	QStringList registered = profile->md5Exists(md5);
+	std::transform(registered.begin(), registered.end(), registered.begin(), QDir::toNativeSeparators);
+	for (const QString &path : paths) {
+		if (!registered.contains(QDir::toNativeSeparators(path))) {
+			addMd5(profile, path);
+		}
+	}
 }
 
 
@@ -233,9 +251,7 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		if (allExists) {
 			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
 			if (m_addMd5) {
-				for (const QString &path : qAsConst(m_paths)) {
-					addMd5(m_profile, path);
-				}
+				registerExistingFiles(m_profile, m_image->md5(), m_paths);
 			}
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::AlreadyExistsDisk));
 			return;
@@ -449,6 +465,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 
 	QFile tmp(m_temporaryPath + suffix);
 	bool moved = false;
+	QStringList existingPaths;
 
 	QList<ImageSaveResult> result;
 	for (const QString &file : qAsConst(m_paths)) {
@@ -458,7 +475,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path))) {
 			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
 			if (suffix.isEmpty() && m_addMd5) {
-				addMd5(m_profile, file);
+				existingPaths.append(file);
 			}
 			result.append({ path, size, Image::SaveResult::AlreadyExistsDisk });
 			continue;
@@ -502,6 +519,10 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 			path = m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
 		}
 		result.append({ path, size, saveResult });
+	}
+
+	if (!existingPaths.isEmpty()) {
+		registerExistingFiles(m_profile, m_image->md5(), existingPaths);
 	}
 
 	if (!moved) {

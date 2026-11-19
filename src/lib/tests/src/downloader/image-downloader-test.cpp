@@ -336,6 +336,48 @@ TEST_CASE("ImageDownloader")
 		REQUIRE(img->token("copyright", QString()) == QString());
 	}
 
+	SECTION("Only hash existing destinations missing their source MD5 registration")
+	{
+		const bool registered = GENERATE(true, false);
+		auto img = createImage(profile, site);
+		const QString path = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
+		REQUIRE(QFile("tests/resources/image_1x1.png").copy(path));
+		if (registered) {
+			profile->addMd5(img->md5(), path);
+		}
+
+		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, true, false, nullptr, false, false);
+		const QList<ImageSaveResult> expected {{ path, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }};
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+
+		const QStringList actualHashPaths = profile->md5Exists("956ddde86fb5ce85218b21e2f49e5c50");
+		REQUIRE(actualHashPaths == (registered ? QStringList() : QStringList { path }));
+		REQUIRE(QFile::remove(path));
+	}
+
+	SECTION("Do not rehash registered destinations when saving multiple paths")
+	{
+		auto img = createImage(profile, site);
+		const QString existing = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+		const QString added = QDir::toNativeSeparators("tests/resources/tmp/added.jpg");
+		REQUIRE(QFile("tests/resources/image_1x1.png").copy(existing));
+		profile->addMd5(img->md5(), existing);
+		profile->getSettings()->setValue("Save/md5Duplicates", "copy");
+		profile->getSettings()->setValue("Save/md5DuplicatesSameDir", "copy");
+
+		ImageDownloader downloader(profile, img, QStringList { existing, added }, 1, true, false, nullptr, false);
+		const QList<ImageSaveResult> expected {
+			{ existing, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk },
+			{ added, Image::Size::Full, Image::SaveResult::Copied },
+		};
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+
+		REQUIRE(profile->md5Exists("956ddde86fb5ce85218b21e2f49e5c50").isEmpty());
+		REQUIRE(profile->md5Exists(img->md5()).contains(added));
+		REQUIRE(QFile::remove(existing));
+		REQUIRE(QFile::remove(added));
+	}
+
 	SECTION("Fix extension from header")
 	{
 		profile->getSettings()->setValue("Save/headerDetection", true);
