@@ -871,7 +871,6 @@ void DownloadsTab::getAllImageOk(const BatchDownloadImage &download, int siteId,
 	}
 
 	m_getAllDownloading.removeAll(download);
-	QCoreApplication::processEvents();
 	QTimer::singleShot(0, this, SLOT(_getAll()));
 }
 

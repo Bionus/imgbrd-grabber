@@ -1,5 +1,4 @@
 #include "batch-downloader.h"
-#include <QCoreApplication>
 #include <QSettings>
 #include <QTimer>
 #include "commands/commands.h"
@@ -235,7 +234,6 @@ void BatchDownloader::loadImageFinished(const QSharedPointer<Image> &img, QList<
 	if (!diskError) {
 		m_counterSum++;
 
-		QCoreApplication::processEvents();
 		QTimer::singleShot(0, this, SLOT(nextImage()));
 	}
 }

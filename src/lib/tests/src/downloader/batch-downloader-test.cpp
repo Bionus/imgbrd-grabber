@@ -1,8 +1,10 @@
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QScopedPointer>
 #include <QSettings>
 #include <QSignalSpy>
+#include <QTimer>
 #include "catch.h"
 #include "custom-network-access-manager.h"
 #include "downloader/batch-downloader.h"
@@ -62,6 +64,29 @@ TEST_CASE("BatchDownloader")
 
 			REQUIRE(downloader.downloadedCount(BatchDownloader::Downloaded) == 1);
 			REQUIRE(downloader.totalCount() == 1);
+		}
+
+		SECTION("Existing image completion does not dispatch unrelated events inline")
+		{
+			class TestBatchDownloader : public BatchDownloader
+			{
+				public:
+					using BatchDownloader::BatchDownloader;
+					using BatchDownloader::loadImage;
+			};
+
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/out.png"));
+			TestBatchDownloader downloader(&query, profile);
+			bool eventProcessed = false;
+			QTimer::singleShot(0, &downloader, [&eventProcessed]() { eventProcessed = true; });
+
+			downloader.loadImage(img);
+
+			REQUIRE(downloader.downloadedCount(BatchDownloader::AlreadyExists) == 1);
+			CHECK_FALSE(eventProcessed);
+			QCoreApplication::processEvents();
+			REQUIRE(eventProcessed);
+			REQUIRE(QFile::remove("tests/resources/tmp/out.png"));
 		}
 
 		SECTION("Image not found")
