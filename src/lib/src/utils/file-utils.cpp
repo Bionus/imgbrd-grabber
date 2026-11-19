@@ -2,10 +2,11 @@
 #include "logger.h"
 #include <QDir>
 #include <QFileInfo>
-#include <QRegularExpression>
 #include <QSaveFile>
 #include <QString>
 #include <QStringList>
+#include <filesystem>
+#include <system_error>
 
 
 bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
@@ -127,53 +128,23 @@ bool writeFile(const QString &filePath, const QByteArray &data)
 	return true;
 }
 
-QString diagnoseDirectoryCreationError(const QString &dir)
-{
-	const QString cleaned = QDir::cleanPath(dir);
-
-	// Walk up the tree to find the deepest existing ancestor
-	QString existing = cleaned;
-	QStringList missing;
-	while (!existing.isEmpty() && !QFileInfo::exists(existing)) {
-		const QFileInfo info(existing);
-		const QString parent = info.path();
-		if (parent == existing) {
-			break;
+#ifdef Q_OS_WIN
+	// Adapted from Qt's QFSFileEnginePrivate::longFileName, using public APIs for the absolute path.
+	// https://github.com/qt/qtbase/blob/v6.10.0/src/corelib/io/qfsfileengine_win.cpp#L48
+	static QString longFileName(const QString &path)
+	{
+		QString absPath = QDir::toNativeSeparators(QFileInfo(path).absoluteFilePath());
+		if (absPath.startsWith("\\\\?\\") || absPath.startsWith("\\\\.\\")) {
+			return absPath;
 		}
-		missing.prepend(info.fileName());
-		existing = parent;
-	}
-
-	const QFileInfo existingInfo(existing);
-
-	// No part of the path exists at all (invalid drive, unreachable network share...)
-	if (!existingInfo.exists()) {
-		return QStringLiteral("no part of the path exists (invalid drive or unreachable location)");
-	}
-
-	// A file with the same name as one of the path components blocks the directory creation
-	if (!existingInfo.isDir()) {
-		return QStringLiteral("`%1` already exists and is a file, not a folder").arg(existing);
-	}
-
-	// The deepest existing ancestor is not writable
-	if (!missing.isEmpty() && !existingInfo.isWritable()) {
-		return QStringLiteral("the folder `%1` is not writable").arg(existing);
-	}
-
-	// Check for folder names that are not valid on Windows
-	#ifdef Q_OS_WIN
-		static const QStringList reserved { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
-		static const QRegularExpression forbiddenChars(QStringLiteral("[<>:\"|?*\\\\]"));
-		for (const QString &part : missing) {
-			if (part.endsWith('.') || part != part.trimmed() || part.contains(forbiddenChars) || reserved.contains(part.section('.', 0, 0), Qt::CaseInsensitive)) {
-				return QStringLiteral("`%1` is not a valid folder name on Windows").arg(part);
-			}
+		QString prefix = "\\\\?\\";
+		if (absPath.startsWith("\\\\")) {
+			prefix.append("UNC\\");
+			absPath.remove(0, 2);
 		}
-	#endif
-
-	return QString();
-}
+		return prefix + absPath;
+	}
+#endif
 
 bool ensureDirectoryExists(const QString &dir)
 {
@@ -182,15 +153,41 @@ bool ensureDirectoryExists(const QString &dir)
 		return false;
 	}
 
-	if (QDir(dir).exists() || QDir().mkpath(dir)) {
+	// Native filesystem calls would silently truncate a path at a null character.
+	if (dir.contains(QChar::Null)) {
+		log(QStringLiteral("Impossible to create the destination folder: %1 (path contains a null character).").arg(dir), Logger::Error);
+		return false;
+	}
+
+	if (QDir(dir).exists()) {
 		return true;
 	}
 
-	const QString reason = diagnoseDirectoryCreationError(dir);
-	if (!reason.isEmpty()) {
-		log(QStringLiteral("Impossible to create the destination folder: %1 (%2).").arg(dir, reason), Logger::Error);
+	const QFileInfo info(dir);
+	QString reason;
+	if (!info.isNativePath()) {
+		// Android content URIs and Qt resources need their Qt file engine.
+		if (QDir().mkpath(dir)) {
+			return true;
+		}
+		reason = QStringLiteral("Qt file engine did not provide an error description");
 	} else {
-		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+		#ifdef Q_OS_WIN
+			const std::filesystem::path path(longFileName(dir).toStdWString());
+		#else
+			const std::filesystem::path path = info.filesystemFilePath();
+		#endif
+		std::error_code error;
+		std::filesystem::create_directories(path, error);
+		// An existing directory returns false without an error.
+		if (!error) {
+			return true;
+		}
+		reason = QStringLiteral("%1; %2:%3")
+				   .arg(QString::fromLocal8Bit(error.message().c_str()), QString::fromLatin1(error.category().name()))
+				   .arg(error.value());
 	}
+
+	log(QStringLiteral("Impossible to create the destination folder: %1 (%2).").arg(dir, reason), Logger::Error);
 	return false;
 }
