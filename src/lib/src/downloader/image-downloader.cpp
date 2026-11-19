@@ -102,6 +102,14 @@ void ImageDownloader::save()
 	const QStringList paths = m_image->paths(m_filename, m_path, m_count);
 	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty() ? paths.first() : QString();
 
+	// Existing destinations do not run post-save commands or write metadata, so they do not need details.
+	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
+	if (!m_force && !blacklistNeedTags && !filenameNeedExactTags && !m_filename.needTemporaryFile(m_image->tokens(m_profile)) && !paths.isEmpty()
+		&& std::all_of(paths.constBegin(), paths.constEnd(), [](const QString &path) { return QFile::exists(path); })) {
+		loadedSave(Image::LoadTagsResult::Ok);
+		return;
+	}
+
 	// We don't need to load the image details of files already in the MD5 list and that should be skipped
 	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
 	if (md5action == "ignore" && !m_force) {
@@ -109,9 +117,12 @@ void ImageDownloader::save()
 		return;
 	}
 
-	// Always load details if the API doesn't provide the file URL in the listing page
+	// A local MD5 duplicate does not need a file URL, but may still need details for naming or post-save operations.
+	const bool reuseFile = !m_force && m_size != Image::Size::Thumbnail && !md5Path.isEmpty()
+		&& !m_filename.needTemporaryFile(m_image->tokens(m_profile))
+		&& (md5action == "copy" || md5action == "move" || md5action == "link" || md5action == "hardlink");
 	const QStringList forcedTokens = m_image->parentSite()->getApis().first()->forcedTokens();
-	const bool needFileUrl = forcedTokens.contains("*") || forcedTokens.contains("file_url");
+	const bool needFileUrl = !reuseFile && (forcedTokens.contains("*") || forcedTokens.contains("file_url"));
 	const bool needUgoiraData = m_image->extension() == QStringLiteral("zip") && m_profile->getSettings()->value("Save/ConvertUgoira", false).toBool();
 
 	// If we use direct saving or don't want to load tags, we directly save the image
@@ -119,7 +130,6 @@ void ImageDownloader::save()
 	const int localNeedTags = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
-	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
 	if (!blacklistNeedTags && !needFileUrl && !needUgoiraData && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
