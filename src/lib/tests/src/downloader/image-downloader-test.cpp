@@ -378,6 +378,120 @@ TEST_CASE("ImageDownloader")
 		REQUIRE(QFile::remove(added));
 	}
 
+	SECTION("Skip details")
+	{
+		auto img = createImage(profile, site);
+		QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+		QSettings *settings = profile->getSettings();
+		settings->setValue("Save/md5Duplicates", "copy");
+		settings->setValue("Save/md5DuplicatesSameDir", "copy");
+
+		SECTION("Copy to a new destination")
+		{
+			const bool sameDir = GENERATE(false, true);
+			const QString tagRequirement = GENERATE(QString(), QString("Exec/SQL/image"), QString("LogFiles/0/content"));
+			CAPTURE(sameDir, tagRequirement);
+			const QString source = QDir::toNativeSeparators(sameDir ? "tests/resources/tmp/source.png" : "tests/resources/image_1x1.png");
+			if (sameDir) {
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(source));
+			}
+			settings->setValue(sameDir ? "Save/md5Duplicates" : "Save/md5DuplicatesSameDir", "save");
+			if (!tagRequirement.isEmpty()) {
+				settings->setValue(tagRequirement, "%copyright%");
+			}
+			if (tagRequirement == "LogFiles/0/content") {
+				settings->setValue("LogFiles/0/locationType", 1);
+				settings->setValue("LogFiles/0/uniquePath", "tests/resources/tmp/savelog.txt");
+			}
+			profile->addMd5(img->md5(), source);
+
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/something.jpg");
+			ImageDownloader downloader(profile, img, "something.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::Copied }}, true);
+			REQUIRE(detailsSpy.count() == (tagRequirement.isEmpty() ? 0 : 1));
+			REQUIRE(img->token("copyright", QString()) == (tagRequirement.isEmpty() ? QString() : QString("to_heart_2")));
+			REQUIRE(QFile::exists(source));
+			if (sameDir) {
+				REQUIRE(QFile::remove(source));
+			}
+		}
+
+		SECTION("Destination already exists")
+		{
+			const QString filename = GENERATE(QString("something.%ext%"), QString("%id%_%md5%.%ext%"));
+			const bool registered = GENERATE(false, true);
+			const bool metadata = GENERATE(false, true);
+			CAPTURE(filename, registered, metadata);
+			const QString dest = img->paths(filename, "tests/resources/tmp", 1).first();
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+			settings->setValue("Exec/SQL/image", "SELECT %copyright%");
+			if (registered) {
+				profile->addMd5(img->md5(), dest);
+			}
+			if (metadata) {
+				settings->beginWriteArray("Save/MetadataExiftool");
+				settings->setArrayIndex(0);
+				settings->setValue("key", "XMP:Creator");
+				settings->setValue("value", "%copyright%");
+				settings->endArray();
+			}
+
+			ImageDownloader downloader(profile, img, filename, "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.isEmpty());
+			REQUIRE(img->token("copyright", QString()) == QString());
+		}
+
+		SECTION("Filename needs details")
+		{
+			const bool sourceInTarget = GENERATE(false, true);
+			const bool subdirectory = GENERATE(false, true);
+			CAPTURE(sourceInTarget, subdirectory);
+			const QString sourceDir = "tests/resources/tmp/artist";
+			const QString source = QDir::toNativeSeparators(sourceInTarget ? sourceDir + "/already.png" : "tests/resources/image_1x1.png");
+			if (sourceInTarget) {
+				REQUIRE(QDir().mkpath(sourceDir));
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(source));
+			}
+			profile->addMd5(img->md5(), source);
+
+			const QString filename = subdirectory ? "%copyright%/%md5%.%ext%" : "%copyright%.%ext%";
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/" + (subdirectory ? "to heart 2/" + img->md5() : "to heart 2") + ".jpg");
+			ImageDownloader downloader(profile, img, filename, "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::Copied }}, true);
+			REQUIRE(detailsSpy.count() == 1);
+			REQUIRE(img->token("copyright", QString()) == QString("to_heart_2"));
+			REQUIRE(QFile::exists(source));
+			if (sourceInTarget) {
+				REQUIRE(QFile::remove(source));
+				REQUIRE(QDir().rmdir(sourceDir));
+			}
+			if (subdirectory) {
+				REQUIRE(QDir().rmdir("tests/resources/tmp/to heart 2"));
+			}
+		}
+
+		SECTION("New copy needs details for metadata")
+		{
+			const QString oldName = QDir::toNativeSeparators("tests/resources/tmp/1_1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/7331_1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(oldName));
+			profile->addMd5(img->md5(), oldName);
+			settings->beginWriteArray("Save/MetadataExiftool");
+			settings->setArrayIndex(0);
+			settings->setValue("key", "XMP:Creator");
+			settings->setValue("value", "%copyright%");
+			settings->endArray();
+
+			ImageDownloader downloader(profile, img, "%id%_%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::Copied }}, true);
+			REQUIRE(detailsSpy.count() == 1);
+			REQUIRE(img->token("copyright", QString()) == QString("to_heart_2"));
+			REQUIRE(QFile::remove(oldName));
+			QFile::remove(dest + ".xmp");
+		}
+	}
+
 	SECTION("Fix extension from header")
 	{
 		profile->getSettings()->setValue("Save/headerDetection", true);
