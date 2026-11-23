@@ -99,7 +99,7 @@ jobs:
           submodules: recursive
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2.25
+        uses: hendrikmuhs/ccache-action@v1.2.26
         with:
           key: ${{ runner.os }}-${{ github.job }}
 
@@ -192,7 +192,7 @@ jobs:
           submodules: recursive
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2.25
+        uses: hendrikmuhs/ccache-action@v1.2.26
         with:
           key: ${{ runner.os }}-${{ github.job }}
 
@@ -321,7 +321,7 @@ jobs:
           submodules: recursive
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2.25
+        uses: hendrikmuhs/ccache-action@v1.2.26
         with:
           key: ${{ runner.os }}-${{ github.job }}
 
@@ -420,7 +420,7 @@ jobs:
           submodules: recursive
 
       - name: Setup sccache
-        uses: hendrikmuhs/ccache-action@v1.2.25
+        uses: hendrikmuhs/ccache-action@v1.2.26
         with:
           variant: sccache
           key: ${{ runner.os }}-${{ github.job }}
@@ -580,7 +580,7 @@ jobs:
         submodules: recursive
 
     - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2.25
+      uses: hendrikmuhs/ccache-action@v1.2.26
       with:
         key: ${{ runner.os }}-${{ github.job }}
 
