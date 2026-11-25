@@ -409,6 +409,22 @@ TEST_CASE("Image")
 		REQUIRE(dest.url(Image::Size::Thumbnail) == img->url(Image::Size::Thumbnail));
 	}
 
+	SECTION("Serialization of gallery information")
+	{
+		details["position"] = "7";
+		details["gallery_count"] = "42";
+		img = ImageFactory::build(site, details, profile);
+
+		QJsonObject json;
+		img->write(json);
+
+		Image dest(profile);
+		REQUIRE(dest.read(json, profile->getSites()));
+
+		REQUIRE(dest.galleryCount() == 42);
+		REQUIRE(dest.tokens(profile)["position"].value().toInt() == 7);
+	}
+
 	SECTION("Default tokens")
 	{
 		details.remove("rating");

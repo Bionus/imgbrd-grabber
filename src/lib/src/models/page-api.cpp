@@ -310,6 +310,11 @@ void PageApi::parseActual()
 
 	// Link images to their respective galleries
 	if (isGallery) {
+		// Fill the gallery image count if it was not returned with the gallery in the search results
+		if (page.imageCount > 0 && m_query.gallery->galleryCount() <= 0) {
+			m_query.gallery->setGalleryCount(page.imageCount);
+		}
+
 		for (auto &img : m_images) {
 			img->setParentGallery(m_query.gallery);
 		}

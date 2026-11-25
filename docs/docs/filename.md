@@ -92,6 +92,8 @@ Images can access information on the gallery by using the `gallery.` prefix. Man
 
 * `gallery.id`: the ID of the gallery.
 * `gallery.name`: the name/title of the gallery.
+* `gallery.count`: the total number of images in the gallery (empty if unknown).
+* `gallery.position`: the position of the image in the gallery (starts at 1, empty if unknown).
 
 ### Special tokens
 Some tokens do not strictly relate to the image itself. Those tokens are:

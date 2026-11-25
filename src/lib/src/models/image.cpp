@@ -343,6 +343,12 @@ void Image::write(QJsonObject &json) const
 	json["tags"] = tags;
 	json["url"] = m_url.toString();
 	json["search"] = QJsonArray::fromStringList(m_search);
+	if (m_position > 0) {
+		json["position"] = m_position;
+	}
+	if (m_galleryCount > 0) {
+		json["gallery_count"] = m_galleryCount;
+	}
 
 	// Arbitrary tokens
 	QJsonObject jsonData;
@@ -423,6 +429,8 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	m_name = decodeHtmlEntities(json["name"].toString());
 	m_id = json["id"].toString().toULongLong();
 	m_md5 = json["md5"].toString();
+	m_position = json.contains("position") ? json["position"].toInt() : 0;
+	m_galleryCount = json.contains("gallery_count") ? json["gallery_count"].toInt() : -1;
 
 	// Arbitrary tokens
 	if (json.contains("data")) {
@@ -1062,6 +1070,15 @@ void Image::setParentGallery(const QSharedPointer<Image> &parentGallery)
 	}
 	refreshTokens();
 }
+int Image::galleryCount() const
+{
+	return m_galleryCount;
+}
+void Image::setGalleryCount(int galleryCount)
+{
+	m_galleryCount = galleryCount;
+	refreshTokens();
+}
 
 QColor Image::color() const
 {
@@ -1369,7 +1386,16 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Variables
 	if (!m_parentGallery.isNull()) {
-		tokens.insert("gallery", Token([this, profile]() { return QVariant::fromValue(m_parentGallery->tokens(profile)); }));
+		tokens.insert("gallery", Token([this, profile]() {
+			QMap<QString, Token> galleryTokens = m_parentGallery->tokens(profile);
+
+			// Gallery-specific tokens, relative to the current image
+			const int galleryCount = m_parentGallery->galleryCount();
+			galleryTokens.insert("count", galleryCount > 0 ? Token(galleryCount) : Token(""));
+			galleryTokens.insert("position", m_position > 0 ? Token(m_position) : Token(""));
+
+			return QVariant::fromValue(galleryTokens);
+		}));
 	}
 
 	// Extra tokens
