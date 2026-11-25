@@ -676,6 +676,25 @@ TEST_CASE("Filename")
 		assertPath(profile, img, "%gallery.count%.%ext%", "5.jpg");
 	}
 
+	SECTION("PathSingleImageGallery")
+	{
+		// Images marked as a gallery of one image by their source (ex: Pixiv) are their own gallery
+		QMap<QString, QString> singleDetails = details;
+		singleDetails["gallery_count"] = "1";
+		singleDetails["position"] = "4";
+		auto single = ImageFactory::build(site, singleDetails, profile);
+
+		assertPath(profile, single, "%gallery.id%_p%gallery.position%-%gallery.count%-%position%.%ext%", "7331_p1-1-4.jpg");
+		assertPath(profile, single, "javascript:gallery.id + '_p' + gallery.position + '-' + gallery.count + '.' + ext", "7331_p1-1.jpg");
+		REQUIRE(single->counter().isEmpty());
+
+		// Other standalone images are not part of any gallery
+		QMap<QString, QString> standaloneDetails = details;
+		standaloneDetails.remove("name");
+		auto standalone = ImageFactory::build(site, standaloneDetails, profile);
+		assertPath(profile, standalone, "<%gallery.id%_p%gallery.position%_>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	}
+
 	SECTION("ExpandTokensSimple")
 	{
 		QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";

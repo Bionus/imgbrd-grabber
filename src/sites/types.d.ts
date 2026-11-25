@@ -80,6 +80,10 @@ interface IImage {
     sources?: string[];
     source?: string;
     position?: number;
+    /**
+     * The number of images in this gallery.
+     * Can also be set to 1 for a non-gallery image, to make it act as a gallery of one image in filenames (`%gallery.xxx%` tokens).
+     */
     gallery_count?: number;
     page_url?: string;
     rating?: string;

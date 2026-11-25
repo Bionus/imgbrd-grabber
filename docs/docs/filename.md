@@ -95,6 +95,8 @@ Images can access information on the gallery by using the `gallery.` prefix. Man
 * `gallery.count`: the total number of images in the gallery (empty if unknown).
 * `gallery.position`: the position of the image in the gallery (starts at 1, empty if unknown).
 
+Some sources, such as Pixiv, consider that every post is a gallery, even when it only contains a single image. For those, single-image posts act as their own gallery: `gallery.id` and `gallery.name` are the ones of the image, and `gallery.count` and `gallery.position` are both `1`.
+
 ### Special tokens
 Some tokens do not strictly relate to the image itself. Those tokens are:
 

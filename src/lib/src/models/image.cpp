@@ -1142,7 +1142,10 @@ QString Image::tooltip() const
 
 QString Image::counter() const
 {
-	return m_galleryCount > 0 ? QString::number(m_galleryCount) : (m_isGallery ? "?" : QString());
+	if (!m_isGallery) {
+		return QString();
+	}
+	return m_galleryCount > 0 ? QString::number(m_galleryCount) : "?";
 }
 
 QList<QStrP> Image::detailsData() const
@@ -1394,6 +1397,15 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 			galleryTokens.insert("count", galleryCount > 0 ? Token(galleryCount) : Token(""));
 			galleryTokens.insert("position", m_position > 0 ? Token(m_position) : Token(""));
 
+			return QVariant::fromValue(galleryTokens);
+		}));
+	} else if (!m_isGallery && m_galleryCount == 1) {
+		// Images that the source marks as a single-image gallery (ex: Pixiv works with only one page) are their own gallery
+		tokens.insert("gallery", Token([this, profile]() {
+			QMap<QString, Token> galleryTokens = this->tokens(profile);
+			galleryTokens.remove("gallery");
+			galleryTokens.insert("count", Token(1));
+			galleryTokens.insert("position", Token(1));
 			return QVariant::fromValue(galleryTokens);
 		}));
 	}
