@@ -271,6 +271,7 @@ export const source: ISource = {
                         images: data["meta_pages"].map((page: any) => parseImage({ ...data, ...page }, true)),
                         tags: data["tags"],
                         imageCount: data["page_count"],
+                        pageCount: 1, // All the pages of the work are returned at once
                     };
                 },
             },
