@@ -79,6 +79,10 @@ interface IImage {
     has_comments?: boolean;
     sources?: string[];
     source?: string;
+    /**
+     * The absolute position of this image in the results or gallery, starting at 1.
+     * If not set, it is guessed from the page number and the index of the image in the page.
+     */
     position?: number;
     /**
      * The number of images in this gallery.

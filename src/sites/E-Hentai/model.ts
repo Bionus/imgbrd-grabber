@@ -263,6 +263,12 @@ export const source: ISource = {
                             ].join(";"); // x;y;w;h
                         }
 
+                        // Page URLs end with the position of the image in the gallery: "/s/<hash>/<gallery id>-<page>"
+                        const pageNumber = match["page_url"].match(/-(\d+)\/?$/);
+                        if (pageNumber) {
+                            match["position"] = parseInt(pageNumber[1], 10);
+                        }
+
                         match["created_at"] = posted;
                         match["author"] = author;
                         match["tags"] = tags;

@@ -238,7 +238,7 @@ void PageApi::parseActual()
 	const bool isGallery = !m_query.gallery.isNull();
 	const bool parseErrors = endpoint ? endpoint->parseErrors() : (isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors());
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	const int apiForcedLimit = m_api->forcedLimit();
+	const int apiForcedLimit = isGallery ? 0 : m_api->forcedLimit();
 	const int offset = (m_page - 1) * (apiForcedLimit > 0 ? apiForcedLimit : m_imagesPerPage);
 
 	// Detect Cloudflare
