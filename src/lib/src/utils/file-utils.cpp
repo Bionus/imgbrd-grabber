@@ -184,8 +184,8 @@ bool ensureDirectoryExists(const QString &dir)
 			return true;
 		}
 		reason = QStringLiteral("%1; %2:%3")
-				   .arg(QString::fromLocal8Bit(error.message().c_str()), QString::fromLatin1(error.category().name()))
-				   .arg(error.value());
+			.arg(QString::fromLocal8Bit(error.message().c_str()), QString::fromLatin1(error.category().name()))
+			.arg(error.value());
 	}
 
 	log(QStringLiteral("Impossible to create the destination folder: %1 (%2).").arg(dir, reason), Logger::Error);

@@ -671,7 +671,7 @@ Image::SaveResult Image::preSave(const QString &path, Size size)
 
 	// Reject empty destination paths before any disk or MD5 operations
 	if (path.isEmpty()) {
-		log(QStringLiteral("Cannot save image `%1`: destination path is empty").arg(m_url.toString()));
+		log(QStringLiteral("Cannot save image `%1`: destination path is empty").arg(m_url.toString()), Logger::Error);
 		return SaveResult::Error;
 	}
 
