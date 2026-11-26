@@ -493,7 +493,7 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 
 		// An empty parent directory is the current directory, which already exists
 		const QString dir = path.section(QDir::separator(), 0, -2);
-		if (!dir.isEmpty() &&!ensureDirectoryExists(dir)) {
+		if (!dir.isEmpty() && !ensureDirectoryExists(dir)) {
 			result.append({ path, size, Image::SaveResult::Error });
 			continue;
 		}
