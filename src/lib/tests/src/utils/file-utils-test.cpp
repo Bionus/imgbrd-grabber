@@ -145,34 +145,6 @@ TEST_CASE("File utils")
 		REQUIRE(writeFile(file, "test"));
 		REQUIRE(QFile::exists(file));
 	}
-
-	SECTION("ensureDirectoryExists")
-	{
-		SECTION("Directory already exists")
-		{
-			REQUIRE(ensureDirectoryExists("tests/resources/tmp"));
-		}
-
-		SECTION("Directory can be created")
-		{
-			const QString dir = "tests/resources/tmp/ensure-dir/nested";
-			DirectoryDeleter deleter("tests/resources/tmp/ensure-dir/", false, true);
-
-			REQUIRE(!QDir(dir).exists());
-			REQUIRE(ensureDirectoryExists(dir));
-			REQUIRE(QDir(dir).exists());
-		}
-
-		SECTION("A file blocks the directory creation")
-		{
-			const QString file = "tests/resources/tmp/ensure-file.txt";
-			FileDeleter deleter(file, true);
-			REQUIRE(writeFile(file, "test"));
-
-			REQUIRE(!ensureDirectoryExists(file + "/sub"));
-		}
-	}
-
 }
 
 
@@ -341,7 +313,9 @@ TEST_CASE("Directory creation")
 			const auto permissions = QFileInfo(parent).permissions();
 			const auto restore = qScopeGuard([parent, permissions]() { QFile::setPermissions(parent, permissions); });
 			REQUIRE(QFile::setPermissions(parent, QFile::ReadOwner | QFile::ExeOwner));
-			REQUIRE_FALSE(QFileInfo(parent).isWritable());
+			if (QFileInfo(parent).isWritable()) {
+				SKIP("Permissions are not enforced for this user (running as root?)");
+			}
 			requireFailure(parent + "/child");
 			REQUIRE_FALSE(QFileInfo::exists(parent + "/child"));
 		}
@@ -391,10 +365,10 @@ TEST_CASE("Directory creation")
 	{
 		QTemporaryDir temporaryDir;
 		REQUIRE(temporaryDir.isValid());
+		// Reserved device names are covered by the next test case
 		const QString suffix = GENERATE(
-			QString("CON/child"), QString("NUL.txt/child"), QString("COM1/child"),
-			QString("LPT9/child"), QString("trailing./child"), QString("trailing /child"),
-			QString(" leading/child"), QString("bad:name/child"), QString("bad\"name/child"));
+			QString("trailing./child"), QString("trailing /child"), QString(" leading/child"),
+			QString("bad:name/child"), QString("bad\"name/child"));
 		CAPTURE(suffix);
 		const QString reference = temporaryDir.filePath("qt/" + suffix);
 		const QString actual = temporaryDir.filePath("helper/" + suffix);

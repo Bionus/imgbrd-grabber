@@ -149,13 +149,13 @@ bool writeFile(const QString &filePath, const QByteArray &data)
 bool ensureDirectoryExists(const QString &dir)
 {
 	if (dir.isEmpty()) {
-		log(QStringLiteral("Impossible to create the destination folder: empty path."), Logger::Error);
+		log(QStringLiteral("Could not create directory: empty path."), Logger::Error);
 		return false;
 	}
 
 	// Native filesystem calls would silently truncate a path at a null character.
 	if (dir.contains(QChar::Null)) {
-		log(QStringLiteral("Impossible to create the destination folder: %1 (path contains a null character).").arg(dir), Logger::Error);
+		log(QStringLiteral("Could not create directory %1 (path contains a null character).").arg(dir), Logger::Error);
 		return false;
 	}
 
@@ -179,15 +179,19 @@ bool ensureDirectoryExists(const QString &dir)
 		#endif
 		std::error_code error;
 		std::filesystem::create_directories(path, error);
-		// An existing directory returns false without an error.
-		if (!error) {
+		// The standard does not treat an already existing path as an error, even when it is not a directory,
+		// so whether a file in the way is reported depends on the standard library: check the result instead.
+		if (!error && std::filesystem::is_directory(path, error)) {
 			return true;
 		}
-		reason = QStringLiteral("%1; %2:%3")
-			.arg(QString::fromLocal8Bit(error.message().c_str()), QString::fromLatin1(error.category().name()))
+		if (!error) {
+			error = std::make_error_code(std::errc::not_a_directory);
+		}
+		reason = QStringLiteral("%1, %2 error %3")
+			.arg(QString::fromLocal8Bit(error.message().c_str()).trimmed(), QString::fromLatin1(error.category().name()))
 			.arg(error.value());
 	}
 
-	log(QStringLiteral("Impossible to create the destination folder: %1 (%2).").arg(dir, reason), Logger::Error);
+	log(QStringLiteral("Could not create directory %1 (%2).").arg(dir, reason), Logger::Error);
 	return false;
 }
