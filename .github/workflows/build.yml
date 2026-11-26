@@ -589,6 +589,13 @@ jobs:
         sudo apt update
         sudo apt install libpulse-dev
 
+    # CMake 4.5 (now on ubuntu-latest) fails the compiler ABI try_compile with
+    # Qt's Android toolchain ("The detected version of Ninja () is less than...")
+    - name: Setup CMake
+      uses: jwlawson/actions-setup-cmake@v2.2
+      with:
+        cmake-version: '4.4.x'
+
     - name: Setup Java
       uses: actions/setup-java@v6
       with:
