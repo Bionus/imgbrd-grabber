@@ -18,6 +18,7 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "network/network-reply.h"
+#include "utils/file-utils.h"
 
 
 static void addMd5(Profile *profile, const QString &path)
@@ -310,10 +311,9 @@ void ImageDownloader::loadImage(bool rateLimit)
 	m_reply->setParent(this);
 	connect(m_reply, &NetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
-	// Create download root directory
+	// Create download root directory (an empty one is the current directory, which already exists)
 	const QString rootDir = m_temporaryPath.section(QDir::separator(), 0, -2);
-	if (!QDir(rootDir).exists() && !QDir().mkpath(rootDir)) {
-		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(rootDir), Logger::Error);
+	if (!rootDir.isEmpty() && !ensureDirectoryExists(rootDir)) {
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
@@ -491,9 +491,9 @@ QList<ImageSaveResult> ImageDownloader::afterTemporarySave(Image::SaveResult sav
 			continue;
 		}
 
+		// An empty parent directory is the current directory, which already exists
 		const QString dir = path.section(QDir::separator(), 0, -2);
-		if (!QDir(dir).exists() && !QDir().mkpath(dir)) {
-			log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+		if (!dir.isEmpty() && !ensureDirectoryExists(dir)) {
 			result.append({ path, size, Image::SaveResult::Error });
 			continue;
 		}

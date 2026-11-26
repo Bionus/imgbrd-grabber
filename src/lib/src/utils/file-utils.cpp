@@ -5,6 +5,8 @@
 #include <QSaveFile>
 #include <QString>
 #include <QStringList>
+#include <filesystem>
+#include <system_error>
 
 
 bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
@@ -124,4 +126,72 @@ bool writeFile(const QString &filePath, const QByteArray &data)
 	file.close();
 
 	return true;
+}
+
+#ifdef Q_OS_WIN
+	// Adapted from Qt's QFSFileEnginePrivate::longFileName, using public APIs for the absolute path.
+	// https://github.com/qt/qtbase/blob/v6.10.0/src/corelib/io/qfsfileengine_win.cpp#L48
+	static QString longFileName(const QString &path)
+	{
+		QString absPath = QDir::toNativeSeparators(QFileInfo(path).absoluteFilePath());
+		if (absPath.startsWith("\\\\?\\") || absPath.startsWith("\\\\.\\")) {
+			return absPath;
+		}
+		QString prefix = "\\\\?\\";
+		if (absPath.startsWith("\\\\")) {
+			prefix.append("UNC\\");
+			absPath.remove(0, 2);
+		}
+		return prefix + absPath;
+	}
+#endif
+
+bool ensureDirectoryExists(const QString &dir)
+{
+	if (dir.isEmpty()) {
+		log(QStringLiteral("Could not create directory: empty path."), Logger::Error);
+		return false;
+	}
+
+	// Native filesystem calls would silently truncate a path at a null character.
+	if (dir.contains(QChar::Null)) {
+		log(QStringLiteral("Could not create directory %1 (path contains a null character).").arg(dir), Logger::Error);
+		return false;
+	}
+
+	if (QDir(dir).exists()) {
+		return true;
+	}
+
+	const QFileInfo info(dir);
+	QString reason;
+	if (!info.isNativePath()) {
+		// Android content URIs and Qt resources need their Qt file engine.
+		if (QDir().mkpath(dir)) {
+			return true;
+		}
+		reason = QStringLiteral("Qt file engine did not provide an error description");
+	} else {
+		#ifdef Q_OS_WIN
+			const std::filesystem::path path(longFileName(dir).toStdWString());
+		#else
+			const std::filesystem::path path = info.filesystemFilePath();
+		#endif
+		std::error_code error;
+		std::filesystem::create_directories(path, error);
+		// The standard does not treat an already existing path as an error, even when it is not a directory,
+		// so whether a file in the way is reported depends on the standard library: check the result instead.
+		if (!error && std::filesystem::is_directory(path, error)) {
+			return true;
+		}
+		if (!error) {
+			error = std::make_error_code(std::errc::not_a_directory);
+		}
+		reason = QStringLiteral("%1, %2 error %3")
+			.arg(QString::fromLocal8Bit(error.message().c_str()).trimmed(), QString::fromLatin1(error.category().name()))
+			.arg(error.value());
+	}
+
+	log(QStringLiteral("Could not create directory %1 (%2).").arg(dir, reason), Logger::Error);
+	return false;
 }

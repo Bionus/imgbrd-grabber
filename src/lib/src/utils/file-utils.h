@@ -12,4 +12,6 @@ bool safeWriteFile(const QString &filePath, const QByteArray &data, bool backup 
 bool ensureFileParent(const QString &filePath);
 bool writeFile(const QString &filePath, const QByteArray &data);
 
+bool ensureDirectoryExists(const QString &dir);
+
 #endif // FILE_UTILS_H
