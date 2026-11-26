@@ -238,7 +238,8 @@ void PageApi::parseActual()
 	const bool isGallery = !m_query.gallery.isNull();
 	const bool parseErrors = endpoint ? endpoint->parseErrors() : (isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors());
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	const int offset = (m_page - 1) * m_imagesPerPage;
+	const int apiForcedLimit = isGallery ? 0 : m_api->forcedLimit();
+	const int offset = (m_page - 1) * (apiForcedLimit > 0 ? apiForcedLimit : m_imagesPerPage);
 
 	// Detect Cloudflare
 	if ((statusCode == 403 || statusCode == 429 || statusCode == 503) && m_reply->rawHeader("server") == "cloudflare") {
@@ -292,6 +293,10 @@ void PageApi::parseActual()
 	for (const QSharedPointer<Image> &img : qAsConst(page.images)) {
 		addImage(img);
 	}
+	// Some gallery endpoints return all the images at once, regardless of the requested page
+	if (isGallery && page.pageCount < 0 && m_page == 1 && page.imageCount > 0 && page.images.count() >= page.imageCount) {
+		page.pageCount = 1;
+	}
 	if (page.pageCount >= 0) {
 		setPageCount(page.pageCount, true);
 	}
@@ -310,6 +315,11 @@ void PageApi::parseActual()
 
 	// Link images to their respective galleries
 	if (isGallery) {
+		// Fill the gallery image count if it was not returned with the gallery in the search results
+		if (page.imageCount > 0 && m_query.gallery->galleryCount() <= 0) {
+			m_query.gallery->setGalleryCount(page.imageCount);
+		}
+
 		for (auto &img : m_images) {
 			img->setParentGallery(m_query.gallery);
 		}

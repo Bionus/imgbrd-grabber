@@ -86,6 +86,8 @@ class Image : public QObject, public Downloadable
 		bool isGallery() const;
 		QString extension() const;
 		void setParentGallery(const QSharedPointer<Image> &parentGallery);
+		int galleryCount() const;
+		void setGalleryCount(int galleryCount);
 		void setPromoteDetailParsWarn(bool);
 		bool isValid() const;
 		Profile *getProfile() const { return m_profile; }
@@ -155,7 +157,7 @@ class Image : public QObject, public Downloadable
 
 		// Shared
 		// - Technical
-		int m_position;
+		int m_position = 0;
 		QStringList m_search;
 		// - Data
 		QVariantMap m_identity;
@@ -178,7 +180,7 @@ class Image : public QObject, public Downloadable
 
 		// Gallery
 		// - Data
-		int m_galleryCount;
+		int m_galleryCount = -1;
 		QString m_name;
 };
 

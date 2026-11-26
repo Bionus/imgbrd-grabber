@@ -125,6 +125,11 @@ function parseImage(image: any, fromGallery: boolean): IImage {
         if (image["meta_single_page"] && image["meta_single_page"]["original_image_url"]) {
             img.file_url = image["meta_single_page"]["original_image_url"];
         }
+
+        // Single-page works are galleries of one image, without needing to load them as galleries
+        if (img.type !== "gallery") {
+            img.gallery_count = 1;
+        }
     }
     if (!img.preview_url) {
         img.preview_url = urlSampleToThumbnail(image["image_urls"]["medium"]);
@@ -271,6 +276,7 @@ export const source: ISource = {
                         images: data["meta_pages"].map((page: any) => parseImage({ ...data, ...page }, true)),
                         tags: data["tags"],
                         imageCount: data["page_count"],
+                        pageCount: 1, // All the pages of the work are returned at once
                     };
                 },
             },
