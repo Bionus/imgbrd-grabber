@@ -314,7 +314,8 @@ QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, 
 
 	if (!d.isEmpty()) {
 		// Sources can return the absolute position of the image (starting at 1), otherwise we guess it from the page
-		const int pos = d.contains("position") ? d["position"].toInt() - 1 : first + static_cast<int>(index);
+		const int sourcePosition = d.contains("position") ? d["position"].toInt() : 0;
+		const int pos = sourcePosition > 0 ? sourcePosition - 1 : first + static_cast<int>(index);
 		QSharedPointer<Image> img = parseImage(site, parentPage, d, identity, data, pos, tags);
 		if (!img.isNull()) {
 			return img;
