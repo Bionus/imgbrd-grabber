@@ -254,10 +254,13 @@ bool ImageDownloader::shouldUpdateMetadata(const QStringList &paths) const
 	// Use the post date, or fallback to the file date if the image doesn't have one
 	QDateTime date = m_image->createdAt();
 	if (!date.isValid()) {
+		// When keeping the original date, the modification date is the post date on all platforms (only Windows can set the creation date)
+		// Otherwise, we use the creation date as the modification date is reset every time the metadata is written
+		const bool keepDate = settings->value("Save/keepDate", true).toBool();
 		for (const QString &path : paths) {
 			const QFileInfo info(path);
 			if (info.exists()) {
-				date = info.birthTime().isValid() ? info.birthTime() : info.lastModified();
+				date = keepDate || !info.birthTime().isValid() ? info.lastModified() : info.birthTime();
 				break;
 			}
 		}

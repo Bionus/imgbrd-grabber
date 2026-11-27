@@ -451,6 +451,56 @@ TEST_CASE("Image")
 			img = ImageFactory::build(site, details, profile);
 			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
 		}
+
+		SECTION("Merged tokens use the same tag settings as their base token")
+		{
+			settings->setValue("Save/MetadataDatabase", true);
+
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.tags.insert("artist", { "artist2", "artist1" });
+			gelbooru.tags.insert("copyright", { "fate/stay night" });
+			gelbooru.tags.insert("general", { "tag4" });
+			gelbooru.allTags = QStringList { "artist2", "artist1", "fate/stay night", "tag4" };
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+			details["tags_copyright"] = "fate ";
+
+			SECTION("Ignored tags are moved to general")
+			{
+				profile->addIgnored("artist1");
+				img = ImageFactory::build(site, details, profile);
+
+				REQUIRE(img->token<QStringList>("artist").isEmpty());
+				REQUIRE(img->token<QStringList>("merged_artist") == QStringList("artist2"));
+				REQUIRE(img->token<QStringList>("general").contains("artist1"));
+				REQUIRE(img->token<QStringList>("merged_general").contains("artist1"));
+				REQUIRE(img->token<QStringList>("merged_general").count("artist1") == 1);
+			}
+
+			SECTION("Shorter copyrights")
+			{
+				const bool useShorter = GENERATE(false, true);
+				CAPTURE(useShorter);
+				settings->setValue("Save/copyright_useshorter", useShorter);
+				img = ImageFactory::build(site, details, profile);
+
+				const QStringList expected = useShorter ? QStringList("fate") : QStringList({ "fate/stay night", "fate" });
+				REQUIRE(img->token<QStringList>("merged_copyright") == expected);
+			}
+
+			SECTION("Removed tags")
+			{
+				profile->setRemovedTags("tag4 artist*");
+				img = ImageFactory::build(site, details, profile);
+
+				REQUIRE(!img->token<QStringList>("merged_general").contains("tag4"));
+				REQUIRE(img->token<QStringList>("merged_general").contains("tag1"));
+				REQUIRE(img->token<QStringList>("merged_artist").isEmpty());
+				REQUIRE(!img->token<QStringList>("merged_all").contains("tag4"));
+			}
+		}
 	}
 
 	SECTION("Default tokens")
