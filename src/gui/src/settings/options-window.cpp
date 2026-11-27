@@ -406,7 +406,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	}
 
 	// Themes
-	const QStringList themes = m_themeLoader->getAllThemes();
+	QStringList themes = m_themeLoader->getAllThemes();
+	const QStringList builtinThemes { "Default", "Light", "Dark" };
+	for (int i = builtinThemes.count() - 1; i >= 0; --i) {
+		if (themes.removeOne(builtinThemes[i])) {
+			themes.prepend(builtinThemes[i]);
+		}
+	}
 	for (const QString &theme : themes) {
 		ui->comboTheme->addItem(theme, theme);
 	}

@@ -138,6 +138,11 @@ int main(int argc, char *argv[])
 	profile.purgeTemp(24 * 60 * 60);
 	QSettings *settings = profile.getSettings();
 
+	// The "QDarkStyleSheet" theme was renamed to "Dark"
+	if (settings->value("theme").toString() == QLatin1String("QDarkStyleSheet")) {
+		settings->setValue("theme", "Dark");
+	}
+
 	// Default to the GUI unless USE_CLI is defined
 	bool defaultToGui = true;
 	#if defined(USE_CLI)
