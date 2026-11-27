@@ -407,7 +407,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	// Themes
 	QStringList themes = m_themeLoader->getAllThemes();
-	const QStringList builtinThemes { "Default", "Light", "Dark" };
+	const QStringList builtinThemes { "Default", "Light", "Dark", "OldDark" };
 	for (int i = builtinThemes.count() - 1; i >= 0; --i) {
 		if (themes.removeOne(builtinThemes[i])) {
 			themes.prepend(builtinThemes[i]);

@@ -291,6 +291,7 @@ Source: "{#SrcDir}\sites\Zerochan\www.zerochan.net\defaults.ini"; DestDir: "{app
 Source: "{#SrcDir}\dist\common\themes\Default\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: recursesubdirs
 Source: "{#SrcDir}\dist\common\themes\Light\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Light"; Flags: recursesubdirs
 Source: "{#SrcDir}\dist\common\themes\Dark\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Dark"; Flags: recursesubdirs
+Source: "{#SrcDir}\dist\common\themes\OldDark\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\OldDark"; Flags: recursesubdirs
 Source: "{#SrcDir}\dist\common\webservices\*.ico"; DestDir: "{localappdata}\Bionus\Grabber\webservices"
 
 [InstallDelete]

@@ -107,7 +107,7 @@ bool isDarkTheme(const QSettings *settings)
 {
 	// Themes with an explicit color scheme take precedence over the system one
 	const QString theme = settings->value("theme", "Default").toString();
-	if (theme == QLatin1String("Dark")) {
+	if (theme == QLatin1String("Dark") || theme == QLatin1String("OldDark")) {
 		return true;
 	}
 	if (theme == QLatin1String("Light")) {
