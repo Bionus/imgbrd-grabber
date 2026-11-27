@@ -16,6 +16,7 @@
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/image.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -234,6 +235,14 @@ bool ImageDownloader::shouldUpdateMetadata(const QStringList &paths) const
 	QSettings *settings = m_profile->getSettings();
 	if (!settings->value("Save/MetadataUpdateExisting", false).toBool()) {
 		return false;
+	}
+
+	// Only update once per website, using the metadata database to know which posts were already fetched
+	if (settings->value("Save/MetadataUpdateOncePerSource", false).toBool() && settings->value("Save/MetadataDatabase", false).toBool() && m_image->id() > 0) {
+		MetadataDatabase *database = m_profile->metadataDatabase();
+		if (database != nullptr && database->exists(m_image->parentSite()->url(), QString::number(m_image->id()))) {
+			return false;
+		}
 	}
 
 	// No age limit

@@ -45,6 +45,7 @@ class MetadataDatabase
 		bool isLoaded() const;
 		bool save(const MetadataDatabaseEntry &entry);
 		QList<MetadataDatabaseEntry> get(const QString &md5);
+		bool exists(const QString &website, const QString &id);
 		bool remove(const QString &md5);
 		int count();
 
@@ -54,6 +55,7 @@ class MetadataDatabase
 		QSqlDatabase m_database;
 		bool m_loaded = false;
 		QSqlQuery m_getQuery;
+		QSqlQuery m_existsQuery;
 		QSqlQuery m_saveQuery;
 		QSqlQuery m_deleteQuery;
 		QSqlQuery m_countQuery;

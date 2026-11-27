@@ -57,6 +57,16 @@ TEST_CASE("MetadataDatabase")
 		REQUIRE(entries[0].updatedAt.isValid());
 	}
 
+	SECTION("It can check if a post was already stored")
+	{
+		MetadataDatabase database("tests/resources/metadata-test.sqlite");
+		REQUIRE(database.exists("danbooru.donmai.us", "4204575"));
+		REQUIRE(database.exists("gelbooru.com", "123"));
+		REQUIRE(!database.exists("danbooru.donmai.us", "5680029"));
+		REQUIRE(!database.exists("tbib.org", "4204575"));
+		REQUIRE(!database.exists("", ""));
+	}
+
 	SECTION("It returns nothing for unknown files")
 	{
 		MetadataDatabase database("tests/resources/metadata-test.sqlite");

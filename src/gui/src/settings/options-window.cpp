@@ -263,7 +263,14 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Metadata of existing files
 	ui->checkMetadataUpdateExisting->setChecked(settings->value("Save/MetadataUpdateExisting", false).toBool());
 	ui->spinMetadataUpdateMaxAge->setValue(settings->value("Save/MetadataUpdateMaxAge", 0).toInt());
+	ui->checkMetadataUpdateOncePerSource->setChecked(settings->value("Save/MetadataUpdateOncePerSource", false).toBool());
 	ui->checkMetadataDatabase->setChecked(settings->value("Save/MetadataDatabase", false).toBool());
+	const auto updateOncePerSourceEnabled = [this]() {
+		ui->checkMetadataUpdateOncePerSource->setEnabled(ui->checkMetadataUpdateExisting->isChecked() && ui->checkMetadataDatabase->isChecked());
+	};
+	connect(ui->checkMetadataUpdateExisting, &QCheckBox::toggled, this, updateOncePerSourceEnabled);
+	connect(ui->checkMetadataDatabase, &QCheckBox::toggled, this, updateOncePerSourceEnabled);
+	updateOncePerSourceEnabled();
 
 	// Log
 	settings->beginGroup("Log");
@@ -1519,6 +1526,7 @@ void OptionsWindow::save()
 		settings->setValue("MetadataExiftoolSidecarNoExtension", ui->checkMetadataExiftoolSidecarNoExtension->isChecked());
 		settings->setValue("MetadataUpdateExisting", ui->checkMetadataUpdateExisting->isChecked());
 		settings->setValue("MetadataUpdateMaxAge", ui->spinMetadataUpdateMaxAge->value());
+		settings->setValue("MetadataUpdateOncePerSource", ui->checkMetadataUpdateOncePerSource->isChecked());
 		settings->setValue("MetadataDatabase", ui->checkMetadataDatabase->isChecked());
 
 		settings->setValue("limit", ui->spinLimit->value());

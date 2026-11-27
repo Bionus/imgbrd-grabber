@@ -69,6 +69,8 @@ By default, files that already exist are skipped. If you check "Update the metad
 
 Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used, or the file's date if the post has none. Set it to "No limit" to update all existing files.
 
+If you also enabled the [metadata database](#metadata-database), you can check "Only once per website" so that each post is only fetched once: files whose metadata was already stored for the current website and post ID are skipped, without loading their details. For example, an image downloaded from Danbooru then found on Gelbooru will have its metadata updated once with Gelbooru's tags, then skipped on both websites afterwards.
+
 Note that this does not run commands or write log files again.
 
 

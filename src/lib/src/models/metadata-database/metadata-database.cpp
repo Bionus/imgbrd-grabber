@@ -51,6 +51,7 @@ MetadataDatabase::~MetadataDatabase()
 {
 	// Queries must be destroyed before removing the connection
 	m_getQuery = QSqlQuery();
+	m_existsQuery = QSqlQuery();
 	m_saveQuery = QSqlQuery();
 	m_deleteQuery = QSqlQuery();
 	m_countQuery = QSqlQuery();
@@ -99,9 +100,10 @@ bool MetadataDatabase::load()
 		return false;
 	}
 
-	// Add index for fast lookup
+	// Add indexes for fast lookup
 	QSqlQuery indexQuery(m_database);
-	if (!indexQuery.exec(QStringLiteral("CREATE INDEX IF NOT EXISTS metadata_md5 ON metadata(md5)"))) {
+	if (!indexQuery.exec(QStringLiteral("CREATE INDEX IF NOT EXISTS metadata_md5 ON metadata(md5)"))
+		|| !indexQuery.exec(QStringLiteral("CREATE INDEX IF NOT EXISTS metadata_website_item ON metadata(website, item)"))) {
 		log(QStringLiteral("Could not create metadata database index: %1").arg(indexQuery.lastError().text()), Logger::Error);
 		return false;
 	}
@@ -124,6 +126,8 @@ bool MetadataDatabase::load()
 
 	m_getQuery = QSqlQuery(m_database);
 	m_getQuery.prepare(QStringLiteral("SELECT * FROM metadata WHERE md5 = ? ORDER BY id"));
+	m_existsQuery = QSqlQuery(m_database);
+	m_existsQuery.prepare(QStringLiteral("SELECT 1 FROM metadata WHERE website = ? AND item = ? LIMIT 1"));
 	m_saveQuery = QSqlQuery(m_database);
 	m_saveQuery.prepare(QStringLiteral("INSERT INTO metadata (%1) VALUES (%2) ON CONFLICT(md5, website, item) DO UPDATE SET %3").arg(columns.join(", "), placeholders.join(", "), updates.join(", ")));
 	m_deleteQuery = QSqlQuery(m_database);
@@ -200,6 +204,27 @@ QList<MetadataDatabaseEntry> MetadataDatabase::get(const QString &md5)
 	}
 
 	return ret;
+}
+
+/**
+ * Check whether the metadata of a given post was already stored.
+ */
+bool MetadataDatabase::exists(const QString &website, const QString &id)
+{
+	if (website.isEmpty() || id.isEmpty() || !load()) {
+		return false;
+	}
+
+	m_existsQuery.bindValue(0, website);
+	m_existsQuery.bindValue(1, id);
+	if (!m_existsQuery.exec()) {
+		log(QStringLiteral("Error checking metadata in the database: %1").arg(m_existsQuery.lastError().text()), Logger::Error);
+		return false;
+	}
+
+	const bool found = m_existsQuery.next();
+	m_existsQuery.finish();
+	return found;
 }
 
 bool MetadataDatabase::remove(const QString &md5)

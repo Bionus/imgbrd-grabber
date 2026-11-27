@@ -546,6 +546,30 @@ TEST_CASE("ImageDownloader")
 			QFile::remove(duplicate + ".xmp");
 		}
 
+		SECTION("Only once per website")
+		{
+			const bool alreadyFetched = GENERATE(false, true);
+			CAPTURE(alreadyFetched);
+			settings->setValue("Save/MetadataUpdateOncePerSource", true);
+
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			if (alreadyFetched) {
+				REQUIRE(profile->metadataDatabase()->save(img->metadataDatabaseEntry()));
+			}
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.count() == (alreadyFetched ? 0 : 1));
+
+			const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+			REQUIRE(entries.count() == 1);
+			REQUIRE(entries[0].tags.value("copyright") == (alreadyFetched ? QStringList() : QStringList("to_heart_2")));
+			QFile::remove(dest + ".xmp");
+		}
+
 		SECTION("Maximum age")
 		{
 			const bool recent = GENERATE(false, true);
