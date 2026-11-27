@@ -511,7 +511,7 @@ TEST_CASE("Image")
 				REQUIRE(!img->fileDate(profile).isValid());
 			}
 
-			SECTION("The original date is undefined in JavaScript if no source has a date")
+			SECTION("The original date falls back to the download date if no source has a date")
 			{
 				const bool hasDate = GENERATE(false, true);
 				CAPTURE(hasDate);
@@ -521,9 +521,10 @@ TEST_CASE("Image")
 				}
 				img = ImageFactory::build(site, details, profile);
 
-				const QString script = "javascript:(typeof merged_date === 'undefined') ? 'none' : String(merged_date.getUTCFullYear())";
-				REQUIRE(Filename(script).path(*img, profile, "", 0, Filename::Complex) == QStringList(hasDate ? "2016" : "none"));
-				REQUIRE(Filename("%merged_date:format=yyyy%").path(*img, profile, "", 0, Filename::Complex).join("") == QString(hasDate ? "2016" : ""));
+				const QString year = hasDate ? QString("2016") : QDateTime::currentDateTime().toString("yyyy");
+				REQUIRE(Filename("javascript:String(merged_date.getUTCFullYear())").path(*img, profile, "", 0, Filename::Complex) == QStringList(year));
+				REQUIRE(Filename("%merged_date:format=yyyy%").path(*img, profile, "", 0, Filename::Complex) == QStringList(year));
+				REQUIRE(img->token<QVariant>("merged_date").isValid() == hasDate); // The token itself is still the actual date
 			}
 
 			SECTION("Posts without a date use the original date")
@@ -596,6 +597,16 @@ TEST_CASE("Image")
 				REQUIRE(!img->token<QStringList>("merged_all").contains("tag4"));
 			}
 		}
+	}
+
+	SECTION("Unparseable dates are considered missing")
+	{
+		details["created_at"] = "not a date";
+		img = ImageFactory::build(site, details, profile);
+
+		REQUIRE(!img->createdAt().isValid());
+		REQUIRE(!img->tokens(profile).contains("date"));
+		REQUIRE(img->token<QString>("date_raw") == QString("not a date"));
 	}
 
 	SECTION("Default tokens")

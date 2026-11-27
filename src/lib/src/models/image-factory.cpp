@@ -84,13 +84,20 @@ vTransformToken ImageFactory::parseBool(const QString &key)
 
 void ImageFactory::parseCreatedAt(const QString &val, QVariantMap &data)
 {
-	data["date"] = qDateTimeFromString(val);
+	// Dates that can't be parsed are considered missing, but are still available in "date_raw"
+	const QDateTime date = qDateTimeFromString(val);
+	if (date.isValid()) {
+		data["date"] = date;
+	}
 	data["date_raw"] = val;
 }
 
 void ImageFactory::parseDate(const QString &val, QVariantMap &data)
 {
-	data["date"] = QDateTime::fromString(val, Qt::ISODate);
+	const QDateTime date = QDateTime::fromString(val, Qt::ISODate);
+	if (date.isValid()) {
+		data["date"] = date;
+	}
 	data["date_raw"] = val;
 }
 

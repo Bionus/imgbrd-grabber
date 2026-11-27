@@ -616,6 +616,9 @@ TEST_CASE("ImageDownloader")
 			settings->setArrayIndex(0);
 			settings->setValue("key", "XMP:Creator");
 			settings->setValue("value", "%id%");
+			settings->setArrayIndex(1);
+			settings->setValue("key", "XMP:Description");
+			settings->setValue("value", "%date:format=yyyy-MM-dd%");
 			settings->endArray();
 
 			auto img = createImage(profile, site);
@@ -630,11 +633,15 @@ TEST_CASE("ImageDownloader")
 			REQUIRE(QFileInfo(dest).lastModified().toSecsSinceEpoch() == fileDate.toSecsSinceEpoch());
 
 			// Make sure the metadata was actually written into the file, which resets its date
+			// The post has no date, so the date in the metadata is the date of the file (the download date)
 			if (!Exiftool::version().isEmpty()) {
 				QProcess process;
-				process.start("exiftool", { "-s3", "-XMP:Creator", dest });
+				process.start("exiftool", { "-s3", "-XMP:Creator", "-XMP:Description", dest });
 				REQUIRE(process.waitForFinished());
-				REQUIRE(QString::fromUtf8(process.readAllStandardOutput()).trimmed() == QString("7331"));
+				const QStringList values = QString::fromUtf8(process.readAllStandardOutput()).trimmed().split('\n');
+				REQUIRE(values.count() == 2);
+				REQUIRE(values[0].trimmed() == QString("7331"));
+				REQUIRE(values[1].trimmed() == fileDate.toString("yyyy-MM-dd"));
 			}
 
 			REQUIRE(QFile::remove(dest));

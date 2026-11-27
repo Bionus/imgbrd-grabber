@@ -1,3 +1,4 @@
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QScopedPointer>
@@ -216,6 +217,38 @@ TEST_CASE("Filename")
 		assertPath(profile, img,
 			"%artist%/%copyright%/%character%/%md5%.%ext%",
 			"artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	}
+	SECTION("Date fallbacks")
+	{
+		const QDateTime postDate(QDate(2020, 1, 2), QTime(3, 4, 5), Qt::UTC);
+		const QDateTime downloadDate(QDate(2024, 6, 7), QTime(8, 9, 10), Qt::UTC);
+
+		// Valid dates are kept, missing ones use the download date
+		QMap<QString, Token> tokens {
+			{ "date", Token(QVariant(postDate)) },
+			{ "merged_date", Token([]() { return QVariant(); }) },
+		};
+		Filename::addDateFallbacks(tokens, downloadDate);
+		REQUIRE(tokens["date"].value().toDateTime() == postDate);
+		REQUIRE(tokens["merged_date"].value().toDateTime() == downloadDate);
+
+		// Missing tokens are added, and a previous fallback is kept
+		QMap<QString, Token> empty;
+		Filename::addDateFallbacks(empty, downloadDate);
+		Filename::addDateFallbacks(empty, QDateTime::currentDateTime());
+		REQUIRE(empty["date"].value().toDateTime() == downloadDate);
+		REQUIRE(empty["merged_date"].value().toDateTime() == downloadDate);
+	}
+	SECTION("Posts without a date use the download date")
+	{
+		details.remove("created_at");
+		auto noDate = ImageFactory::build(site, details, profile);
+		REQUIRE(!noDate->createdAt().isValid());
+
+		const QString year = QDateTime::currentDateTime().toString("yyyy");
+		REQUIRE(Filename("%date:format=yyyy%").path(*noDate, profile, "", 7, Filename::Complex) == QStringList(year));
+		REQUIRE(Filename("javascript:String(date.getFullYear())").path(*noDate, profile, "", 7, Filename::Complex) == QStringList(year));
+		REQUIRE(Filename("javascript:String(merged_date.getFullYear())").path(*noDate, profile, "", 7, Filename::Complex) == QStringList(year));
 	}
 	SECTION("Merged tokens use the settings of their base token")
 	{

@@ -1,5 +1,6 @@
 #include "filename/filename.h"
 #include <QCollator>
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QFileInfoList>
@@ -89,6 +90,25 @@ QList<Token> Filename::getReplace(const QString &tokenName, const Token &token, 
 	return ret;
 }
 
+/**
+ * Make the date tokens fall back to the download date for posts without a date, so that they are always defined.
+ * Tokens that already have a valid date (including a previous fallback) are kept as is.
+ *
+ * @param tokens The tokens to update.
+ * @param downloadDate The date to use if the post doesn't have one.
+ */
+void Filename::addDateFallbacks(QMap<QString, Token> &tokens, const QDateTime &downloadDate)
+{
+	static const QStringList keys { "date", "merged_date" };
+	for (const QString &key : keys) {
+		const Token original = tokens.value(key);
+		tokens.insert(key, Token([original, downloadDate]() {
+			const QVariant val = original.value();
+			return val.toDateTime().isValid() ? val : QVariant(downloadDate);
+		}));
+	}
+}
+
 QList<QMap<QString, Token>> Filename::expandTokens(const QMap<QString, Token> &tokens, QSettings *settings) const
 {
 	QList<QMap<QString, Token>> ret;
@@ -157,6 +177,9 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 			return filenameOverride.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
 		}
 	}
+
+	// Posts without a date use the download date (after the conditions, as filters such as "age:" need the actual post date)
+	addDateFallbacks(tokens, QDateTime::currentDateTime());
 
 	QStringList fns;
 

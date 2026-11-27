@@ -900,6 +900,10 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
  */
 void Image::writeMetadata(const QString &path, const QString &ext)
 {
+	// Posts without a date use the date of the file, which is the download date as updating metadata doesn't change it
+	QMap<QString, Token> tokens = this->tokens(m_profile);
+	Filename::addDateFallbacks(tokens, QFileInfo(path).lastModified());
+
 	#ifdef WIN_FILE_PROPS
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
 		if (exts.isEmpty() || exts.contains(ext)) {
@@ -908,7 +912,7 @@ void Image::writeMetadata(const QString &path, const QString &ext)
 				clearAllWindowsProperties(path);
 			}
 			for (const auto &pair : metadataPropsys) {
-				const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+				const QStringList values = Filename(pair.second).path(tokens, m_profile, "", 0, Filename::Complex);
 				if (!values.isEmpty()) {
 					setWindowsProperty(path, pair.first, values.first());
 				}
@@ -920,7 +924,7 @@ void Image::writeMetadata(const QString &path, const QString &ext)
 		QMap<QString, QString> metadata;
 		const auto metadataExiftool = getMetadataExiftool(m_settings);
 		for (const auto &pair : metadataExiftool) {
-			const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+			const QStringList values = Filename(pair.second).path(tokens, m_profile, "", 0, Filename::Complex);
 			if (!values.isEmpty()) {
 				metadata.insert(pair.first, values.first());
 			}
@@ -1138,7 +1142,7 @@ int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
 const QStringList &Image::search() const { return m_search; }
-QDateTime Image::createdAt() const { return token<QDateTime>("date"); }
+QDateTime Image::createdAt() const { return m_data.value("date").toDateTime(); }
 QString Image::dateRaw() const { return token<QString>("date_raw"); }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
@@ -1635,7 +1639,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 			}
 		}
 
-		// Like "date", leave it undefined in JavaScript filenames if there is no date
+		// Missing dates fall back to the download date when used in a filename (see Filename::addDateFallbacks)
 		return ret.isValid() ? QVariant(ret) : QVariant();
 	}));
 	tokens.insert("merged_rating", Token([getKnownSources]() {
