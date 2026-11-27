@@ -3,6 +3,57 @@ const tagTypeMap: Record<string, string> = {
     "metadata": "meta",
 };
 
+// Realbooru: tag links in <div id="tagLink">, typed by their class
+const tagLinkClassMap: Record<string, string> = {
+    "tag-type-general": "general",
+    "general": "general",
+    "artist": "artist",
+    "copyright": "copyright",
+    "character": "character",
+    "model": "model",
+    "metadata": "meta",
+};
+
+function parseTagLinks(src: string): ITag[] {
+    const start = src.search(/<div[^>]*\sid=["']?tagLink["'\s>]/i);
+    if (start === -1) {
+        return [];
+    }
+
+    // Find the matching "</div>", taking nested divs into account
+    const divRx = /<(\/?)div\b[^>]*>/gi;
+    divRx.lastIndex = start;
+    let depth = 0;
+    let end = src.length;
+    let div: RegExpExecArray | null;
+    while ((div = divRx.exec(src)) !== null) {
+        depth += div[1] ? -1 : 1;
+        if (depth === 0) {
+            end = div.index;
+            break;
+        }
+    }
+    const block = src.substring(start, end);
+
+    const tags: ITag[] = [];
+    const uniques: Record<string, boolean> = {};
+    const rx = /<a\s[^>]*\bclass=["']([^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
+    let match: RegExpExecArray | null;
+    while ((match = rx.exec(block)) !== null) {
+        let type: string | undefined;
+        for (const cls of match[1].trim().split(/\s+/)) {
+            type = type || tagLinkClassMap[cls.toLowerCase()];
+        }
+        const name = match[2].replace(/<[^>]*>/g, "").trim();
+        if (!type || !name || name in uniques) {
+            continue;
+        }
+        tags.push({ name, type });
+        uniques[name] = true;
+    }
+    return tags;
+}
+
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
 function parseDetailsDate(src: string): string | undefined {
@@ -244,8 +295,12 @@ export const source: ISource = {
                     return baseUrl + "/index.php?page=post&s=view&id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {
+                    let tags: ITag[] = Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*(?:<span[^>]*>[^<]*)?<a[^>]*>[^<]*</a>(?:[^<]*</span>)?)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src);
+                    if (tags.length === 0) {
+                        tags = parseTagLinks(src);
+                    }
                     return {
-                        tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*(?:<span[^>]*>[^<]*)?<a[^>]*>[^<]*</a>(?:[^<]*</span>)?)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
+                        tags,
                         imageUrl: Grabber.regexToConst("url", '<img[^>]+src="([^"]+)"[^>]+onclick="Note\\.toggle\\(\\);"[^>]*/>', src),
                         createdAt: parseDetailsDate(src),
                         source: src.match(/>Source:\s*<a href="([^"]+)"/i)?.[1],
