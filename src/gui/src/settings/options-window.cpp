@@ -345,6 +345,15 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		const QString fileDateDefault = settings->value("keepDate", true).toBool() ? "source" : "download"; // Default to the old "keep date" setting
 		const int fileDateIndex = fileDateModes.indexOf(settings->value("fileDate", fileDateDefault).toString());
 		ui->comboFileDate->setCurrentIndex(fileDateIndex >= 0 ? fileDateIndex : fileDateModes.indexOf("source"));
+
+		// The original date requires the metadata database, otherwise it is the same as the source date
+		const auto updateFileDateWarning = [this]() {
+			const bool original = ui->comboFileDate->currentIndex() == fileDateModes.indexOf("original");
+			ui->labelFileDateWarning->setVisible(original && !ui->checkMetadataDatabase->isChecked());
+		};
+		connect(ui->comboFileDate, QOverload<int>::of(&QComboBox::currentIndexChanged), this, updateFileDateWarning);
+		connect(ui->checkMetadataDatabase, &QCheckBox::toggled, this, updateFileDateWarning);
+		updateFileDateWarning();
 		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());

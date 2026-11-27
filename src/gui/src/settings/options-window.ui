@@ -791,29 +791,46 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QComboBox" name="comboFileDate">
-          <property name="toolTip">
-           <string>&lt;b&gt;Source date&lt;/b&gt;: post date on the website it is downloaded from.&lt;br/&gt;&lt;b&gt;Original date&lt;/b&gt;: oldest post date of all the websites the file was found on (requires the metadata database, otherwise the same as the source date).&lt;br/&gt;&lt;b&gt;Download date&lt;/b&gt;: don't change the date of the file.&lt;br/&gt;If a date is missing, the next one in this list is used.</string>
-          </property>
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
+         <layout class="QHBoxLayout" name="layoutFileDate">
           <item>
-           <property name="text">
-            <string>Source date</string>
-           </property>
+           <widget class="QComboBox" name="comboFileDate">
+            <property name="toolTip">
+             <string>&lt;b&gt;Source date&lt;/b&gt;: post date on the website it is downloaded from.&lt;br/&gt;&lt;b&gt;Original date&lt;/b&gt;: oldest post date of all the websites the file was found on (requires the metadata database, otherwise the same as the source date).&lt;br/&gt;&lt;b&gt;Download date&lt;/b&gt;: don't change the date of the file.&lt;br/&gt;If a date is missing, the next one in this list is used.</string>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Source date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Original date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Download date</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item>
-           <property name="text">
-            <string>Original date</string>
-           </property>
+           <widget class="QLabel" name="labelFileDateWarning">
+            <property name="styleSheet">
+             <string notr="true">color: orange</string>
+            </property>
+            <property name="text">
+             <string>Requires the metadata database (Save &gt; Metadata), otherwise the source date is used</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
-          <item>
-           <property name="text">
-            <string>Download date</string>
-           </property>
-          </item>
-         </widget>
+         </layout>
         </item>
         <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSaveHeaderDetection">
@@ -1541,7 +1558,7 @@
            <item row="3" column="0" colspan="2">
             <widget class="QCheckBox" name="checkMetadataDatabase">
              <property name="toolTip">
-              <string>Store the tags of downloaded files in "metadata.sqlite", using their MD5 to combine the data from all the websites they were found on. Required for the %websites%, %websiteids%, %websitenames% and %merged_...% tokens to list more than the current website.</string>
+              <string>Store the tags of downloaded files in "metadata.sqlite", using their MD5 to combine the data from all the websites they were found on. Required for the %websites%, %websiteids%, %websitenames% and %merged_...% tokens to list more than the current website, and for the "Original date" file date.</string>
              </property>
              <property name="text">
               <string>Keep a database of the metadata of all the sources of each file</string>
