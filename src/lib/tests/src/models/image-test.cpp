@@ -438,7 +438,8 @@ TEST_CASE("Image")
 			img = ImageFactory::build(site, details, profile);
 			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
 			REQUIRE(img->token<QStringList>("websiteids") == QStringList({ "gelbooru.com:5680029", "danbooru.donmai.us:7331" }));
-			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ "gelbooru.com", site->name() })); // Gelbooru is not in the profile, so its URL is used
+			const Site *gelbooruSite = profile->getSites().value("gelbooru.com"); // Depends on the sites set up by other tests
+			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ gelbooruSite != nullptr ? gelbooruSite->name() : QString("gelbooru.com"), site->name() }));
 			REQUIRE(img->token<QStringList>("merged_artist") == QStringList({ "artist2", "artist1" }));
 			REQUIRE(img->token<QStringList>("merged_general") == QStringList({ "tag4", "tag1", "tag2", "tag3" }));
 			REQUIRE(img->token<QStringList>("merged_all").count("artist1") == 1);
@@ -450,6 +451,20 @@ TEST_CASE("Image")
 			REQUIRE(profile->metadataDatabase()->save(img->metadataDatabaseEntry()));
 			img = ImageFactory::build(site, details, profile);
 			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
+		}
+
+		SECTION("Website names use the profile, or the URL for unknown websites")
+		{
+			settings->setValue("Save/MetadataDatabase", true);
+
+			MetadataDatabaseEntry unknown;
+			unknown.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			unknown.website = "unknown.example";
+			unknown.id = "1";
+			REQUIRE(profile->metadataDatabase()->save(unknown));
+
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ "unknown.example", site->name() }));
 		}
 
 		SECTION("Dates")
