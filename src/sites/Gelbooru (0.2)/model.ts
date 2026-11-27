@@ -3,6 +3,28 @@ const tagTypeMap: Record<string, string> = {
     "metadata": "meta",
 };
 
+const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+function parseDetailsDate(src: string): string | undefined {
+    // Most Gelbooru 0.2 sites: "Posted: 2025-01-01 12:34:56"
+    const posted = src.match(/>Posted:\s*([^<]+)</i)?.[1];
+    if (posted) {
+        return posted;
+    }
+
+    // Realbooru: "Posted at Jan, 01 2025 by", with an optional time
+    const match = src.match(/Posted at\s+([a-z]{3})[a-z]*\.?,?\s+(\d{1,2}),?\s+(\d{4})(?:,?\s+(\d{1,2}):(\d{2}))?/i);
+    if (match) {
+        const month = months.indexOf(match[1].toLowerCase()) + 1;
+        if (month > 0) {
+            const pad = (val: string | number | undefined): string => ("0" + (val ?? 0)).slice(-2);
+            return match[3] + "/" + pad(month) + "/" + pad(match[2]) + " " + pad(match[4]) + ":" + pad(match[5]);
+        }
+    }
+
+    return undefined;
+}
+
 function completeImage(img: IImage): IImage {
     img.author = (img as any).owner;
 
@@ -225,7 +247,7 @@ export const source: ISource = {
                     return {
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*(?:<span[^>]*>[^<]*)?<a[^>]*>[^<]*</a>(?:[^<]*</span>)?)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
                         imageUrl: Grabber.regexToConst("url", '<img[^>]+src="([^"]+)"[^>]+onclick="Note\\.toggle\\(\\);"[^>]*/>', src),
-                        createdAt: src.match(/>Posted:\s*([^<]+)</i)?.[1],
+                        createdAt: parseDetailsDate(src),
                         source: src.match(/>Source:\s*<a href="([^"]+)"/i)?.[1],
                     };
                 },
