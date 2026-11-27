@@ -67,7 +67,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `websitename`: the website name as set in the sources' settings.
 * `websites`: all the websites this file is known to be on (see [Metadata database](metadata.md#metadata-database)), in the same format as `website`. Example: `danbooru.donmai.us gelbooru.com tbib.org`.
 * `websiteids`: all the websites this file is known to be on, followed by `:` and the image ID on each website. Example: `danbooru.donmai.us:4204575 gelbooru.com:5680029`.
-* `websitenames`: all the website names this file is known to be on, as set in the sources' settings.
+* `websitenames`: all the website names this file is known to be on, as currently set in the sources' settings (or their URL for websites that are not in your sources anymore).
 * `merged_all`, `merged_artist`, `merged_copyright`, `merged_character`, `merged_model`, `merged_species`, `merged_meta`, `merged_general`: the tags of all the websites this file is known to be on, combined and without duplicates. They use the same Tags settings as their base token (separator, sorting, what to do when empty or multiple, etc.), so `%merged_artist%` behaves like `%artist%`.
 * `merged_rating`: the different ratings this file has on all the websites it is known to be on.
 * `merged_date`: the oldest post date of all the websites this file is known to be on. It supports the same options as `date`.

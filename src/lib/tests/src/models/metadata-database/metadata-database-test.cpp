@@ -12,7 +12,6 @@ static MetadataDatabaseEntry makeEntry(const QString &md5, const QString &websit
 	MetadataDatabaseEntry entry;
 	entry.md5 = md5;
 	entry.website = website;
-	entry.websiteName = website.toUpper();
 	entry.id = id;
 	entry.rating = "general";
 	if (!artists.isEmpty()) {

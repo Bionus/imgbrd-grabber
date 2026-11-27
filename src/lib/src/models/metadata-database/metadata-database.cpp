@@ -31,7 +31,6 @@ bool operator==(const MetadataDatabaseEntry &lhs, const MetadataDatabaseEntry &r
 {
 	return lhs.md5 == rhs.md5
 		&& lhs.website == rhs.website
-		&& lhs.websiteName == rhs.websiteName
 		&& lhs.id == rhs.id
 		&& lhs.rating == rhs.rating
 		&& lhs.date == rhs.date
@@ -87,7 +86,6 @@ bool MetadataDatabase::load()
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
 		"md5 CHAR(32) NOT NULL, "
 		"website TEXT NOT NULL, "
-		"website_name TEXT, "
 		"item TEXT NOT NULL, "
 		"rating TEXT, "
 		"\"date\" TEXT, "
@@ -120,7 +118,7 @@ bool MetadataDatabase::load()
 	}
 
 	// Prepare queries
-	QStringList columns { "md5", "website", "website_name", "item", "rating", "\"date\"" };
+	QStringList columns { "md5", "website", "item", "rating", "\"date\"" };
 	for (const QString &type : TagTypes) {
 		columns.append("\"" + type + "\"");
 	}
@@ -167,7 +165,6 @@ bool MetadataDatabase::save(const MetadataDatabaseEntry &entry)
 	int i = 0;
 	m_saveQuery.bindValue(i++, entry.md5);
 	m_saveQuery.bindValue(i++, entry.website);
-	m_saveQuery.bindValue(i++, entry.websiteName);
 	m_saveQuery.bindValue(i++, entry.id);
 	m_saveQuery.bindValue(i++, entry.rating);
 	m_saveQuery.bindValue(i++, entry.date.isValid() ? entry.date.toUTC().toString(Qt::ISODateWithMs) : QString());
@@ -204,7 +201,6 @@ QList<MetadataDatabaseEntry> MetadataDatabase::get(const QString &md5)
 		MetadataDatabaseEntry entry;
 		entry.md5 = m_getQuery.value(record.indexOf("md5")).toString();
 		entry.website = m_getQuery.value(record.indexOf("website")).toString();
-		entry.websiteName = m_getQuery.value(record.indexOf("website_name")).toString();
 		entry.id = m_getQuery.value(record.indexOf("item")).toString();
 		entry.rating = m_getQuery.value(record.indexOf("rating")).toString();
 		const QString date = m_getQuery.value(record.indexOf("date")).toString();

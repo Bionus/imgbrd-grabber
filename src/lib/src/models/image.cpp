@@ -1048,7 +1048,6 @@ MetadataDatabaseEntry Image::metadataDatabaseEntry() const
 	MetadataDatabaseEntry entry;
 	entry.md5 = md5();
 	entry.website = m_parentSite->url();
-	entry.websiteName = m_parentSite->name();
 	entry.id = m_id > 0 ? QString::number(m_id) : QString();
 	entry.rating = m_data.value("rating").toString();
 	entry.date = m_data.value("date").toDateTime();
@@ -1566,10 +1565,13 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 		}
 		return QVariant(ret);
 	}));
-	tokens.insert("websitenames", Token([getKnownSources]() {
+	tokens.insert("websitenames", Token([getKnownSources, profile]() {
+		// Use the current name of each website, or its URL if it is not in the profile anymore
+		const QMap<QString, Site*> &sites = profile->getSites();
 		QStringList ret;
 		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
-			ret.append(entry.websiteName);
+			const Site *site = sites.value(entry.website);
+			ret.append(site != nullptr ? site->name() : entry.website);
 		}
 		return QVariant(ret);
 	}));

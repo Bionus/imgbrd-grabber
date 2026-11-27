@@ -428,7 +428,6 @@ TEST_CASE("Image")
 			MetadataDatabaseEntry gelbooru;
 			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
 			gelbooru.website = "gelbooru.com";
-			gelbooru.websiteName = "Gelbooru";
 			gelbooru.id = "5680029";
 			gelbooru.rating = "questionable";
 			gelbooru.tags.insert("artist", { "artist2", "artist1" });
@@ -439,7 +438,7 @@ TEST_CASE("Image")
 			img = ImageFactory::build(site, details, profile);
 			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
 			REQUIRE(img->token<QStringList>("websiteids") == QStringList({ "gelbooru.com:5680029", "danbooru.donmai.us:7331" }));
-			REQUIRE(img->token<QStringList>("websitenames").first() == QString("Gelbooru"));
+			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ "gelbooru.com", site->name() })); // Gelbooru is not in the profile, so its URL is used
 			REQUIRE(img->token<QStringList>("merged_artist") == QStringList({ "artist2", "artist1" }));
 			REQUIRE(img->token<QStringList>("merged_general") == QStringList({ "tag4", "tag1", "tag2", "tag3" }));
 			REQUIRE(img->token<QStringList>("merged_all").count("artist1") == 1);

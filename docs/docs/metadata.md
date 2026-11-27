@@ -88,7 +88,7 @@ This allows using tokens that combine the information of all the websites a file
 
 For example, downloading the same image from Danbooru then Gelbooru with the Exiftool property `XMP:Subject` set to `%merged_all%` will write the tags of both websites in the second file's metadata.
 
-The `metadata` table contains the following columns: `md5`, `website`, `website_name`, `item` (the image ID on that website), `rating`, `date` (the post date on that website, in ISO 8601 UTC), `artist`, `copyright`, `character`, `model`, `species`, `meta`, `general`, `tags` (all tags) and `updated_at`. Tag columns are stored as JSON arrays.
+The `metadata` table contains the following columns: `md5`, `website`, `item` (the image ID on that website), `rating`, `date` (the post date on that website, in ISO 8601 UTC), `artist`, `copyright`, `character`, `model`, `species`, `meta`, `general`, `tags` (all tags) and `updated_at`. Tag columns are stored as JSON arrays.
 
 
 ## File date

@@ -17,7 +17,6 @@ struct MetadataDatabaseEntry
 {
 	QString md5;
 	QString website; // The site URL, without protocol, such as "danbooru.donmai.us"
-	QString websiteName; // The site name as set in the sources settings
 	QString id; // The ID of the post on that website
 	QString rating;
 	QDateTime date; // The date the post was uploaded on that website

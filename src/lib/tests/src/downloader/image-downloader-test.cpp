@@ -723,7 +723,6 @@ TEST_CASE("ImageDownloader")
 			MetadataDatabaseEntry gelbooru;
 			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
 			gelbooru.website = "gelbooru.com";
-			gelbooru.websiteName = "Gelbooru";
 			gelbooru.id = "5680029";
 			gelbooru.tags.insert("general", { "tag4" });
 			gelbooru.allTags = QStringList { "tag4" };
