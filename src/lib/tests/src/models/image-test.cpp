@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QSignalSpy>
 #include "downloader/extension-rotator.h"
+#include "filename/filename.h"
 #include "loader/token.h"
 #include "models/image.h"
 #include "models/image-factory.h"
@@ -508,6 +509,21 @@ TEST_CASE("Image")
 				REQUIRE(img->fileDate(profile) == sourceDate);
 				settings->setValue("Save/fileDate", "download");
 				REQUIRE(!img->fileDate(profile).isValid());
+			}
+
+			SECTION("The original date is undefined in JavaScript if no source has a date")
+			{
+				const bool hasDate = GENERATE(false, true);
+				CAPTURE(hasDate);
+				settings->setValue("Save/MetadataDatabase", false); // Only use the current post
+				if (!hasDate) {
+					details.remove("created_at");
+				}
+				img = ImageFactory::build(site, details, profile);
+
+				const QString script = "javascript:(typeof merged_date === 'undefined') ? 'none' : String(merged_date.getUTCFullYear())";
+				REQUIRE(Filename(script).path(*img, profile, "", 0, Filename::Complex) == QStringList(hasDate ? "2016" : "none"));
+				REQUIRE(Filename("%merged_date:format=yyyy%").path(*img, profile, "", 0, Filename::Complex).join("") == QString(hasDate ? "2016" : ""));
 			}
 
 			SECTION("Posts without a date use the original date")

@@ -1634,7 +1634,9 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 				ret = entry.date;
 			}
 		}
-		return QVariant(ret);
+
+		// Like "date", leave it undefined in JavaScript filenames if there is no date
+		return ret.isValid() ? QVariant(ret) : QVariant();
 	}));
 	tokens.insert("merged_rating", Token([getKnownSources]() {
 		QStringList ret;
