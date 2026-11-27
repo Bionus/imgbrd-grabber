@@ -1022,16 +1022,20 @@ QDateTime Image::originalDate(Profile *profile) const
 
 /**
  * Get the date to give to saved files, depending on the settings.
- * An invalid date means that the date of the file should not be changed.
+ * Missing dates fall back to the next one: source date, original date, download date.
+ * An invalid date means that the date of the file should not be changed (download date).
  */
 QDateTime Image::fileDate(Profile *profile) const
 {
 	const QString mode = fileDateMode(profile->getSettings());
-	if (mode == QLatin1String("original")) {
-		return originalDate(profile);
-	}
 	if (mode == QLatin1String("source")) {
-		return m_data.value("date").toDateTime();
+		const QDateTime sourceDate = m_data.value("date").toDateTime();
+		if (sourceDate.isValid()) {
+			return sourceDate;
+		}
+	}
+	if (mode == QLatin1String("source") || mode == QLatin1String("original")) {
+		return originalDate(profile);
 	}
 	return {};
 }

@@ -793,19 +793,19 @@
         <item row="3" column="1">
          <widget class="QComboBox" name="comboFileDate">
           <property name="toolTip">
-           <string>&lt;b&gt;Original date&lt;/b&gt;: oldest post date of all the websites the file was found on (requires the metadata database, otherwise the same as the source date).&lt;br/&gt;&lt;b&gt;Source date&lt;/b&gt;: post date on the website it is downloaded from.&lt;br/&gt;&lt;b&gt;Download date&lt;/b&gt;: don't change the date of the file.&lt;br/&gt;If a date is missing, the next one in this list is used.</string>
+           <string>&lt;b&gt;Source date&lt;/b&gt;: post date on the website it is downloaded from.&lt;br/&gt;&lt;b&gt;Original date&lt;/b&gt;: oldest post date of all the websites the file was found on (requires the metadata database, otherwise the same as the source date).&lt;br/&gt;&lt;b&gt;Download date&lt;/b&gt;: don't change the date of the file.&lt;br/&gt;If a date is missing, the next one in this list is used.</string>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <item>
            <property name="text">
-            <string>Original date</string>
+            <string>Source date</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Source date</string>
+            <string>Original date</string>
            </property>
           </item>
           <item>

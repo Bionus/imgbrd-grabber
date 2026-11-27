@@ -95,8 +95,8 @@ The `metadata` table contains the following columns: `md5`, `website`, `website_
 
 The "File date" setting (in the "Save" settings) decides which date is given to saved files:
 
-* **Original date**: the oldest post date of all the websites the file was found on. This requires the metadata database, otherwise it is the same as the source date.
 * **Source date**: the post date on the website the file is downloaded from.
+* **Original date**: the oldest post date of all the websites the file was found on. This requires the metadata database, otherwise it is the same as the source date.
 * **Download date**: the date of the file is not changed.
 
-If a date is missing, the next one in this list is used. For example, with "Original date", a file downloaded from a website that doesn't provide post dates will still get a date if it was found on another website that does.
+If a date is missing, the next one in this list is used. For example, a file downloaded from a website that doesn't provide post dates will still get a date if it was found on another website that does.

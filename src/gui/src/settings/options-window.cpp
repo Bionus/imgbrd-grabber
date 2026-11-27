@@ -341,7 +341,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->checkDownloadOriginals->setChecked(settings->value("downloadoriginals", true).toBool());
 		ui->checkSampleFallback->setChecked(settings->value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings->value("replaceblanks", false).toBool());
-		static const QStringList fileDateModes { "original", "source", "download" };
+		static const QStringList fileDateModes { "source", "original", "download" };
 		const QString fileDateDefault = settings->value("keepDate", true).toBool() ? "source" : "download"; // Default to the old "keep date" setting
 		const int fileDateIndex = fileDateModes.indexOf(settings->value("fileDate", fileDateDefault).toString());
 		ui->comboFileDate->setCurrentIndex(fileDateIndex >= 0 ? fileDateIndex : fileDateModes.indexOf("source"));
@@ -1401,7 +1401,7 @@ void OptionsWindow::save()
 		settings->setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings->setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings->setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
-		static const QStringList fileDateModes { "original", "source", "download" };
+		static const QStringList fileDateModes { "source", "original", "download" };
 		settings->setValue("fileDate", fileDateModes.at(ui->comboFileDate->currentIndex()));
 		settings->setValue("keepDate", ui->comboFileDate->currentIndex() != fileDateModes.indexOf("download")); // Kept for older versions
 		settings->setValue("headerDetection", ui->checkSaveHeaderDetection->isChecked());

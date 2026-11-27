@@ -504,9 +504,16 @@ TEST_CASE("Image")
 				img = ImageFactory::build(site, details, profile);
 
 				REQUIRE(!img->createdAt().isValid());
-				REQUIRE(!img->fileDate(profile).isValid()); // The source date falls back to the download date
+				REQUIRE(img->fileDate(profile) == olderDate); // The source date falls back to the original date
 				settings->setValue("Save/fileDate", "original");
 				REQUIRE(img->fileDate(profile) == olderDate);
+				settings->setValue("Save/fileDate", "download");
+				REQUIRE(!img->fileDate(profile).isValid());
+
+				// Without any known date, it falls back to the download date
+				settings->setValue("Save/fileDate", "source");
+				settings->setValue("Save/MetadataDatabase", false);
+				REQUIRE(!img->fileDate(profile).isValid());
 			}
 		}
 
