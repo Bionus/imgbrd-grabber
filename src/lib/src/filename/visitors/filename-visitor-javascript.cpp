@@ -54,7 +54,7 @@ void FilenameVisitorJavaScript::setJavaScriptVariables(QJSEngine &engine, const 
 QString FilenameVisitorJavaScript::separator(const QString &key) const
 {
 	QString mainSeparator = m_settings->value("Save/separator", " ").toString();
-	QString separator = m_settings->value("Save/" + key + "_sep", mainSeparator).toString();
+	QString separator = m_settings->value("Save/" + Token::settingsName(key) + "_sep", mainSeparator).toString();
 
 	separator.replace("\\n", "\n").replace("\\r", "\r");
 	return separator;

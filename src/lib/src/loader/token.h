@@ -13,6 +13,9 @@ class Token
 		explicit Token(const QVariant &value, const QVariant &def = QVariant());
 		explicit Token(QVariant value, QString whatToDoDefault, QString emptyDefault, QString multipleDefault);
 		explicit Token(std::function<QVariant()> func, bool cacheResult = true);
+		explicit Token(std::function<QVariant()> func, QString whatToDoDefault, QString emptyDefault, QString multipleDefault);
+
+		static QString settingsName(const QString &name);
 
 		QVariant value() const;
 		QString toString() const;

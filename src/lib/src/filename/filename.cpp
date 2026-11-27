@@ -5,6 +5,7 @@
 #include <QFileInfoList>
 #include <QJSEngine>
 #include <QRegularExpression>
+#include <QSet>
 #include <QSettings>
 #include <algorithm>
 #include <utility>
@@ -33,10 +34,11 @@ Filename::Filename(QString format)
 	m_ast = FilenameCache::Get(m_format);
 }
 
-QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings)
+QList<Token> Filename::getReplace(const QString &tokenName, const Token &token, QSettings *settings)
 {
 	QList<Token> ret;
 	QStringList value = token.value().toStringList();
+	const QString key = Token::settingsName(tokenName);
 
 	if (token.whatToDoDefault().isEmpty()) {
 		ret.append(Token(value));
@@ -96,13 +98,15 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QMap<QString, Token> &t
 	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
 		const QString &key = it.key();
 		const Token &token = it.value();
-		if (token.value().type() != QVariant::StringList) {
-			continue;
-		}
 
+		// Check if the token is used first, to avoid evaluating lazy tokens for nothing
 		const bool hasToken = !isJavascript && m_ast->tokens().contains(key);
 		const bool hasVar = isJavascript && m_format.contains(key);
 		if (!hasToken && !hasVar) {
+			continue;
+		}
+
+		if (token.value().type() != QVariant::StringList) {
 			continue;
 		}
 
@@ -414,7 +418,11 @@ int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &
 		return 2;
 	}
 
-	const auto &toks = m_ast->tokens();
+	// Merged tokens (such as "merged_artist") need the same information as their base token
+	QSet<QString> toks;
+	for (const QString &token : m_ast->tokens()) {
+		toks.insert(Token::settingsName(token));
+	}
 
 	// If we need the filename and it is returned from the details page
 	if (toks.contains("filename") && forcedTokens.contains("filename")) {

@@ -1375,6 +1375,29 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 	return filename.path(*this, m_profile, folder, count, Filename::Complex | Filename::Path);
 }
 
+/**
+ * Only keep the shortest version of copyrights sharing a common prefix (for example "fate" instead of "fate/stay night").
+ */
+static QStringList shortenCopyrights(const QStringList &copyrights)
+{
+	QStringList ret;
+	for (const QString &cop : copyrights) {
+		bool found = false;
+		for (QString &copyright : ret) {
+			if (copyright.left(cop.size()) == cop.left(copyright.size())) {
+				if (cop.size() < copyright.size()) {
+					copyright = cop;
+				}
+				found = true;
+			}
+		}
+		if (!found) {
+			ret.append(cop);
+		}
+	}
+	return ret;
+}
+
 QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	const QSettings *settings = profile->getSettings();
@@ -1437,22 +1460,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Shorten copyrights
 	if (settings->value("Save/copyright_useshorter", true).toBool()) {
-		QStringList copyrights;
-		for (const QString &cop : details["copyright"]) {
-			bool found = false;
-			for (QString &copyright : copyrights) {
-				if (copyright.left(cop.size()) == cop.left(copyright.size())) {
-					if (cop.size() < copyright.size()) {
-						copyright = cop;
-					}
-					found = true;
-				}
-			}
-			if (!found) {
-				copyrights.append(cop);
-			}
-		}
-		details["copyright"] = copyrights;
+		details["copyright"] = shortenCopyrights(details["copyright"]);
 	}
 
 	// Tags
@@ -1508,12 +1516,31 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 		return QVariant(ret);
 	}));
 
-	// Tags merged from all the known sources for this file
+	// Tags merged from all the known sources for this file, using the same settings as their base token
 	const auto mergedTags = [getKnownSources, profile](const QString &type) {
+		const QStringList &ignore = profile->getIgnored();
 		QList<Tag> tags;
 		QSet<QString> found;
 		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
-			const QStringList &names = type.isEmpty() ? entry.allTags : entry.tags.value(type);
+			QStringList names;
+			if (type.isEmpty()) {
+				names = entry.allTags;
+			} else {
+				// Ignored tags are moved to the "general" type
+				for (const QString &name : entry.tags.value(type)) {
+					if (type == QLatin1String("general") || !ignore.contains(name, Qt::CaseInsensitive)) {
+						names.append(name);
+					}
+				}
+				if (type == QLatin1String("general")) {
+					for (const QString &name : entry.allTags) {
+						if (ignore.contains(name, Qt::CaseInsensitive)) {
+							names.append(name);
+						}
+					}
+				}
+			}
+
 			for (const QString &name : names) {
 				const QString key = name.toLower();
 				if (!found.contains(key)) {
@@ -1527,11 +1554,18 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 		for (const Tag &tag : profile->getRemovedTags().filterTags(tags)) {
 			ret.append(tag.text());
 		}
+
+		// Shorten copyrights
+		if (type == QLatin1String("copyright") && profile->getSettings()->value("Save/copyright_useshorter", true).toBool()) {
+			ret = shortenCopyrights(ret);
+		}
+
 		return QVariant(ret);
 	};
 	tokens.insert("merged_all", Token([mergedTags]() { return mergedTags(QString()); }));
 	for (const QString &type : MetadataDatabase::TagTypes) {
-		tokens.insert("merged_" + type, Token([mergedTags, type]() { return mergedTags(type); }));
+		const Token base = tokens.value(type);
+		tokens.insert("merged_" + type, Token([mergedTags, type]() { return mergedTags(type); }, base.whatToDoDefault(), base.emptyDefault(), base.multipleDefault()));
 	}
 	tokens.insert("merged_rating", Token([getKnownSources]() {
 		QStringList ret;

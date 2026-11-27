@@ -317,7 +317,7 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QStringL
 
 	// Separator
 	QString mainSeparator = m_settings->value("Save/separator", " ").toString();
-	QString tagSeparator = m_settings->value("Save/" + name + "_sep", mainSeparator).toString();
+	QString tagSeparator = m_settings->value("Save/" + Token::settingsName(name) + "_sep", mainSeparator).toString();
 	QString separator = options.value("separator", tagSeparator);
 	separator.replace("\\n", "\n").replace("\\r", "\r");
 

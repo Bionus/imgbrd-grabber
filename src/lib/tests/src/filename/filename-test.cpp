@@ -217,6 +217,21 @@ TEST_CASE("Filename")
 			"%artist%/%copyright%/%character%/%md5%.%ext%",
 			"artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
+	SECTION("Merged tokens use the settings of their base token")
+	{
+		settings->setValue("Save/general_sep", "+");
+		const auto path = [&](const QString &format) {
+			return Filename(format).path(*img, profile, "", 7, Filename::Complex);
+		};
+
+		for (const QString &type : { "general", "artist", "copyright", "character", "species", "meta" }) {
+			CAPTURE(type);
+			REQUIRE(path("%merged_" + type + "%") == path("%" + type + "%"));
+		}
+		REQUIRE(path("%merged_general%").first().contains("+"));
+		REQUIRE(path("%merged_character%") == QStringList("group"));
+		REQUIRE(path("%merged_species%") == QStringList("unknown"));
+	}
 	SECTION("PathEmptyDirs")
 	{
 		assertPath(profile, img,
@@ -891,6 +906,8 @@ TEST_CASE("Filename")
 		REQUIRE(Filename("javascript:md5 + '.' + ext").needExactTags(nullptr, settings) == 2);
 		REQUIRE(Filename("%character% %md5%.%ext%").needExactTags(nullptr, settings) == 1);
 		REQUIRE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(nullptr, settings) == 1);
+		REQUIRE(Filename("%merged_character% %md5%.%ext%").needExactTags(nullptr, settings) == 1);
+		REQUIRE(Filename("%websites% %md5%.%ext%").needExactTags(nullptr, settings) == 0);
 
 		Filename filename("%filename%.%ext%");
 		REQUIRE(filename.needExactTags() == 0);
