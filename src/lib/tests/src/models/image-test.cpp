@@ -461,9 +461,9 @@ TEST_CASE("Image")
 			gelbooru.website = "gelbooru.com";
 			gelbooru.id = "5680029";
 			gelbooru.tags.insert("artist", { "artist2", "artist1" });
-			gelbooru.tags.insert("copyright", { "fate/stay night" });
+			gelbooru.tags.insert("copyright", { "fate/stay_night" });
 			gelbooru.tags.insert("general", { "tag4" });
-			gelbooru.allTags = QStringList { "artist2", "artist1", "fate/stay night", "tag4" };
+			gelbooru.allTags = QStringList { "artist2", "artist1", "fate/stay_night", "tag4" };
 			REQUIRE(profile->metadataDatabase()->save(gelbooru));
 			details["tags_copyright"] = "fate ";
 
@@ -486,7 +486,7 @@ TEST_CASE("Image")
 				settings->setValue("Save/copyright_useshorter", useShorter);
 				img = ImageFactory::build(site, details, profile);
 
-				const QStringList expected = useShorter ? QStringList("fate") : QStringList({ "fate/stay night", "fate" });
+				const QStringList expected = useShorter ? QStringList("fate") : QStringList({ "fate/stay_night", "fate" });
 				REQUIRE(img->token<QStringList>("merged_copyright") == expected);
 			}
 
