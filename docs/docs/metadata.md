@@ -67,7 +67,9 @@ By default, Grabber will use your filename to generate the sidecar file, appendi
 
 By default, files that already exist are skipped. If you check "Update the metadata of files that already exist", Grabber will instead load the latest details of the post and write its metadata again (Windows properties, Exiftool and XMP sidecar files), without downloading the file again. This applies both to files that exist at the destination and to files found elsewhere with the MD5 "ignore" setting.
 
-Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used, or the file's date if the post has none. Set it to "No limit" to update all existing files.
+Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used, or the file's modification date if the post has none (which is the download date, unless "Keep original date" could set it to the post date). Set it to "No limit" to update all existing files.
+
+Updating metadata does not change the dates of the file: they are set back to the post date if "Keep original date" is enabled, or to their previous value otherwise.
 
 If you also enabled the [metadata database](#metadata-database), you can check "Only once per website" so that each post is only fetched once: files whose metadata was already stored for the current website and post ID are skipped, without loading their details. For example, an image downloaded from Danbooru then found on Gelbooru will have its metadata updated once with Gelbooru's tags, then skipped on both websites afterwards.
 

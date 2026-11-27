@@ -251,16 +251,15 @@ bool ImageDownloader::shouldUpdateMetadata(const QStringList &paths) const
 		return true;
 	}
 
-	// Use the post date, or fallback to the file date if the image doesn't have one
+	// Use the post date, or fallback to the file modification date if the image doesn't have one
+	// It is either the post date (when keeping the original date) or the download date, as updating metadata doesn't change it
+	// We don't use the creation date as only Windows can set it, and Exiftool resets it on other platforms when writing metadata
 	QDateTime date = m_image->createdAt();
 	if (!date.isValid()) {
-		// When keeping the original date, the modification date is the post date on all platforms (only Windows can set the creation date)
-		// Otherwise, we use the creation date as the modification date is reset every time the metadata is written
-		const bool keepDate = settings->value("Save/keepDate", true).toBool();
 		for (const QString &path : paths) {
 			const QFileInfo info(path);
 			if (info.exists()) {
-				date = keepDate || !info.birthTime().isValid() ? info.lastModified() : info.birthTime();
+				date = info.lastModified();
 				break;
 			}
 		}

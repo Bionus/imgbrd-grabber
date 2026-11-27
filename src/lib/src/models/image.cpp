@@ -1,7 +1,9 @@
 #include <QCryptographicHash>
+#include <QDateTime>
 #include <QDir>
 #include <QEventLoop>
 #include <QFile>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QNetworkRequest>
@@ -972,11 +974,15 @@ bool Image::updateMetadata(const QString &path)
 	}
 
 	log(QStringLiteral("Updating metadata of `%1`").arg(path), Logger::Info);
+	const QDateTime previousDate = QFileInfo(path).lastModified();
 	writeMetadata(path, getExtension(path));
 
-	// Writing metadata can change the file modification date, so we set it back if necessary
-	if (m_settings->value("Save/keepDate", true).toBool()) {
-		setFileCreationDate(path, createdAt());
+	// Writing metadata into the file resets its dates, but updating metadata should not change them
+	const QDateTime postDate = createdAt();
+	if (postDate.isValid() && m_settings->value("Save/keepDate", true).toBool()) {
+		setFileCreationDate(path, postDate);
+	} else if (previousDate.isValid()) {
+		setFileCreationDate(path, previousDate);
 	}
 
 	saveToMetadataDatabase();

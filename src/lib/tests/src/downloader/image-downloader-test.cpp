@@ -609,6 +609,37 @@ TEST_CASE("ImageDownloader")
 			REQUIRE(QFile::remove(dest));
 		}
 
+		SECTION("Keeps the file date when the post has no date")
+		{
+			// Write a token that doesn't need details (which would give a post date), into a real PNG so that Exiftool rewrites it
+			settings->beginWriteArray("Save/MetadataExiftool");
+			settings->setArrayIndex(0);
+			settings->setValue("key", "XMP:Creator");
+			settings->setValue("value", "%id%");
+			settings->endArray();
+
+			auto img = createImage(profile, site);
+			REQUIRE(!img->createdAt().isValid());
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.png");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+			const QDateTime fileDate = QDateTime::currentDateTime().addDays(-30);
+			REQUIRE(setFileCreationDate(dest, fileDate));
+
+			ImageDownloader downloader(profile, img, "existing.png", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true, false, false, false);
+			REQUIRE(QFileInfo(dest).lastModified().toSecsSinceEpoch() == fileDate.toSecsSinceEpoch());
+
+			// Make sure the metadata was actually written into the file, which resets its date
+			if (!Exiftool::version().isEmpty()) {
+				QProcess process;
+				process.start("exiftool", { "-s3", "-XMP:Creator", dest });
+				REQUIRE(process.waitForFinished());
+				REQUIRE(QString::fromUtf8(process.readAllStandardOutput()).trimmed() == QString("7331"));
+			}
+
+			REQUIRE(QFile::remove(dest));
+		}
+
 		SECTION("Writes the tags of all known sources to the XMP sidecar")
 		{
 			if (Exiftool::version().isEmpty()) {
