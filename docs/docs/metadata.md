@@ -71,7 +71,7 @@ Since tags mostly change shortly after a post is uploaded, you can limit this to
 
 Updating metadata does not change the dates of the file: they are set again according to the "File date" setting (see [File date](#file-date)), or back to their previous value if it is "Download date". With "Original date", the file date can become older if the file was found on a website where it was posted earlier.
 
-If you also enabled the [metadata database](#metadata-database), you can check "Only once per website" so that each post is only fetched once: files whose metadata was already stored for the current website and post ID are skipped, without loading their details. For example, an image downloaded from Danbooru then found on Gelbooru will have its metadata updated once with Gelbooru's tags, then skipped on both websites afterwards.
+If you also enabled the [metadata database](#metadata-database), you can check "At least once per website": posts are then always updated the first time they are found on a website, even if they are older than the age limit, so that you get the tags of every website a file is on. After that, they are only updated again while they are younger than the age limit, or never again with "No limit". Grabber uses the metadata database to know which posts were already fetched from each website, using their post ID.
 
 Note that this does not run commands or write log files again.
 

@@ -1548,10 +1548,10 @@
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>Skip files whose metadata was already fetched from the current website, so each post is only fetched once. Requires the metadata database.</string>
+              <string>Posts are always updated the first time they are found on a website, even if they are older than the age limit. After that, they are only updated again while they are younger than the age limit (never again with "No limit"). Requires the metadata database.</string>
              </property>
              <property name="text">
-              <string>Only once per website</string>
+              <string>At least once per website</string>
              </property>
             </widget>
            </item>

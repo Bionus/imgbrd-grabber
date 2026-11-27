@@ -756,6 +756,36 @@ TEST_CASE("ImageDownloader")
 			QFile::remove(sidecar);
 		}
 
+		SECTION("At least once per website, then only within the maximum age")
+		{
+			// Not fetched yet from this website: always updated, even if old
+			// Already fetched: only updated again while recent
+			const bool alreadyFetched = GENERATE(false, true);
+			const bool recent = GENERATE(false, true);
+			CAPTURE(alreadyFetched, recent);
+			settings->setValue("Save/MetadataUpdateOncePerSource", true);
+			settings->setValue("Save/MetadataUpdateMaxAge", 7);
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would change the post date
+
+			const QDateTime createdAt = QDateTime::currentDateTime().addDays(recent ? -2 : -30);
+			auto img = createImage(profile, site, false, createdAt);
+			if (alreadyFetched) {
+				MetadataDatabaseEntry stored = img->metadataDatabaseEntry();
+				stored.rating = "marker"; // To know if the entry was updated
+				REQUIRE(profile->metadataDatabase()->save(stored));
+			}
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+
+			const bool shouldUpdate = !alreadyFetched || recent;
+			const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+			REQUIRE(entries.count() == 1);
+			REQUIRE((entries[0].rating != QString("marker")) == shouldUpdate);
+		}
+
 		SECTION("Maximum age")
 		{
 			const bool recent = GENERATE(false, true);
