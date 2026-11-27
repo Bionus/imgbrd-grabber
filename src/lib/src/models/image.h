@@ -118,6 +118,9 @@ class Image : public QObject, public Downloadable
 		bool updateMetadata(const QString &path);
 		MetadataDatabaseEntry metadataDatabaseEntry() const;
 		QList<MetadataDatabaseEntry> knownSources(Profile *profile) const;
+		QDateTime originalDate(Profile *profile) const;
+		QDateTime fileDate(Profile *profile) const;
+		static QString fileDateMode(QSettings *settings);
 
 		// Tokens
 		template <typename T>

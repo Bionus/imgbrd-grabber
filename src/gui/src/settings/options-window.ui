@@ -783,14 +783,36 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkKeepDate">
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelFileDate">
           <property name="text">
-           <string>Keep original creation date</string>
+           <string>File date</string>
           </property>
-          <property name="checked">
-           <bool>true</bool>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboFileDate">
+          <property name="toolTip">
+           <string>&lt;b&gt;Original date&lt;/b&gt;: oldest post date of all the websites the file was found on (requires the metadata database, otherwise the same as the source date).&lt;br/&gt;&lt;b&gt;Source date&lt;/b&gt;: post date on the website it is downloaded from.&lt;br/&gt;&lt;b&gt;Download date&lt;/b&gt;: don't change the date of the file.&lt;br/&gt;If a date is missing, the next one in this list is used.</string>
           </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Original date</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Source date</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Download date</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="4" column="0" colspan="2">
@@ -6153,7 +6175,7 @@
   <tabstop>checkDownloadOriginals</tabstop>
   <tabstop>checkSampleFallback</tabstop>
   <tabstop>checkAutodownload</tabstop>
-  <tabstop>checkKeepDate</tabstop>
+  <tabstop>comboFileDate</tabstop>
   <tabstop>checkSaveHeaderDetection</tabstop>
   <tabstop>lineFolder</tabstop>
   <tabstop>buttonFolder</tabstop>

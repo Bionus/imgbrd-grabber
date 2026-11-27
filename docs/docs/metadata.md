@@ -67,9 +67,9 @@ By default, Grabber will use your filename to generate the sidecar file, appendi
 
 By default, files that already exist are skipped. If you check "Update the metadata of files that already exist", Grabber will instead load the latest details of the post and write its metadata again (Windows properties, Exiftool and XMP sidecar files), without downloading the file again. This applies both to files that exist at the destination and to files found elsewhere with the MD5 "ignore" setting.
 
-Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used, or the file's modification date if the post has none (which is the download date, unless "Keep original date" could set it to the post date). Set it to "No limit" to update all existing files.
+Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used. If the post has none, the oldest post date of the other websites the file was found on is used (see [Metadata database](#metadata-database)), and otherwise the file's modification date. Set it to "No limit" to update all existing files.
 
-Updating metadata does not change the dates of the file: they are set back to the post date if "Keep original date" is enabled, or to their previous value otherwise.
+Updating metadata does not change the dates of the file: they are set again according to the "File date" setting (see [File date](#file-date)), or back to their previous value if it is "Download date". With "Original date", the file date can become older if the file was found on a website where it was posted earlier.
 
 If you also enabled the [metadata database](#metadata-database), you can check "Only once per website" so that each post is only fetched once: files whose metadata was already stored for the current website and post ID are skipped, without loading their details. For example, an image downloaded from Danbooru then found on Gelbooru will have its metadata updated once with Gelbooru's tags, then skipped on both websites afterwards.
 
@@ -84,7 +84,19 @@ This allows using tokens that combine the information of all the websites a file
 
 * `%websites%`, `%websiteids%` and `%websitenames%` list all the websites the file was found on.
 * `%merged_all%`, `%merged_artist%`, `%merged_character%`, etc. combine the tags of all those websites.
+* `%merged_date%` is the oldest post date of all those websites.
 
 For example, downloading the same image from Danbooru then Gelbooru with the Exiftool property `XMP:Subject` set to `%merged_all%` will write the tags of both websites in the second file's metadata.
 
-The `metadata` table contains the following columns: `md5`, `website`, `website_name`, `item` (the image ID on that website), `rating`, `artist`, `copyright`, `character`, `model`, `species`, `meta`, `general`, `tags` (all tags) and `updated_at`. Tag columns are stored as JSON arrays.
+The `metadata` table contains the following columns: `md5`, `website`, `website_name`, `item` (the image ID on that website), `rating`, `date` (the post date on that website, in ISO 8601 UTC), `artist`, `copyright`, `character`, `model`, `species`, `meta`, `general`, `tags` (all tags) and `updated_at`. Tag columns are stored as JSON arrays.
+
+
+## File date
+
+The "File date" setting (in the "Save" settings) decides which date is given to saved files:
+
+* **Original date**: the oldest post date of all the websites the file was found on. This requires the metadata database, otherwise it is the same as the source date.
+* **Source date**: the post date on the website the file is downloaded from.
+* **Download date**: the date of the file is not changed.
+
+If a date is missing, the next one in this list is used. For example, with "Original date", a file downloaded from a website that doesn't provide post dates will still get a date if it was found on another website that does.

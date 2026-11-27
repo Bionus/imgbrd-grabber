@@ -640,6 +640,47 @@ TEST_CASE("ImageDownloader")
 			REQUIRE(QFile::remove(dest));
 		}
 
+		SECTION("Posts without a date use the oldest date of the other sources")
+		{
+			settings->setValue("Save/fileDate", "original");
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would give a post date
+
+			const QDateTime olderDate = QDateTime::currentDateTime().addDays(-30);
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.date = olderDate;
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			SECTION("For the file date")
+			{
+				auto img = createImage(profile, site);
+				REQUIRE(!img->createdAt().isValid());
+				const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+				ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+				assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true, false, false, false);
+				REQUIRE(QFileInfo(dest).lastModified().toSecsSinceEpoch() == olderDate.toSecsSinceEpoch());
+				REQUIRE(QFile::remove(dest));
+			}
+
+			SECTION("For the maximum age")
+			{
+				settings->setValue("Save/MetadataUpdateMaxAge", 7);
+
+				// The file itself is recent, but the oldest known post date is not
+				auto img = createImage(profile, site);
+				const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+				ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+				assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+				REQUIRE(profile->metadataDatabase()->get(img->md5()).count() == 1); // Not updated, so only Gelbooru is known
+			}
+		}
+
 		SECTION("Writes the tags of all known sources to the XMP sidecar")
 		{
 			if (Exiftool::version().isEmpty()) {
@@ -727,6 +768,40 @@ TEST_CASE("ImageDownloader")
 			REQUIRE(detailsSpy.isEmpty());
 			REQUIRE(profile->metadataDatabase()->get(img->md5()).count() == (recent ? 1 : 0));
 		}
+	}
+
+	SECTION("File date of new downloads")
+	{
+		QSettings *settings = profile->getSettings();
+		settings->setValue("Save/MetadataDatabase", true);
+
+		const QDateTime sourceDate = QDateTime::currentDateTime().addDays(-10);
+		const QDateTime originalDate = QDateTime::currentDateTime().addDays(-100);
+		MetadataDatabaseEntry gelbooru;
+		gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+		gelbooru.website = "gelbooru.com";
+		gelbooru.id = "5680029";
+		gelbooru.date = originalDate;
+		REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+		const QString mode = GENERATE(QString("original"), QString("source"), QString("download"));
+		CAPTURE(mode);
+		settings->setValue("Save/fileDate", mode);
+
+		auto img = createImage(profile, site, false, sourceDate);
+		const QString dest = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
+		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
+		assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::Saved }}, true, false, false, false);
+
+		const qint64 fileDate = QFileInfo(dest).lastModified().toSecsSinceEpoch();
+		if (mode == "original") {
+			REQUIRE(fileDate == originalDate.toSecsSinceEpoch());
+		} else if (mode == "source") {
+			REQUIRE(fileDate == sourceDate.toSecsSinceEpoch());
+		} else {
+			REQUIRE(fileDate >= QDateTime::currentDateTime().addDays(-1).toSecsSinceEpoch());
+		}
+		REQUIRE(QFile::remove(dest));
 	}
 
 	SECTION("Fix extension from header")

@@ -1,3 +1,4 @@
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QJsonObject>
@@ -450,6 +451,63 @@ TEST_CASE("Image")
 			REQUIRE(profile->metadataDatabase()->save(img->metadataDatabaseEntry()));
 			img = ImageFactory::build(site, details, profile);
 			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
+		}
+
+		SECTION("Dates")
+		{
+			const QDateTime sourceDate = QDateTime::fromSecsSinceEpoch(1471513944, Qt::UTC);
+			const QDateTime olderDate(QDate(2010, 1, 2), QTime(3, 4, 5), Qt::UTC);
+
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.date = olderDate;
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			SECTION("The original date is the oldest of all known sources")
+			{
+				const bool database = GENERATE(false, true);
+				CAPTURE(database);
+				settings->setValue("Save/MetadataDatabase", database);
+				img = ImageFactory::build(site, details, profile);
+
+				const QDateTime expected = database ? olderDate : sourceDate;
+				REQUIRE(img->createdAt() == sourceDate);
+				REQUIRE(img->originalDate(profile) == expected);
+				REQUIRE(img->token<QDateTime>("merged_date") == expected);
+			}
+
+			SECTION("The file date depends on the settings")
+			{
+				settings->setValue("Save/MetadataDatabase", true);
+				img = ImageFactory::build(site, details, profile);
+
+				// Defaults to the old "keep date" setting
+				REQUIRE(img->fileDate(profile) == sourceDate);
+				settings->setValue("Save/keepDate", false);
+				REQUIRE(!img->fileDate(profile).isValid());
+
+				settings->setValue("Save/fileDate", "original");
+				REQUIRE(img->fileDate(profile) == olderDate);
+				settings->setValue("Save/fileDate", "source");
+				REQUIRE(img->fileDate(profile) == sourceDate);
+				settings->setValue("Save/fileDate", "download");
+				REQUIRE(!img->fileDate(profile).isValid());
+			}
+
+			SECTION("Posts without a date use the original date")
+			{
+				settings->setValue("Save/MetadataDatabase", true);
+				settings->setValue("Save/fileDate", "source");
+				details.remove("created_at");
+				img = ImageFactory::build(site, details, profile);
+
+				REQUIRE(!img->createdAt().isValid());
+				REQUIRE(!img->fileDate(profile).isValid()); // The source date falls back to the download date
+				settings->setValue("Save/fileDate", "original");
+				REQUIRE(img->fileDate(profile) == olderDate);
+			}
 		}
 
 		SECTION("Merged tokens use the same tag settings as their base token")

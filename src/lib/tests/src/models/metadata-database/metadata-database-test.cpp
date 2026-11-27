@@ -1,4 +1,7 @@
+#include <QDateTime>
 #include <QFile>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 #include "models/metadata-database/metadata-database.h"
 #include "catch.h"
 #include "raii-helpers.h"
@@ -89,6 +92,50 @@ TEST_CASE("MetadataDatabase")
 		REQUIRE(entries.count() == 2);
 		REQUIRE(entries[0] == updated);
 		REQUIRE(entries[1] == gelbooru);
+	}
+
+	SECTION("It stores the post date")
+	{
+		MetadataDatabase database("tests/resources/metadata-test.sqlite");
+		const QDateTime date(QDate(2024, 1, 2), QTime(3, 4, 5, 678), Qt::UTC);
+
+		MetadataDatabaseEntry dated = danbooru;
+		dated.date = date;
+		REQUIRE(database.save(dated));
+		REQUIRE(database.get(md5)[0].date == date);
+		REQUIRE(!database.get(md5)[1].date.isValid());
+
+		// Saving the same post without a date keeps the known one
+		REQUIRE(database.save(danbooru));
+		REQUIRE(database.get(md5)[0].date == date);
+	}
+
+	SECTION("It adds the date column to databases created by older versions")
+	{
+		const QString oldPath = "tests/resources/metadata-old-test.sqlite";
+		FileDeleter oldDeleter(oldPath, true);
+		{
+			QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "metadata-old-test");
+			db.setDatabaseName(oldPath);
+			REQUIRE(db.open());
+			QSqlQuery query(db);
+			REQUIRE(query.exec("CREATE TABLE metadata (id INTEGER PRIMARY KEY AUTOINCREMENT, md5 CHAR(32) NOT NULL, website TEXT NOT NULL, website_name TEXT, item TEXT NOT NULL, rating TEXT, \"artist\" TEXT, \"copyright\" TEXT, \"character\" TEXT, \"model\" TEXT, \"species\" TEXT, \"meta\" TEXT, \"general\" TEXT, tags TEXT, updated_at TEXT, UNIQUE(md5, website, item))"));
+			REQUIRE(query.exec("INSERT INTO metadata (md5, website, item, tags) VALUES ('" + md5 + "', 'tbib.org', '8945870', '[\"tag 5\"]')"));
+			query.finish();
+			db.close();
+		}
+		QSqlDatabase::removeDatabase("metadata-old-test");
+
+		MetadataDatabase database(oldPath);
+		QList<MetadataDatabaseEntry> entries = database.get(md5);
+		REQUIRE(entries.count() == 1);
+		REQUIRE(entries[0].allTags == QStringList("tag 5"));
+		REQUIRE(!entries[0].date.isValid());
+
+		const QDateTime date(QDate(2020, 5, 6), QTime(7, 8, 9), Qt::UTC);
+		entries[0].date = date;
+		REQUIRE(database.save(entries[0]));
+		REQUIRE(database.get(md5)[0].date == date);
 	}
 
 	SECTION("It refuses entries without an identifier")

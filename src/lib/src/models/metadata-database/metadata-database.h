@@ -20,6 +20,7 @@ struct MetadataDatabaseEntry
 	QString websiteName; // The site name as set in the sources settings
 	QString id; // The ID of the post on that website
 	QString rating;
+	QDateTime date; // The date the post was uploaded on that website
 	QMap<QString, QStringList> tags; // Tags grouped by type
 	QStringList allTags; // All tags, in their original order
 	QDateTime updatedAt;

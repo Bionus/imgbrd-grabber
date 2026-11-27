@@ -34,6 +34,7 @@ bool operator==(const MetadataDatabaseEntry &lhs, const MetadataDatabaseEntry &r
 		&& lhs.websiteName == rhs.websiteName
 		&& lhs.id == rhs.id
 		&& lhs.rating == rhs.rating
+		&& lhs.date == rhs.date
 		&& lhs.tags == rhs.tags
 		&& lhs.allTags == rhs.allTags;
 }
@@ -89,6 +90,7 @@ bool MetadataDatabase::load()
 		"website_name TEXT, "
 		"item TEXT NOT NULL, "
 		"rating TEXT, "
+		"\"date\" TEXT, "
 		"%1, "
 		"tags TEXT, "
 		"updated_at TEXT, "
@@ -100,6 +102,15 @@ bool MetadataDatabase::load()
 		return false;
 	}
 
+	// Add the columns missing from databases created by older versions
+	if (!m_database.record(QStringLiteral("metadata")).contains(QStringLiteral("date"))) {
+		QSqlQuery alterQuery(m_database);
+		if (!alterQuery.exec(QStringLiteral("ALTER TABLE metadata ADD COLUMN \"date\" TEXT"))) {
+			log(QStringLiteral("Could not add the date column to the metadata database: %1").arg(alterQuery.lastError().text()), Logger::Error);
+			return false;
+		}
+	}
+
 	// Add indexes for fast lookup
 	QSqlQuery indexQuery(m_database);
 	if (!indexQuery.exec(QStringLiteral("CREATE INDEX IF NOT EXISTS metadata_md5 ON metadata(md5)"))
@@ -109,7 +120,7 @@ bool MetadataDatabase::load()
 	}
 
 	// Prepare queries
-	QStringList columns { "md5", "website", "website_name", "item", "rating" };
+	QStringList columns { "md5", "website", "website_name", "item", "rating", "\"date\"" };
 	for (const QString &type : TagTypes) {
 		columns.append("\"" + type + "\"");
 	}
@@ -119,7 +130,10 @@ bool MetadataDatabase::load()
 	QStringList updates;
 	for (const QString &column : columns) {
 		placeholders.append("?");
-		if (!uniqueKey.contains(column)) {
+		if (column == QLatin1String("\"date\"")) {
+			// Don't lose a known date if it is missing from the new data
+			updates.append(column + " = COALESCE(NULLIF(excluded." + column + ", ''), " + column + ")");
+		} else if (!uniqueKey.contains(column)) {
 			updates.append(column + " = excluded." + column);
 		}
 	}
@@ -156,6 +170,7 @@ bool MetadataDatabase::save(const MetadataDatabaseEntry &entry)
 	m_saveQuery.bindValue(i++, entry.websiteName);
 	m_saveQuery.bindValue(i++, entry.id);
 	m_saveQuery.bindValue(i++, entry.rating);
+	m_saveQuery.bindValue(i++, entry.date.isValid() ? entry.date.toUTC().toString(Qt::ISODateWithMs) : QString());
 	for (const QString &type : TagTypes) {
 		m_saveQuery.bindValue(i++, toJson(entry.tags.value(type)));
 	}
@@ -192,6 +207,10 @@ QList<MetadataDatabaseEntry> MetadataDatabase::get(const QString &md5)
 		entry.websiteName = m_getQuery.value(record.indexOf("website_name")).toString();
 		entry.id = m_getQuery.value(record.indexOf("item")).toString();
 		entry.rating = m_getQuery.value(record.indexOf("rating")).toString();
+		const QString date = m_getQuery.value(record.indexOf("date")).toString();
+		if (!date.isEmpty()) {
+			entry.date = QDateTime::fromString(date, Qt::ISODateWithMs);
+		}
 		for (const QString &type : TagTypes) {
 			const QStringList tags = fromJson(m_getQuery.value(record.indexOf(type)).toString());
 			if (!tags.isEmpty()) {

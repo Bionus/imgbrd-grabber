@@ -801,9 +801,10 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 
 	QString ext = extension();
 
-	// Keep original date
-	if (m_settings->value("Save/keepDate", true).toBool()) {
-		setFileCreationDate(path, createdAt());
+	// Set the file date (original or source date), otherwise keep the download date
+	const QDateTime date = fileDate(m_profile);
+	if (date.isValid()) {
+		setFileCreationDate(path, date);
 	}
 
 	// Guess extension from file header
@@ -977,16 +978,62 @@ bool Image::updateMetadata(const QString &path)
 	const QDateTime previousDate = QFileInfo(path).lastModified();
 	writeMetadata(path, getExtension(path));
 
+	// Save the latest data first, so that the original date can take it into account
+	saveToMetadataDatabase();
+
 	// Writing metadata into the file resets its dates, but updating metadata should not change them
-	const QDateTime postDate = createdAt();
-	if (postDate.isValid() && m_settings->value("Save/keepDate", true).toBool()) {
-		setFileCreationDate(path, postDate);
+	// The original date can still change if an older source was found since the last update
+	const QDateTime date = fileDate(m_profile);
+	if (date.isValid()) {
+		setFileCreationDate(path, date);
 	} else if (previousDate.isValid()) {
 		setFileCreationDate(path, previousDate);
 	}
 
-	saveToMetadataDatabase();
 	return true;
+}
+
+/**
+ * Get the setting deciding which date to give to saved files.
+ *
+ * @return "original" (oldest date of all the known sources), "source" (post date on the current website) or "download" (don't change the date).
+ */
+QString Image::fileDateMode(QSettings *settings)
+{
+	// Default to the value of the old "keep date" setting
+	const QString def = settings->value("Save/keepDate", true).toBool() ? QStringLiteral("source") : QStringLiteral("download");
+	return settings->value("Save/fileDate", def).toString();
+}
+
+/**
+ * Get the oldest post date of all the known sources for this image's file.
+ * Falls back to the current post date if the metadata database is disabled.
+ */
+QDateTime Image::originalDate(Profile *profile) const
+{
+	QDateTime ret;
+	for (const MetadataDatabaseEntry &entry : knownSources(profile)) {
+		if (entry.date.isValid() && (!ret.isValid() || entry.date < ret)) {
+			ret = entry.date;
+		}
+	}
+	return ret;
+}
+
+/**
+ * Get the date to give to saved files, depending on the settings.
+ * An invalid date means that the date of the file should not be changed.
+ */
+QDateTime Image::fileDate(Profile *profile) const
+{
+	const QString mode = fileDateMode(profile->getSettings());
+	if (mode == QLatin1String("original")) {
+		return originalDate(profile);
+	}
+	if (mode == QLatin1String("source")) {
+		return m_data.value("date").toDateTime();
+	}
+	return {};
 }
 
 /**
@@ -1000,6 +1047,7 @@ MetadataDatabaseEntry Image::metadataDatabaseEntry() const
 	entry.websiteName = m_parentSite->name();
 	entry.id = m_id > 0 ? QString::number(m_id) : QString();
 	entry.rating = m_data.value("rating").toString();
+	entry.date = m_data.value("date").toDateTime();
 
 	for (const Tag &tag : m_tags) {
 		QString type = tag.type().name();
@@ -1573,6 +1621,15 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 		const Token base = tokens.value(type);
 		tokens.insert("merged_" + type, Token([mergedTags, type]() { return mergedTags(type); }, base.whatToDoDefault(), base.emptyDefault(), base.multipleDefault()));
 	}
+	tokens.insert("merged_date", Token([getKnownSources]() {
+		QDateTime ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			if (entry.date.isValid() && (!ret.isValid() || entry.date < ret)) {
+				ret = entry.date;
+			}
+		}
+		return QVariant(ret);
+	}));
 	tokens.insert("merged_rating", Token([getKnownSources]() {
 		QStringList ret;
 		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
