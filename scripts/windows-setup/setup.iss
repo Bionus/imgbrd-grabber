@@ -289,10 +289,13 @@ Source: "{#SrcDir}\sites\Zerochan\model.js";  DestDir: "{app}\sites\Zerochan"; F
 Source: "{#SrcDir}\sites\Zerochan\sites.txt"; DestDir: "{app}\sites\Zerochan"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Zerochan\www.zerochan.net\defaults.ini"; DestDir: "{app}\sites\Zerochan\www.zerochan.net"; Flags: ignoreversion
 Source: "{#SrcDir}\dist\common\themes\Default\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: recursesubdirs
-Source: "{#SrcDir}\dist\common\themes\QDarkStyleSheet\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\QDarkStyleSheet"; Flags: recursesubdirs
+Source: "{#SrcDir}\dist\common\themes\Light\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Light"; Flags: recursesubdirs
+Source: "{#SrcDir}\dist\common\themes\Dark\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Dark"; Flags: recursesubdirs
+Source: "{#SrcDir}\dist\common\themes\OldDark\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\OldDark"; Flags: recursesubdirs
 Source: "{#SrcDir}\dist\common\webservices\*.ico"; DestDir: "{localappdata}\Bionus\Grabber\webservices"
 
 [InstallDelete]
+Type: filesandordirs; Name: "{localappdata}\Bionus\Grabber\themes\QDarkStyleSheet"
 Type: files; Name: "{app}\Updater.exe"
 Type: files; Name: "{app}\VERSION"
 Type: files; Name: "{app}\MD5"

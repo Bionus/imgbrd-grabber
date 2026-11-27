@@ -105,6 +105,15 @@ QString baseStyle(const QSettings *settings)
 
 bool isDarkTheme(const QSettings *settings)
 {
+	// Themes with an explicit color scheme take precedence over the system one
+	const QString theme = settings->value("theme", "Default").toString();
+	if (theme == QLatin1String("Dark") || theme == QLatin1String("OldDark")) {
+		return true;
+	}
+	if (theme == QLatin1String("Light")) {
+		return false;
+	}
+
 	const bool isDarkColorScheme = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
 	const bool supportsDarkTheme = baseStyle(settings) != QStringLiteral("windowsvista");
 	return supportsDarkTheme && isDarkColorScheme;
