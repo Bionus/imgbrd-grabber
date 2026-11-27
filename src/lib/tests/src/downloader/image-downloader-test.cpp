@@ -1,3 +1,4 @@
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QSettings>
@@ -7,6 +8,7 @@
 #include "models/filtering/blacklist.h"
 #include "models/image.h"
 #include "models/image-factory.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -14,7 +16,7 @@
 #include "source-helpers.h"
 
 
-QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = false)
+QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = false, const QDateTime &createdAt = QDateTime())
 {
 	QMap<QString, QString> details;
 	if (!noMd5) {
@@ -27,6 +29,9 @@ QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = fal
 	details["preview_url"] = "https://test.com/preview/oldfilename.jpg";
 	details["page_url"] = "/posts/7331";
 	details["tags"] = "tag1 tag2 tag3";
+	if (createdAt.isValid()) {
+		details["created_at"] = QString::number(createdAt.toSecsSinceEpoch());
+	}
 
 	return ImageFactory::build(site, details, profile);
 }
@@ -489,6 +494,75 @@ TEST_CASE("ImageDownloader")
 			REQUIRE(img->token("copyright", QString()) == QString("to_heart_2"));
 			REQUIRE(QFile::remove(oldName));
 			QFile::remove(dest + ".xmp");
+		}
+	}
+
+	SECTION("Update metadata of existing files")
+	{
+		QSettings *settings = profile->getSettings();
+		settings->setValue("Save/MetadataUpdateExisting", true);
+		settings->setValue("Save/MetadataDatabase", true);
+		settings->beginWriteArray("Save/MetadataExiftool");
+		settings->setArrayIndex(0);
+		settings->setValue("key", "XMP:Creator");
+		settings->setValue("value", "%copyright%");
+		settings->endArray();
+
+		SECTION("Destination already exists")
+		{
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.count() == 1);
+			REQUIRE(img->token("copyright", QString()) == QString("to_heart_2"));
+
+			const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+			REQUIRE(entries.count() == 1);
+			REQUIRE(entries[0].website == QString("danbooru.donmai.us"));
+			REQUIRE(entries[0].id == QString("7331"));
+			REQUIRE(entries[0].tags.value("copyright") == QStringList("to_heart_2"));
+			QFile::remove(dest + ".xmp");
+		}
+
+		SECTION("File already exists elsewhere and MD5 duplicates are ignored")
+		{
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString duplicate = QDir::toNativeSeparators("tests/resources/tmp/duplicate.png");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(duplicate));
+			profile->addMd5(img->md5(), duplicate);
+			settings->setValue("Save/md5Duplicates", "ignore");
+			settings->setValue("Save/md5DuplicatesSameDir", "ignore");
+
+			ImageDownloader downloader(profile, img, "something.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ QDir::toNativeSeparators("tests/resources/tmp/something.jpg.tmp"), Image::Size::Full, Image::SaveResult::AlreadyExistsMd5 }}, false);
+			REQUIRE(detailsSpy.count() == 1);
+			REQUIRE(QFile::exists(duplicate));
+			REQUIRE(profile->metadataDatabase()->get(img->md5()).count() == 1);
+			QFile::remove(duplicate + ".xmp");
+		}
+
+		SECTION("Maximum age")
+		{
+			const bool recent = GENERATE(false, true);
+			CAPTURE(recent);
+			settings->setValue("Save/MetadataUpdateMaxAge", 7);
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would override the post date
+
+			const QDateTime createdAt = recent ? QDateTime::currentDateTime().addDays(-2) : QDateTime::currentDateTime().addDays(-30);
+			auto img = createImage(profile, site, false, createdAt);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.isEmpty());
+			REQUIRE(profile->metadataDatabase()->get(img->md5()).count() == (recent ? 1 : 0));
 		}
 	}
 

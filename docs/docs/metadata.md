@@ -60,3 +60,27 @@ The sidecar file settings allows you to control whether Grabber will write to XM
 * **Only sidecar**: will only write to the sidecar file, without touching the original file
 
 By default, Grabber will use your filename to generate the sidecar file, appending the XMP extension to it. So for example, `image.jpg` will have a sidecar file called `image.jpg.xmp`. Some other programs prefer the `image.xmp` format (without the original extension), so you can check the "Do not include original extension in sidecar file names" setting if you prefer that format.
+
+
+
+## Updating metadata of existing files
+
+By default, files that already exist are skipped. If you check "Update the metadata of files that already exist", Grabber will instead load the latest details of the post and write its metadata again (Windows properties, Exiftool and XMP sidecar files), without downloading the file again. This applies both to files that exist at the destination and to files found elsewhere with the MD5 "ignore" setting.
+
+Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used, or the file's date if the post has none. Set it to "No limit" to update all existing files.
+
+Note that this does not run commands or write log files again.
+
+
+## Metadata database
+
+If you check "Keep a database of the metadata of all the sources of each file", Grabber will store the tags of every file it saves or updates in a `metadata.sqlite` file in your profile folder. Files are identified by their MD5, so the same file found on several websites will have one row per website.
+
+This allows using tokens that combine the information of all the websites a file was found on, which is mostly useful in metadata:
+
+* `%websites%`, `%websiteids%` and `%websitenames%` list all the websites the file was found on.
+* `%merged_all%`, `%merged_artist%`, `%merged_character%`, etc. combine the tags of all those websites.
+
+For example, downloading the same image from Danbooru then Gelbooru with the Exiftool property `XMP:Subject` set to `%merged_all%` will write the tags of both websites in the second file's metadata.
+
+The `metadata` table contains the following columns: `md5`, `website`, `website_name`, `item` (the image ID on that website), `rating`, `artist`, `copyright`, `character`, `model`, `species`, `meta`, `general`, `tags` (all tags) and `updated_at`. Tag columns are stored as JSON arrays.

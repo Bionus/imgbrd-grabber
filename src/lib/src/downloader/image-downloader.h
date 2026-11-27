@@ -35,9 +35,12 @@ class ImageDownloader : public QObject
 
 	protected:
 		int needExactTags(QSettings *settings) const;
+		int metadataNeedExactTags(QSettings *settings) const;
 		Image::Size currentSize() const;
 		QList<ImageSaveResult> makeResult(const QStringList &paths, Image::SaveResult result) const;
 		QList<ImageSaveResult> afterTemporarySave(Image::SaveResult saveResult);
+		bool shouldUpdateMetadata(const QStringList &paths = {}) const;
+		void updateExistingMetadata(const QStringList &paths);
 
 	signals:
 		void downloadProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);

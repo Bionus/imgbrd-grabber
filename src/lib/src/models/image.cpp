@@ -6,7 +6,9 @@
 #include <QJsonObject>
 #include <QNetworkRequest>
 #include <QRegularExpression>
+#include <QSet>
 #include <QSettings>
+#include <QSharedPointer>
 #include <QTimer>
 #include <utility>
 #include "commands/commands.h"
@@ -23,6 +25,7 @@
 #include "models/api/api.h"
 #include "models/api/api-endpoint.h"
 #include "models/image.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/page.h"
 #include "models/pool.h"
 #include "models/profile.h"
@@ -875,6 +878,25 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	}
 
 	// Metadata
+	writeMetadata(path, ext);
+
+	if (addMd5) {
+		m_profile->addMd5(md5(), path);
+	}
+
+	if (!basic) {
+		saveToMetadataDatabase();
+	}
+
+	setSavePath(path, size);
+	return path;
+}
+
+/**
+ * Write the configured metadata (Windows properties and Exiftool) to the given file.
+ */
+void Image::writeMetadata(const QString &path, const QString &ext)
+{
 	#ifdef WIN_FILE_PROPS
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
 		if (exts.isEmpty() || exts.contains(ext)) {
@@ -920,13 +942,104 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 			);
 		}
 	}
+}
 
-	if (addMd5) {
-		m_profile->addMd5(md5(), path);
+/**
+ * Store this image's metadata in the metadata database, if enabled.
+ */
+void Image::saveToMetadataDatabase()
+{
+	if (!m_settings->value("Save/MetadataDatabase", false).toBool()) {
+		return;
 	}
 
-	setSavePath(path, size);
-	return path;
+	MetadataDatabase *database = m_profile->metadataDatabase();
+	if (database != nullptr) {
+		database->save(metadataDatabaseEntry());
+	}
+}
+
+/**
+ * Update the metadata of an already existing file without downloading it again.
+ *
+ * @param path The path of the existing file.
+ * @return Whether the file existed and its metadata was updated.
+ */
+bool Image::updateMetadata(const QString &path)
+{
+	if (!QFile::exists(path)) {
+		return false;
+	}
+
+	log(QStringLiteral("Updating metadata of `%1`").arg(path), Logger::Info);
+	writeMetadata(path, getExtension(path));
+
+	// Writing metadata can change the file modification date, so we set it back if necessary
+	if (m_settings->value("Save/keepDate", true).toBool()) {
+		setFileCreationDate(path, createdAt());
+	}
+
+	saveToMetadataDatabase();
+	return true;
+}
+
+/**
+ * Build the metadata database entry for this image, using the current site as source.
+ */
+MetadataDatabaseEntry Image::metadataDatabaseEntry() const
+{
+	MetadataDatabaseEntry entry;
+	entry.md5 = md5();
+	entry.website = m_parentSite->url();
+	entry.websiteName = m_parentSite->name();
+	entry.id = m_id > 0 ? QString::number(m_id) : QString();
+	entry.rating = m_data.value("rating").toString();
+
+	for (const Tag &tag : m_tags) {
+		QString type = tag.type().name();
+		if (type == QLatin1String("idol")) {
+			type = QStringLiteral("model");
+		}
+		if (MetadataDatabase::TagTypes.contains(type)) {
+			entry.tags[type].append(tag.text());
+		}
+		entry.allTags.append(tag.text());
+	}
+
+	return entry;
+}
+
+/**
+ * List all the known sources for this image's file, using its MD5 to find matches in the metadata database.
+ * The current image is always part of the list, and its data takes precedence over the stored one.
+ */
+QList<MetadataDatabaseEntry> Image::knownSources(Profile *profile) const
+{
+	const MetadataDatabaseEntry current = metadataDatabaseEntry();
+
+	QList<MetadataDatabaseEntry> ret;
+	bool currentFound = false;
+
+	if (profile != nullptr && !current.md5.isEmpty() && profile->getSettings()->value("Save/MetadataDatabase", false).toBool()) {
+		MetadataDatabase *database = profile->metadataDatabase();
+		if (database != nullptr) {
+			const QList<MetadataDatabaseEntry> entries = database->get(current.md5);
+			for (const MetadataDatabaseEntry &entry : entries) {
+				if (entry.website == current.website && entry.id == current.id) {
+					ret.append(current);
+					currentFound = true;
+				} else {
+					ret.append(entry);
+				}
+			}
+		}
+	}
+
+	if (!currentFound) {
+		ret.append(current);
+	}
+
+	return ret;
 }
 
 void Image::remove(const QStringList &paths)
@@ -1358,6 +1471,77 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("tags", Token(QVariant::fromValue(tags)));
 	tokens.insert("all", Token(details["alls"]));
 	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
+
+	// All the known sources for this file, from the metadata database (lazy as it requires database access)
+	struct KnownSourcesCache
+	{
+		bool loaded = false;
+		QList<MetadataDatabaseEntry> entries;
+	};
+	const auto cache = QSharedPointer<KnownSourcesCache>::create();
+	const auto getKnownSources = [this, profile, cache]() -> const QList<MetadataDatabaseEntry> & {
+		if (!cache->loaded) {
+			cache->entries = this->knownSources(profile);
+			cache->loaded = true;
+		}
+		return cache->entries;
+	};
+	tokens.insert("websites", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			ret.append(entry.website);
+		}
+		return QVariant(ret);
+	}));
+	tokens.insert("websiteids", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			ret.append(entry.id.isEmpty() ? entry.website : entry.website + ":" + entry.id);
+		}
+		return QVariant(ret);
+	}));
+	tokens.insert("websitenames", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			ret.append(entry.websiteName);
+		}
+		return QVariant(ret);
+	}));
+
+	// Tags merged from all the known sources for this file
+	const auto mergedTags = [getKnownSources, profile](const QString &type) {
+		QList<Tag> tags;
+		QSet<QString> found;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			const QStringList &names = type.isEmpty() ? entry.allTags : entry.tags.value(type);
+			for (const QString &name : names) {
+				const QString key = name.toLower();
+				if (!found.contains(key)) {
+					found.insert(key);
+					tags.append(Tag(name));
+				}
+			}
+		}
+
+		QStringList ret;
+		for (const Tag &tag : profile->getRemovedTags().filterTags(tags)) {
+			ret.append(tag.text());
+		}
+		return QVariant(ret);
+	};
+	tokens.insert("merged_all", Token([mergedTags]() { return mergedTags(QString()); }));
+	for (const QString &type : MetadataDatabase::TagTypes) {
+		tokens.insert("merged_" + type, Token([mergedTags, type]() { return mergedTags(type); }));
+	}
+	tokens.insert("merged_rating", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			if (!entry.rating.isEmpty() && !ret.contains(entry.rating)) {
+				ret.append(entry.rating);
+			}
+		}
+		return QVariant(ret);
+	}));
 
 	// Extension
 	QString ext = extension();

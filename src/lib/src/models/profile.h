@@ -16,6 +16,7 @@ class Commands;
 class DownloadQueryManager;
 class Exiftool;
 class Md5Database;
+class MetadataDatabase;
 class MonitorManager;
 class QSettings;
 class Site;
@@ -110,6 +111,7 @@ class Profile : public QObject
 		DownloadQueryManager *downloadQueryManager() const;
 		UrlDownloaderManager *urlDownloaderManager() const;
 		Md5Database *md5Database() const;
+		MetadataDatabase *metadataDatabase();
 
 	signals:
 		void favoritesChanged();
@@ -137,6 +139,7 @@ class Profile : public QObject
 		Blacklist m_blacklist;
 		History *m_history;
 		Md5Database *m_md5s;
+		MetadataDatabase *m_metadataDatabase = nullptr;
 		QMap<QString, Source*> m_sources;
 		QMap<QString, Site*> m_sites;
 		QStringList m_additionalTokens;

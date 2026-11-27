@@ -8,6 +8,7 @@
 #include "loader/token.h"
 #include "models/image.h"
 #include "models/image-factory.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -407,6 +408,49 @@ TEST_CASE("Image")
 		REQUIRE(dest.url() == img->url());
 		REQUIRE(dest.url(Image::Size::Sample) == img->url(Image::Size::Sample));
 		REQUIRE(dest.url(Image::Size::Thumbnail) == img->url(Image::Size::Thumbnail));
+	}
+
+	SECTION("Known sources tokens")
+	{
+		SECTION("Without the metadata database")
+		{
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websites") == QStringList("danbooru.donmai.us"));
+			REQUIRE(img->token<QStringList>("websiteids") == QStringList("danbooru.donmai.us:7331"));
+			REQUIRE(img->token<QStringList>("merged_artist") == QStringList("artist1"));
+		}
+
+		SECTION("With the metadata database")
+		{
+			settings->setValue("Save/MetadataDatabase", true);
+
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.websiteName = "Gelbooru";
+			gelbooru.id = "5680029";
+			gelbooru.rating = "questionable";
+			gelbooru.tags.insert("artist", { "artist2", "artist1" });
+			gelbooru.tags.insert("general", { "tag4" });
+			gelbooru.allTags = QStringList { "artist2", "artist1", "tag4" };
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
+			REQUIRE(img->token<QStringList>("websiteids") == QStringList({ "gelbooru.com:5680029", "danbooru.donmai.us:7331" }));
+			REQUIRE(img->token<QStringList>("websitenames").first() == QString("Gelbooru"));
+			REQUIRE(img->token<QStringList>("merged_artist") == QStringList({ "artist2", "artist1" }));
+			REQUIRE(img->token<QStringList>("merged_general") == QStringList({ "tag4", "tag1", "tag2", "tag3" }));
+			REQUIRE(img->token<QStringList>("merged_all").count("artist1") == 1);
+			REQUIRE(img->token<QStringList>("merged_all").contains("copyright1"));
+			REQUIRE(img->token<QStringList>("merged_rating").count() == 2);
+			REQUIRE(img->token<QStringList>("merged_rating").first() == QString("questionable"));
+
+			// The current website is updated in place instead of being added twice
+			REQUIRE(profile->metadataDatabase()->save(img->metadataDatabaseEntry()));
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
+		}
 	}
 
 	SECTION("Default tokens")

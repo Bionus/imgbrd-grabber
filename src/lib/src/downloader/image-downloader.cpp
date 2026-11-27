@@ -1,6 +1,8 @@
 #include "downloader/image-downloader.h"
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QImageReader>
 #include <QSettings>
 #include <QSize>
@@ -102,40 +104,53 @@ void ImageDownloader::save()
 	const QStringList paths = m_image->paths(m_filename, m_path, m_count);
 	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty() ? paths.first() : QString();
 
+	// Whether we might update the metadata of files that already exist, in which case we can't skip loading their details
+	const bool updateMetadata = shouldUpdateMetadata();
+	const auto fileExists = [](const QString &path) { return QFile::exists(path); };
+	const QStringList &destinations = !m_paths.isEmpty() ? m_paths : paths;
+	const bool destinationsExist = !destinations.isEmpty() && std::all_of(destinations.constBegin(), destinations.constEnd(), fileExists);
+
 	// Existing destinations do not run post-save commands or write metadata, so they do not need details.
 	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
-	if (!m_force && !blacklistNeedTags && !filenameNeedExactTags && !m_filename.needTemporaryFile(m_image->tokens(m_profile)) && !paths.isEmpty()
-		&& std::all_of(paths.constBegin(), paths.constEnd(), [](const QString &path) { return QFile::exists(path); })) {
+	if (!m_force && !updateMetadata && !blacklistNeedTags && !filenameNeedExactTags && !m_filename.needTemporaryFile(m_image->tokens(m_profile)) && !paths.isEmpty()
+		&& std::all_of(paths.constBegin(), paths.constEnd(), fileExists)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
 
 	// We don't need to load the image details of files already in the MD5 list and that should be skipped
-	const QString md5action = m_profile->md5Action(m_image->md5(), md5Path).first;
-	if (md5action == "ignore" && !m_force) {
+	const QPair<QString, QString> md5Result = m_profile->md5Action(m_image->md5(), md5Path);
+	const QString &md5action = md5Result.first;
+	const bool md5Exists = md5action == "ignore" && !md5Result.second.isEmpty() && QFile::exists(md5Result.second);
+	if (md5action == "ignore" && !m_force && !(updateMetadata && md5Exists)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
+
+	// Existing files whose metadata will be updated don't need to be downloaded again
+	const bool existingToUpdate = !m_force && updateMetadata && (destinationsExist || md5Exists);
 
 	// A local MD5 duplicate does not need a file URL, but may still need details for naming or post-save operations.
 	const bool reuseFile = !m_force && m_size != Image::Size::Thumbnail && !md5Path.isEmpty()
 		&& !m_filename.needTemporaryFile(m_image->tokens(m_profile))
 		&& (md5action == "copy" || md5action == "move" || md5action == "link" || md5action == "hardlink");
 	const QStringList forcedTokens = m_image->parentSite()->getApis().first()->forcedTokens();
-	const bool needFileUrl = !reuseFile && (forcedTokens.contains("*") || forcedTokens.contains("file_url"));
-	const bool needUgoiraData = m_image->extension() == QStringLiteral("zip") && m_profile->getSettings()->value("Save/ConvertUgoira", false).toBool();
+	const bool needFileUrl = !reuseFile && !existingToUpdate && (forcedTokens.contains("*") || forcedTokens.contains("file_url"));
+	const bool needUgoiraData = !existingToUpdate && m_image->extension() == QStringLiteral("zip") && m_profile->getSettings()->value("Save/ConvertUgoira", false).toBool();
 
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
 	const int localNeedTags = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
-	if (!blacklistNeedTags && !needFileUrl && !needUgoiraData && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
+	const int metadataTagLevel = existingToUpdate ? metadataNeedExactTags(m_profile->getSettings()) : 0;
+	const bool metadataNeedTags = metadataTagLevel == 2 || (metadataTagLevel == 1 && m_image->hasUnknownTag());
+	if (!blacklistNeedTags && !needFileUrl && !needUgoiraData && !metadataNeedTags && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
 
-	log(QStringLiteral("Not enough information to directly load the image (from blacklist: %1 / from file url: %2 / from filename tags: %3/%4)").arg(blacklistNeedTags).arg(needFileUrl).arg(filenameNeedTags).arg(needTags), Logger::Info);
+	log(QStringLiteral("Not enough information to directly load the image (from blacklist: %1 / from file url: %2 / from filename tags: %3/%4 / from metadata update: %5)").arg(blacklistNeedTags).arg(needFileUrl).arg(filenameNeedTags).arg(needTags).arg(metadataNeedTags), Logger::Info);
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
 	m_image->loadDetails();
 }
@@ -176,6 +191,14 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 		}
 	}
 
+	// Check metadata
+	return qMax(need, metadataNeedExactTags(settings));
+}
+
+int ImageDownloader::metadataNeedExactTags(QSettings *settings) const
+{
+	int need = 0;
+
 	// Check Exiftool metadata
 	for (const auto &pair : getMetadataExiftool(settings)) {
 		need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
@@ -195,6 +218,62 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 	#endif
 
 	return need;
+}
+
+/**
+ * Check whether the metadata of already existing files for this image should be updated.
+ *
+ * @param paths The existing files, used to get a date if the image does not have one.
+ */
+bool ImageDownloader::shouldUpdateMetadata(const QStringList &paths) const
+{
+	if (m_force || !m_postSave || m_size == Image::Size::Thumbnail) {
+		return false;
+	}
+
+	QSettings *settings = m_profile->getSettings();
+	if (!settings->value("Save/MetadataUpdateExisting", false).toBool()) {
+		return false;
+	}
+
+	// No age limit
+	const int maxAge = settings->value("Save/MetadataUpdateMaxAge", 0).toInt();
+	if (maxAge <= 0) {
+		return true;
+	}
+
+	// Use the post date, or fallback to the file date if the image doesn't have one
+	QDateTime date = m_image->createdAt();
+	if (!date.isValid()) {
+		for (const QString &path : paths) {
+			const QFileInfo info(path);
+			if (info.exists()) {
+				date = info.birthTime().isValid() ? info.birthTime() : info.lastModified();
+				break;
+			}
+		}
+	}
+
+	// If we can't know the age, we only skip loading the details when we have no file to check yet
+	if (!date.isValid()) {
+		return true;
+	}
+
+	return date.secsTo(QDateTime::currentDateTime()) <= static_cast<qint64>(maxAge) * 24 * 60 * 60;
+}
+
+/**
+ * Update the metadata of the given existing files, if enabled in the settings.
+ */
+void ImageDownloader::updateExistingMetadata(const QStringList &paths)
+{
+	if (!shouldUpdateMetadata(paths)) {
+		return;
+	}
+
+	for (const QString &path : paths) {
+		m_image->updateMetadata(path);
+	}
 }
 
 void ImageDownloader::abort()
@@ -263,12 +342,16 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 			if (m_addMd5) {
 				registerExistingFiles(m_profile, m_image->md5(), m_paths);
 			}
+			updateExistingMetadata(m_paths);
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::AlreadyExistsDisk));
 			return;
 		}
 
 		// If we don't need any loading, we can return already
 		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
+		if (res == Image::SaveResult::AlreadyExistsMd5 && shouldUpdateMetadata()) {
+			updateExistingMetadata(m_profile->md5Exists(m_image->md5()));
+		}
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
 			QList<ImageSaveResult> preResult {{ m_temporaryPath, m_size, res }}; // TODO(Bionus): this should use the MD5 path if possible
 

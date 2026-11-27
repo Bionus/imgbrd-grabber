@@ -20,6 +20,7 @@ class QDateTime;
 class QPixmap;
 class QSettings;
 class Site;
+struct MetadataDatabaseEntry;
 
 class Image : public QObject, public Downloadable
 {
@@ -113,6 +114,11 @@ class Image : public QObject, public Downloadable
 		SaveResult preSave(const QString &path, Size size) override;
 		QString postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count, bool basic = false) override;
 
+		// Metadata
+		bool updateMetadata(const QString &path);
+		MetadataDatabaseEntry metadataDatabaseEntry() const;
+		QList<MetadataDatabaseEntry> knownSources(Profile *profile) const;
+
 		// Tokens
 		template <typename T>
 		T token(const QString &name, const T &defaultValue = T()) const
@@ -128,6 +134,8 @@ class Image : public QObject, public Downloadable
 		void init();
 		QString md5forced() const;
 		QString postSaving(const QString &path, Size size, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
+		void writeMetadata(const QString &path, const QString &ext);
+		void saveToMetadataDatabase();
 
 	public slots:
 		void loadDetails(bool rateLimit = false);

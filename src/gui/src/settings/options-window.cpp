@@ -260,6 +260,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboMetadataExiftoolSidecar->setCurrentIndex(sidecarFile.indexOf(settings->value("Save/MetadataExiftoolSidecar", "on_error").toString()));
 	ui->checkMetadataExiftoolSidecarNoExtension->setChecked(settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
 
+	// Metadata of existing files
+	ui->checkMetadataUpdateExisting->setChecked(settings->value("Save/MetadataUpdateExisting", false).toBool());
+	ui->spinMetadataUpdateMaxAge->setValue(settings->value("Save/MetadataUpdateMaxAge", 0).toInt());
+	ui->checkMetadataDatabase->setChecked(settings->value("Save/MetadataDatabase", false).toBool());
+
 	// Log
 	settings->beginGroup("Log");
 		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
@@ -1512,6 +1517,9 @@ void OptionsWindow::save()
 		static const QStringList sidecarFile { "no", "on_error", "both", "only" };
 		settings->setValue("MetadataExiftoolSidecar", sidecarFile.at(ui->comboMetadataExiftoolSidecar->currentIndex()));
 		settings->setValue("MetadataExiftoolSidecarNoExtension", ui->checkMetadataExiftoolSidecarNoExtension->isChecked());
+		settings->setValue("MetadataUpdateExisting", ui->checkMetadataUpdateExisting->isChecked());
+		settings->setValue("MetadataUpdateMaxAge", ui->spinMetadataUpdateMaxAge->value());
+		settings->setValue("MetadataDatabase", ui->checkMetadataDatabase->isChecked());
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
