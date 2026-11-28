@@ -12,6 +12,7 @@
 class AstFilename;
 class Image;
 class Profile;
+class QDateTime;
 class QSettings;
 class QVariant;
 class Site;
@@ -90,10 +91,11 @@ class Filename
 		int needExactTags(Site *site, QSettings *settings, const QString &api = "") const;
 
 		QList<QMap<QString, Token>> expandTokens(const QMap<QString, Token> &tokens, QSettings *settings) const;
+		static void addDateFallbacks(QMap<QString, Token> &tokens, const QDateTime &downloadDate);
 		int needExactTags(const QStringList &forcedTokens = {}, const QStringList &customTokens = {}) const;
 
 	protected:
-		static QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings);
+		static QList<Token> getReplace(const QString &tokenName, const Token &token, QSettings *settings);
 		static bool returnError(const QString &msg, QString *error);
 
 	private:

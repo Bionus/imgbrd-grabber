@@ -65,12 +65,18 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `id`: unique image ID per board.
 * `website`: the website's URL (without HTTP and trailing slash).
 * `websitename`: the website name as set in the sources' settings.
+* `websites`: all the websites this file is known to be on (see [Metadata database](metadata.md#metadata-database)), in the same format as `website`. Example: `danbooru.donmai.us gelbooru.com tbib.org`.
+* `websiteids`: all the websites this file is known to be on, followed by `:` and the image ID on each website. Example: `danbooru.donmai.us:4204575 gelbooru.com:5680029`.
+* `websitenames`: all the website names this file is known to be on, as currently set in the sources' settings (or their URL for websites that are not in your sources anymore).
+* `merged_all`, `merged_artist`, `merged_copyright`, `merged_character`, `merged_model`, `merged_species`, `merged_meta`, `merged_general`, `merged_contributor`, `merged_photo_set`, `merged_lore`: the tags of all the websites this file is known to be on, combined and without duplicates. They use the same Tags settings as their base token (separator, sorting, what to do when empty or multiple, etc.), so `%merged_artist%` behaves like `%artist%`.
+* `merged_rating`: the different ratings this file has on all the websites it is known to be on.
+* `merged_date`: the oldest post date of all the websites this file is known to be on, falling back to the download date like `date`. It supports the same options as `date`.
 * `height`: the image's height.
 * `width`: the image's width.
 * `mpixels`: the image's height multiplied by the image's width.
 * `author`: the name of the author of the image.
 * `authorid`: the ID of the author of the image.
-* `date`: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".
+* `date`: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm". If the server doesn't provide a valid date, the download date is used instead (in metadata, the date of the file); the original text is still available in `date_raw`.
 * `all`: all tags.
 * `allo`: do not use this unless you know what you're doing. It is the same as `%all%`, but without the removal of forbidden characters and any other kind of treatment (using it as a filename may cause some images to not save).
 * `source`: the source of this file, usually a URL.

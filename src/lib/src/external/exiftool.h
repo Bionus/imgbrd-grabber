@@ -28,6 +28,7 @@ class Exiftool : public QObject
 	public slots:
 		bool start(int msecs = 30000);
 		bool setMetadata(const QString &file, const QMap<QString, QString> &metadata, bool clear = false, bool keepColorProfile = true, SidecarFile sidecarFile = SidecarFile::OnError, bool sidecarFileNoExtension = false, int msecs = 30000);
+		static QString sidecarPath(const QString &file, bool sidecarFileNoExtension);
 		bool execute(const QString &file, const QString &command, int msecs = 30000);
 		bool stop(int msecs = 30000);
 

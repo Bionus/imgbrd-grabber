@@ -1,3 +1,4 @@
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QJsonObject>
@@ -5,9 +6,11 @@
 #include <QSettings>
 #include <QSignalSpy>
 #include "downloader/extension-rotator.h"
+#include "filename/filename.h"
 #include "loader/token.h"
 #include "models/image.h"
 #include "models/image-factory.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -407,6 +410,213 @@ TEST_CASE("Image")
 		REQUIRE(dest.url() == img->url());
 		REQUIRE(dest.url(Image::Size::Sample) == img->url(Image::Size::Sample));
 		REQUIRE(dest.url(Image::Size::Thumbnail) == img->url(Image::Size::Thumbnail));
+	}
+
+	SECTION("Known sources tokens")
+	{
+		SECTION("Without the metadata database")
+		{
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websites") == QStringList("danbooru.donmai.us"));
+			REQUIRE(img->token<QStringList>("websiteids") == QStringList("danbooru.donmai.us:7331"));
+			REQUIRE(img->token<QStringList>("merged_artist") == QStringList("artist1"));
+		}
+
+		SECTION("With the metadata database")
+		{
+			settings->setValue("Save/MetadataDatabase", true);
+
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.rating = "questionable";
+			gelbooru.tags.insert("artist", { "artist2", "artist1" });
+			gelbooru.tags.insert("general", { "tag4" });
+			gelbooru.allTags = QStringList { "artist2", "artist1", "tag4" };
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
+			REQUIRE(img->token<QStringList>("websiteids") == QStringList({ "gelbooru.com:5680029", "danbooru.donmai.us:7331" }));
+			const Site *gelbooruSite = profile->getSites().value("gelbooru.com"); // Depends on the sites set up by other tests
+			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ gelbooruSite != nullptr ? gelbooruSite->name() : QString("gelbooru.com"), site->name() }));
+			REQUIRE(img->token<QStringList>("merged_artist") == QStringList({ "artist2", "artist1" }));
+			REQUIRE(img->token<QStringList>("merged_general") == QStringList({ "tag4", "tag1", "tag2", "tag3" }));
+
+			// Every tag type token (the ones with tag settings) has a merged version
+			const QMap<QString, Token> tokens = img->tokens(profile);
+			for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
+				if (!it.key().startsWith("merged_") && !it.value().whatToDoDefault().isEmpty()) {
+					CAPTURE(it.key());
+					REQUIRE(MetadataDatabase::TagTypes.contains(it.key()));
+					REQUIRE(tokens.contains("merged_" + it.key()));
+				}
+			}
+			REQUIRE(img->token<QStringList>("merged_all").count("artist1") == 1);
+			REQUIRE(img->token<QStringList>("merged_all").contains("copyright1"));
+			REQUIRE(img->token<QStringList>("merged_rating").count() == 2);
+			REQUIRE(img->token<QStringList>("merged_rating").first() == QString("questionable"));
+
+			// The current website is updated in place instead of being added twice
+			REQUIRE(profile->metadataDatabase()->save(img->metadataDatabaseEntry()));
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websites") == QStringList({ "gelbooru.com", "danbooru.donmai.us" }));
+		}
+
+		SECTION("Website names use the profile, or the URL for unknown websites")
+		{
+			settings->setValue("Save/MetadataDatabase", true);
+
+			MetadataDatabaseEntry unknown;
+			unknown.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			unknown.website = "unknown.example";
+			unknown.id = "1";
+			REQUIRE(profile->metadataDatabase()->save(unknown));
+
+			img = ImageFactory::build(site, details, profile);
+			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ "unknown.example", site->name() }));
+		}
+
+		SECTION("Dates")
+		{
+			const QDateTime sourceDate = QDateTime::fromSecsSinceEpoch(1471513944, Qt::UTC);
+			const QDateTime olderDate(QDate(2010, 1, 2), QTime(3, 4, 5), Qt::UTC);
+
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.date = olderDate;
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			SECTION("The original date is the oldest of all known sources")
+			{
+				const bool database = GENERATE(false, true);
+				CAPTURE(database);
+				settings->setValue("Save/MetadataDatabase", database);
+				img = ImageFactory::build(site, details, profile);
+
+				const QDateTime expected = database ? olderDate : sourceDate;
+				REQUIRE(img->createdAt() == sourceDate);
+				REQUIRE(img->originalDate(profile) == expected);
+				REQUIRE(img->token<QDateTime>("merged_date") == expected);
+			}
+
+			SECTION("The file date depends on the settings")
+			{
+				settings->setValue("Save/MetadataDatabase", true);
+				img = ImageFactory::build(site, details, profile);
+
+				// Defaults to the old "keep date" setting
+				REQUIRE(img->fileDate(profile) == sourceDate);
+				settings->setValue("Save/keepDate", false);
+				REQUIRE(!img->fileDate(profile).isValid());
+
+				settings->setValue("Save/fileDate", "original");
+				REQUIRE(img->fileDate(profile) == olderDate);
+				settings->setValue("Save/fileDate", "source");
+				REQUIRE(img->fileDate(profile) == sourceDate);
+				settings->setValue("Save/fileDate", "download");
+				REQUIRE(!img->fileDate(profile).isValid());
+			}
+
+			SECTION("The original date falls back to the download date if no source has a date")
+			{
+				const bool hasDate = GENERATE(false, true);
+				CAPTURE(hasDate);
+				settings->setValue("Save/MetadataDatabase", false); // Only use the current post
+				if (!hasDate) {
+					details.remove("created_at");
+				}
+				img = ImageFactory::build(site, details, profile);
+
+				const QString year = hasDate ? QString("2016") : QDateTime::currentDateTime().toString("yyyy");
+				REQUIRE(Filename("javascript:String(merged_date.getUTCFullYear())").path(*img, profile, "", 0, Filename::Complex) == QStringList(year));
+				REQUIRE(Filename("%merged_date:format=yyyy%").path(*img, profile, "", 0, Filename::Complex) == QStringList(year));
+				REQUIRE(img->token<QVariant>("merged_date").isValid() == hasDate); // The token itself is still the actual date
+			}
+
+			SECTION("Posts without a date use the original date")
+			{
+				settings->setValue("Save/MetadataDatabase", true);
+				settings->setValue("Save/fileDate", "source");
+				details.remove("created_at");
+				img = ImageFactory::build(site, details, profile);
+
+				REQUIRE(!img->createdAt().isValid());
+				REQUIRE(img->fileDate(profile) == olderDate); // The source date falls back to the original date
+				settings->setValue("Save/fileDate", "original");
+				REQUIRE(img->fileDate(profile) == olderDate);
+				settings->setValue("Save/fileDate", "download");
+				REQUIRE(!img->fileDate(profile).isValid());
+
+				// Without any known date, it falls back to the download date
+				settings->setValue("Save/fileDate", "source");
+				settings->setValue("Save/MetadataDatabase", false);
+				REQUIRE(!img->fileDate(profile).isValid());
+			}
+		}
+
+		SECTION("Merged tokens use the same tag settings as their base token")
+		{
+			settings->setValue("Save/MetadataDatabase", true);
+
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.tags.insert("artist", { "artist2", "artist1" });
+			gelbooru.tags.insert("copyright", { "fate/stay_night" });
+			gelbooru.tags.insert("general", { "tag4" });
+			gelbooru.allTags = QStringList { "artist2", "artist1", "fate/stay_night", "tag4" };
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+			details["tags_copyright"] = "fate ";
+
+			SECTION("Ignored tags are moved to general")
+			{
+				profile->addIgnored("artist1");
+				img = ImageFactory::build(site, details, profile);
+
+				REQUIRE(img->token<QStringList>("artist").isEmpty());
+				REQUIRE(img->token<QStringList>("merged_artist") == QStringList("artist2"));
+				REQUIRE(img->token<QStringList>("general").contains("artist1"));
+				REQUIRE(img->token<QStringList>("merged_general").contains("artist1"));
+				REQUIRE(img->token<QStringList>("merged_general").count("artist1") == 1);
+			}
+
+			SECTION("Shorter copyrights")
+			{
+				const bool useShorter = GENERATE(false, true);
+				CAPTURE(useShorter);
+				settings->setValue("Save/copyright_useshorter", useShorter);
+				img = ImageFactory::build(site, details, profile);
+
+				const QStringList expected = useShorter ? QStringList("fate") : QStringList({ "fate/stay_night", "fate" });
+				REQUIRE(img->token<QStringList>("merged_copyright") == expected);
+			}
+
+			SECTION("Removed tags")
+			{
+				profile->setRemovedTags("tag4 artist*");
+				img = ImageFactory::build(site, details, profile);
+
+				REQUIRE(!img->token<QStringList>("merged_general").contains("tag4"));
+				REQUIRE(img->token<QStringList>("merged_general").contains("tag1"));
+				REQUIRE(img->token<QStringList>("merged_artist").isEmpty());
+				REQUIRE(!img->token<QStringList>("merged_all").contains("tag4"));
+			}
+		}
+	}
+
+	SECTION("Unparseable dates are considered missing")
+	{
+		details["created_at"] = "not a date";
+		img = ImageFactory::build(site, details, profile);
+
+		REQUIRE(!img->createdAt().isValid());
+		REQUIRE(!img->tokens(profile).contains("date"));
+		REQUIRE(img->token<QString>("date_raw") == QString("not a date"));
 	}
 
 	SECTION("Default tokens")

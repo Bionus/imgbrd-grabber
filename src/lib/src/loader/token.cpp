@@ -15,6 +15,21 @@ Token::Token(std::function<QVariant()> func, bool cacheResult)
 	: m_func(std::move(func)), m_cacheResult(cacheResult)
 {}
 
+Token::Token(std::function<QVariant()> func, QString whatToDoDefault, QString emptyDefault, QString multipleDefault)
+	: m_whatToDoDefault(std::move(whatToDoDefault)), m_emptyDefault(std::move(emptyDefault)), m_multipleDefault(std::move(multipleDefault)), m_func(std::move(func)), m_cacheResult(true)
+{}
+
+
+/**
+ * Get the name used for this token's settings, such as its separator or what to do when it is empty.
+ * Merged tokens (such as "merged_artist") share the settings of their base token ("artist").
+ */
+QString Token::settingsName(const QString &name)
+{
+	static const QString mergedPrefix = QStringLiteral("merged_");
+	return name.startsWith(mergedPrefix) ? name.mid(mergedPrefix.length()) : name;
+}
+
 
 QVariant Token::value() const
 {

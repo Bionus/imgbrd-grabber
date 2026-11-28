@@ -60,3 +60,50 @@ The sidecar file settings allows you to control whether Grabber will write to XM
 * **Only sidecar**: will only write to the sidecar file, without touching the original file
 
 By default, Grabber will use your filename to generate the sidecar file, appending the XMP extension to it. So for example, `image.jpg` will have a sidecar file called `image.jpg.xmp`. Some other programs prefer the `image.xmp` format (without the original extension), so you can check the "Do not include original extension in sidecar file names" setting if you prefer that format.
+
+
+
+## Updating metadata of existing files
+
+By default, files that already exist are skipped. If you enabled the [metadata database](#metadata-database), you can check "Update the metadata of existing files": Grabber will then load the details of the post and write its metadata again (Windows properties, Exiftool and XMP sidecar files), without downloading the file again. This applies both to files that exist at the destination and to files found elsewhere with the MD5 "ignore" setting.
+
+Each file is updated once for each website it is found on: the metadata database keeps track of which posts were already fetched from each website, using their post ID. For example, an image downloaded from Danbooru then found on Gelbooru will be updated once with Gelbooru's tags.
+
+Since tags mostly change shortly after a post is uploaded, you can also check "Also refresh posts younger than" a given number of days: posts already fetched from the current website are then updated again while they are younger than that. The post date is used. If the post has none, the oldest post date of the other websites the file was found on is used, and otherwise the file's modification date.
+
+| Found on... | Refresh disabled | Refresh enabled |
+|---|---|---|
+| A new website | Updated once | Updated once |
+| A website it was already fetched from | Skipped | Updated if the post is younger than the given number of days |
+
+Updating metadata does not change the dates of the file: they are set again according to the "File date" setting (see [File date](#file-date)), or back to their previous value if it is "Download date". With "Original date", the file date can become older if the file was found on a website where it was posted earlier.
+
+When the sidecar files setting is "Only sidecar", the sidecar file holds all the metadata of the file. Grabber therefore always checks it when a file already exists, and writes it again if it is missing, even if updating the metadata of existing files is disabled.
+
+Note that this does not run commands or write log files again.
+
+
+## Metadata database
+
+If you check "Keep a database of the metadata of all the sources of each file", Grabber will store the tags of every file it saves or updates in a `metadata.sqlite` file in your profile folder. Files are identified by their MD5, so the same file found on several websites will have one row per website.
+
+This allows using tokens that combine the information of all the websites a file was found on, which is mostly useful in metadata:
+
+* `%websites%`, `%websiteids%` and `%websitenames%` list all the websites the file was found on.
+* `%merged_all%`, `%merged_artist%`, `%merged_character%`, etc. combine the tags of all those websites.
+* `%merged_date%` is the oldest post date of all those websites.
+
+For example, downloading the same image from Danbooru then Gelbooru with the Exiftool property `XMP:Subject` set to `%merged_all%` will write the tags of both websites in the second file's metadata.
+
+The `metadata` table contains the following columns: `md5`, `website`, `item` (the image ID on that website), `rating`, `date` (the post date on that website, in ISO 8601 UTC), `artist`, `copyright`, `character`, `model`, `species`, `meta`, `general`, `contributor`, `photo_set`, `lore`, `tags` (all tags, including types without a column and untyped ones) and `updated_at`. Tag columns are stored as JSON arrays.
+
+
+## File date
+
+The "File date" setting (in the "Save" settings) decides which date is given to saved files:
+
+* **Source date**: the post date on the website the file is downloaded from.
+* **Original date**: the oldest post date of all the websites the file was found on. This requires the metadata database, otherwise it is the same as the source date.
+* **Download date**: the date of the file is not changed.
+
+If a date is missing, the next one in this list is used. For example, a file downloaded from a website that doesn't provide post dates will still get a date if it was found on another website that does.

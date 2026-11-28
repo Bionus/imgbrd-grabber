@@ -1,12 +1,19 @@
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
+#include <QProcess>
+#include <QSet>
 #include <QSettings>
 #include <QSignalSpy>
 #include "custom-network-access-manager.h"
 #include "downloader/image-downloader.h"
+#include "external/exiftool.h"
+#include "functions.h"
 #include "models/filtering/blacklist.h"
 #include "models/image.h"
 #include "models/image-factory.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -14,7 +21,7 @@
 #include "source-helpers.h"
 
 
-QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = false)
+QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = false, const QDateTime &createdAt = QDateTime())
 {
 	QMap<QString, QString> details;
 	if (!noMd5) {
@@ -27,6 +34,9 @@ QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = fal
 	details["preview_url"] = "https://test.com/preview/oldfilename.jpg";
 	details["page_url"] = "/posts/7331";
 	details["tags"] = "tag1 tag2 tag3";
+	if (createdAt.isValid()) {
+		details["created_at"] = QString::number(createdAt.toSecsSinceEpoch());
+	}
 
 	return ImageFactory::build(site, details, profile);
 }
@@ -490,6 +500,385 @@ TEST_CASE("ImageDownloader")
 			REQUIRE(QFile::remove(oldName));
 			QFile::remove(dest + ".xmp");
 		}
+	}
+
+	SECTION("Update metadata of existing files")
+	{
+		QSettings *settings = profile->getSettings();
+		settings->setValue("Save/MetadataUpdateExisting", true);
+		settings->setValue("Save/MetadataDatabase", true);
+		settings->beginWriteArray("Save/MetadataExiftool");
+		settings->setArrayIndex(0);
+		settings->setValue("key", "XMP:Creator");
+		settings->setValue("value", "%copyright%");
+		settings->endArray();
+
+		SECTION("Missing sidecar files are always repaired when only writing metadata to sidecar files")
+		{
+			// Even without the metadata database nor updating existing files
+			settings->setValue("Save/MetadataDatabase", false);
+			settings->setValue("Save/MetadataUpdateExisting", false);
+
+			const QString mode = GENERATE(QString("only"), QString("on_error"), QString("both"));
+			const bool sidecarExists = GENERATE(false, true);
+			CAPTURE(mode, sidecarExists);
+			settings->setValue("Save/MetadataExiftoolSidecar", mode);
+
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			const QString sidecar = dest + ".xmp";
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+			if (sidecarExists) {
+				QFile file(sidecar);
+				REQUIRE(file.open(QFile::WriteOnly));
+				file.close();
+			}
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+
+			// The metadata needs the copyright, so details are only loaded when repairing the sidecar
+			const bool shouldRepair = mode == "only" && !sidecarExists;
+			REQUIRE(detailsSpy.count() == (shouldRepair ? 1 : 0));
+			if (shouldRepair && !Exiftool::version().isEmpty()) {
+				REQUIRE(QFile::exists(sidecar));
+			}
+
+			QFile::remove(sidecar);
+		}
+
+		SECTION("Requires the metadata database")
+		{
+			settings->setValue("Save/MetadataDatabase", false);
+
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.isEmpty());
+			REQUIRE(!QFile::exists(dest + ".xmp"));
+		}
+
+		SECTION("Destination already exists")
+		{
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.count() == 1);
+			REQUIRE(img->token("copyright", QString()) == QString("to_heart_2"));
+
+			const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+			REQUIRE(entries.count() == 1);
+			REQUIRE(entries[0].website == QString("danbooru.donmai.us"));
+			REQUIRE(entries[0].id == QString("7331"));
+			REQUIRE(entries[0].tags.value("copyright") == QStringList("to_heart_2"));
+			QFile::remove(dest + ".xmp");
+		}
+
+		SECTION("File already exists elsewhere and MD5 duplicates are ignored")
+		{
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString duplicate = QDir::toNativeSeparators("tests/resources/tmp/duplicate.png");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(duplicate));
+			profile->addMd5(img->md5(), duplicate);
+			settings->setValue("Save/md5Duplicates", "ignore");
+			settings->setValue("Save/md5DuplicatesSameDir", "ignore");
+
+			ImageDownloader downloader(profile, img, "something.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ QDir::toNativeSeparators("tests/resources/tmp/something.jpg.tmp"), Image::Size::Full, Image::SaveResult::AlreadyExistsMd5 }}, false);
+			REQUIRE(detailsSpy.count() == 1);
+			REQUIRE(QFile::exists(duplicate));
+			REQUIRE(profile->metadataDatabase()->get(img->md5()).count() == 1);
+			QFile::remove(duplicate + ".xmp");
+		}
+
+		SECTION("Without refresh, posts are only updated once per website")
+		{
+			const bool alreadyFetched = GENERATE(false, true);
+			CAPTURE(alreadyFetched);
+
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			if (alreadyFetched) {
+				REQUIRE(profile->metadataDatabase()->save(img->metadataDatabaseEntry()));
+			}
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE(detailsSpy.count() == (alreadyFetched ? 0 : 1));
+
+			const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+			REQUIRE(entries.count() == 1);
+			REQUIRE(entries[0].tags.value("copyright") == (alreadyFetched ? QStringList() : QStringList("to_heart_2")));
+			QFile::remove(dest + ".xmp");
+		}
+
+		SECTION("Refreshing posts without a date uses the file date for the maximum age")
+		{
+			const bool recent = GENERATE(false, true);
+			CAPTURE(recent);
+			settings->setValue("Save/MetadataRefresh", true);
+			settings->setValue("Save/MetadataRefreshMaxAge", 7);
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would set a post date
+
+			auto img = createImage(profile, site);
+			REQUIRE(!img->createdAt().isValid());
+			MetadataDatabaseEntry stored = img->metadataDatabaseEntry();
+			stored.rating = "marker"; // Already fetched, and to know if the entry was updated
+			REQUIRE(profile->metadataDatabase()->save(stored));
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+			REQUIRE(setFileCreationDate(dest, QDateTime::currentDateTime().addDays(recent ? -2 : -30)));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+			REQUIRE((profile->metadataDatabase()->get(img->md5())[0].rating != QString("marker")) == recent);
+		}
+
+		SECTION("Restores the post date of the file after updating it")
+		{
+			settings->setValue("Save/keepDate", true);
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would change the post date
+
+			const QDateTime createdAt = QDateTime::currentDateTime().addDays(-10);
+			auto img = createImage(profile, site, false, createdAt);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true, false, false, false);
+			REQUIRE(QFileInfo(dest).lastModified().toSecsSinceEpoch() == createdAt.toSecsSinceEpoch());
+			REQUIRE(QFile::remove(dest));
+		}
+
+		SECTION("Keeps the file date when the post has no date")
+		{
+			// Write a token that doesn't need details (which would give a post date), into a real PNG so that Exiftool rewrites it
+			settings->beginWriteArray("Save/MetadataExiftool");
+			settings->setArrayIndex(0);
+			settings->setValue("key", "XMP:Creator");
+			settings->setValue("value", "%id%");
+			settings->setArrayIndex(1);
+			settings->setValue("key", "XMP:Description");
+			settings->setValue("value", "%date:format=yyyy-MM-dd%");
+			settings->endArray();
+
+			auto img = createImage(profile, site);
+			REQUIRE(!img->createdAt().isValid());
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.png");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+			const QDateTime fileDate = QDateTime::currentDateTime().addDays(-30);
+			REQUIRE(setFileCreationDate(dest, fileDate));
+
+			ImageDownloader downloader(profile, img, "existing.png", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true, false, false, false);
+			REQUIRE(QFileInfo(dest).lastModified().toSecsSinceEpoch() == fileDate.toSecsSinceEpoch());
+
+			// Make sure the metadata was actually written into the file, which resets its date
+			// The post has no date, so the date in the metadata is the date of the file (the download date)
+			if (!Exiftool::version().isEmpty()) {
+				QProcess process;
+				process.start("exiftool", { "-s3", "-XMP:Creator", "-XMP:Description", dest });
+				REQUIRE(process.waitForFinished());
+				const QStringList values = QString::fromUtf8(process.readAllStandardOutput()).trimmed().split('\n');
+				REQUIRE(values.count() == 2);
+				REQUIRE(values[0].trimmed() == QString("7331"));
+				REQUIRE(values[1].trimmed() == fileDate.toString("yyyy-MM-dd"));
+			}
+
+			REQUIRE(QFile::remove(dest));
+		}
+
+		SECTION("Posts without a date use the oldest date of the other sources")
+		{
+			settings->setValue("Save/fileDate", "original");
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would give a post date
+
+			const QDateTime olderDate = QDateTime::currentDateTime().addDays(-30);
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.date = olderDate;
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			SECTION("For the file date")
+			{
+				auto img = createImage(profile, site);
+				REQUIRE(!img->createdAt().isValid());
+				const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+				ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+				assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true, false, false, false);
+				REQUIRE(QFileInfo(dest).lastModified().toSecsSinceEpoch() == olderDate.toSecsSinceEpoch());
+				REQUIRE(QFile::remove(dest));
+			}
+
+			SECTION("For the maximum age")
+			{
+				settings->setValue("Save/MetadataRefresh", true);
+				settings->setValue("Save/MetadataRefreshMaxAge", 7);
+
+				// Already fetched from this website: the file itself is recent, but the oldest known post date is not
+				auto img = createImage(profile, site);
+				MetadataDatabaseEntry stored = img->metadataDatabaseEntry();
+				stored.rating = "marker";
+				REQUIRE(profile->metadataDatabase()->save(stored));
+				const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+				ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+				assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+				const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+				REQUIRE(entries.count() == 2);
+				REQUIRE(entries[1].rating == QString("marker")); // Not refreshed
+			}
+		}
+
+		SECTION("Writes the tags of all known sources to the XMP sidecar")
+		{
+			if (Exiftool::version().isEmpty()) {
+				SKIP("Exiftool is not installed");
+			}
+
+			// Write all the merged tags as a list, only in the sidecar file since the test image is not a real JPEG
+			// The copyright requires typed tags, so it forces loading the latest details of the post
+			settings->beginWriteArray("Save/MetadataExiftool");
+			settings->setArrayIndex(0);
+			settings->setValue("key", "XMP:Subject");
+			settings->setValue("value", "%merged_all:separator=;%");
+			settings->setArrayIndex(1);
+			settings->setValue("key", "XMP:Creator");
+			settings->setValue("value", "%copyright%");
+			settings->endArray();
+			settings->setValue("Save/MetadataExiftoolSidecar", "only");
+
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			const QString sidecar = dest + ".xmp";
+			const auto readSubjects = [&sidecar]() {
+				QProcess process;
+				process.start("exiftool", { "-s3", "-sep", ";", "-XMP:Subject", sidecar });
+				REQUIRE(process.waitForFinished());
+				QStringList subjects = QString::fromUtf8(process.readAllStandardOutput()).trimmed().split(';', Qt::SkipEmptyParts);
+				for (QString &subject : subjects) {
+					subject = subject.trimmed().replace('_', ' ');
+				}
+				return subjects;
+			};
+			const auto update = [&]() {
+				auto img = createImage(profile, site);
+				REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+				ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+				assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+				return img;
+			};
+
+			// Another website already has data about this file
+			MetadataDatabaseEntry gelbooru;
+			gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+			gelbooru.website = "gelbooru.com";
+			gelbooru.id = "5680029";
+			gelbooru.tags.insert("general", { "tag4" });
+			gelbooru.allTags = QStringList { "tag4" };
+			REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+			// The sidecar contains the tags of both websites
+			auto img = update();
+			REQUIRE(QFile::exists(sidecar));
+			QStringList subjects = readSubjects();
+			CAPTURE(subjects);
+			REQUIRE(subjects.contains("tag4"));
+			REQUIRE(subjects.contains("to heart 2"));
+			REQUIRE(!subjects.contains("tag1")); // Tags from the search results are replaced by the latest ones
+			REQUIRE(profile->metadataDatabase()->get(img->md5()).count() == 2);
+
+			// Updating again replaces the list instead of appending to it
+			REQUIRE(profile->metadataDatabase()->remove(img->md5()));
+			update();
+			subjects = readSubjects();
+			REQUIRE(!subjects.contains("tag4"));
+			REQUIRE(subjects.contains("to heart 2"));
+			REQUIRE(subjects.count() == QSet<QString>(subjects.begin(), subjects.end()).count());
+
+			QFile::remove(sidecar);
+		}
+
+		SECTION("New websites are always updated once, then only refreshed while recent")
+		{
+			// Not fetched yet from this website: always updated, even if old
+			// Already fetched: only updated again if refreshing is enabled and the post is recent
+			const bool alreadyFetched = GENERATE(false, true);
+			const bool refresh = GENERATE(false, true);
+			const bool recent = GENERATE(false, true);
+			CAPTURE(alreadyFetched, refresh, recent);
+			settings->setValue("Save/MetadataRefresh", refresh);
+			settings->setValue("Save/MetadataRefreshMaxAge", 7);
+			settings->remove("Save/MetadataExiftool"); // Don't load details as they would change the post date
+
+			const QDateTime createdAt = QDateTime::currentDateTime().addDays(recent ? -2 : -30);
+			auto img = createImage(profile, site, false, createdAt);
+			if (alreadyFetched) {
+				MetadataDatabaseEntry stored = img->metadataDatabaseEntry();
+				stored.rating = "marker"; // To know if the entry was updated
+				REQUIRE(profile->metadataDatabase()->save(stored));
+			}
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+
+			const bool shouldUpdate = !alreadyFetched || (refresh && recent);
+			const QList<MetadataDatabaseEntry> entries = profile->metadataDatabase()->get(img->md5());
+			REQUIRE(entries.count() == 1);
+			REQUIRE((entries[0].rating != QString("marker")) == shouldUpdate);
+		}
+	}
+
+	SECTION("File date of new downloads")
+	{
+		QSettings *settings = profile->getSettings();
+		settings->setValue("Save/MetadataDatabase", true);
+
+		const QDateTime sourceDate = QDateTime::currentDateTime().addDays(-10);
+		const QDateTime originalDate = QDateTime::currentDateTime().addDays(-100);
+		MetadataDatabaseEntry gelbooru;
+		gelbooru.md5 = "1bc29b36f623ba82aaf6724fd3b16718";
+		gelbooru.website = "gelbooru.com";
+		gelbooru.id = "5680029";
+		gelbooru.date = originalDate;
+		REQUIRE(profile->metadataDatabase()->save(gelbooru));
+
+		const QString mode = GENERATE(QString("original"), QString("source"), QString("download"));
+		CAPTURE(mode);
+		settings->setValue("Save/fileDate", mode);
+
+		auto img = createImage(profile, site, false, sourceDate);
+		const QString dest = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
+		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
+		assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::Saved }}, true, false, false, false);
+
+		const qint64 fileDate = QFileInfo(dest).lastModified().toSecsSinceEpoch();
+		if (mode == "original") {
+			REQUIRE(fileDate == originalDate.toSecsSinceEpoch());
+		} else if (mode == "source") {
+			REQUIRE(fileDate == sourceDate.toSecsSinceEpoch());
+		} else {
+			REQUIRE(fileDate >= QDateTime::currentDateTime().addDays(-1).toSecsSinceEpoch());
+		}
+		REQUIRE(QFile::remove(dest));
 	}
 
 	SECTION("Fix extension from header")

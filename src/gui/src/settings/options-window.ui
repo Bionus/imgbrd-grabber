@@ -784,16 +784,6 @@
          </widget>
         </item>
         <item row="3" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkKeepDate">
-          <property name="text">
-           <string>Keep original creation date</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSaveHeaderDetection">
           <property name="text">
            <string>Get extension from file header</string>
@@ -802,6 +792,55 @@
            <bool>true</bool>
           </property>
          </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labelFileDate">
+          <property name="text">
+           <string>File date</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <layout class="QHBoxLayout" name="layoutFileDate">
+          <item>
+           <widget class="QComboBox" name="comboFileDate">
+            <property name="toolTip">
+             <string>&lt;b&gt;Source date&lt;/b&gt;: post date on the website it is downloaded from.&lt;br/&gt;&lt;b&gt;Original date&lt;/b&gt;: oldest post date of all the websites the file was found on (requires the metadata database, otherwise the same as the source date).&lt;br/&gt;&lt;b&gt;Download date&lt;/b&gt;: don't change the date of the file.&lt;br/&gt;If a date is missing, the next one in this list is used.</string>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Source date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Original date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Download date</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelFileDateWarning">
+            <property name="styleSheet">
+             <string notr="true">color: orange</string>
+            </property>
+            <property name="text">
+             <string>Requires the metadata database (Save &gt; Metadata), otherwise the source date is used</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_7">
@@ -1457,6 +1496,123 @@
               <string>Do not include original extension in sidecar file names</string>
              </property>
             </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupMetadataUpdate">
+          <property name="title">
+           <string>Metadata database</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutMetadataUpdate">
+           <item>
+            <widget class="QCheckBox" name="checkMetadataDatabase">
+             <property name="toolTip">
+              <string>Store the tags of downloaded files in "metadata.sqlite", using their MD5 to combine the data from all the websites they were found on. Required for the %websites%, %websiteids%, %websitenames% and %merged_...% tokens to list more than the current website, for the "Original date" file date, and to update the metadata of existing files.</string>
+             </property>
+             <property name="text">
+              <string>Keep a database of the metadata of all the sources of each file</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutMetadataUpdateExisting">
+             <item>
+              <spacer name="spacerMetadataUpdateExisting">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkMetadataUpdateExisting">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="toolTip">
+                <string>When a file already exists, update its metadata instead of skipping it, without downloading it again. Each file is updated once for each website it is found on.</string>
+               </property>
+               <property name="text">
+                <string>Update the metadata of existing files</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutMetadataRefresh">
+             <item>
+              <spacer name="spacerMetadataRefresh">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkMetadataRefresh">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="toolTip">
+                <string>Also update again the metadata of files already fetched from the current website, while their post is younger than the given number of days. Tags usually change shortly after a post is uploaded.</string>
+               </property>
+               <property name="text">
+                <string>Also refresh posts younger than</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinMetadataRefreshMaxAge">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="suffix">
+                <string> days</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>36500</number>
+               </property>
+               <property name="value">
+                <number>7</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="spacerMetadataRefreshEnd">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -6085,8 +6241,8 @@
   <tabstop>checkDownloadOriginals</tabstop>
   <tabstop>checkSampleFallback</tabstop>
   <tabstop>checkAutodownload</tabstop>
-  <tabstop>checkKeepDate</tabstop>
   <tabstop>checkSaveHeaderDetection</tabstop>
+  <tabstop>comboFileDate</tabstop>
   <tabstop>lineFolder</tabstop>
   <tabstop>buttonFolder</tabstop>
   <tabstop>lineFolderFavorites</tabstop>

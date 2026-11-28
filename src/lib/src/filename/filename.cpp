@@ -1,10 +1,12 @@
 #include "filename/filename.h"
 #include <QCollator>
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QFileInfoList>
 #include <QJSEngine>
 #include <QRegularExpression>
+#include <QSet>
 #include <QSettings>
 #include <algorithm>
 #include <utility>
@@ -33,10 +35,11 @@ Filename::Filename(QString format)
 	m_ast = FilenameCache::Get(m_format);
 }
 
-QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings)
+QList<Token> Filename::getReplace(const QString &tokenName, const Token &token, QSettings *settings)
 {
 	QList<Token> ret;
 	QStringList value = token.value().toStringList();
+	const QString key = Token::settingsName(tokenName);
 
 	if (token.whatToDoDefault().isEmpty()) {
 		ret.append(Token(value));
@@ -87,6 +90,25 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	return ret;
 }
 
+/**
+ * Make the date tokens fall back to the download date for posts without a date, so that they are always defined.
+ * Tokens that already have a valid date (including a previous fallback) are kept as is.
+ *
+ * @param tokens The tokens to update.
+ * @param downloadDate The date to use if the post doesn't have one.
+ */
+void Filename::addDateFallbacks(QMap<QString, Token> &tokens, const QDateTime &downloadDate)
+{
+	static const QStringList keys { "date", "merged_date" };
+	for (const QString &key : keys) {
+		const Token original = tokens.value(key);
+		tokens.insert(key, Token([original, downloadDate]() {
+			const QVariant val = original.value();
+			return val.toDateTime().isValid() ? val : QVariant(downloadDate);
+		}));
+	}
+}
+
 QList<QMap<QString, Token>> Filename::expandTokens(const QMap<QString, Token> &tokens, QSettings *settings) const
 {
 	QList<QMap<QString, Token>> ret;
@@ -96,13 +118,15 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QMap<QString, Token> &t
 	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
 		const QString &key = it.key();
 		const Token &token = it.value();
-		if (token.value().type() != QVariant::StringList) {
-			continue;
-		}
 
+		// Check if the token is used first, to avoid evaluating lazy tokens for nothing
 		const bool hasToken = !isJavascript && m_ast->tokens().contains(key);
 		const bool hasVar = isJavascript && m_format.contains(key);
 		if (!hasToken && !hasVar) {
+			continue;
+		}
+
+		if (token.value().type() != QVariant::StringList) {
 			continue;
 		}
 
@@ -153,6 +177,9 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 			return filenameOverride.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
 		}
 	}
+
+	// Posts without a date use the download date (after the conditions, as filters such as "age:" need the actual post date)
+	addDateFallbacks(tokens, QDateTime::currentDateTime());
 
 	QStringList fns;
 
@@ -327,7 +354,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Looking for unknown tokens
-	QStringList knownTokens {"tags", "artist", "contributor", "general", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid", "grabber", "grabber_branch", "grabber_version" };
+	QStringList knownTokens {"tags", "artist", "contributor", "general", "copyright", "character", "model", "photo_set", "species", "lore", "meta", "filename", "rating", "md5", "website", "websitename", "websites", "websiteids", "websitenames", "merged_all", "merged_artist", "merged_copyright", "merged_character", "merged_model", "merged_species", "merged_meta", "merged_general", "merged_contributor", "merged_photo_set", "merged_lore", "merged_rating", "merged_date", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid", "grabber", "grabber_branch", "grabber_version" };
 	if (profile != nullptr) {
 		knownTokens.append(profile->getAdditionalTokens());
 		knownTokens.append(getCustoms(profile->getSettings()).keys());
@@ -414,7 +441,11 @@ int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &
 		return 2;
 	}
 
-	const auto &toks = m_ast->tokens();
+	// Merged tokens (such as "merged_artist") need the same information as their base token
+	QSet<QString> toks;
+	for (const QString &token : m_ast->tokens()) {
+		toks.insert(Token::settingsName(token));
+	}
 
 	// If we need the filename and it is returned from the details page
 	if (toks.contains("filename") && forcedTokens.contains("filename")) {

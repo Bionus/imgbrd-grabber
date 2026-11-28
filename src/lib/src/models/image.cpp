@@ -1,12 +1,16 @@
 #include <QCryptographicHash>
+#include <QDateTime>
 #include <QDir>
 #include <QEventLoop>
 #include <QFile>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QNetworkRequest>
 #include <QRegularExpression>
+#include <QSet>
 #include <QSettings>
+#include <QSharedPointer>
 #include <QTimer>
 #include <utility>
 #include "commands/commands.h"
@@ -23,6 +27,7 @@
 #include "models/api/api.h"
 #include "models/api/api-endpoint.h"
 #include "models/image.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/page.h"
 #include "models/pool.h"
 #include "models/profile.h"
@@ -796,9 +801,10 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 
 	QString ext = extension();
 
-	// Keep original date
-	if (m_settings->value("Save/keepDate", true).toBool()) {
-		setFileCreationDate(path, createdAt());
+	// Set the file date (original or source date), otherwise keep the download date
+	const QDateTime date = fileDate(m_profile);
+	if (date.isValid()) {
+		setFileCreationDate(path, date);
 	}
 
 	// Guess extension from file header
@@ -875,6 +881,29 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 	}
 
 	// Metadata
+	writeMetadata(path, ext);
+
+	if (addMd5) {
+		m_profile->addMd5(md5(), path);
+	}
+
+	if (!basic) {
+		saveToMetadataDatabase();
+	}
+
+	setSavePath(path, size);
+	return path;
+}
+
+/**
+ * Write the configured metadata (Windows properties and Exiftool) to the given file.
+ */
+void Image::writeMetadata(const QString &path, const QString &ext)
+{
+	// Posts without a date use the date of the file, which is the download date as updating metadata doesn't change it
+	QMap<QString, Token> tokens = this->tokens(m_profile);
+	Filename::addDateFallbacks(tokens, QFileInfo(path).lastModified());
+
 	#ifdef WIN_FILE_PROPS
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
 		if (exts.isEmpty() || exts.contains(ext)) {
@@ -883,7 +912,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 				clearAllWindowsProperties(path);
 			}
 			for (const auto &pair : metadataPropsys) {
-				const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+				const QStringList values = Filename(pair.second).path(tokens, m_profile, "", 0, Filename::Complex);
 				if (!values.isEmpty()) {
 					setWindowsProperty(path, pair.first, values.first());
 				}
@@ -895,7 +924,7 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 		QMap<QString, QString> metadata;
 		const auto metadataExiftool = getMetadataExiftool(m_settings);
 		for (const auto &pair : metadataExiftool) {
-			const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+			const QStringList values = Filename(pair.second).path(tokens, m_profile, "", 0, Filename::Complex);
 			if (!values.isEmpty()) {
 				metadata.insert(pair.first, values.first());
 			}
@@ -920,13 +949,178 @@ QString Image::postSaving(const QString &originalPath, Size size, bool addMd5, b
 			);
 		}
 	}
+}
 
-	if (addMd5) {
-		m_profile->addMd5(md5(), path);
+/**
+ * Get the path of the XMP sidecar file holding the metadata of the given file, when Exiftool only writes metadata to sidecar files.
+ *
+ * @param path The path of the file.
+ * @return The path of its sidecar file, or an empty string if no sidecar-only metadata is written for this file.
+ */
+QString Image::onlySidecarPath(const QString &path) const
+{
+	if (m_settings->value("Save/MetadataExiftoolSidecar", "on_error").toString() != QLatin1String("only") || getMetadataExiftool(m_settings).isEmpty()) {
+		return QString();
 	}
 
-	setSavePath(path, size);
-	return path;
+	const QStringList exiftoolExts = m_settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString().split(' ', Qt::SkipEmptyParts);
+	if (!exiftoolExts.isEmpty() && !exiftoolExts.contains(getExtension(path))) {
+		return QString();
+	}
+
+	return Exiftool::sidecarPath(path, m_settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
+}
+
+/**
+ * Store this image's metadata in the metadata database, if enabled.
+ */
+void Image::saveToMetadataDatabase()
+{
+	if (!m_settings->value("Save/MetadataDatabase", false).toBool()) {
+		return;
+	}
+
+	MetadataDatabase *database = m_profile->metadataDatabase();
+	if (database != nullptr) {
+		database->save(metadataDatabaseEntry());
+	}
+}
+
+/**
+ * Update the metadata of an already existing file without downloading it again.
+ *
+ * @param path The path of the existing file.
+ * @return Whether the file existed and its metadata was updated.
+ */
+bool Image::updateMetadata(const QString &path)
+{
+	if (!QFile::exists(path)) {
+		return false;
+	}
+
+	log(QStringLiteral("Updating metadata of `%1`").arg(path), Logger::Info);
+	const QDateTime previousDate = QFileInfo(path).lastModified();
+	writeMetadata(path, getExtension(path));
+
+	// Save the latest data first, so that the original date can take it into account
+	saveToMetadataDatabase();
+
+	// Writing metadata into the file resets its dates, but updating metadata should not change them
+	// The original date can still change if an older source was found since the last update
+	const QDateTime date = fileDate(m_profile);
+	if (date.isValid()) {
+		setFileCreationDate(path, date);
+	} else if (previousDate.isValid()) {
+		setFileCreationDate(path, previousDate);
+	}
+
+	return true;
+}
+
+/**
+ * Get the setting deciding which date to give to saved files.
+ *
+ * @return "original" (oldest date of all the known sources), "source" (post date on the current website) or "download" (don't change the date).
+ */
+QString Image::fileDateMode(QSettings *settings)
+{
+	// Default to the value of the old "keep date" setting
+	const QString def = settings->value("Save/keepDate", true).toBool() ? QStringLiteral("source") : QStringLiteral("download");
+	return settings->value("Save/fileDate", def).toString();
+}
+
+/**
+ * Get the oldest post date of all the known sources for this image's file.
+ * Falls back to the current post date if the metadata database is disabled.
+ */
+QDateTime Image::originalDate(Profile *profile) const
+{
+	QDateTime ret;
+	for (const MetadataDatabaseEntry &entry : knownSources(profile)) {
+		if (entry.date.isValid() && (!ret.isValid() || entry.date < ret)) {
+			ret = entry.date;
+		}
+	}
+	return ret;
+}
+
+/**
+ * Get the date to give to saved files, depending on the settings.
+ * Missing dates fall back to the next one: source date, original date, download date.
+ * An invalid date means that the date of the file should not be changed (download date).
+ */
+QDateTime Image::fileDate(Profile *profile) const
+{
+	const QString mode = fileDateMode(profile->getSettings());
+	if (mode == QLatin1String("source")) {
+		const QDateTime sourceDate = m_data.value("date").toDateTime();
+		if (sourceDate.isValid()) {
+			return sourceDate;
+		}
+	}
+	if (mode == QLatin1String("source") || mode == QLatin1String("original")) {
+		return originalDate(profile);
+	}
+	return {};
+}
+
+/**
+ * Build the metadata database entry for this image, using the current site as source.
+ */
+MetadataDatabaseEntry Image::metadataDatabaseEntry() const
+{
+	MetadataDatabaseEntry entry;
+	entry.md5 = md5();
+	entry.website = m_parentSite->url();
+	entry.id = m_id > 0 ? QString::number(m_id) : QString();
+	entry.rating = m_data.value("rating").toString();
+	entry.date = m_data.value("date").toDateTime();
+
+	for (const Tag &tag : m_tags) {
+		QString type = tag.type().name();
+		if (type == QLatin1String("idol")) {
+			type = QStringLiteral("model");
+		}
+		if (MetadataDatabase::TagTypes.contains(type)) {
+			entry.tags[type].append(tag.text());
+		}
+		entry.allTags.append(tag.text());
+	}
+
+	return entry;
+}
+
+/**
+ * List all the known sources for this image's file, using its MD5 to find matches in the metadata database.
+ * The current image is always part of the list, and its data takes precedence over the stored one.
+ */
+QList<MetadataDatabaseEntry> Image::knownSources(Profile *profile) const
+{
+	const MetadataDatabaseEntry current = metadataDatabaseEntry();
+
+	QList<MetadataDatabaseEntry> ret;
+	bool currentFound = false;
+
+	if (profile != nullptr && !current.md5.isEmpty() && profile->getSettings()->value("Save/MetadataDatabase", false).toBool()) {
+		MetadataDatabase *database = profile->metadataDatabase();
+		if (database != nullptr) {
+			const QList<MetadataDatabaseEntry> entries = database->get(current.md5);
+			for (const MetadataDatabaseEntry &entry : entries) {
+				if (entry.website == current.website && entry.id == current.id) {
+					ret.append(current);
+					currentFound = true;
+				} else {
+					ret.append(entry);
+				}
+			}
+		}
+	}
+
+	if (!currentFound) {
+		ret.append(current);
+	}
+
+	return ret;
 }
 
 void Image::remove(const QStringList &paths)
@@ -968,7 +1162,7 @@ int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
 const QStringList &Image::search() const { return m_search; }
-QDateTime Image::createdAt() const { return token<QDateTime>("date"); }
+QDateTime Image::createdAt() const { return m_data.value("date").toDateTime(); }
 QString Image::dateRaw() const { return token<QString>("date_raw"); }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
@@ -1262,6 +1456,29 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 	return filename.path(*this, m_profile, folder, count, Filename::Complex | Filename::Path);
 }
 
+/**
+ * Only keep the shortest version of copyrights sharing a common prefix (for example "fate" instead of "fate/stay night").
+ */
+static QStringList shortenCopyrights(const QStringList &copyrights)
+{
+	QStringList ret;
+	for (const QString &cop : copyrights) {
+		bool found = false;
+		for (QString &copyright : ret) {
+			if (copyright.left(cop.size()) == cop.left(copyright.size())) {
+				if (cop.size() < copyright.size()) {
+					copyright = cop;
+				}
+				found = true;
+			}
+		}
+		if (!found) {
+			ret.append(cop);
+		}
+	}
+	return ret;
+}
+
 QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	const QSettings *settings = profile->getSettings();
@@ -1324,22 +1541,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Shorten copyrights
 	if (settings->value("Save/copyright_useshorter", true).toBool()) {
-		QStringList copyrights;
-		for (const QString &cop : details["copyright"]) {
-			bool found = false;
-			for (QString &copyright : copyrights) {
-				if (copyright.left(cop.size()) == cop.left(copyright.size())) {
-					if (cop.size() < copyright.size()) {
-						copyright = cop;
-					}
-					found = true;
-				}
-			}
-			if (!found) {
-				copyrights.append(cop);
-			}
-		}
-		details["copyright"] = copyrights;
+		details["copyright"] = shortenCopyrights(details["copyright"]);
 	}
 
 	// Tags
@@ -1358,6 +1560,117 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("tags", Token(QVariant::fromValue(tags)));
 	tokens.insert("all", Token(details["alls"]));
 	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
+
+	// All the known sources for this file, from the metadata database (lazy as it requires database access)
+	struct KnownSourcesCache
+	{
+		bool loaded = false;
+		QList<MetadataDatabaseEntry> entries;
+	};
+	const auto cache = QSharedPointer<KnownSourcesCache>::create();
+	const auto getKnownSources = [this, profile, cache]() -> const QList<MetadataDatabaseEntry> & {
+		if (!cache->loaded) {
+			cache->entries = this->knownSources(profile);
+			cache->loaded = true;
+		}
+		return cache->entries;
+	};
+	tokens.insert("websites", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			ret.append(entry.website);
+		}
+		return QVariant(ret);
+	}));
+	tokens.insert("websiteids", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			ret.append(entry.id.isEmpty() ? entry.website : entry.website + ":" + entry.id);
+		}
+		return QVariant(ret);
+	}));
+	tokens.insert("websitenames", Token([getKnownSources, profile]() {
+		// Use the current name of each website, or its URL if it is not in the profile anymore
+		const QMap<QString, Site*> &sites = profile->getSites();
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			const Site *site = sites.value(entry.website);
+			ret.append(site != nullptr ? site->name() : entry.website);
+		}
+		return QVariant(ret);
+	}));
+
+	// Tags merged from all the known sources for this file, using the same settings as their base token
+	const auto mergedTags = [getKnownSources, profile](const QString &type) {
+		const QStringList &ignore = profile->getIgnored();
+		QList<Tag> tags;
+		QSet<QString> found;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			QStringList names;
+			if (type.isEmpty()) {
+				names = entry.allTags;
+			} else {
+				// Ignored tags are moved to the "general" type
+				for (const QString &name : entry.tags.value(type)) {
+					if (type == QLatin1String("general") || !ignore.contains(name, Qt::CaseInsensitive)) {
+						names.append(name);
+					}
+				}
+				if (type == QLatin1String("general")) {
+					for (const QString &name : entry.allTags) {
+						if (ignore.contains(name, Qt::CaseInsensitive)) {
+							names.append(name);
+						}
+					}
+				}
+			}
+
+			for (const QString &name : names) {
+				const QString key = name.toLower();
+				if (!found.contains(key)) {
+					found.insert(key);
+					tags.append(Tag(name));
+				}
+			}
+		}
+
+		QStringList ret;
+		for (const Tag &tag : profile->getRemovedTags().filterTags(tags)) {
+			ret.append(tag.text());
+		}
+
+		// Shorten copyrights
+		if (type == QLatin1String("copyright") && profile->getSettings()->value("Save/copyright_useshorter", true).toBool()) {
+			ret = shortenCopyrights(ret);
+		}
+
+		return QVariant(ret);
+	};
+	tokens.insert("merged_all", Token([mergedTags]() { return mergedTags(QString()); }));
+	for (const QString &type : MetadataDatabase::TagTypes) {
+		const Token base = tokens.value(type);
+		tokens.insert("merged_" + type, Token([mergedTags, type]() { return mergedTags(type); }, base.whatToDoDefault(), base.emptyDefault(), base.multipleDefault()));
+	}
+	tokens.insert("merged_date", Token([getKnownSources]() {
+		QDateTime ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			if (entry.date.isValid() && (!ret.isValid() || entry.date < ret)) {
+				ret = entry.date;
+			}
+		}
+
+		// Missing dates fall back to the download date when used in a filename (see Filename::addDateFallbacks)
+		return ret.isValid() ? QVariant(ret) : QVariant();
+	}));
+	tokens.insert("merged_rating", Token([getKnownSources]() {
+		QStringList ret;
+		for (const MetadataDatabaseEntry &entry : getKnownSources()) {
+			if (!entry.rating.isEmpty() && !ret.contains(entry.rating)) {
+				ret.append(entry.rating);
+			}
+		}
+		return QVariant(ret);
+	}));
 
 	// Extension
 	QString ext = extension();

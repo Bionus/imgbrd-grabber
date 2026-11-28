@@ -260,6 +260,24 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboMetadataExiftoolSidecar->setCurrentIndex(sidecarFile.indexOf(settings->value("Save/MetadataExiftoolSidecar", "on_error").toString()));
 	ui->checkMetadataExiftoolSidecarNoExtension->setChecked(settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
 
+	// Metadata database and updating existing files, each option requiring the previous one
+	ui->checkMetadataDatabase->setChecked(settings->value("Save/MetadataDatabase", false).toBool());
+	ui->checkMetadataUpdateExisting->setChecked(settings->value("Save/MetadataUpdateExisting", false).toBool());
+	ui->checkMetadataRefresh->setChecked(settings->value("Save/MetadataRefresh", false).toBool());
+	ui->spinMetadataRefreshMaxAge->setValue(settings->value("Save/MetadataRefreshMaxAge", 7).toInt());
+	const auto updateMetadataOptionsEnabled = [this]() {
+		const bool database = ui->checkMetadataDatabase->isChecked();
+		const bool update = database && ui->checkMetadataUpdateExisting->isChecked();
+		const bool refresh = update && ui->checkMetadataRefresh->isChecked();
+		ui->checkMetadataUpdateExisting->setEnabled(database);
+		ui->checkMetadataRefresh->setEnabled(update);
+		ui->spinMetadataRefreshMaxAge->setEnabled(refresh);
+	};
+	connect(ui->checkMetadataDatabase, &QCheckBox::toggled, this, updateMetadataOptionsEnabled);
+	connect(ui->checkMetadataUpdateExisting, &QCheckBox::toggled, this, updateMetadataOptionsEnabled);
+	connect(ui->checkMetadataRefresh, &QCheckBox::toggled, this, updateMetadataOptionsEnabled);
+	updateMetadataOptionsEnabled();
+
 	// Log
 	settings->beginGroup("Log");
 		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
@@ -329,7 +347,19 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->checkDownloadOriginals->setChecked(settings->value("downloadoriginals", true).toBool());
 		ui->checkSampleFallback->setChecked(settings->value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings->value("replaceblanks", false).toBool());
-		ui->checkKeepDate->setChecked(settings->value("keepDate", true).toBool());
+		static const QStringList fileDateModes { "source", "original", "download" };
+		const QString fileDateDefault = settings->value("keepDate", true).toBool() ? "source" : "download"; // Default to the old "keep date" setting
+		const int fileDateIndex = fileDateModes.indexOf(settings->value("fileDate", fileDateDefault).toString());
+		ui->comboFileDate->setCurrentIndex(fileDateIndex >= 0 ? fileDateIndex : fileDateModes.indexOf("source"));
+
+		// The original date requires the metadata database, otherwise it is the same as the source date
+		const auto updateFileDateWarning = [this]() {
+			const bool original = ui->comboFileDate->currentIndex() == fileDateModes.indexOf("original");
+			ui->labelFileDateWarning->setVisible(original && !ui->checkMetadataDatabase->isChecked());
+		};
+		connect(ui->comboFileDate, QOverload<int>::of(&QComboBox::currentIndexChanged), this, updateFileDateWarning);
+		connect(ui->checkMetadataDatabase, &QCheckBox::toggled, this, updateFileDateWarning);
+		updateFileDateWarning();
 		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
@@ -1386,7 +1416,9 @@ void OptionsWindow::save()
 		settings->setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings->setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings->setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
-		settings->setValue("keepDate", ui->checkKeepDate->isChecked());
+		static const QStringList fileDateModes { "source", "original", "download" };
+		settings->setValue("fileDate", fileDateModes.at(ui->comboFileDate->currentIndex()));
+		settings->setValue("keepDate", ui->comboFileDate->currentIndex() != fileDateModes.indexOf("download")); // Kept for older versions
 		settings->setValue("headerDetection", ui->checkSaveHeaderDetection->isChecked());
 		settings->setValue("separator", ui->lineSeparator->text());
 		settings->setValue("noJpeg", ui->checkNoJpeg->isChecked());
@@ -1512,6 +1544,12 @@ void OptionsWindow::save()
 		static const QStringList sidecarFile { "no", "on_error", "both", "only" };
 		settings->setValue("MetadataExiftoolSidecar", sidecarFile.at(ui->comboMetadataExiftoolSidecar->currentIndex()));
 		settings->setValue("MetadataExiftoolSidecarNoExtension", ui->checkMetadataExiftoolSidecarNoExtension->isChecked());
+		settings->setValue("MetadataDatabase", ui->checkMetadataDatabase->isChecked());
+		settings->setValue("MetadataUpdateExisting", ui->checkMetadataUpdateExisting->isChecked());
+		settings->setValue("MetadataRefresh", ui->checkMetadataRefresh->isChecked());
+		settings->setValue("MetadataRefreshMaxAge", ui->spinMetadataRefreshMaxAge->value());
+		settings->remove("MetadataUpdateMaxAge"); // Replaced by "MetadataRefresh" and "MetadataRefreshMaxAge"
+		settings->remove("MetadataUpdateOncePerSource"); // Always enabled
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());

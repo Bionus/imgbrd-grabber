@@ -19,6 +19,7 @@
 #include "models/favorite.h"
 #include "models/md5-database/md5-database-sqlite.h"
 #include "models/md5-database/md5-database-text.h"
+#include "models/metadata-database/metadata-database.h"
 #include "models/site.h"
 #include "models/source.h"
 #include "models/source-registry.h"
@@ -238,6 +239,7 @@ Profile::~Profile()
 	qDeleteAll(m_sources);
 	delete m_commands;
 	delete m_md5s;
+	delete m_metadataDatabase;
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
 	delete m_urlDownloaderManager;
@@ -609,6 +611,18 @@ MonitorManager *Profile::monitorManager() const { return m_monitorManager; }
 DownloadQueryManager *Profile::downloadQueryManager() const { return m_downloadQueryManager; }
 UrlDownloaderManager *Profile::urlDownloaderManager() const { return m_urlDownloaderManager; }
 Md5Database *Profile::md5Database() const { return m_md5s; }
+
+/**
+ * Get the metadata database, creating it on first use.
+ * Returns nullptr for profiles without a directory.
+ */
+MetadataDatabase *Profile::metadataDatabase()
+{
+	if (m_metadataDatabase == nullptr && !m_path.isEmpty()) {
+		m_metadataDatabase = new MetadataDatabase(m_path + "/metadata.sqlite");
+	}
+	return m_metadataDatabase;
+}
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {
