@@ -116,6 +116,7 @@ class Image : public QObject, public Downloadable
 
 		// Metadata
 		bool updateMetadata(const QString &path);
+		QString onlySidecarPath(const QString &path) const;
 		MetadataDatabaseEntry metadataDatabaseEntry() const;
 		QList<MetadataDatabaseEntry> knownSources(Profile *profile) const;
 		QDateTime originalDate(Profile *profile) const;

@@ -86,9 +86,16 @@ bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &me
 	}
 
 	// If we're here, that means we either only want to write sidecar files, always want both, or an error occurred and we only write sidecars on error
+	return execute(sidecarPath(file, sidecarFileNoExtension), commands.join("\n"), msecs);
+}
+
+/**
+ * Get the path of the XMP sidecar file of a given file.
+ */
+QString Exiftool::sidecarPath(const QString &file, bool sidecarFileNoExtension)
+{
 	const QFileInfo info(file);
-	const QString sidecarFilename = (sidecarFileNoExtension ? info.path() + QDir::separator() + info.completeBaseName() : file) + ".xmp";
-	return execute(sidecarFilename, commands.join("\n"), msecs);
+	return (sidecarFileNoExtension ? info.path() + QDir::separator() + info.completeBaseName() : file) + ".xmp";
 }
 
 bool Exiftool::execute(const QString &file, const QString &command, int msecs)

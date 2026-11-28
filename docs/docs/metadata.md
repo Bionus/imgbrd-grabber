@@ -78,6 +78,8 @@ Since tags mostly change shortly after a post is uploaded, you can also check "A
 
 Updating metadata does not change the dates of the file: they are set again according to the "File date" setting (see [File date](#file-date)), or back to their previous value if it is "Download date". With "Original date", the file date can become older if the file was found on a website where it was posted earlier.
 
+When the sidecar files setting is "Only sidecar", the sidecar file holds all the metadata of the file. Grabber therefore always checks it when a file already exists, and writes it again if it is missing, even if updating the metadata of existing files is disabled.
+
 Note that this does not run commands or write log files again.
 
 

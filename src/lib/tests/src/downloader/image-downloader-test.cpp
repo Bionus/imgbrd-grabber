@@ -513,6 +513,41 @@ TEST_CASE("ImageDownloader")
 		settings->setValue("value", "%copyright%");
 		settings->endArray();
 
+		SECTION("Missing sidecar files are always repaired when only writing metadata to sidecar files")
+		{
+			// Even without the metadata database nor updating existing files
+			settings->setValue("Save/MetadataDatabase", false);
+			settings->setValue("Save/MetadataUpdateExisting", false);
+
+			const QString mode = GENERATE(QString("only"), QString("on_error"), QString("both"));
+			const bool sidecarExists = GENERATE(false, true);
+			CAPTURE(mode, sidecarExists);
+			settings->setValue("Save/MetadataExiftoolSidecar", mode);
+
+			auto img = createImage(profile, site);
+			QSignalSpy detailsSpy(img.data(), &Image::finishedLoadingTags);
+			const QString dest = QDir::toNativeSeparators("tests/resources/tmp/existing.jpg");
+			const QString sidecar = dest + ".xmp";
+			REQUIRE(QFile("tests/resources/image_1x1.png").copy(dest));
+			if (sidecarExists) {
+				QFile file(sidecar);
+				REQUIRE(file.open(QFile::WriteOnly));
+				file.close();
+			}
+
+			ImageDownloader downloader(profile, img, "existing.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
+			assertDownload(profile, img, &downloader, {{ dest, Image::Size::Full, Image::SaveResult::AlreadyExistsDisk }}, true);
+
+			// The metadata needs the copyright, so details are only loaded when repairing the sidecar
+			const bool shouldRepair = mode == "only" && !sidecarExists;
+			REQUIRE(detailsSpy.count() == (shouldRepair ? 1 : 0));
+			if (shouldRepair && !Exiftool::version().isEmpty()) {
+				REQUIRE(QFile::exists(sidecar));
+			}
+
+			QFile::remove(sidecar);
+		}
+
 		SECTION("Requires the metadata database")
 		{
 			settings->setValue("Save/MetadataDatabase", false);

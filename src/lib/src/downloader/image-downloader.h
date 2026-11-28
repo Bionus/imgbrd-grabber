@@ -40,6 +40,7 @@ class ImageDownloader : public QObject
 		QList<ImageSaveResult> makeResult(const QStringList &paths, Image::SaveResult result) const;
 		QList<ImageSaveResult> afterTemporarySave(Image::SaveResult saveResult);
 		bool shouldUpdateMetadata(const QStringList &paths = {}) const;
+		QStringList metadataToUpdate(const QStringList &paths) const;
 		void updateExistingMetadata(const QStringList &paths);
 
 	signals:

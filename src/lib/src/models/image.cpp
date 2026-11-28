@@ -952,6 +952,26 @@ void Image::writeMetadata(const QString &path, const QString &ext)
 }
 
 /**
+ * Get the path of the XMP sidecar file holding the metadata of the given file, when Exiftool only writes metadata to sidecar files.
+ *
+ * @param path The path of the file.
+ * @return The path of its sidecar file, or an empty string if no sidecar-only metadata is written for this file.
+ */
+QString Image::onlySidecarPath(const QString &path) const
+{
+	if (m_settings->value("Save/MetadataExiftoolSidecar", "on_error").toString() != QLatin1String("only") || getMetadataExiftool(m_settings).isEmpty()) {
+		return QString();
+	}
+
+	const QStringList exiftoolExts = m_settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString().split(' ', Qt::SkipEmptyParts);
+	if (!exiftoolExts.isEmpty() && !exiftoolExts.contains(getExtension(path))) {
+		return QString();
+	}
+
+	return Exiftool::sidecarPath(path, m_settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
+}
+
+/**
  * Store this image's metadata in the metadata database, if enabled.
  */
 void Image::saveToMetadataDatabase()

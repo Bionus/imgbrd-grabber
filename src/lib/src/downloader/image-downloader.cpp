@@ -105,15 +105,15 @@ void ImageDownloader::save()
 	const QStringList paths = m_image->paths(m_filename, m_path, m_count);
 	const QString md5Path = !filenameNeedExactTags && !paths.isEmpty() ? paths.first() : QString();
 
-	// Whether we might update the metadata of files that already exist, in which case we can't skip loading their details
-	const bool updateMetadata = shouldUpdateMetadata();
+	// Whether we will update the metadata of files that already exist, in which case we can't skip loading their details
 	const auto fileExists = [](const QString &path) { return QFile::exists(path); };
 	const QStringList &destinations = !m_paths.isEmpty() ? m_paths : paths;
 	const bool destinationsExist = !destinations.isEmpty() && std::all_of(destinations.constBegin(), destinations.constEnd(), fileExists);
+	const bool updateDestinations = destinationsExist && !metadataToUpdate(destinations).isEmpty();
 
 	// Existing destinations do not run post-save commands or write metadata, so they do not need details.
 	const bool blacklistNeedTags = m_blacklist != nullptr && !m_blacklist->isEmpty() && m_image->tags().isEmpty();
-	if (!m_force && !updateMetadata && !blacklistNeedTags && !filenameNeedExactTags && !m_filename.needTemporaryFile(m_image->tokens(m_profile)) && !paths.isEmpty()
+	if (!m_force && !updateDestinations && !blacklistNeedTags && !filenameNeedExactTags && !m_filename.needTemporaryFile(m_image->tokens(m_profile)) && !paths.isEmpty()
 		&& std::all_of(paths.constBegin(), paths.constEnd(), fileExists)) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
@@ -122,14 +122,14 @@ void ImageDownloader::save()
 	// We don't need to load the image details of files already in the MD5 list and that should be skipped
 	const QPair<QString, QString> md5Result = m_profile->md5Action(m_image->md5(), md5Path);
 	const QString &md5action = md5Result.first;
-	const bool md5Exists = md5action == "ignore" && !md5Result.second.isEmpty() && QFile::exists(md5Result.second);
-	if (md5action == "ignore" && !m_force && !(updateMetadata && md5Exists)) {
+	const bool updateDuplicate = md5action == "ignore" && !md5Result.second.isEmpty() && !metadataToUpdate({ md5Result.second }).isEmpty();
+	if (md5action == "ignore" && !m_force && !updateDuplicate) {
 		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
 
 	// Existing files whose metadata will be updated don't need to be downloaded again
-	const bool existingToUpdate = !m_force && updateMetadata && (destinationsExist || md5Exists);
+	const bool existingToUpdate = !m_force && (updateDestinations || updateDuplicate);
 
 	// A local MD5 duplicate does not need a file URL, but may still need details for naming or post-save operations.
 	const bool reuseFile = !m_force && m_size != Image::Size::Thumbnail && !md5Path.isEmpty()
@@ -283,13 +283,48 @@ bool ImageDownloader::shouldUpdateMetadata(const QStringList &paths) const
 /**
  * Update the metadata of the given existing files, if enabled in the settings.
  */
-void ImageDownloader::updateExistingMetadata(const QStringList &paths)
+/**
+ * Get the existing files among the given ones whose metadata should be updated.
+ * That's all of them if updating metadata is enabled for this image, otherwise only those whose sidecar file is missing,
+ * when metadata is only written to sidecar files (as it then holds all of their metadata).
+ *
+ * @param paths The files to check.
+ * @return The existing files to update.
+ */
+QStringList ImageDownloader::metadataToUpdate(const QStringList &paths) const
 {
-	if (!shouldUpdateMetadata(paths)) {
-		return;
+	if (m_force || !m_postSave || m_size == Image::Size::Thumbnail) {
+		return {};
 	}
 
+	QStringList existing;
 	for (const QString &path : paths) {
+		if (QFile::exists(path)) {
+			existing.append(path);
+		}
+	}
+	if (existing.isEmpty() || shouldUpdateMetadata(existing)) {
+		return existing;
+	}
+
+	// Repair missing sidecar files
+	QStringList ret;
+	for (const QString &path : existing) {
+		const QString sidecar = m_image->onlySidecarPath(path);
+		if (!sidecar.isEmpty() && !QFile::exists(sidecar)) {
+			log(QStringLiteral("The sidecar file of `%1` is missing").arg(path), Logger::Info);
+			ret.append(path);
+		}
+	}
+	return ret;
+}
+
+/**
+ * Update the metadata of the given existing files, if enabled in the settings or if their sidecar file is missing.
+ */
+void ImageDownloader::updateExistingMetadata(const QStringList &paths)
+{
+	for (const QString &path : metadataToUpdate(paths)) {
 		m_image->updateMetadata(path);
 	}
 }
@@ -367,7 +402,7 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 
 		// If we don't need any loading, we can return already
 		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
-		if (res == Image::SaveResult::AlreadyExistsMd5 && shouldUpdateMetadata()) {
+		if (res == Image::SaveResult::AlreadyExistsMd5) {
 			updateExistingMetadata(m_profile->md5Exists(m_image->md5()));
 		}
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
