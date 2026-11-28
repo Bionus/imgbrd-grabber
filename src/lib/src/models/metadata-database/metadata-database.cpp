@@ -8,7 +8,7 @@
 #include "logger.h"
 
 
-const QStringList MetadataDatabase::TagTypes { "artist", "copyright", "character", "model", "species", "meta", "general" };
+const QStringList MetadataDatabase::TagTypes { "artist", "copyright", "character", "model", "species", "meta", "general", "contributor", "photo_set", "lore" };
 
 
 static QString toJson(const QStringList &list)
@@ -101,10 +101,14 @@ bool MetadataDatabase::load()
 	}
 
 	// Add the columns missing from databases created by older versions
-	if (!m_database.record(QStringLiteral("metadata")).contains(QStringLiteral("date"))) {
+	const QSqlRecord existingColumns = m_database.record(QStringLiteral("metadata"));
+	for (const QString &column : QStringList { "date" } + TagTypes) {
+		if (existingColumns.contains(column)) {
+			continue;
+		}
 		QSqlQuery alterQuery(m_database);
-		if (!alterQuery.exec(QStringLiteral("ALTER TABLE metadata ADD COLUMN \"date\" TEXT"))) {
-			log(QStringLiteral("Could not add the date column to the metadata database: %1").arg(alterQuery.lastError().text()), Logger::Error);
+		if (!alterQuery.exec(QStringLiteral("ALTER TABLE metadata ADD COLUMN \"%1\" TEXT").arg(column))) {
+			log(QStringLiteral("Could not add the %1 column to the metadata database: %2").arg(column, alterQuery.lastError().text()), Logger::Error);
 			return false;
 		}
 	}

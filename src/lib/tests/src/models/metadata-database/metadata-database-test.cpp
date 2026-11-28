@@ -109,7 +109,7 @@ TEST_CASE("MetadataDatabase")
 		REQUIRE(database.get(md5)[0].date == date);
 	}
 
-	SECTION("It adds the date column to databases created by older versions")
+	SECTION("It adds the missing columns to databases created by older versions")
 	{
 		const QString oldPath = "tests/resources/metadata-old-test.sqlite";
 		FileDeleter oldDeleter(oldPath, true);
@@ -133,8 +133,10 @@ TEST_CASE("MetadataDatabase")
 
 		const QDateTime date(QDate(2020, 5, 6), QTime(7, 8, 9), Qt::UTC);
 		entries[0].date = date;
+		entries[0].tags.insert("lore", { "tag 6" });
 		REQUIRE(database.save(entries[0]));
 		REQUIRE(database.get(md5)[0].date == date);
+		REQUIRE(database.get(md5)[0].tags.value("lore") == QStringList("tag 6"));
 	}
 
 	SECTION("It refuses entries without an identifier")

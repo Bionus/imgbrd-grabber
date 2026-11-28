@@ -443,6 +443,16 @@ TEST_CASE("Image")
 			REQUIRE(img->token<QStringList>("websitenames") == QStringList({ gelbooruSite != nullptr ? gelbooruSite->name() : QString("gelbooru.com"), site->name() }));
 			REQUIRE(img->token<QStringList>("merged_artist") == QStringList({ "artist2", "artist1" }));
 			REQUIRE(img->token<QStringList>("merged_general") == QStringList({ "tag4", "tag1", "tag2", "tag3" }));
+
+			// Every tag type token (the ones with tag settings) has a merged version
+			const QMap<QString, Token> tokens = img->tokens(profile);
+			for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
+				if (!it.key().startsWith("merged_") && !it.value().whatToDoDefault().isEmpty()) {
+					CAPTURE(it.key());
+					REQUIRE(MetadataDatabase::TagTypes.contains(it.key()));
+					REQUIRE(tokens.contains("merged_" + it.key()));
+				}
+			}
 			REQUIRE(img->token<QStringList>("merged_all").count("artist1") == 1);
 			REQUIRE(img->token<QStringList>("merged_all").contains("copyright1"));
 			REQUIRE(img->token<QStringList>("merged_rating").count() == 2);

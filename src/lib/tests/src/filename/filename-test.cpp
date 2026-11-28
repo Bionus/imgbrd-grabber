@@ -257,7 +257,7 @@ TEST_CASE("Filename")
 			return Filename(format).path(*img, profile, "", 7, Filename::Complex);
 		};
 
-		for (const QString &type : { "general", "artist", "copyright", "character", "species", "meta" }) {
+		for (const QString &type : { "general", "artist", "copyright", "character", "model", "species", "meta", "contributor", "photo_set", "lore" }) {
 			CAPTURE(type);
 			REQUIRE(path("%merged_" + type + "%") == path("%" + type + "%"));
 		}
