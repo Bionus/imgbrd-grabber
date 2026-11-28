@@ -1503,67 +1503,116 @@
         <item row="2" column="0" colspan="2">
          <widget class="QGroupBox" name="groupMetadataUpdate">
           <property name="title">
-           <string>Existing files</string>
+           <string>Metadata database</string>
           </property>
-          <layout class="QFormLayout" name="formLayoutMetadataUpdate">
-           <item row="0" column="0" colspan="2">
-            <widget class="QCheckBox" name="checkMetadataUpdateExisting">
-             <property name="toolTip">
-              <string>When a file already exists, load its latest details and write its metadata again instead of skipping it. The file itself is not downloaded again.</string>
-             </property>
-             <property name="text">
-              <string>Update the metadata of files that already exist</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelMetadataUpdateMaxAge">
-             <property name="text">
-              <string>Only for posts younger than</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="spinMetadataUpdateMaxAge">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="toolTip">
-              <string>Uses the post date, or the file date if the post has none.</string>
-             </property>
-             <property name="specialValueText">
-              <string>No limit</string>
-             </property>
-             <property name="suffix">
-              <string> days</string>
-             </property>
-             <property name="maximum">
-              <number>36500</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QCheckBox" name="checkMetadataUpdateOncePerSource">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="toolTip">
-              <string>Posts are always updated the first time they are found on a website, even if they are older than the age limit. After that, they are only updated again while they are younger than the age limit (never again with "No limit"). Requires the metadata database.</string>
-             </property>
-             <property name="text">
-              <string>At least once per website</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="2">
+          <layout class="QVBoxLayout" name="layoutMetadataUpdate">
+           <item>
             <widget class="QCheckBox" name="checkMetadataDatabase">
              <property name="toolTip">
-              <string>Store the tags of downloaded files in "metadata.sqlite", using their MD5 to combine the data from all the websites they were found on. Required for the %websites%, %websiteids%, %websitenames% and %merged_...% tokens to list more than the current website, and for the "Original date" file date.</string>
+              <string>Store the tags of downloaded files in "metadata.sqlite", using their MD5 to combine the data from all the websites they were found on. Required for the %websites%, %websiteids%, %websitenames% and %merged_...% tokens to list more than the current website, for the "Original date" file date, and to update the metadata of existing files.</string>
              </property>
              <property name="text">
               <string>Keep a database of the metadata of all the sources of each file</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutMetadataUpdateExisting">
+             <item>
+              <spacer name="spacerMetadataUpdateExisting">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkMetadataUpdateExisting">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="toolTip">
+                <string>When a file already exists, update its metadata instead of skipping it, without downloading it again. Each file is updated once for each website it is found on.</string>
+               </property>
+               <property name="text">
+                <string>Update the metadata of existing files</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutMetadataRefresh">
+             <item>
+              <spacer name="spacerMetadataRefresh">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkMetadataRefresh">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="toolTip">
+                <string>Also update again the metadata of files already fetched from the current website, while their post is younger than the given number of days. Tags usually change shortly after a post is uploaded.</string>
+               </property>
+               <property name="text">
+                <string>Also refresh posts younger than</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinMetadataRefreshMaxAge">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="suffix">
+                <string> days</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>36500</number>
+               </property>
+               <property name="value">
+                <number>7</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="spacerMetadataRefreshEnd">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -6640,22 +6689,6 @@
     <hint type="destinationlabel">
      <x>324</x>
      <y>171</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkMetadataUpdateExisting</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>spinMetadataUpdateMaxAge</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
     </hint>
    </hints>
   </connection>

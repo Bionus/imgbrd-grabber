@@ -65,13 +65,18 @@ By default, Grabber will use your filename to generate the sidecar file, appendi
 
 ## Updating metadata of existing files
 
-By default, files that already exist are skipped. If you check "Update the metadata of files that already exist", Grabber will instead load the latest details of the post and write its metadata again (Windows properties, Exiftool and XMP sidecar files), without downloading the file again. This applies both to files that exist at the destination and to files found elsewhere with the MD5 "ignore" setting.
+By default, files that already exist are skipped. If you enabled the [metadata database](#metadata-database), you can check "Update the metadata of existing files": Grabber will then load the details of the post and write its metadata again (Windows properties, Exiftool and XMP sidecar files), without downloading the file again. This applies both to files that exist at the destination and to files found elsewhere with the MD5 "ignore" setting.
 
-Since tags mostly change shortly after a post is uploaded, you can limit this to posts younger than a given number of days, so that re-running a download only updates recent posts. The post date is used. If the post has none, the oldest post date of the other websites the file was found on is used (see [Metadata database](#metadata-database)), and otherwise the file's modification date. Set it to "No limit" to update all existing files.
+Each file is updated once for each website it is found on: the metadata database keeps track of which posts were already fetched from each website, using their post ID. For example, an image downloaded from Danbooru then found on Gelbooru will be updated once with Gelbooru's tags.
+
+Since tags mostly change shortly after a post is uploaded, you can also check "Also refresh posts younger than" a given number of days: posts already fetched from the current website are then updated again while they are younger than that. The post date is used. If the post has none, the oldest post date of the other websites the file was found on is used, and otherwise the file's modification date.
+
+| Found on... | Refresh disabled | Refresh enabled |
+|---|---|---|
+| A new website | Updated once | Updated once |
+| A website it was already fetched from | Skipped | Updated if the post is younger than the given number of days |
 
 Updating metadata does not change the dates of the file: they are set again according to the "File date" setting (see [File date](#file-date)), or back to their previous value if it is "Download date". With "Original date", the file date can become older if the file was found on a website where it was posted earlier.
-
-If you also enabled the [metadata database](#metadata-database), you can check "At least once per website": posts are then always updated the first time they are found on a website, even if they are older than the age limit, so that you get the tags of every website a file is on. After that, they are only updated again while they are younger than the age limit, or never again with "No limit". Grabber uses the metadata database to know which posts were already fetched from each website, using their post ID.
 
 Note that this does not run commands or write log files again.
 

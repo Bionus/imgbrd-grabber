@@ -232,31 +232,26 @@ bool ImageDownloader::shouldUpdateMetadata(const QStringList &paths) const
 		return false;
 	}
 
+	// Updating metadata requires the metadata database, to know which posts were already fetched from each website
 	QSettings *settings = m_profile->getSettings();
-	if (!settings->value("Save/MetadataUpdateExisting", false).toBool()) {
+	if (!settings->value("Save/MetadataDatabase", false).toBool() || !settings->value("Save/MetadataUpdateExisting", false).toBool()) {
+		return false;
+	}
+	MetadataDatabase *database = m_profile->metadataDatabase();
+	if (database == nullptr) {
 		return false;
 	}
 
-	const int maxAge = settings->value("Save/MetadataUpdateMaxAge", 0).toInt();
-
-	// Update at least once per website, using the metadata database to know which posts were already fetched:
-	// posts not fetched yet from the current website are always updated, ignoring the max age, and the others
-	// are only updated again while they are younger than the max age (never again without max age)
-	if (settings->value("Save/MetadataUpdateOncePerSource", false).toBool() && settings->value("Save/MetadataDatabase", false).toBool() && m_image->id() > 0) {
-		MetadataDatabase *database = m_profile->metadataDatabase();
-		if (database != nullptr) {
-			if (!database->exists(m_image->parentSite()->url(), QString::number(m_image->id()))) {
-				return true;
-			}
-			if (maxAge <= 0) {
-				return false;
-			}
-		}
+	// Posts not fetched yet from the current website are always updated once
+	// Posts without ID can't be stored in the database, so we consider them already fetched
+	if (m_image->id() > 0 && !database->exists(m_image->parentSite()->url(), QString::number(m_image->id()))) {
+		return true;
 	}
 
-	// No age limit
-	if (maxAge <= 0) {
-		return true;
+	// Already fetched posts are only refreshed if enabled, while they are younger than the max age
+	const int maxAge = settings->value("Save/MetadataRefreshMaxAge", 7).toInt();
+	if (!settings->value("Save/MetadataRefresh", false).toBool() || maxAge <= 0) {
+		return false;
 	}
 
 	// Use the post date, or the oldest date of the other known sources of the file if the image doesn't have one

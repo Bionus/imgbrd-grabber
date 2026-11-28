@@ -260,17 +260,23 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboMetadataExiftoolSidecar->setCurrentIndex(sidecarFile.indexOf(settings->value("Save/MetadataExiftoolSidecar", "on_error").toString()));
 	ui->checkMetadataExiftoolSidecarNoExtension->setChecked(settings->value("Save/MetadataExiftoolSidecarNoExtension", false).toBool());
 
-	// Metadata of existing files
-	ui->checkMetadataUpdateExisting->setChecked(settings->value("Save/MetadataUpdateExisting", false).toBool());
-	ui->spinMetadataUpdateMaxAge->setValue(settings->value("Save/MetadataUpdateMaxAge", 0).toInt());
-	ui->checkMetadataUpdateOncePerSource->setChecked(settings->value("Save/MetadataUpdateOncePerSource", false).toBool());
+	// Metadata database and updating existing files, each option requiring the previous one
 	ui->checkMetadataDatabase->setChecked(settings->value("Save/MetadataDatabase", false).toBool());
-	const auto updateOncePerSourceEnabled = [this]() {
-		ui->checkMetadataUpdateOncePerSource->setEnabled(ui->checkMetadataUpdateExisting->isChecked() && ui->checkMetadataDatabase->isChecked());
+	ui->checkMetadataUpdateExisting->setChecked(settings->value("Save/MetadataUpdateExisting", false).toBool());
+	ui->checkMetadataRefresh->setChecked(settings->value("Save/MetadataRefresh", false).toBool());
+	ui->spinMetadataRefreshMaxAge->setValue(settings->value("Save/MetadataRefreshMaxAge", 7).toInt());
+	const auto updateMetadataOptionsEnabled = [this]() {
+		const bool database = ui->checkMetadataDatabase->isChecked();
+		const bool update = database && ui->checkMetadataUpdateExisting->isChecked();
+		const bool refresh = update && ui->checkMetadataRefresh->isChecked();
+		ui->checkMetadataUpdateExisting->setEnabled(database);
+		ui->checkMetadataRefresh->setEnabled(update);
+		ui->spinMetadataRefreshMaxAge->setEnabled(refresh);
 	};
-	connect(ui->checkMetadataUpdateExisting, &QCheckBox::toggled, this, updateOncePerSourceEnabled);
-	connect(ui->checkMetadataDatabase, &QCheckBox::toggled, this, updateOncePerSourceEnabled);
-	updateOncePerSourceEnabled();
+	connect(ui->checkMetadataDatabase, &QCheckBox::toggled, this, updateMetadataOptionsEnabled);
+	connect(ui->checkMetadataUpdateExisting, &QCheckBox::toggled, this, updateMetadataOptionsEnabled);
+	connect(ui->checkMetadataRefresh, &QCheckBox::toggled, this, updateMetadataOptionsEnabled);
+	updateMetadataOptionsEnabled();
 
 	// Log
 	settings->beginGroup("Log");
@@ -1538,10 +1544,12 @@ void OptionsWindow::save()
 		static const QStringList sidecarFile { "no", "on_error", "both", "only" };
 		settings->setValue("MetadataExiftoolSidecar", sidecarFile.at(ui->comboMetadataExiftoolSidecar->currentIndex()));
 		settings->setValue("MetadataExiftoolSidecarNoExtension", ui->checkMetadataExiftoolSidecarNoExtension->isChecked());
-		settings->setValue("MetadataUpdateExisting", ui->checkMetadataUpdateExisting->isChecked());
-		settings->setValue("MetadataUpdateMaxAge", ui->spinMetadataUpdateMaxAge->value());
-		settings->setValue("MetadataUpdateOncePerSource", ui->checkMetadataUpdateOncePerSource->isChecked());
 		settings->setValue("MetadataDatabase", ui->checkMetadataDatabase->isChecked());
+		settings->setValue("MetadataUpdateExisting", ui->checkMetadataUpdateExisting->isChecked());
+		settings->setValue("MetadataRefresh", ui->checkMetadataRefresh->isChecked());
+		settings->setValue("MetadataRefreshMaxAge", ui->spinMetadataRefreshMaxAge->value());
+		settings->remove("MetadataUpdateMaxAge"); // Replaced by "MetadataRefresh" and "MetadataRefreshMaxAge"
+		settings->remove("MetadataUpdateOncePerSource"); // Always enabled
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
